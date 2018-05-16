@@ -1,4 +1,4 @@
-<img src="masamon/masamon/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png" align="right" />
+<img src="" align="right" />
 
 ParJob（パルジョブ）
 ====
@@ -9,7 +9,7 @@ ParJob（パルジョブ）
 ## 注意事項
 
 ## デモ
-![demo](https://github.com/kentaiwami/masamon/blob/master/demo.gif)
+![demo]()
 
 ## 使い方
 
