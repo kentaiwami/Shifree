@@ -6,7 +6,7 @@ from config import database
 
 db = SQLAlchemy()
 
-DATABASE = 'mysql+pymysql://%s:%s@%s/%s?charset=utf8' % (
+DATABASE = 'mysql+mysqlconnector://%s:%s@%s/%s?charset=utf8' % (
         database['username'],
         database['password'],
         database['host'],
