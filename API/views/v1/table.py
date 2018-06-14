@@ -4,9 +4,10 @@ from database import session
 from basic_auth import api_basic_auth
 from jsonschema import validate, ValidationError
 from views.v1.response import response_msg_400, response_msg_403, response_msg_404, response_msg_200, response_msg_409
-from werkzeug.utils import secure_filename
 import subprocess
 import os
+import unicodedata
+
 
 app = Blueprint('table_bp', __name__)
 ALLOWED_EXTENSIONS = {'pdf', 'xlsx'}
@@ -15,6 +16,14 @@ ALLOWED_EXTENSIONS = {'pdf', 'xlsx'}
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def format_text(text):
+    text = unicodedata.normalize('NFKC', text)
+    table = str.maketrans('', '', string.punctuation + '「」、。・')
+    text = text.translate(table)
+
+    return text
 
 
 @app.route('/api/v1/table', methods=['POST'])
@@ -56,10 +65,12 @@ def import_shift():
 
     company = session.query(Company).filter(Company.id == user.company_id).one()
 
-    origin_filename, origin_file_ext = os.path.splitext(file.filename)
-    saved_file_fullname = company.code + '_' + secure_filename(request.form['title'])
+    secure_title = format_text(request.form['title'])
 
-    origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', saved_file_fullname + origin_file_ext)
+    _, file_ext = os.path.splitext(file.filename)
+    saved_file_fullname = company.code + '_' + secure_title
+
+    origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', saved_file_fullname + file_ext)
     thumbnail_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'thumbnail', saved_file_fullname+'.jpg')
 
     if os.path.exists(origin_file_path):
@@ -69,7 +80,7 @@ def import_shift():
     # 企業ごとの解析プログラムを実行
     try:
         exec('from analyze.company'+str(company.id)+' import create_main')
-        table = eval('create_main(\''+secure_filename(request.form['title'])+'\', '+str(company.id)+')')
+        table = eval('create_main(\''+secure_title+'\', '+str(company.id)+')')
     except ValueError:
         return jsonify({'msg': response_msg_400()}), 400
 
@@ -205,16 +216,17 @@ def update(table_id):
     os.remove(old_file_path['origin'])
     os.remove(old_file_path['thumbnail'])
 
-    new_file_fullname = company.code + '_' + secure_filename(request.form['title'])
-    _, new_origin_file_ext = os.path.splitext(file.filename)
-    new_origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', new_file_fullname+new_origin_file_ext)
+    secure_title = format_text(request.form['title'])
+    new_file_fullname = company.code + '_' + secure_title
+    _, file_ext = os.path.splitext(file.filename)
+    new_origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', new_file_fullname+file_ext)
     new_thumbnail_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'thumbnail', new_file_fullname+'.jpg')
 
     file.save(new_origin_file_path)
     params = ['convert', new_origin_file_path + '[0]', new_thumbnail_file_path]
     subprocess.check_call(params)
 
-    table.title = request.form['title']
+    table.title = secure_title
     table.origin_path = new_origin_file_path
     table.thumbnail_path = new_thumbnail_file_path
     session.commit()
