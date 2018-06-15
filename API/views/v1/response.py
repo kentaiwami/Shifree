@@ -16,3 +16,7 @@ def response_msg_400():
 
 def response_msg_409():
     return '既にリソースが存在しています'
+
+
+def response_msg_500():
+    return '内部エラーが発生しました'

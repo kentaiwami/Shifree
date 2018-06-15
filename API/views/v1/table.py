@@ -79,23 +79,23 @@ def import_shift():
 
     # 企業ごとの解析プログラムを実行
     try:
-        exec('from analyze.company'+str(company.id)+' import create_main')
-        table = eval('create_main(\''+secure_title+'\', '+str(company.id)+')')
+        exec('from analyze.company{} import create_main'.format((company.id)))
+        results = eval('create_main({},\'{}\',{},\'{}\',\'{}\', file)'.format(company.id, secure_title, request.form['number'], request.form['start'], request.form['end']))
     except ValueError:
         return jsonify({'msg': response_msg_400()}), 400
 
-    file.save(origin_file_path)
-    params = ['convert', origin_file_path+'[0]', thumbnail_file_path]
-    subprocess.check_call(params)
+    # file.save(origin_file_path)
+    # params = ['convert', origin_file_path+'[0]', thumbnail_file_path]
+    # subprocess.check_call(params)
 
-    table.origin_path = origin_file_path
-    table.thumbnail_path = thumbnail_file_path
-    session.commit()
-    session.close()
+    # table.origin_path = origin_file_path
+    # table.thumbnail_path = thumbnail_file_path
+    # session.commit()
+    # session.close()
 
     return jsonify({'results': {
-        'table_title': table.title,
-        'table_id': table.id
+        # 'table_title': table.title,
+        # 'table_id': table.id
     }}), 200
 
 
