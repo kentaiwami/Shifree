@@ -4,6 +4,7 @@ import os
 from views.v1.response import response_msg_500
 import mojimoji
 import xml.etree.ElementTree as ET
+import re
 
 
 def create_main(company_id, title, number, start, end, file):
@@ -19,8 +20,8 @@ def create_main(company_id, title, number, start, end, file):
 
     page = ET.fromstring(results)[0]
 
-    x_y_text_list = []
     # xmlからx,y,textを抽出してリストへ格納
+    x_y_text_list = []
     for textbox in page:
         for textline in textbox:
             for text in textline:
@@ -65,6 +66,29 @@ def create_main(company_id, title, number, start, end, file):
 
     if day_line_index == -1:
         raise Exception(response_msg_500())
+
+    # 開始・終了日の日付文字列を抽出
+    start_date = {}
+    end_date = {}
+    pattern = re.compile('([0-9]{4})-([0-9]{2})-([0-9]{2})')
+    m = pattern.search(start)
+
+    if not m:
+        raise Exception(response_msg_500())
+
+    start_date['year'] = m.group(1)
+    start_date['month'] = m.group(2)
+    start_date['day'] = m.group(3)
+
+    m = pattern.search(end)
+
+    if not m:
+        raise Exception(response_msg_500())
+
+    end_date['year'] = m.group(1)
+    end_date['month'] = m.group(2)
+    end_date['day'] = m.group(3)
+
     # hoge = open('sample/test.txt', 'w')
     # for hhh in new_same_line_list:
     #     for abc in hhh:
