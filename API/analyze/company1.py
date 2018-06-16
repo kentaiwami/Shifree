@@ -2,7 +2,7 @@ from model import *
 import subprocess
 import os
 from views.v1.response import response_msg_500
-from flask import jsonify
+import mojimoji
 import xml.etree.ElementTree as ET
 
 
@@ -29,7 +29,7 @@ def create_main(company_id, title, number, start, end, file):
                     x_y_text_list.append({
                         'x': float(bbox[0]),
                         'y': float(bbox[1]),
-                        'text': text.text
+                        'text': mojimoji.zen_to_han(text.text, kana=False)
                     })
 
     x_y_text_list = sorted(x_y_text_list, key=lambda dict: dict['y'], reverse=True)
@@ -52,8 +52,25 @@ def create_main(company_id, title, number, start, end, file):
             current_y = x_y_text['y']
 
     new_same_line_list = []
-    for same_line in same_line_list:
+    day_line_index = -1
+    for i, same_line in enumerate(same_line_list):
+        # まだ数字のみの行を見つけていない時のみ数値判定の検索を実施
+        if day_line_index == -1:
+            if len(list(filter(lambda x:x['text'].isdigit(),same_line))) == len(same_line):
+                day_line_index = i
+                break
+
         new_same_line_list.append(sorted(same_line, key=lambda dict: dict['x'], reverse=False))
+
+
+    if day_line_index == -1:
+        raise Exception(response_msg_500())
+    # hoge = open('sample/test.txt', 'w')
+    # for hhh in new_same_line_list:
+    #     for abc in hhh:
+    #         hoge.write(abc['text'] + ' ')
+    #     hoge.write('\n')
+
 
     # table = ShiftTable(title=title, company_id=company_id)
     # session.add(table)
