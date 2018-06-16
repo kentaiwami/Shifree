@@ -52,16 +52,15 @@ def create_main(company_id, title, number, start, end, file):
             same_one_line.append(x_y_text)
             current_y = x_y_text['y']
 
-    new_same_line_list = []
+    all_same_line_list = []
     day_line_index = -1
     for i, same_line in enumerate(same_line_list):
         # まだ数字のみの行を見つけていない時のみ数値判定の検索を実施
         if day_line_index == -1:
             if len(list(filter(lambda x:x['text'].isdigit(),same_line))) == len(same_line):
                 day_line_index = i
-                break
 
-        new_same_line_list.append(sorted(same_line, key=lambda dict: dict['x'], reverse=False))
+        all_same_line_list.append(sorted(same_line, key=lambda dict: dict['x'], reverse=False))
 
 
     if day_line_index == -1:
