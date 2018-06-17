@@ -5,6 +5,8 @@ from views.v1.response import response_msg_500
 import mojimoji
 import xml.etree.ElementTree as ET
 import re
+from datetime import datetime as DT
+import datetime
 
 
 def create_main(company_id, title, number, start, end, file):
@@ -66,32 +68,30 @@ def create_main(company_id, title, number, start, end, file):
     if day_line_index == -1:
         raise Exception(response_msg_500())
 
-    # 開始・終了日の日付文字列を抽出
-    start_date = {}
-    end_date = {}
-    pattern = re.compile('([0-9]{4})-([0-9]{2})-([0-9]{2})')
-    m = pattern.search(start)
+    start_date = DT.strptime(start, '%Y-%m-%d')
 
-    if not m:
-        raise Exception(response_msg_500())
+    # 日付の境界位置を格納
+    day_limit_list = []
+    current_date = str(start_date.day)
+    tmp_current_date = ''
+    timedelta = 1
+    for date_x_y_text in all_same_line_list[day_line_index]:
+        tmp_current_date += date_x_y_text['text']
 
-    start_date['year'] = m.group(1)
-    start_date['month'] = m.group(2)
-    start_date['day'] = m.group(3)
+        if len(tmp_current_date) >= 3:
+            raise Exception(response_msg_500())
 
-    m = pattern.search(end)
+        if current_date == tmp_current_date:
+            day_limit_list.append({'day': current_date, 'limit': date_x_y_text['x']})
 
-    if not m:
-        raise Exception(response_msg_500())
-
-    end_date['year'] = m.group(1)
-    end_date['month'] = m.group(2)
-    end_date['day'] = m.group(3)
+            tmp_current_date = ''
+            current_date = str((start_date + datetime.timedelta(days=timedelta)).day)
+            timedelta += 1
 
     # hoge = open('sample/test.txt', 'w')
-    # for hhh in new_same_line_list:
+    # for hhh in all_same_line_list:
     #     for abc in hhh:
-    #         hoge.write(abc['text'] + ' ')
+    #         hoge.write('{}({}) '.format(abc['text'], abc['x']))
     #     hoge.write('\n')
 
 
