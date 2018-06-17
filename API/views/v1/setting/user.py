@@ -75,8 +75,9 @@ def update(user_code):
               'properties':
                   {'name': {'type': 'string', 'minLength': 1},
                    'role': {'type': 'string', 'enum': ['admin', 'general']},
+                   'order': {'type': 'integer', 'minimum': 1},
                    },
-              'required': ['name', 'role']
+              'required': ['name', 'role', 'order']
               }
 
     try:
@@ -102,12 +103,17 @@ def update(user_code):
 
     role = session.query(Role).filter(Role.name == request.json['role']).one()
     user.name = request.json['name']
+    user.order = request.json['order']
     user.role_id = role.id
 
     session.commit()
     session.close()
 
-    return jsonify({'results': {'name': user.name, 'role': role.name}}), 200
+    return jsonify({'results': {
+        'name': user.name,
+        'role': role.name,
+        'order': user.order
+    }}), 200
 
 
 @app.route('/api/v1/setting/users/<user_code>', methods=['DELETE'])
