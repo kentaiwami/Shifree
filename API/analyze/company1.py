@@ -23,19 +23,7 @@ def create_main(company_id, title, number, start, end, file):
     page = ET.fromstring(results)[0]
 
     # xmlからx,y,textを抽出してリストへ格納
-    x_y_text_list = []
-    for textbox in page:
-        for textline in textbox:
-            for text in textline:
-                if text.text != '\n' and 'bbox' in text.attrib:
-                    bbox = text.attrib['bbox'].split(',')
-                    x_y_text_list.append({
-                        'x': float(bbox[0]),
-                        'y': float(bbox[1]),
-                        'text': mojimoji.zen_to_han(text.text, kana=False)
-                    })
-
-    x_y_text_list = sorted(x_y_text_list, key=lambda dict: dict['y'], reverse=True)
+    x_y_text_list = get_x_y_text_from_xml(page)
 
     if len(x_y_text_list) == 0:
         raise Exception(response_msg_500())
@@ -102,6 +90,29 @@ def create_main(company_id, title, number, start, end, file):
     # return table
     # raise ValueError
     os.remove(file_path)
+
+
+def get_x_y_text_from_xml(page):
+    """
+    xmlからx,y,textを抽出した結果をリストとして返す
+    :param page:    ElementTreeで抽出したxml
+    :return:        x,y,textの辞書が格納された1次元配列
+    """
+    x_y_text_list = []
+    for textbox in page:
+        for textline in textbox:
+            for text in textline:
+                if text.text != '\n' and 'bbox' in text.attrib:
+                    bbox = text.attrib['bbox'].split(',')
+                    x_y_text_list.append({
+                        'x': float(bbox[0]),
+                        'y': float(bbox[1]),
+                        'text': mojimoji.zen_to_han(text.text, kana=False)
+                    })
+
+    x_y_text_list = sorted(x_y_text_list, key=lambda dict: dict['y'], reverse=True)
+
+    return x_y_text_list
 
 
 def update_main(table_id):
