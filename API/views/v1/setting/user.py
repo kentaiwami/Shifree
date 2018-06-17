@@ -15,8 +15,9 @@ def add():
               'properties':
                   {'name': {'type': 'string', 'minLength': 1},
                    'role': {'type': 'string', 'enum': ['admin', 'general']},
+                   'order': {'type': 'integer', 'minimum': 1},
                    },
-              'required': ['name', 'role']
+              'required': ['name', 'role', 'order']
               }
 
     try:
@@ -31,13 +32,23 @@ def add():
         return jsonify({'msg': response_msg_403()}), 403
 
     role = session.query(Role).filter(Role.name == request.json['role']).one()
-    new_user = User(name=request.json['name'], role_id=role.id, company_id=admin_user.company_id)
+    new_user = User(
+        name=request.json['name'],
+        role_id=role.id,
+        company_id=admin_user.company_id,
+        order=request.json['order']
+    )
 
     session.add(new_user)
     session.commit()
     session.close()
 
-    return jsonify({'results': {'name': new_user.name, 'code': new_user.code, 'password': new_user.password}}), 200
+    return jsonify({'results': {
+        'name': new_user.name,
+        'code': new_user.code,
+        'password': new_user.password,
+        'order': new_user.order
+    }}), 200
 
 
 @app.route('/api/v1/setting/users', methods=['GET'])
