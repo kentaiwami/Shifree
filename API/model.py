@@ -35,6 +35,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     code = db.Column(db.String(255), nullable=False, unique=True, default=code_generator)
+    order = db.Column(db.Integer, nullable=False)
     password = db.Column(db.String(255), nullable=False, default=password_generator)
     daytime_start = db.Column(db.Time, nullable=True)
     daytime_end = db.Column(db.Time, nullable=True)
