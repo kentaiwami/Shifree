@@ -7,32 +7,42 @@ import xml.etree.ElementTree as ET
 from datetime import datetime as DT
 import datetime
 
+tmp_file_path = ''
 
 def create_main(company_id, title, number, start, end, file):
+    global tmp_file_path
+
     _, file_ext = os.path.splitext(file.filename)
-    file_path = 'uploads/tmp/company_{}{}'.format(company_id, file_ext)
-    file.save(file_path)
+    tmp_file_path = 'uploads/tmp/company_{}{}'.format(company_id, file_ext)
+    file.save(tmp_file_path)
 
     try:
-        results = subprocess.check_output(['pdf2txt.py', file_path, '-t', 'xml'])
+        results = subprocess.check_output(['pdf2txt.py', tmp_file_path, '-t', 'xml'])
     except ValueError:
-        os.remove(file_path)
+        os.remove(tmp_file_path)
         raise Exception(response_msg_500())
 
     page = ET.fromstring(results)[0]
 
-    # xmlからx,y,textを抽出してリストへ格納
     x_y_text_list = get_x_y_text_from_xml(page)
+    same_line_list, day_line_index = get_same_line_list(x_y_text_list)
+    day_limit_list = get_day_limit(start, same_line_list, day_line_index)
 
-    # yが閾値以下の要素を同じ行としてまとめ、ソート済みの配列と日付がある要素番号を受け取る
-    x_sorted_same_line_list, day_line_index = get_same_line_list(x_y_text_list)
+    # TODO 従業員の行だけ対象にする処理
+    get_user_line(company_id, same_line_list)
 
-    # 日付の境界位置
-    day_limit_list = get_day_limit(start, x_sorted_same_line_list, day_line_index)
+    # TODO 日付の境界値まで文字列を連結して日付とセットにする処理
+    get_user_shift()
+
+    # TODO 空文字を連結する処理
+    # TODO x座標が近いものを連結する処理
+    get_user_joined_shift()
+
+
 
 
     # hoge = open('sample/test.txt', 'w')
-    # for hhh in all_same_line_list:
+    # for hhh in x_sorted_same_line_list:
     #     for abc in hhh:
     #         hoge.write('{}({}) '.format(abc['text'], abc['x']))
     #     hoge.write('\n')
@@ -43,7 +53,7 @@ def create_main(company_id, title, number, start, end, file):
     #
     # return table
     # raise ValueError
-    os.remove(file_path)
+    os.remove(tmp_file_path)
 
 
 def get_x_y_text_from_xml(page):
@@ -66,6 +76,7 @@ def get_x_y_text_from_xml(page):
                     })
 
     if len(x_y_text_list) == 0:
+        os.remove(tmp_file_path)
         raise Exception(response_msg_500())
 
     return x_y_text_list
@@ -106,16 +117,17 @@ def get_same_line_list(x_y_text_list):
         x_sorted_same_line_list.append(sorted(same_line, key=lambda dict: dict['x'], reverse=False))
 
     if day_line_index == -1:
+        os.remove(tmp_file_path)
         raise Exception(response_msg_500())
 
     return x_sorted_same_line_list, day_line_index
 
 
-def get_day_limit(start, x_sorted_same_line_list, day_line_index):
+def get_day_limit(start, same_line_list, day_line_index):
     """
     日付の境界位置を判定して結果を返す
     :param start:                   postで受け取った開始日付
-    :param x_sorted_same_line_list: xでソート済みの同じ行ごとにまとめた配列
+    :param same_line_list: xでソート済みの同じ行ごとにまとめた配列
     :param day_line_index:          日付が記述されている配列番号
     :return:                        日付と境界値を格納した1次元配列
     """
@@ -125,10 +137,11 @@ def get_day_limit(start, x_sorted_same_line_list, day_line_index):
     current_date = str(start_date.day)
     tmp_current_date = ''
     timedelta = 1
-    for date_x_y_text in x_sorted_same_line_list[day_line_index]:
+    for date_x_y_text in same_line_list[day_line_index]:
         tmp_current_date += date_x_y_text['text']
 
         if len(tmp_current_date) >= 3:
+            os.remove(tmp_file_path)
             raise Exception(response_msg_500())
 
         if current_date == tmp_current_date:
@@ -139,6 +152,32 @@ def get_day_limit(start, x_sorted_same_line_list, day_line_index):
             timedelta += 1
 
     return day_limit_list
+
+
+# TODO
+def get_user_line(company_id, same_line_list):
+    users = session.query(User).filter(User.company_id == company_id).all()
+
+    print(same_line_list)
+    # 取得してヒットした数がpostで指定された数と一致しているかチェック
+    # 従業員の行とシフトの開始位置、従業員名を一緒に返す
+    pass
+
+
+def get_user_shift():
+    """
+    完成系は、結合セルがある場合の箇所は空文字だったり「ユニ」「オン」とわかれてたりする
+    :return:
+    """
+    pass
+
+
+def get_user_joined_shift():
+    """
+    上記の空文字パターン、x座標が近いものをくっつける
+    :return:
+    """
+    pass
 
 
 def update_main(table_id):
