@@ -25,9 +25,6 @@ def create_main(company_id, title, number, start, end, file):
     # xmlからx,y,textを抽出してリストへ格納
     x_y_text_list = get_x_y_text_from_xml(page)
 
-    if len(x_y_text_list) == 0:
-        raise Exception(response_msg_500())
-
     # yが閾値以下の要素を同じ行としてまとめる
     threshold_y = 3.0
     current_y = x_y_text_list[0]['y']
@@ -109,6 +106,9 @@ def get_x_y_text_from_xml(page):
                         'y': float(bbox[1]),
                         'text': mojimoji.zen_to_han(text.text, kana=False)
                     })
+
+    if len(x_y_text_list) == 0:
+        raise Exception(response_msg_500())
 
     x_y_text_list = sorted(x_y_text_list, key=lambda dict: dict['y'], reverse=True)
 
