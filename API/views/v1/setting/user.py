@@ -57,7 +57,12 @@ def get():
         if len(user.password) != 7:
             is_active = True
 
-        results.append({'name': user.name, 'code': user.code, 'active': is_active})
+        results.append({
+            'name': user.name,
+            'code': user.code,
+            'order': user.order,
+            'active': is_active
+        })
 
     session.close()
     return jsonify({'results': results}), 200
