@@ -6,6 +6,8 @@ import mojimoji
 import xml.etree.ElementTree as ET
 from datetime import datetime as DT
 import datetime
+from flask import jsonify
+
 
 tmp_file_path = ''
 
@@ -20,16 +22,14 @@ def create_main(company_id, title, number, start, end, file):
         results = subprocess.check_output(['pdf2txt.py', tmp_file_path, '-t', 'xml'])
     except ValueError:
         os.remove(tmp_file_path)
-        raise Exception(response_msg_500())
+        raise Exception('解析コマンドの実行中にエラーが発生しました')
 
     page = ET.fromstring(results)[0]
 
     x_y_text_list = get_x_y_text_from_xml(page)
     same_line_list, day_line_index = get_same_line_list(x_y_text_list)
     day_limit_list = get_day_limit(start, same_line_list, day_line_index)
-
-    # TODO 従業員の行だけ対象にする処理
-    get_user_line(company_id, same_line_list)
+    users_line = get_user_line(company_id, same_line_list, day_limit_list[0]['limit'], number)
 
     # TODO 日付の境界値まで文字列を連結して日付とセットにする処理
     get_user_shift()
@@ -77,7 +77,7 @@ def get_x_y_text_from_xml(page):
 
     if len(x_y_text_list) == 0:
         os.remove(tmp_file_path)
-        raise Exception(response_msg_500())
+        raise Exception('情報抽出中にエラーが発生しました')
 
     return x_y_text_list
 
@@ -89,9 +89,10 @@ def get_same_line_list(x_y_text_list):
     :return:                xでソート済みの同じ行ごとにまとめたx_y_text_list, 日付が記述されている配列番号
     """
 
+    threshold_y = 3.0
+
     x_y_text_list = sorted(x_y_text_list, key=lambda dict: dict['y'], reverse=True)
 
-    threshold_y = 3.0
     current_y = x_y_text_list[0]['y']
     same_line_list = []
     tmp_same_one_line = []
@@ -118,7 +119,7 @@ def get_same_line_list(x_y_text_list):
 
     if day_line_index == -1:
         os.remove(tmp_file_path)
-        raise Exception(response_msg_500())
+        raise Exception('日付の判定中にエラーが発生しました')
 
     return x_sorted_same_line_list, day_line_index
 
@@ -142,7 +143,7 @@ def get_day_limit(start, same_line_list, day_line_index):
 
         if len(tmp_current_date) >= 3:
             os.remove(tmp_file_path)
-            raise Exception(response_msg_500())
+            raise Exception('日付の解析中にエラーが発生しました')
 
         if current_date == tmp_current_date:
             day_limit_list.append({'day': current_date, 'limit': date_x_y_text['x']})
@@ -154,14 +155,45 @@ def get_day_limit(start, same_line_list, day_line_index):
     return day_limit_list
 
 
-# TODO
-def get_user_line(company_id, same_line_list):
-    users = session.query(User).filter(User.company_id == company_id).all()
+def get_user_line(company_id, same_line_list, first_day_limit, number):
+    """
+    ユーザ名が含まれている行のみを抽出し、ユーザ名の一致と各ユーザのシフトの開始位置を格納した2次元配列を返す
+    :param company_id:          ユーザが属する企業のID
+    :param same_line_list:      xでソート済みの同じ行ごとにまとめた配列
+    :param first_day_limit:     シフトの最初の日付が記述されているxの値
+    :param number:              取り込もうとしているシフト表に記載されているユーザの人数（POSTで受付）
+    :return:
+    """
 
-    print(same_line_list)
-    # 取得してヒットした数がpostで指定された数と一致しているかチェック
-    # 従業員の行とシフトの開始位置、従業員名を一緒に返す
-    pass
+    threshold_x = 10.0
+
+    users = session.query(User).filter(User.company_id == company_id).order_by('order').all()
+    users_line = []
+
+    for user in users:
+        for line in same_line_list[:]:
+            # ユーザ名が含まれている文字列（日付より前）を抽出
+            candidate_username = list(filter(lambda h: h['x'] < first_day_limit - threshold_x, line))
+            candidate_username = [x['text'] for x in candidate_username]
+            candidate_username = ''.join(candidate_username)
+
+            if candidate_username.find(user.name) != -1:
+                last_char_username = user.name[-1:]
+                last_username_obj = next((item for item in line if item["text"] == last_char_username))
+                shift_start_index = line.index(last_username_obj) + 1
+                users_line.append({
+                    'line': line,
+                    'shift_start': shift_start_index,
+                    'name': user.name
+                })
+                same_line_list.remove(line)
+                break
+
+    if number != len(users_line):
+        os.remove(tmp_file_path)
+        raise Exception('ユーザのシフトを抽出中にエラーが発生しました')
+
+    return users_line
 
 
 def get_user_shift():
