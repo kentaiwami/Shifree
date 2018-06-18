@@ -30,7 +30,9 @@ def create_main(company_id, title, number, start, end, file):
     day_x_list = get_day_x(start, same_line_list, day_line_index)
     users_line = get_user_line(company_id, same_line_list, day_x_list[0]['x'], number)
     should_join_shift = get_should_join_shift(users_line)
-    # users_shift_list = get_user_shift(users_line, day_x_list)
+
+    # TODO 日付ごとにシフトをまとめる（その際に、結合も考慮）
+    users_shift_list = get_user_shift(users_line, day_x_list, should_join_shift)
 
     # TODO 空文字を連結する処理
 
@@ -196,7 +198,7 @@ def get_should_join_shift(users_line):
     """
     全ユーザのシフト文字列から、連結した文字列（1つのシフト）とするべきものを判別して返す
     :param users_line:  全ユーザのシフトが記述された2次元配列
-    :return:            全ユーザのシフトの連結開始・終了位置だけを記録した2次元配列
+    :return:            全ユーザのシフトの連結開始・終了位置を辞書ごと格納した2次元配列
     """
 
     results = []
@@ -234,12 +236,13 @@ def get_should_join_shift(users_line):
     return results
 
 
-def get_user_shift(users_line, day_x_list):
+def get_user_shift(users_line, day_x_list, should_join_shift):
     """
     全ユーザのシフトを日付ごとにまとめる。結合セルがあった場合は空文字として登録する。
-    :param users_line:      全ユーザのシフト情報が記載された2次元配列
-    :param day_x_list:      日付の場所が記載された1次元配列
-    :return:                全ユーザ*全日付の2次元配列
+    :param users_line:          全ユーザのシフト情報が記載された2次元配列
+    :param day_x_list:          日付の場所が記載された1次元配列
+    :param should_join_shift:   aa
+    :return:                    全ユーザ×全日付の2次元配列
     """
 
     threshold_x = 10.0

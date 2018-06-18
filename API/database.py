@@ -17,7 +17,7 @@ DATABASE = 'mysql+mysqlconnector://%s:%s@%s:%s/%s' % (
 ENGINE = create_engine(
     DATABASE,
     encoding="utf-8",
-    echo=True
+    echo=False
 )
 
 session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=ENGINE, expire_on_commit=False))
