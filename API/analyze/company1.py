@@ -27,9 +27,9 @@ def create_main(company_id, title, number, start, end, file):
 
     x_y_text_list = get_x_y_text_from_xml(page)
     same_line_list, day_line_index = get_same_line_list(x_y_text_list)
-    day_limit_list = get_day_limit(start, same_line_list, day_line_index)
-    users_line = get_user_line(company_id, same_line_list, day_limit_list[0]['limit'], number)
-    users_shift_list = get_user_shift(users_line, day_limit_list)
+    day_x_list = get_day_x(start, same_line_list, day_line_index)
+    users_line = get_user_line(company_id, same_line_list, day_x_list[0]['x'], number)
+    users_shift_list = get_user_shift(users_line, day_x_list)
 
     # TODO 空文字を連結する処理
     get_user_joined_shift()
@@ -120,17 +120,17 @@ def get_same_line_list(x_y_text_list):
     return x_sorted_same_line_list, day_line_index
 
 
-def get_day_limit(start, same_line_list, day_line_index):
+def get_day_x(start, same_line_list, day_line_index):
     """
-    日付の境界位置を判定して結果を返す
+    日付の記載場所を判定して結果を返す
     :param start:                   postで受け取った開始日付
     :param same_line_list: xでソート済みの同じ行ごとにまとめた配列
     :param day_line_index:          日付が記述されている配列番号
-    :return:                        日付と境界値を格納した1次元配列
+    :return:                        日付と記載場所(x)を格納した1次元配列
     """
 
     start_date = DT.strptime(start, '%Y-%m-%d')
-    day_limit_list = []
+    day_x_list = []
     current_date = str(start_date.day)
     tmp_current_date = ''
     timedelta = 1
@@ -142,13 +142,13 @@ def get_day_limit(start, same_line_list, day_line_index):
             raise Exception('日付の解析中にエラーが発生しました')
 
         if current_date == tmp_current_date:
-            day_limit_list.append({'day': current_date, 'limit': date_x_y_text['x']})
+            day_x_list.append({'day': current_date, 'x': date_x_y_text['x']})
 
             tmp_current_date = ''
             current_date = str((start_date + datetime.timedelta(days=timedelta)).day)
             timedelta += 1
 
-    return day_limit_list
+    return day_x_list
 
 
 def get_user_line(company_id, same_line_list, first_day_limit, number):
@@ -192,11 +192,11 @@ def get_user_line(company_id, same_line_list, first_day_limit, number):
     return users_line
 
 
-def get_user_shift(users_line, day_limit_list):
+def get_user_shift(users_line, day_x_list):
     """
     全ユーザのシフトを日付ごとにまとめる。結合セルがあった場合は空文字として登録する。
     :param users_line:      全ユーザのシフト情報が記載された2次元配列
-    :param day_limit_list:  日付の場所が記載された1次元配列
+    :param day_x_list:      日付の場所が記載された1次元配列
     :return:                全ユーザ*全日付の2次元配列
     """
 
@@ -210,8 +210,8 @@ def get_user_shift(users_line, day_limit_list):
         shift_index = 0
         current_day_shift = ''
 
-        while len(day_limit_list)-1 >= day_index and len(shift_list)-1 >= shift_index:
-            if abs(shift_list[shift_index]['x'] - day_limit_list[day_index]['limit']) <= threshold_x:
+        while len(day_x_list)-1 >= day_index and len(shift_list)-1 >= shift_index:
+            if abs(shift_list[shift_index]['x'] - day_x_list[day_index]['x']) <= threshold_x:
                 current_day_shift += shift_list[shift_index]['text']
                 shift_index += 1
             else:
@@ -222,7 +222,7 @@ def get_user_shift(users_line, day_limit_list):
         results.append(usr_result)
 
     # 全ユーザのシフトが日数分だけ存在するかチェック
-    if len(list(filter(lambda x: len(x) != len(day_limit_list), results))) != 0:
+    if len(list(filter(lambda x: len(x) != len(day_x_list), results))) != 0:
         raise Exception('シフトの抽出結果に誤りがあったためエラーが発生しました')
 
     return results
