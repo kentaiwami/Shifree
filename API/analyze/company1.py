@@ -35,6 +35,10 @@ def create_main(company_id, title, number, start, end, file):
     users_shift_list = get_user_shift(users_line, day_x_list)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
+    # for hoge in joined_users_shift:
+    #     for us in hoge:
+    #         print(us)
+
 
 
 
@@ -271,8 +275,8 @@ def get_user_shift(users_line, day_x_list):
 
         results.append(usr_result)
 
-    # 全ユーザのシフトが日数分だけ存在するかチェック
     if len(list(filter(lambda x: len(x) != len(day_x_list), results))) != 0:
+        os.remove(tmp_file_path)
         frame = inspect.currentframe()
         raise Exception('シフトの抽出結果に誤りがあったためエラーが発生しました[{}]'.format(frame.f_lineno))
 
@@ -315,6 +319,13 @@ def get_joined_users_shift(users_shift, should_join_shift):
 
         results.append(tmp_results)
 
+    results_lens = [len(x) for x in results]
+
+    if len(list(set(results_lens))) != 1:
+        os.remove(tmp_file_path)
+        frame = inspect.currentframe()
+        raise Exception('シフトの抽出結果に誤りがあったためエラーが発生しました[{}]'.format(frame.f_lineno))
+
     return results
 
 
@@ -342,6 +353,7 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
 
     # 連結開始のシフト文字が0番目以外で見つかる場合は、そもそもシフトを日付で分断する際に失敗している
     if found_start_shift_index != 0:
+        os.remove(tmp_file_path)
         frame = inspect.currentframe()
         raise Exception('シフトの解析エラーが発生しました[{}]'.format(frame.f_lineno))
 
@@ -369,8 +381,8 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
     shift_name = ''
 
     for day in join_range_shift:
-        hoge = [x['text'] for x in day['shift']]
-        shift_name += ''.join(hoge)
+        texts = [x['text'] for x in day['shift']]
+        shift_name += ''.join(texts)
 
     results = []
     for i in range(0, len(join_range_shift)):
