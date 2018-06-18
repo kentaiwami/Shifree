@@ -29,10 +29,10 @@ def create_main(company_id, title, number, start, end, file):
     same_line_list, day_line_index = get_same_line_list(x_y_text_list)
     day_x_list = get_day_x(start, same_line_list, day_line_index)
     users_line = get_user_line(company_id, same_line_list, day_x_list[0]['x'], number)
-    users_shift_list = get_user_shift(users_line, day_x_list)
+    should_join_shift = get_should_join_shift(users_line)
+    # users_shift_list = get_user_shift(users_line, day_x_list)
 
     # TODO 空文字を連結する処理
-    get_user_joined_shift()
 
 
 
@@ -192,6 +192,48 @@ def get_user_line(company_id, same_line_list, first_day_limit, number):
     return users_line
 
 
+def get_should_join_shift(users_line):
+    """
+    全ユーザのシフト文字列から、連結した文字列（1つのシフト）とするべきものを判別して返す
+    :param users_line:  全ユーザのシフトが記述された2次元配列
+    :return:            全ユーザのシフトの連結開始・終了位置だけを記録した2次元配列
+    """
+
+    results = []
+    threshold_x = 8.0
+
+    for user in users_line:
+        tmp_user_line = []
+        shift_list = user['line'][user['shift_start']:]
+
+        # 閾値より近いシフトを後で開始終了位置を判別するために（長い文字列への対応）、1次元配列へ格納していく
+        candidate_join_shift = []
+        for shift1, shift2 in zip(shift_list, shift_list[1:]):
+            if abs(shift1['x'] - shift2['x']) <= threshold_x:
+                candidate_join_shift.append(shift1)
+                candidate_join_shift.append(shift2)
+            else:
+                tmp_user_line.append(shift1)
+
+        # 連結すべき文字列の範囲を検出
+        # ex.) 導, 入, 入, 研, 研, 修を「開始：導, 終了：修」として記録する
+        search_index = 1
+        join_start_end = []
+        start = 0
+
+        while search_index < len(candidate_join_shift) - 1:
+            if candidate_join_shift[search_index] != candidate_join_shift[search_index+1]:
+                join_start_end.append({'s': candidate_join_shift[start], 'e': candidate_join_shift[search_index]})
+                start = search_index + 1
+
+            search_index += 2
+
+        join_start_end.append({'s': candidate_join_shift[start], 'e': candidate_join_shift[search_index]})
+        results.append(join_start_end)
+
+    return results
+
+
 def get_user_shift(users_line, day_x_list):
     """
     全ユーザのシフトを日付ごとにまとめる。結合セルがあった場合は空文字として登録する。
@@ -200,40 +242,48 @@ def get_user_shift(users_line, day_x_list):
     :return:                全ユーザ*全日付の2次元配列
     """
 
-    threshold_x = 8.0
+    threshold_x = 10.0
     results = []
 
     for user in users_line:
-        shift_list = user['line'][user['shift_start']:]
+        shift_list = users_line[4]['line'][users_line[4]['shift_start']:]
+        # shift_list = user['line'][user['shift_start']:]
         usr_result = []
         day_index = 0
         shift_index = 0
-        current_day_shift = ''
+        tmp_current_day_shift = ''
+        tmp_shift_x = 0.0
+        tmp_shift_x_count = 0.0
 
         while len(day_x_list)-1 >= day_index and len(shift_list)-1 >= shift_index:
+            print(shift_list[shift_index]['text'], day_x_list[day_index]['day'], tmp_current_day_shift)
             if abs(shift_list[shift_index]['x'] - day_x_list[day_index]['x']) <= threshold_x:
-                current_day_shift += shift_list[shift_index]['text']
+                tmp_current_day_shift += shift_list[shift_index]['text']
+                tmp_shift_x += shift_list[shift_index]['x']
+                tmp_shift_x_count += 1
                 shift_index += 1
             else:
-                usr_result.append(current_day_shift)
-                current_day_shift = ''
+                usr_result.append({
+                    'shift': tmp_current_day_shift,
+                    'x': tmp_shift_x / tmp_shift_x_count
+                })
+                tmp_current_day_shift = ''
+                tmp_shift_x = 0.0
+                tmp_shift_x_count = 0.0
                 day_index += 1
 
         results.append(usr_result)
+
+        break
 
     # 全ユーザのシフトが日数分だけ存在するかチェック
     if len(list(filter(lambda x: len(x) != len(day_x_list), results))) != 0:
         raise Exception('シフトの抽出結果に誤りがあったためエラーが発生しました')
 
+    for hoge in results:
+        print(hoge)
+        print('\n')
     return results
-
-
-def get_user_joined_shift():
-    """
-    上記の空文字パターン、x座標が近いものをくっつける
-    :return:
-    """
-    pass
 
 
 def update_main(table_id):
