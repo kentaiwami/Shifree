@@ -1,15 +1,14 @@
 from model import *
 import subprocess
 import os
-from views.v1.response import response_msg_500
 import mojimoji
 import xml.etree.ElementTree as ET
 from datetime import datetime as DT
 import datetime
-from flask import jsonify
 
 
 tmp_file_path = ''
+
 
 def create_main(company_id, title, number, start, end, file):
     global tmp_file_path
@@ -30,12 +29,9 @@ def create_main(company_id, title, number, start, end, file):
     same_line_list, day_line_index = get_same_line_list(x_y_text_list)
     day_limit_list = get_day_limit(start, same_line_list, day_line_index)
     users_line = get_user_line(company_id, same_line_list, day_limit_list[0]['limit'], number)
-
-    # TODO 日付の境界値まで文字列を連結して日付とセットにする処理
-    get_user_shift()
+    users_shift_list = get_user_shift(users_line, day_limit_list)
 
     # TODO 空文字を連結する処理
-    # TODO x座標が近いものを連結する処理
     get_user_joined_shift()
 
 
@@ -191,17 +187,45 @@ def get_user_line(company_id, same_line_list, first_day_limit, number):
 
     if number != len(users_line):
         os.remove(tmp_file_path)
-        raise Exception('ユーザのシフトを抽出中にエラーが発生しました')
+        raise Exception('シフト表に記載されているユーザの人数が一致しません')
 
     return users_line
 
 
-def get_user_shift():
+def get_user_shift(users_line, day_limit_list):
     """
-    完成系は、結合セルがある場合の箇所は空文字だったり「ユニ」「オン」とわかれてたりする
-    :return:
+    全ユーザのシフトを日付ごとにまとめる。結合セルがあった場合は空文字として登録する。
+    :param users_line:      全ユーザのシフト情報が記載された2次元配列
+    :param day_limit_list:  日付の場所が記載された1次元配列
+    :return:                全ユーザ*全日付の2次元配列
     """
-    pass
+
+    threshold_x = 8.0
+    results = []
+
+    for user in users_line:
+        shift_list = user['line'][user['shift_start']:]
+        usr_result = []
+        day_index = 0
+        shift_index = 0
+        current_day_shift = ''
+
+        while len(day_limit_list)-1 >= day_index and len(shift_list)-1 >= shift_index:
+            if abs(shift_list[shift_index]['x'] - day_limit_list[day_index]['limit']) <= threshold_x:
+                current_day_shift += shift_list[shift_index]['text']
+                shift_index += 1
+            else:
+                usr_result.append(current_day_shift)
+                current_day_shift = ''
+                day_index += 1
+
+        results.append(usr_result)
+
+    # 全ユーザのシフトが日数分だけ存在するかチェック
+    if len(list(filter(lambda x: len(x) != len(day_limit_list), results))) != 0:
+        raise Exception('シフトの抽出結果に誤りがあったためエラーが発生しました')
+
+    return results
 
 
 def get_user_joined_shift():
