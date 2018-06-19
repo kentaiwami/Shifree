@@ -8,6 +8,7 @@ from views.v1.response import response_msg_400, response_msg_403, response_msg_4
 import subprocess
 import os
 import unicodedata
+from datetime import datetime as DT
 
 
 app = Blueprint('table_bp', __name__)
@@ -49,6 +50,14 @@ def import_shift():
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': e.message})
 
+    start_date = DT.strptime(request.form['start'], '%Y-%m-%d')
+    end_date = DT.strptime(request.form['end'], '%Y-%m-%d')
+
+    if start_date >= end_date:
+        session.close()
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': '開始日付は終了日付よりも前にする必要があります'})
+
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.role.name != 'admin':
@@ -86,7 +95,7 @@ def import_shift():
     # 企業ごとの解析プログラムを実行
     try:
         exec('from analyze.company{} import create_main'.format((company.id)))
-        results = eval('create_main({},\'{}\',{},\'{}\',\'{}\', file)'.format(company.id, secure_title, request.form['number'], request.form['start'], request.form['end']))
+        results = eval('create_main({},{},\'{}\',\'{}\', file)'.format(company.id, request.form['number'], request.form['start'], request.form['end']))
     except ValueError:
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})

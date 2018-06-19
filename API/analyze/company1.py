@@ -12,7 +12,7 @@ from flask import abort
 tmp_file_path = ''
 
 
-def create_main(company_id, title, number, start, end, file):
+def create_main(company_id, number, start, end, file):
     global tmp_file_path
 
     _, file_ext = os.path.splitext(file.filename)
@@ -30,7 +30,7 @@ def create_main(company_id, title, number, start, end, file):
 
     x_y_text_list = get_x_y_text_from_xml(page)
     same_line_list, day_line_index = get_same_line_list(x_y_text_list)
-    day_x_list = get_day_x(start, same_line_list, day_line_index)
+    day_x_list = get_day_x(start, end, same_line_list, day_line_index)
     users_line = get_user_line(company_id, same_line_list, day_x_list[0]['x'], number)
     should_join_shift = get_should_join_shift(users_line)
     users_shift_list = get_user_shift(users_line, day_x_list)
@@ -38,8 +38,9 @@ def create_main(company_id, title, number, start, end, file):
 
     # TODO 空文字結合
     for user in joined_users_shift:
-        for shift in user:
-            print(shift)
+        if len(list(filter(lambda x: x == ' ', user))) != 0:
+            for shift in user:
+                print(shift)
 
         print('*********************:')
 
@@ -131,16 +132,18 @@ def get_same_line_list(x_y_text_list):
     return x_sorted_same_line_list, day_line_index
 
 
-def get_day_x(start, same_line_list, day_line_index):
+def get_day_x(start, end, same_line_list, day_line_index):
     """
     日付の記載場所を判定して結果を返す
     :param start:                   postで受け取った開始日付
-    :param same_line_list: xでソート済みの同じ行ごとにまとめた配列
+    :param end:                     postで受け取った終了日付
+    :param same_line_list:          xでソート済みの同じ行ごとにまとめた配列
     :param day_line_index:          日付が記述されている配列番号
     :return:                        日付と記載場所(x)を格納した1次元配列
     """
 
     start_date = DT.strptime(start, '%Y-%m-%d')
+    end_date = DT.strptime(end, '%Y-%m-%d')
     day_x_list = []
     current_date = str(start_date.day)
     tmp_current_date = ''
@@ -159,6 +162,11 @@ def get_day_x(start, same_line_list, day_line_index):
             tmp_current_date = ''
             current_date = str((start_date + datetime.timedelta(days=timedelta)).day)
             timedelta += 1
+
+    if len(day_x_list) != (end_date-start_date).days+1:
+        os.remove(tmp_file_path)
+        frame = inspect.currentframe()
+        abort(500, {'code': frame.f_lineno, 'msg': '日付の解析中にエラーが発生しました'})
 
     return day_x_list
 
@@ -347,12 +355,12 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
     if len(current_day_shift['shift']) == 0:
         return ' '
 
-    found_shift = list(filter(lambda x: x['start'] == current_day_shift['shift'][0], join_shift))
+    found_shifts = list(filter(lambda x: x['start'] == current_day_shift['shift'][0], join_shift))
 
-    if len(found_shift) == 0:
+    if len(found_shifts) == 0:
         return None
 
-    found_shift = found_shift[0]
+    found_shift = found_shifts[0]
     found_start_shift_index = current_day_shift['shift'].index(found_shift['start'])
 
     # 連結開始のシフト文字が0番目以外で見つかる場合は、そもそもシフトを日付で分断する際に失敗している
@@ -393,7 +401,6 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
         results.append(shift_name)
 
     return results
-
 
 
 def update_main(table_id):
