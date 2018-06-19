@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify
+import inspect
+from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from werkzeug.security import generate_password_hash
 from model import User
@@ -21,7 +22,8 @@ def update():
     try:
         validate(request.json, schema)
     except ValidationError as e:
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     user.password = generate_password_hash(request.json['new_password'])

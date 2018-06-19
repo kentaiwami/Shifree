@@ -1,5 +1,5 @@
 from database import init_db
-from flask import Flask
+from flask import Flask, jsonify
 from flask_basicauth import BasicAuth
 from flask_migrate import Migrate
 from model import db
@@ -46,3 +46,13 @@ def Logout():
 @app.route('/index')
 def index():
     return 'This is index page'
+
+
+@app.errorhandler(400)
+@app.errorhandler(403)
+@app.errorhandler(404)
+@app.errorhandler(409)
+@app.errorhandler(500)
+def error_handler(error):
+    response = jsonify({'code': error.description['code'], 'msg': error.description['msg'], 'status': error.code})
+    return response, error.code

@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify
+import inspect
+from flask import Blueprint, jsonify, abort
 from model import User, Salary, ShiftTable
 from database import session
 from views.v1.response import response_msg_404
@@ -14,7 +15,8 @@ def get():
 
     if user is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
 
     salary_tables = session.query(Salary, ShiftTable).join(ShiftTable).filter(Salary.user_id == user.id).order_by(
         Salary.created_at.desc()).all()

@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify, request
+import inspect
+from flask import Blueprint, jsonify, request, abort
 from jsonschema import validate, ValidationError
 from model import User, Comment, ShiftTable
 from database import session
@@ -22,18 +23,21 @@ def add():
     try:
         validate(request.json, schema)
     except ValidationError as e:
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     table = session.query(ShiftTable).filter(ShiftTable.id == request.json['table_id']).one_or_none()
 
     if table is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
 
     if table.company_id != user.company_id:
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     comment = Comment(text=request.json['text'], user_id=user.id, shifttable_id=table.id)
     session.add(comment)
@@ -55,18 +59,21 @@ def update(comment_id):
     try:
         validate(request.json, schema)
     except ValidationError as e:
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     comment = session.query(Comment).filter(Comment.id == comment_id).one_or_none()
 
     if comment is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
 
     if comment.user_id != user.id:
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     comment.text = request.json['text']
     session.commit()
@@ -82,11 +89,13 @@ def delete(comment_id):
 
     if comment is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
 
     if comment.user_id != user.id:
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     session.delete(comment)
     session.commit()

@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify, request
+import inspect
+from flask import Blueprint, jsonify, request, abort
 from model import *
 from database import session
 from basic_auth import api_basic_auth
@@ -45,23 +46,27 @@ def import_shift():
         validate(request.form, schema)
     except ValidationError as e:
         session.close()
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.role.name != 'admin':
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     if 'file' not in request.files:
         session.close()
-        return jsonify({'msg': response_msg_400()}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
     file = request.files['file']
 
     if not (file and allowed_file(file.filename)):
         session.close()
-        return jsonify({'msg': response_msg_400()}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
     company = session.query(Company).filter(Company.id == user.company_id).one()
 
@@ -75,14 +80,16 @@ def import_shift():
 
     if os.path.exists(origin_file_path):
         session.close()
-        return jsonify({'msg': response_msg_409()}), 409
+        frame = inspect.currentframe()
+        abort(409, {'code': frame.f_lineno, 'msg': response_msg_409()})
 
     # 企業ごとの解析プログラムを実行
     try:
         exec('from analyze.company{} import create_main'.format((company.id)))
         results = eval('create_main({},\'{}\',{},\'{}\',\'{}\', file)'.format(company.id, secure_title, request.form['number'], request.form['start'], request.form['end']))
     except ValueError:
-        return jsonify({'msg': response_msg_400()}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
     # file.save(origin_file_path)
     # params = ['convert', origin_file_path+'[0]', thumbnail_file_path]
@@ -126,13 +133,15 @@ def get_detail(table_id):
 
     if table is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.company_id != table.company_id:
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     comment_users = session.query(Comment, User).join(User).filter(Comment.shifttable_id == table.id).order_by(Comment.created_at.desc()).all()
 
@@ -180,29 +189,34 @@ def update(table_id):
         validate(request.form, schema)
     except ValidationError as e:
         session.close()
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.role.name != 'admin':
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     if 'file' not in request.files:
         session.close()
-        return jsonify({'msg': response_msg_400()}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
     file = request.files['file']
 
     if not (file and allowed_file(file.filename)):
         session.close()
-        return jsonify({'msg': response_msg_400()}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
     table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one_or_none()
 
     if table is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
 
     company = session.query(Company).filter(Company.id == user.company_id).one()
 
@@ -211,7 +225,8 @@ def update(table_id):
         exec('from analyze.company' + str(company.id) + ' import update_main')
         old_file_path = eval('update_main('+str(table.id)+')')
     except ValueError:
-        return jsonify({'msg': response_msg_400()}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
     os.remove(old_file_path['origin'])
     os.remove(old_file_path['thumbnail'])
@@ -245,17 +260,20 @@ def delete(table_id):
 
     if user.role.name != 'admin':
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one_or_none()
 
     if table is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
 
     if table.company_id != user.company_id:
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
 
     os.remove(table.origin_path)
     os.remove(table.thumbnail_path)

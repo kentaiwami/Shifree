@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime as DT
 import datetime
 import inspect
+from flask import abort
 
 
 tmp_file_path = ''
@@ -23,7 +24,7 @@ def create_main(company_id, title, number, start, end, file):
     except ValueError:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        raise Exception('解析コマンドの実行中にエラーが発生しました[{}]'.format(frame.f_lineno))
+        abort(500, {'code': frame.f_lineno, 'msg': '解析コマンドの実行中にエラーが発生しました'})
 
     page = ET.fromstring(results)[0]
 
@@ -35,9 +36,12 @@ def create_main(company_id, title, number, start, end, file):
     users_shift_list = get_user_shift(users_line, day_x_list)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
-    # for hoge in joined_users_shift:
-    #     for us in hoge:
-    #         print(us)
+    # TODO 空文字結合
+    for user in joined_users_shift:
+        for shift in user:
+            print(shift)
+
+        print('*********************:')
 
 
 
@@ -79,7 +83,7 @@ def get_x_y_text_from_xml(page):
     if len(x_y_text_list) == 0:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        raise Exception('情報抽出中にエラーが発生しました[{}]'.format(frame.f_lineno))
+        abort(500, {'code': frame.f_lineno, 'msg': '情報抽出中にエラーが発生しました'})
 
     return x_y_text_list
 
@@ -122,7 +126,7 @@ def get_same_line_list(x_y_text_list):
     if day_line_index == -1:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        raise Exception('日付の判定中にエラーが発生しました[{}]'.format(frame.f_lineno))
+        abort(500, {'code': frame.f_lineno, 'msg': '日付の判定中にエラーが発生しました'})
 
     return x_sorted_same_line_list, day_line_index
 
@@ -147,7 +151,7 @@ def get_day_x(start, same_line_list, day_line_index):
         if len(tmp_current_date) >= 3:
             os.remove(tmp_file_path)
             frame = inspect.currentframe()
-            raise Exception('日付の解析中にエラーが発生しました[{}]'.format(frame.f_lineno))
+            abort(500, {'code': frame.f_lineno, 'msg': '日付の解析中にエラーが発生しました'})
 
         if current_date == tmp_current_date:
             day_x_list.append({'day': current_date, 'x': date_x_y_text['x']})
@@ -196,7 +200,7 @@ def get_user_line(company_id, same_line_list, first_day_limit, number):
     if number != len(users_line):
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        raise Exception('シフト表に記載されているユーザの人数が一致しません[{}]'.format(frame.f_lineno))
+        abort(500, {'code': frame.f_lineno, 'msg': 'シフト表に記載されているユーザの人数が一致しません。\n入力した人数または未登録のユーザがシフト表に記載されています。'})
 
     return users_line
 
@@ -278,7 +282,7 @@ def get_user_shift(users_line, day_x_list):
     if len(list(filter(lambda x: len(x) != len(day_x_list), results))) != 0:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        raise Exception('シフトの抽出結果に誤りがあったためエラーが発生しました[{}]'.format(frame.f_lineno))
+        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの抽出結果に誤りがあったためエラーが発生しました'})
 
     return results
 
@@ -324,7 +328,7 @@ def get_joined_users_shift(users_shift, should_join_shift):
     if len(list(set(results_lens))) != 1:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        raise Exception('シフトの抽出結果に誤りがあったためエラーが発生しました[{}]'.format(frame.f_lineno))
+        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの抽出結果に誤りがあったためエラーが発生しました'})
 
     return results
 
@@ -355,7 +359,7 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
     if found_start_shift_index != 0:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        raise Exception('シフトの解析エラーが発生しました[{}]'.format(frame.f_lineno))
+        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの解析エラーが発生しました'})
 
     found_end_shift = list(filter(lambda x: x == found_shift['end'], current_day_shift['shift']))
 
