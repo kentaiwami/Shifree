@@ -36,13 +36,11 @@ def create_main(company_id, number, start, end, file):
     users_shift_list = get_user_shift(users_line, day_x_list)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
-    # TODO 空文字結合
-    for user in joined_users_shift:
-        if len(list(filter(lambda x: x == ' ', user))) != 0:
-            for shift in user:
-                print(shift)
-
-        print('*********************:')
+    # for user in joined_users_shift:
+    #     if len(list(filter(lambda x: x == ' ', user))) != 0:
+    #         for shift in user:
+    #             print(shift)
+        # print('*********************:')
 
 
 
@@ -353,10 +351,11 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
     """
 
     if len(current_day_shift['shift']) == 0:
-        return ' '
+        return [None]
 
     found_shifts = list(filter(lambda x: x['start'] == current_day_shift['shift'][0], join_shift))
 
+    # 結合の対象文字でも何でもない時（普通にその日のシフト文字の一覧を結合するだけ）
     if len(found_shifts) == 0:
         return None
 
