@@ -2,6 +2,7 @@ import random
 import string
 from database import db, session
 from datetime import datetime
+from sqlalchemy import event
 
 
 def code_generator():
@@ -27,6 +28,12 @@ class Company(db.Model):
 
     def __repr__(self):
         return '{}({})'.format(self.name, self.code)
+
+
+@event.listens_for(Company, 'after_insert')
+def receive_after_insert(_mapper, connection, company):
+    result = connection.execute("INSERT INTO shiftcategory (name, company_id, created_at, updated_at) VALUES ('unknown', {}, now(), now())".format(company.id))
+    result.close()
 
 
 class User(db.Model):
