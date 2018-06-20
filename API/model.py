@@ -1,5 +1,6 @@
 import random
 import string
+import os
 from database import db, session
 from datetime import datetime
 from sqlalchemy import event
@@ -28,17 +29,6 @@ class Company(db.Model):
 
     def __repr__(self):
         return '{}({})'.format(self.name, self.code)
-
-
-@event.listens_for(Company, 'after_insert')
-def receive_after_insert(_mapper, connection, company):
-    shiftcategory_table = ShiftCategory.__table__
-    ins = shiftcategory_table.insert().values(name='unknown', company_id=company.id)
-    result = connection.execute(ins)
-
-    shift_table = Shift.__table__
-    ins = shift_table.insert().values(name='unknown', shift_category_id=result.inserted_primary_key[0])
-    connection.execute(ins)
 
 
 class User(db.Model):
@@ -203,3 +193,20 @@ class ColorScheme(db.Model):
         user = session.query(User).filter(User.id == self.user_id).one_or_none()
         shiftcategory = session.query(ShiftCategory).filter(ShiftCategory.id == self.shift_category_id).one_or_none()
         return '{}({})({})'.format(self.hex, user.name, shiftcategory.name)
+
+
+@event.listens_for(Company, 'after_insert')
+def receive_after_insert(_mapper, connection, company):
+    shiftcategory_table = ShiftCategory.__table__
+    ins = shiftcategory_table.insert().values(name='unknown', company_id=company.id)
+    result = connection.execute(ins)
+
+    shift_table = Shift.__table__
+    ins = shift_table.insert().values(name='unknown', shift_category_id=result.inserted_primary_key[0])
+    connection.execute(ins)
+
+
+@event.listens_for(ShiftTable, 'after_delete')
+def receive_after_insert(_mapper, _connection, shift_table):
+    os.remove(shift_table.origin_path)
+    os.remove(shift_table.thumbnail_path)
