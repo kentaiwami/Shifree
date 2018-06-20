@@ -32,8 +32,13 @@ class Company(db.Model):
 
 @event.listens_for(Company, 'after_insert')
 def receive_after_insert(_mapper, connection, company):
-    result = connection.execute("INSERT INTO shiftcategory (name, company_id, created_at, updated_at) VALUES ('unknown', {}, now(), now())".format(company.id))
-    result.close()
+    shiftcategory_table = ShiftCategory.__table__
+    ins = shiftcategory_table.insert().values(name='unknown', company_id=company.id)
+    result = connection.execute(ins)
+
+    shift_table = Shift.__table__
+    ins = shift_table.insert().values(name='unknown', shift_category_id=result.inserted_primary_key[0])
+    connection.execute(ins)
 
 
 class User(db.Model):
