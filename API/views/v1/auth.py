@@ -25,7 +25,7 @@ def auth():
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).join(Company.users)\
         .filter(Company.code == request.json['company_code'],
@@ -36,7 +36,7 @@ def auth():
     if user is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
     else:
         user.password = generate_password_hash(request.json['password'])
         session.commit()

@@ -9,6 +9,7 @@ import subprocess
 import os
 import unicodedata
 from datetime import datetime as DT
+from sqlalchemy.sql import exists
 
 
 app = Blueprint('table_bp', __name__)
@@ -48,7 +49,7 @@ def import_shift():
     except ValidationError as e:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     start_date = DT.strptime(request.form['start'], '%Y-%m-%d')
     end_date = DT.strptime(request.form['end'], '%Y-%m-%d')
@@ -56,26 +57,26 @@ def import_shift():
     if start_date >= end_date:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': '開始日付は終了日付よりも前にする必要があります'})
+        abort(400, {'code': frame.f_lineno, 'msg': '開始日付は終了日付よりも前にする必要があります', 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     if 'file' not in request.files:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
     file = request.files['file']
 
     if not (file and allowed_file(file.filename)):
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
     company = session.query(Company).filter(Company.id == user.company_id).one()
 
@@ -90,20 +91,29 @@ def import_shift():
     if os.path.exists(origin_file_path):
         session.close()
         frame = inspect.currentframe()
-        abort(409, {'code': frame.f_lineno, 'msg': response_msg_409()})
+        abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
 
     # 企業ごとの解析プログラムを実行
     try:
         exec('from analyze.company{} import create_main'.format((company.id)))
-        results = eval('create_main({},{},\'{}\',\'{}\', file)'.format(company.id, request.form['number'], request.form['start'], request.form['end']))
+        user_results = eval('create_main({},{},\'{}\',\'{}\', file)'.format(company.id, request.form['number'], request.form['start'], request.form['end']))
     except ValueError:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
-    # print(results)
+    flatten_user_shifts = [item for sublist in user_results.shifts for item in sublist]
+    shift_types = list(set(flatten_user_shifts))
+    shift_types.remove(None)
+    unknown_shift_types = []
 
-    # 解析した結果の中に、未登録シフトがないか確認
-    # 未登録があったら、それを返して登録を促す
+    for shift in shift_types:
+        if not session.query(exists().where(Shift.name == shift)).scalar():
+            unknown_shift_types.append(shift)
+
+    if len(unknown_shift_types) != 0:
+        session.close()
+        frame = inspect.currentframe()
+        abort(500, {'code': frame.f_lineno, 'msg': '未登録のシフトがあるため、処理を完了できませんでした。', 'param': unknown_shift_types})
 
     # 全部登録されていたら
     # shifttableを登録する（title, origin_path, thumbnail_path）
@@ -161,14 +171,14 @@ def get_detail(table_id):
     if table is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.company_id != table.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     comment_users = session.query(Comment, User).join(User).filter(Comment.shifttable_id == table.id).order_by(Comment.created_at.desc()).all()
 
@@ -217,33 +227,33 @@ def update(table_id):
     except ValidationError as e:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     if 'file' not in request.files:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
     file = request.files['file']
 
     if not (file and allowed_file(file.filename)):
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
     table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one_or_none()
 
     if table is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     company = session.query(Company).filter(Company.id == user.company_id).one()
 
@@ -253,7 +263,7 @@ def update(table_id):
         old_file_path = eval('update_main('+str(table.id)+')')
     except ValueError:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
     os.remove(old_file_path['origin'])
     os.remove(old_file_path['thumbnail'])
@@ -288,19 +298,19 @@ def delete(table_id):
     if user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one_or_none()
 
     if table is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if table.company_id != user.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     os.remove(table.origin_path)
     os.remove(table.thumbnail_path)

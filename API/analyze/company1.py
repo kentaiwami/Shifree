@@ -7,6 +7,7 @@ from datetime import datetime as DT
 import datetime
 import inspect
 from flask import abort
+from collections import namedtuple
 
 
 tmp_file_path = ''
@@ -24,7 +25,7 @@ def create_main(company_id, number, start, end, file):
     except ValueError:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': '解析コマンドの実行中にエラーが発生しました'})
+        abort(500, {'code': frame.f_lineno, 'msg': '解析コマンドの実行中にエラーが発生しました', 'param': None})
 
     page = ET.fromstring(results)[0]
 
@@ -36,16 +37,11 @@ def create_main(company_id, number, start, end, file):
     users_shift_list = get_user_shift(users_line, day_x_list)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
-    results = []
-    for user_line, joined_user_shift in zip(users_line, joined_users_shift):
-        results.append({
-            'shift': joined_user_shift,
-            'name': user_line['name']
-        })
-
     os.remove(tmp_file_path)
 
-    return results
+    results = namedtuple('results', 'shifts names')
+
+    return results(shifts=joined_users_shift, names=[username['name'] for username in users_line])
 
 
 def get_x_y_text_from_xml(page):
@@ -70,7 +66,7 @@ def get_x_y_text_from_xml(page):
     if len(x_y_text_list) == 0:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': '情報抽出中にエラーが発生しました'})
+        abort(500, {'code': frame.f_lineno, 'msg': '情報抽出中にエラーが発生しました', 'param': None})
 
     return x_y_text_list
 
@@ -113,7 +109,7 @@ def get_same_line_list(x_y_text_list):
     if day_line_index == -1:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': '日付の判定中にエラーが発生しました'})
+        abort(500, {'code': frame.f_lineno, 'msg': '日付の判定中にエラーが発生しました', 'param': None})
 
     return x_sorted_same_line_list, day_line_index
 
@@ -140,7 +136,7 @@ def get_day_x(start, end, same_line_list, day_line_index):
         if len(tmp_current_date) >= 3:
             os.remove(tmp_file_path)
             frame = inspect.currentframe()
-            abort(500, {'code': frame.f_lineno, 'msg': '日付の解析中にエラーが発生しました'})
+            abort(500, {'code': frame.f_lineno, 'msg': '日付の解析中にエラーが発生しました', 'param': None})
 
         if current_date == tmp_current_date:
             day_x_list.append({'day': current_date, 'x': date_x_y_text['x']})
@@ -152,7 +148,7 @@ def get_day_x(start, end, same_line_list, day_line_index):
     if len(day_x_list) != (end_date-start_date).days+1:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': '日付の解析中にエラーが発生しました'})
+        abort(500, {'code': frame.f_lineno, 'msg': '日付の解析中にエラーが発生しました', 'param': None})
 
     return day_x_list
 
@@ -194,7 +190,9 @@ def get_user_line(company_id, same_line_list, first_day_limit, number):
     if number != len(users_line):
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': 'シフト表に記載されているユーザの人数が一致しません。\n入力した人数または未登録のユーザがシフト表に記載されています。'})
+        abort(500, {'code': frame.f_lineno,
+                    'msg': 'シフト表に記載されているユーザの人数が一致しません。\n入力した人数または未登録のユーザがシフト表に記載されています。',
+                    'param': None})
 
     return users_line
 
@@ -276,7 +274,7 @@ def get_user_shift(users_line, day_x_list):
     if len(list(filter(lambda x: len(x) != len(day_x_list), results))) != 0:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの抽出結果に誤りがあったためエラーが発生しました'})
+        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの抽出結果に誤りがあったためエラーが発生しました', 'param': None})
 
     return results
 
@@ -322,7 +320,7 @@ def get_joined_users_shift(users_shift, should_join_shift):
     if len(list(set(results_lens))) != 1:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの抽出結果に誤りがあったためエラーが発生しました'})
+        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの抽出結果に誤りがあったためエラーが発生しました', 'param': None})
 
     return results
 
@@ -354,7 +352,7 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
     if found_start_shift_index != 0:
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの解析エラーが発生しました'})
+        abort(500, {'code': frame.f_lineno, 'msg': 'シフトの解析エラーが発生しました', 'param': None})
 
     found_end_shift = list(filter(lambda x: x == found_shift['end'], current_day_shift['shift']))
 

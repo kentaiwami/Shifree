@@ -18,4 +18,4 @@ def login():
         return jsonify({'results': {'user_code': user_role[0].code, 'role': user_role[1].name}}), 200
     else:
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})

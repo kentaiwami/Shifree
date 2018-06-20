@@ -22,7 +22,7 @@ def update(usershift_id):
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     user_shift = session.query(UserShift).filter(UserShift.id == usershift_id).one_or_none()
@@ -30,12 +30,12 @@ def update(usershift_id):
     if user_shift is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if user_shift.user_id != user.id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user_shift.memo = request.json['text']
     session.commit()
@@ -58,12 +58,12 @@ def delete(usershift_id):
     if user_shift is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if user_shift.user_id != user.id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user_shift.memo = ''
     session.commit()

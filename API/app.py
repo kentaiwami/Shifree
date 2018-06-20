@@ -54,5 +54,10 @@ def index():
 @app.errorhandler(409)
 @app.errorhandler(500)
 def error_handler(error):
-    response = jsonify({'code': error.description['code'], 'msg': error.description['msg'], 'status': error.code})
+    response = jsonify({
+        'code': error.description['code'],
+        'msg': error.description['msg'],
+        'param': error.description['param'],
+        'status': error.code
+    })
     return response, error.code

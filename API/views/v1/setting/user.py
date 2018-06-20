@@ -25,14 +25,14 @@ def add():
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     role = session.query(Role).filter(Role.name == request.json['role']).one()
     new_user = User(
@@ -62,7 +62,7 @@ def get():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     users = session.query(User).filter(User.company_id == admin_user.company_id).all()
 
@@ -99,26 +99,26 @@ def update(user_code):
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user = session.query(User).filter(User.code == user_code).one_or_none()
 
     if user is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if admin_user.company_id != user.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     role = session.query(Role).filter(Role.name == request.json['role']).one()
     user.name = request.json['name']
@@ -143,18 +143,18 @@ def delete(user_code):
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user = session.query(User).filter(User.code == user_code).one_or_none()
 
     if user is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if admin_user.company_id != user.company_id:
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     session.delete(user)
     session.commit()

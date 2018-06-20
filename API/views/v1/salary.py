@@ -16,7 +16,7 @@ def get():
     if user is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     salary_tables = session.query(Salary, ShiftTable).join(ShiftTable).filter(Salary.user_id == user.id).order_by(
         Salary.created_at.desc()).all()

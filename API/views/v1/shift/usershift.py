@@ -26,7 +26,7 @@ def get():
     except ValidationError:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
+        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
     start.isoformat()
     start.isoformat()
@@ -105,35 +105,35 @@ def update(usershift_id):
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user_shift = session.query(UserShift).filter(UserShift.id == usershift_id).one_or_none()
 
     if user_shift is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     user = session.query(User).filter(User.id == user_shift.user_id).one()
 
     if user.company_id != admin_user.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     shift = session.query(Shift).join(ShiftCategory).filter(Shift.name == request.json['shift_name'], ShiftCategory.company_id == admin_user.company_id).one_or_none()
 
     if shift is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     user_shift.shift_id = shift.id
     session.commit()
@@ -156,21 +156,21 @@ def delete(usershift_id):
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user_shift = session.query(UserShift).filter(UserShift.id == usershift_id).one_or_none()
 
     if user_shift is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     user = session.query(User).filter(User.id == user_shift.user_id).one()
 
     if user.company_id != admin_user.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     session.delete(user_shift)
     session.commit()

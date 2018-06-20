@@ -24,7 +24,7 @@ def add():
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     table = session.query(ShiftTable).filter(ShiftTable.id == request.json['table_id']).one_or_none()
@@ -32,12 +32,12 @@ def add():
     if table is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if table.company_id != user.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     comment = Comment(text=request.json['text'], user_id=user.id, shifttable_id=table.id)
     session.add(comment)
@@ -60,7 +60,7 @@ def update(comment_id):
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     comment = session.query(Comment).filter(Comment.id == comment_id).one_or_none()
@@ -68,12 +68,12 @@ def update(comment_id):
     if comment is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if comment.user_id != user.id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     comment.text = request.json['text']
     session.commit()
@@ -90,12 +90,12 @@ def delete(comment_id):
     if comment is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404()})
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if comment.user_id != user.id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403()})
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     session.delete(comment)
     session.commit()

@@ -21,7 +21,7 @@ def update():
         validate(request.json, schema)
     except ValidationError as e:
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message})
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     user.name = request.json['username']
