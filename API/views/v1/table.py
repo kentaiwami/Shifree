@@ -149,11 +149,10 @@ def import_shift():
 
     session.bulk_save_objects(user_shift_objects)
     session.commit()
+    session.close()
 
     params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
     subprocess.check_call(params)
-
-    session.close()
 
     return jsonify({'results': {
         'table_title': shift_table.title,
