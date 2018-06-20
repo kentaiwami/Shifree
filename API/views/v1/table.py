@@ -95,7 +95,7 @@ def import_shift():
 
     # 企業ごとの解析プログラムを実行
     try:
-        exec('from analyze.company{} import create_main'.format((company.id)))
+        exec('from analyze.company{} import create_main'.format(company.id))
         user_results = eval('create_main({},{},\'{}\',\'{}\', file)'.format(company.id, request.form['number'], request.form['start'], request.form['end']))
     except ValueError:
         frame = inspect.currentframe()
