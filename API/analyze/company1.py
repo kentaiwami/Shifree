@@ -8,12 +8,12 @@ import datetime
 import inspect
 from flask import abort
 from collections import namedtuple
-
+import shutil
 
 tmp_file_path = ''
 
 
-def create_main(company_id, number, start, end, file):
+def create_main(company_id, number, start, end, file, origin_file_path):
     global tmp_file_path
 
     _, file_ext = os.path.splitext(file.filename)
@@ -37,7 +37,7 @@ def create_main(company_id, number, start, end, file):
     users_shift_list = get_user_shift(users_line, day_x_list)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
-    os.remove(tmp_file_path)
+    shutil.move(tmp_file_path, origin_file_path)
 
     results = namedtuple('results', 'shifts names')
 

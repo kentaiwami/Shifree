@@ -97,7 +97,7 @@ def import_shift():
     # 企業ごとの解析プログラムを実行
     try:
         exec('from analyze.company{} import create_main'.format(company.id))
-        user_results = eval('create_main({},{},\'{}\',\'{}\', file)'.format(company.id, request.form['number'], request.form['start'], request.form['end']))
+        user_results = eval('create_main({},{},\'{}\',\'{}\', file, origin_file_path)'.format(company.id, request.form['number'], request.form['start'], request.form['end']))
     except ValueError:
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
@@ -146,15 +146,14 @@ def import_shift():
 
         users.remove(user)
 
-    # save_file.save(origin_file_path)
-    # params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
-    # subprocess.check_call(params)
+    params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
+    subprocess.check_call(params)
 
     session.close()
 
     return jsonify({'results': {
-        # 'table_title': table.title,
-        # 'table_id': table.id
+        'table_title': shift_table.title,
+        'table_id': shift_table.id
     }}), 200
 
 
