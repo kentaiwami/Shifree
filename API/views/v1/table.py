@@ -10,6 +10,7 @@ import os
 import unicodedata
 from datetime import datetime as DT
 from sqlalchemy.sql import exists
+import datetime
 
 
 app = Blueprint('table_bp', __name__)
@@ -115,27 +116,41 @@ def import_shift():
         frame = inspect.currentframe()
         abort(500, {'code': frame.f_lineno, 'msg': '未登録のシフトがあるため、処理を完了できませんでした。', 'param': unknown_shift_types})
 
-    # 全部登録されていたら
-    # shifttableを登録する（title, origin_path, thumbnail_path）
+    shift_table = ShiftTable(
+        title=secure_title,
+        origin_path=origin_file_path,
+        thumbnail_path=thumbnail_file_path,
+        company_id=company.id
+    )
 
-    # usershiftを登録する
-    # date = db.Column(db.Date, nullable=False)
-    # memo = db.Column(db.String(255), nullable=True)
-    # shift_id = db.Column(db.Integer, db.ForeignKey('shift.id'), nullable=False)
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    # shift_table_id = db.Column(db.Integer, db.ForeignKey('shifttable.id'), nullable=False)
+    session.add(shift_table)
+    session.commit()
 
+    start_date = DT.strptime(request.form['start'], '%Y-%m-%d')
+    users = session.query(User).filter(User.company_id == company.id).order_by('order').all()
 
+    for shifts, username in zip(user_results.shifts, user_results.names):
+        user = [user for user in users if user.name == username][0]
 
+        for i, shift_name in enumerate(shifts):
+            if shift_name is None:
+                shift_name = 'unknown'
 
-    # file.save(origin_file_path)
-    # params = ['convert', origin_file_path+'[0]', thumbnail_file_path]
+            shift = session.query(Shift).filter(Shift.name == shift_name).one()
+
+            date = (start_date + datetime.timedelta(days=i))
+            test = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
+
+            session.add(test)
+            session.commit()
+
+        users.remove(user)
+
+    # save_file.save(origin_file_path)
+    # params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
     # subprocess.check_call(params)
 
-    # table.origin_path = origin_file_path
-    # table.thumbnail_path = thumbnail_file_path
-    # session.commit()
-    # session.close()
+    session.close()
 
     return jsonify({'results': {
         # 'table_title': table.title,
