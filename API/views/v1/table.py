@@ -106,7 +106,14 @@ def import_shift():
     # 未登録があったら、それを返して登録を促す
 
     # 全部登録されていたら
-    # tableを登録する（title, origin_path, thumbnail_path）
+    # shifttableを登録する（title, origin_path, thumbnail_path）
+
+    # usershiftを登録する
+    # date = db.Column(db.Date, nullable=False)
+    # memo = db.Column(db.String(255), nullable=True)
+    # shift_id = db.Column(db.Integer, db.ForeignKey('shift.id'), nullable=False)
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # shift_table_id = db.Column(db.Integer, db.ForeignKey('shifttable.id'), nullable=False)
 
 
 
