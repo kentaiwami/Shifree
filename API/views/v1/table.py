@@ -129,6 +129,8 @@ def import_shift():
     start_date = DT.strptime(request.form['start'], '%Y-%m-%d')
     users = session.query(User).filter(User.company_id == company.id).order_by('order').all()
 
+    user_shift_objects = []
+
     for shifts, username in zip(user_results.shifts, user_results.names):
         user = [user for user in users if user.name == username][0]
 
@@ -139,12 +141,14 @@ def import_shift():
             shift = session.query(Shift).filter(Shift.name == shift_name).one()
 
             date = (start_date + datetime.timedelta(days=i))
-            test = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
+            user_shift = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
 
-            session.add(test)
-            session.commit()
+            user_shift_objects.append(user_shift)
 
         users.remove(user)
+
+    session.bulk_save_objects(user_shift_objects)
+    session.commit()
 
     params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
     subprocess.check_call(params)
