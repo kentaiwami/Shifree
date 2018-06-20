@@ -13,7 +13,7 @@ from sqlalchemy.sql import exists
 
 
 app = Blueprint('table_bp', __name__)
-ALLOWED_EXTENSIONS = {'pdf', 'xlsx'}
+ALLOWED_EXTENSIONS = {'pdf'}
 
 
 def allowed_file(filename):
