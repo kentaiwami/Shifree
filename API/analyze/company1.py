@@ -36,28 +36,9 @@ def create_main(company_id, number, start, end, file):
     users_shift_list = get_user_shift(users_line, day_x_list)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
-    # for user in joined_users_shift:
-    #     if len(list(filter(lambda x: x == ' ', user))) != 0:
-    #         for shift in user:
-    #             print(shift)
-        # print('*********************:')
-
-
-
-
-    # hoge = open('sample/test.txt', 'w')
-    # for hhh in x_sorted_same_line_list:
-    #     for abc in hhh:
-    #         hoge.write('{}({}) '.format(abc['text'], abc['x']))
-    #     hoge.write('\n')
-
-    # table = ShiftTable(title=title, company_id=company_id)
-    # session.add(table)
-    # session.commit()
-    #
-    # return table
-    # raise ValueError
     os.remove(tmp_file_path)
+
+    return joined_users_shift
 
 
 def get_x_y_text_from_xml(page):

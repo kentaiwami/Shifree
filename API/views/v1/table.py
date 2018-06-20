@@ -100,6 +100,17 @@ def import_shift():
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
+    print(results)
+
+    # 解析した結果の中に、未登録シフトがないか確認
+    # 未登録があったら、それを返して登録を促す
+
+    # 全部登録されていたら
+    # tableを登録する（title, origin_path, thumbnail_path）
+
+
+
+
     # file.save(origin_file_path)
     # params = ['convert', origin_file_path+'[0]', thumbnail_file_path]
     # subprocess.check_call(params)
