@@ -158,6 +158,8 @@ class Shift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     shift_category_id = db.Column(db.Integer, db.ForeignKey('shiftcategory.id'), nullable=False)
+    start = db.Column(db.Time, nullable=True)
+    end = db.Column(db.Time, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
