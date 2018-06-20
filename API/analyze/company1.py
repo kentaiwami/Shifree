@@ -36,9 +36,16 @@ def create_main(company_id, number, start, end, file):
     users_shift_list = get_user_shift(users_line, day_x_list)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
+    results = []
+    for user_line, joined_user_shift in zip(users_line, joined_users_shift):
+        results.append({
+            'shift': joined_user_shift,
+            'name': user_line['name']
+        })
+
     os.remove(tmp_file_path)
 
-    return joined_users_shift
+    return results
 
 
 def get_x_y_text_from_xml(page):

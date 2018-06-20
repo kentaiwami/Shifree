@@ -100,7 +100,7 @@ def import_shift():
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400()})
 
-    print(results)
+    # print(results)
 
     # 解析した結果の中に、未登録シフトがないか確認
     # 未登録があったら、それを返して登録を促す
