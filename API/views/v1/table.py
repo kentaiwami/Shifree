@@ -12,7 +12,6 @@ from datetime import datetime as DT
 from sqlalchemy.sql import exists
 import datetime
 
-
 app = Blueprint('table_bp', __name__)
 ALLOWED_EXTENSIONS = {'pdf'}
 
@@ -41,8 +40,21 @@ def import_shift():
                    'start': {'type': 'string', 'pattern': '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'},
                    'end': {'type': 'string', 'pattern': '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'},
                    'title': {'type': 'string', 'minLength': 1},
+                   'same_line_threshold': {'type': 'string', 'minLength': 1},
+                   'username_threshold': {'type': 'string', 'minLength': 1},
+                   'join_threshold': {'type': 'string', 'minLength': 1},
+                   'day_shift_threshold': {'type': 'string', 'minLength': 1},
                    },
-              'required': ['number', 'start', 'end', 'title']
+              'required': [
+                  'number',
+                  'start',
+                  'end',
+                  'title',
+                  'same_line_threshold',
+                  'username_threshold',
+                  'join_threshold',
+                  'day_shift_threshold'
+              ]
               }
 
     try:
@@ -51,6 +63,16 @@ def import_shift():
         session.close()
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
+
+    try:
+        same_line_threshold = float(request.form['same_line_threshold'])
+        username_threshold = float(request.form['username_threshold'])
+        join_threshold = float(request.form['join_threshold'])
+        day_shift_threshold = float(request.form['day_shift_threshold'])
+    except ValueError:
+        session.close()
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': '閾値の設定値は数字にする必要があります', 'param': None})
 
     start_date = DT.strptime(request.form['start'], '%Y-%m-%d')
     end_date = DT.strptime(request.form['end'], '%Y-%m-%d')
@@ -87,7 +109,7 @@ def import_shift():
     saved_file_fullname = company.code + '_' + secure_title
 
     origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', saved_file_fullname + file_ext)
-    thumbnail_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'thumbnail', saved_file_fullname+'.jpg')
+    thumbnail_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'thumbnail', saved_file_fullname + '.jpg')
 
     if os.path.exists(origin_file_path):
         session.close()
@@ -97,7 +119,16 @@ def import_shift():
     # 企業ごとの解析プログラムを実行
     try:
         exec('from analyze.company{} import create_main'.format(company.id))
-        user_results = eval('create_main({},{},\'{}\',\'{}\', file, origin_file_path)'.format(company.id, request.form['number'], request.form['start'], request.form['end']))
+        user_results = eval('create_main({},{},\'{}\',\'{}\', {}, {}, {}, {}, file, origin_file_path)'.format(
+            company.id,
+            request.form['number'],
+            request.form['start'],
+            request.form['end'],
+            same_line_threshold,
+            username_threshold,
+            join_threshold,
+            day_shift_threshold
+        ))
     except ValueError:
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
@@ -205,7 +236,8 @@ def get_detail(table_id):
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    comment_users = session.query(Comment, User).join(User).filter(Comment.shifttable_id == table.id).order_by(Comment.created_at.desc()).all()
+    comment_users = session.query(Comment, User).join(User).filter(Comment.shifttable_id == table.id).order_by(
+        Comment.created_at.desc()).all()
 
     comment_list = []
     for comment_user in comment_users:
@@ -285,7 +317,7 @@ def update(table_id):
     # 企業ごとの解析プログラムを実行
     try:
         exec('from analyze.company' + str(company.id) + ' import update_main')
-        old_file_path = eval('update_main('+str(table.id)+')')
+        old_file_path = eval('update_main(' + str(table.id) + ')')
     except ValueError:
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
@@ -296,8 +328,8 @@ def update(table_id):
     secure_title = format_text(request.form['title'])
     new_file_fullname = company.code + '_' + secure_title
     _, file_ext = os.path.splitext(file.filename)
-    new_origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', new_file_fullname+file_ext)
-    new_thumbnail_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'thumbnail', new_file_fullname+'.jpg')
+    new_origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', new_file_fullname + file_ext)
+    new_thumbnail_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'thumbnail', new_file_fullname + '.jpg')
 
     file.save(new_origin_file_path)
     params = ['convert', new_origin_file_path + '[0]', new_thumbnail_file_path]

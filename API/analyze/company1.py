@@ -13,7 +13,7 @@ import shutil
 tmp_file_path = ''
 
 
-def create_main(company_id, number, start, end, file, origin_file_path):
+def create_main(company_id, number, start, end, same_line_threshold, username_threshold, join_threshold, day_shift_threshold, file, origin_file_path):
     global tmp_file_path
 
     _, file_ext = os.path.splitext(file.filename)
@@ -30,11 +30,11 @@ def create_main(company_id, number, start, end, file, origin_file_path):
     page = ET.fromstring(results)[0]
 
     x_y_text_list = get_x_y_text_from_xml(page)
-    same_line_list, day_line_index = get_same_line_list(x_y_text_list)
+    same_line_list, day_line_index = get_same_line_list(x_y_text_list, same_line_threshold)
     day_x_list = get_day_x(start, end, same_line_list, day_line_index)
-    users_line = get_user_line(company_id, same_line_list, day_x_list[0]['x'], number)
-    should_join_shift = get_should_join_shift(users_line)
-    users_shift_list = get_user_shift(users_line, day_x_list)
+    users_line = get_user_line(company_id, same_line_list, day_x_list[0]['x'], number, username_threshold)
+    should_join_shift = get_should_join_shift(users_line, join_threshold)
+    users_shift_list = get_user_shift(users_line, day_x_list, day_shift_threshold)
     joined_users_shift = get_joined_users_shift(users_shift_list, should_join_shift)
 
     shutil.move(tmp_file_path, origin_file_path)
@@ -71,14 +71,13 @@ def get_x_y_text_from_xml(page):
     return x_y_text_list
 
 
-def get_same_line_list(x_y_text_list):
+def get_same_line_list(x_y_text_list, threshold_y):
     """
     x, yの値で並び替えを行い、日付が記述されている箇所の判定を行う
     :param x_y_text_list:   x,y,textの辞書が格納された1次元配列
+    :param threshold_y:     同じ行として認識する際の閾値
     :return:                xでソート済みの同じ行ごとにまとめたx_y_text_list, 日付が記述されている配列番号
     """
-
-    threshold_y = 3.0
 
     x_y_text_list = sorted(x_y_text_list, key=lambda dict: dict['y'], reverse=True)
 
@@ -153,17 +152,16 @@ def get_day_x(start, end, same_line_list, day_line_index):
     return day_x_list
 
 
-def get_user_line(company_id, same_line_list, first_day_limit, number):
+def get_user_line(company_id, same_line_list, first_day_limit, number, threshold_x):
     """
     ユーザ名が含まれている行のみを抽出し、ユーザ名の一致と各ユーザのシフトの開始位置を格納した2次元配列を返す
     :param company_id:          ユーザが属する企業のID
     :param same_line_list:      xでソート済みの同じ行ごとにまとめた配列
     :param first_day_limit:     シフトの最初の日付が記述されているxの値
     :param number:              取り込もうとしているシフト表に記載されているユーザの人数（POSTで受付）
+    :param threshold_x:         ユーザ名が含まれているであろう場所を最初の日付からどの程度引いた場所まで考慮するかの閾値
     :return:
     """
-
-    threshold_x = 10.0
 
     users = session.query(User).filter(User.company_id == company_id).order_by('order').all()
     users_line = []
@@ -197,15 +195,15 @@ def get_user_line(company_id, same_line_list, first_day_limit, number):
     return users_line
 
 
-def get_should_join_shift(users_line):
+def get_should_join_shift(users_line, threshold_x):
     """
     全ユーザのシフト文字列から、連結した文字列（1つのシフト）とするべきものを判別して返す
     :param users_line:  全ユーザのシフトが記述された2次元配列
+    :param threshold_x: 隣同士のシフトを結合して同じ日付のシフトとする際の閾値
     :return:            全ユーザのシフトの連結開始・終了位置を辞書ごと格納した2次元配列
     """
 
     results = []
-    threshold_x = 8.0
 
     for user in users_line:
         tmp_user_line = []
@@ -239,15 +237,15 @@ def get_should_join_shift(users_line):
     return results
 
 
-def get_user_shift(users_line, day_x_list):
+def get_user_shift(users_line, day_x_list, threshold_x):
     """
     全ユーザのシフトを日付ごとにまとめる。結合セルがあった場合は空文字として登録する。
     :param users_line:          全ユーザのシフト情報が格納された2次元配列
     :param day_x_list:          日付の場所が格納された1次元配列
+    :param threshold_x:         シフトと日付の値からその日のシフトと認識する際の閾値
     :return:                    全ユーザ×全日付の2次元配列
     """
 
-    threshold_x = 9.0
     results = []
 
     for user in users_line:
