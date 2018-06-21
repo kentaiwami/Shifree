@@ -112,6 +112,7 @@ def import_shift():
             unknown_shift_types.append(shift)
 
     if len(unknown_shift_types) != 0:
+        os.remove(origin_file_path)
         session.close()
         frame = inspect.currentframe()
         abort(500, {'code': frame.f_lineno, 'msg': '未登録のシフトがあるため、処理を完了できませんでした。', 'param': unknown_shift_types})
