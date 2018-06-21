@@ -131,19 +131,25 @@ def import_shift():
 
     user_shift_objects = []
 
+    unknown = {}
+
     for shifts, username in zip(user_results.shifts, user_results.names):
+        tmp_unknown_dates = []
         user = [user for user in users if user.name == username][0]
 
         for i, shift_name in enumerate(shifts):
+            date = (start_date + datetime.timedelta(days=i))
+
             if shift_name is None:
                 shift_name = 'unknown'
+                tmp_unknown_dates.append(date.strftime('%Y-%m-%d'))
 
             shift = session.query(Shift).filter(Shift.name == shift_name).one()
-
-            date = (start_date + datetime.timedelta(days=i))
             user_shift = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
-
             user_shift_objects.append(user_shift)
+
+        if len(tmp_unknown_dates) != 0:
+            unknown[user.code] = {'name': username, 'date': tmp_unknown_dates}
 
         users.remove(user)
 
@@ -156,7 +162,8 @@ def import_shift():
 
     return jsonify({'results': {
         'table_title': shift_table.title,
-        'table_id': shift_table.id
+        'table_id': shift_table.id,
+        'unknown': unknown
     }}), 200
 
 

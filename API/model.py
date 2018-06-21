@@ -208,5 +208,8 @@ def receive_after_insert(_mapper, connection, company):
 
 @event.listens_for(ShiftTable, 'after_delete')
 def receive_after_insert(_mapper, _connection, shift_table):
-    os.remove(shift_table.origin_path)
-    os.remove(shift_table.thumbnail_path)
+    try:
+        os.remove(shift_table.origin_path)
+        os.remove(shift_table.thumbnail_path)
+    except FileNotFoundError:
+        pass
