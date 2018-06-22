@@ -135,7 +135,10 @@ def import_shift():
 
     flatten_user_shifts = [item for sublist in user_results.shifts for item in sublist]
     shift_types = list(set(flatten_user_shifts))
-    shift_types.remove(None)
+
+    if None in shift_types:
+        shift_types.remove(None)
+
     unknown_shift_types = []
 
     for shift in shift_types:
