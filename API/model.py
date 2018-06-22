@@ -1,7 +1,9 @@
 import random
 import string
+import os
 from database import db, session
 from datetime import datetime
+from sqlalchemy import event
 
 
 def code_generator():
@@ -18,6 +20,10 @@ class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     code = db.Column(db.String(255), nullable=False, unique=True, default=code_generator)
+    default_same_line_threshold = db.Column(db.Float, db.ColumnDefault(3.0))
+    default_username_threshold = db.Column(db.Float, db.ColumnDefault(10.0))
+    default_join_threshold = db.Column(db.Float, db.ColumnDefault(8.0))
+    default_day_shift_threshold = db.Column(db.Float, db.ColumnDefault(9.0))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
@@ -35,6 +41,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     code = db.Column(db.String(255), nullable=False, unique=True, default=code_generator)
+    order = db.Column(db.Integer, nullable=False)
     password = db.Column(db.String(255), nullable=False, default=password_generator)
     daytime_start = db.Column(db.Time, nullable=True)
     daytime_end = db.Column(db.Time, nullable=True)
@@ -145,6 +152,8 @@ class Shift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     shift_category_id = db.Column(db.Integer, db.ForeignKey('shiftcategory.id'), nullable=False)
+    start = db.Column(db.Time, nullable=True)
+    end = db.Column(db.Time, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
@@ -188,3 +197,23 @@ class ColorScheme(db.Model):
         user = session.query(User).filter(User.id == self.user_id).one_or_none()
         shiftcategory = session.query(ShiftCategory).filter(ShiftCategory.id == self.shift_category_id).one_or_none()
         return '{}({})({})'.format(self.hex, user.name, shiftcategory.name)
+
+
+@event.listens_for(Company, 'after_insert')
+def receive_after_insert(_mapper, connection, company):
+    shiftcategory_table = ShiftCategory.__table__
+    ins = shiftcategory_table.insert().values(name='unknown', company_id=company.id)
+    result = connection.execute(ins)
+
+    shift_table = Shift.__table__
+    ins = shift_table.insert().values(name='unknown', shift_category_id=result.inserted_primary_key[0])
+    connection.execute(ins)
+
+
+@event.listens_for(ShiftTable, 'after_delete')
+def receive_after_insert(_mapper, _connection, shift_table):
+    try:
+        os.remove(shift_table.origin_path)
+        os.remove(shift_table.thumbnail_path)
+    except FileNotFoundError:
+        pass

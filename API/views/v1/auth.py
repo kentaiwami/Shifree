@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify
+import inspect
+from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from werkzeug.security import generate_password_hash
 from model import User, Company
@@ -23,7 +24,8 @@ def auth():
     try:
         validate(request.json, schema)
     except ValidationError as e:
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).join(Company.users)\
         .filter(Company.code == request.json['company_code'],
@@ -33,7 +35,8 @@ def auth():
 
     if user is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
     else:
         user.password = generate_password_hash(request.json['password'])
         session.commit()

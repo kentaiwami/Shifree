@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify
+import inspect
+from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, Role
 from database import session
@@ -15,29 +16,42 @@ def add():
               'properties':
                   {'name': {'type': 'string', 'minLength': 1},
                    'role': {'type': 'string', 'enum': ['admin', 'general']},
+                   'order': {'type': 'integer', 'minimum': 1},
                    },
-              'required': ['name', 'role']
+              'required': ['name', 'role', 'order']
               }
 
     try:
         validate(request.json, schema)
     except ValidationError as e:
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if admin_user.role.name != 'admin':
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     role = session.query(Role).filter(Role.name == request.json['role']).one()
-    new_user = User(name=request.json['name'], role_id=role.id, company_id=admin_user.company_id)
+    new_user = User(
+        name=request.json['name'],
+        role_id=role.id,
+        company_id=admin_user.company_id,
+        order=request.json['order']
+    )
 
     session.add(new_user)
     session.commit()
     session.close()
 
-    return jsonify({'results': {'name': new_user.name, 'code': new_user.code, 'password': new_user.password}}), 200
+    return jsonify({'results': {
+        'name': new_user.name,
+        'code': new_user.code,
+        'password': new_user.password,
+        'order': new_user.order
+    }}), 200
 
 
 @app.route('/api/v1/setting/users', methods=['GET'])
@@ -47,7 +61,8 @@ def get():
 
     if admin_user.role.name != 'admin':
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     users = session.query(User).filter(User.company_id == admin_user.company_id).all()
 
@@ -57,7 +72,12 @@ def get():
         if len(user.password) != 7:
             is_active = True
 
-        results.append({'name': user.name, 'code': user.code, 'active': is_active})
+        results.append({
+            'name': user.name,
+            'code': user.code,
+            'order': user.order,
+            'active': is_active
+        })
 
     session.close()
     return jsonify({'results': results}), 200
@@ -70,39 +90,49 @@ def update(user_code):
               'properties':
                   {'name': {'type': 'string', 'minLength': 1},
                    'role': {'type': 'string', 'enum': ['admin', 'general']},
+                   'order': {'type': 'integer', 'minimum': 1},
                    },
-              'required': ['name', 'role']
+              'required': ['name', 'role', 'order']
               }
 
     try:
         validate(request.json, schema)
     except ValidationError as e:
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if admin_user.role.name != 'admin':
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user = session.query(User).filter(User.code == user_code).one_or_none()
 
     if user is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if admin_user.company_id != user.company_id:
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     role = session.query(Role).filter(Role.name == request.json['role']).one()
     user.name = request.json['name']
+    user.order = request.json['order']
     user.role_id = role.id
 
     session.commit()
     session.close()
 
-    return jsonify({'results': {'name': user.name, 'role': role.name}}), 200
+    return jsonify({'results': {
+        'name': user.name,
+        'role': role.name,
+        'order': user.order
+    }}), 200
 
 
 @app.route('/api/v1/setting/users/<user_code>', methods=['DELETE'])
@@ -112,16 +142,19 @@ def delete(user_code):
 
     if admin_user.role.name != 'admin':
         session.close()
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user = session.query(User).filter(User.code == user_code).one_or_none()
 
     if user is None:
         session.close()
-        return jsonify({'msg': response_msg_404()}), 404
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
     if admin_user.company_id != user.company_id:
-        return jsonify({'msg': response_msg_403()}), 403
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     session.delete(user)
     session.commit()

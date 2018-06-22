@@ -6,17 +6,18 @@ from config import database
 
 db = SQLAlchemy()
 
-DATABASE = 'mysql+mysqlconnector://%s:%s@%s/%s?charset=utf8' % (
+DATABASE = 'mysql+mysqlconnector://%s:%s@%s:%s/%s' % (
         database['username'],
         database['password'],
         database['host'],
-        database['name'],
+        database['port'],
+        database['name']
     )
 
 ENGINE = create_engine(
     DATABASE,
     encoding="utf-8",
-    echo=True
+    echo=False
 )
 
 session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=ENGINE, expire_on_commit=False))

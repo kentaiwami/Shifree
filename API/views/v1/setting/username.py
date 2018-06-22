@@ -1,4 +1,5 @@
-from flask import Blueprint, request, jsonify
+import inspect
+from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User
 from database import session
@@ -19,7 +20,8 @@ def update():
     try:
         validate(request.json, schema)
     except ValidationError as e:
-        return jsonify({'msg': e.message}), 400
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     user.name = request.json['username']
