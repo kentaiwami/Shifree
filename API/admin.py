@@ -31,6 +31,14 @@ class ModelView(sqla.ModelView):
         return redirect(admin_basic_auth.challenge())
 
 
+class CompanyView(ModelView):
+    form_excluded_columns = ['users', 'shift_tables', 'shift_categories']
+
+
+class UserView(ModelView):
+    form_excluded_columns = ['salaries', 'color_schemes', 'user_shifts', 'comments']
+
+
 class RoleView(ModelView):
     form_choices = {
         'name': [
@@ -39,18 +47,32 @@ class RoleView(ModelView):
         ]
     }
 
+    form_excluded_columns = ['users']
+
+
+class ShiftView(ModelView):
+    form_excluded_columns = ['user_shifts']
+
+
+class ShiftCategoryView(ModelView):
+    form_excluded_columns = ['shifts', 'colors']
+
+
+class ShiftTableView(ModelView):
+    form_excluded_columns = ['salaries', 'users_shifts', 'comments']
+
 
 def init_admin(app_obj):
     admin = Admin(app_obj, name='ParJob', template_mode='bootstrap3')
-    admin.add_view(ModelView(Company, db.session))
+    admin.add_view(CompanyView(Company, db.session))
 
-    admin.add_view(ModelView(User, db.session, category='User'))
+    admin.add_view(UserView(User, db.session, category='User'))
     admin.add_view(RoleView(Role, db.session, category='User'))
     admin.add_view(ModelView(Salary, db.session, category='User'))
 
-    admin.add_view(ModelView(Shift, db.session, category='Shift'))
-    admin.add_view(ModelView(ShiftCategory, db.session, category='Shift'))
-    admin.add_view(ModelView(ShiftTable, db.session, category='Shift'))
+    admin.add_view(ShiftView(Shift, db.session, category='Shift'))
+    admin.add_view(ShiftCategoryView(ShiftCategory, db.session, category='Shift'))
+    admin.add_view(ShiftTableView(ShiftTable, db.session, category='Shift'))
     admin.add_view(ModelView(UserShift, db.session, category='Shift'))
 
     admin.add_view(ModelView(Comment, db.session))
