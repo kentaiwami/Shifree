@@ -20,6 +20,10 @@ class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     code = db.Column(db.String(255), nullable=False, unique=True, default=code_generator)
+    default_same_line_threshold = db.Column(db.Float, db.ColumnDefault(3.0))
+    default_username_threshold = db.Column(db.Float, db.ColumnDefault(10.0))
+    default_join_threshold = db.Column(db.Float, db.ColumnDefault(8.0))
+    default_day_shift_threshold = db.Column(db.Float, db.ColumnDefault(9.0))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
