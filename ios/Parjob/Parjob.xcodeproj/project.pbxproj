@@ -65,14 +65,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		37425CB420DE5669005A3C93 /* SignUp */ = {
+		37326C4020DFE32B00A60B00 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
 				37425CB520DE568C005A3C93 /* SignUpViewController.swift */,
 				37425CB920DE68AF005A3C93 /* SignUpViewPresenter.swift */,
 				37425CBB20DE700A005A3C93 /* SignUpModel.swift */,
 			);
-			name = SignUp;
+			path = SignUp;
 			sourceTree = "<group>";
 		};
 		37425CC120DE8928005A3C93 /* Calendar */ = {
@@ -104,8 +104,8 @@
 		37FF360520DD4CFE00FB2C68 /* Parjob */ = {
 			isa = PBXGroup;
 			children = (
+				37326C4020DFE32B00A60B00 /* SignUp */,
 				37425CC120DE8928005A3C93 /* Calendar */,
-				37425CB420DE5669005A3C93 /* SignUp */,
 				37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */,
 				37FF360F20DD4D0200FB2C68 /* Assets.xcassets */,
 				37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */,
