@@ -19,8 +19,15 @@ class SignUpModel {
     weak var delegate: SignUpModelDelegate?
     private let api = API(version: "v1", endPoint: "auth")
     
-    func signUp(companyCode: String, userCode: String, userName: String, password: String) {        
-        api.SignUp(companyCode: companyCode, userCode: userCode, userName: userName, password: password).done { (json) in
+    func signUp(companyCode: String, userCode: String, userName: String, password: String) {
+        let params = [
+            "company_code": companyCode,
+            "user_code": userCode,
+            "username": userName,
+            "password": password
+            ] as [String : Any]
+
+        api.SignUp(params: params).done { (json) in
             let keychain = Keychain()
             try! keychain.set(json["user_id"].stringValue, key: "userId")
             try! keychain.set(companyCode, key: "companyCode")

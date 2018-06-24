@@ -22,20 +22,12 @@ class API {
         self.endPoint = endPoint
     }
     
-    func SignUp(companyCode: String, userCode: String, userName: String, password: String) -> Promise<JSON> {
-        let params = [
-            "company_code": companyCode,
-            "user_code": userCode,
-            "username": userName,
-            "password": password
-            ] as [String : Any]
-        let urlString = base + version + endPoint
-        
+    private func post_no_auth(url: String, params: [String:Any]) -> Promise<JSON> {
         let promise = Promise<JSON> { seal in
-            Alamofire.request(urlString, method: .post, parameters: params, encoding: JSONEncoding(options: [])).responseJSON { (response) in
+            Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding(options: [])).responseJSON { (response) in
                 guard let obj = response.result.value else { return seal.reject(response.error!)}
                 let json = JSON(obj)
-                
+
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
                     print("***** SignUp API Results *****")
                     print(json)
@@ -49,5 +41,9 @@ class API {
         }
         
         return promise
+    }
+    
+    func SignUp(params: [String:Any]) -> Promise<JSON> {
+        return post_no_auth(url: base + version + endPoint, params: params)
     }
 }
