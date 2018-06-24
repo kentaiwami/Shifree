@@ -3,44 +3,68 @@
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/06/23.
-//  Copyright © 2018年 Kenta. All rights reserved.
+//  Copyright © 2018年 Kenta Iwami. All rights reserved.
 //
 
 import UIKit
+import KeychainAccess
+import Alamofire
+import SwiftyJSON
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().barTintColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
+        let reset = GetResetFlag()
+        let keychain = Keychain()
+        
+        if reset {
+            try! keychain.removeAll()
+        }
+        
+        if GetInsertDummyDataFlag() {
+            let data = GetDummyData()
+            try! keychain.set(data.userId, key: "userId")
+            try! keychain.set(data.companyCode, key: "companyCode")
+            try! keychain.set(data.userCode, key: "userCode")
+            try! keychain.set(data.userName, key: "userName")
+            try! keychain.set(data.password, key: "password")
+        }
+
+        let key = try! keychain.getString("userId")
+
+        if key == nil {
+            let signupVC = SignUpViewController()
+            let nav = UINavigationController()
+            nav.viewControllers = [signupVC]
+            self.window!.rootViewController = nav
+            self.window?.makeKeyAndVisible()
+        }
+
         return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 

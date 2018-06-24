@@ -42,4 +42,4 @@ def auth():
         session.commit()
         user_id = user.id
         session.close()
-        return jsonify({'results': user_id}), 200
+        return jsonify({'user_id': user_id}), 200

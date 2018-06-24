@@ -10,5 +10,6 @@ target 'Parjob' do
   pod 'Alamofire', '~> 4.5'
   pod 'KeychainAccess'
   pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'Release_2.1.2'
-
+  pod 'PromiseKit', '~> 6.0'
+  pod 'PopupDialog', '0.5.4'
 end
