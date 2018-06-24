@@ -17,7 +17,7 @@ protocol SignUpModelDelegate: class {
 
 class SignUpModel {
     weak var delegate: SignUpModelDelegate?
-    private let api = API(version: "v1", endPoint: "auth")
+    private let api = API()
     
     func signUp(companyCode: String, userCode: String, userName: String, password: String) {
         let params = [
@@ -27,7 +27,7 @@ class SignUpModel {
             "password": password
             ] as [String : Any]
 
-        api.SignUp(params: params).done { (json) in
+        api.signUp(params: params).done { (json) in
             let keychain = Keychain()
             try! keychain.set(json["user_id"].stringValue, key: "userId")
             try! keychain.set(companyCode, key: "companyCode")

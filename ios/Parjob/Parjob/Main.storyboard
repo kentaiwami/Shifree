@@ -27,17 +27,17 @@
             </objects>
             <point key="canvasLocation" x="830" y="719"/>
         </scene>
-        <!--OverView-->
+        <!--Calendar-->
         <scene sceneID="LXQ-Sh-bfw">
             <objects>
-                <viewController storyboardIdentifier="OverView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Sya-C7-WdG" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Calendar" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Sya-C7-WdG" customClass="CalendarViewController" customModule="Parjob" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JIv-mw-uFk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="vi5-Wn-kGl"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="OverView" image="tab_overview" id="0VS-0e-k6v"/>
+                    <tabBarItem key="tabBarItem" title="Calendar" image="tab_overview" id="0VS-0e-k6v"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvC-LE-rmh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

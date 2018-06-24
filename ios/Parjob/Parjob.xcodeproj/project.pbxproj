@@ -11,7 +11,6 @@
 		37326C3920DEC79200A60B00 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3820DEC79200A60B00 /* Extensions.swift */; };
 		37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3A20DEC85E00A60B00 /* Enum.swift */; };
 		37326C3F20DFD98500A60B00 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3E20DFD98500A60B00 /* Setting.swift */; };
-		37326C4420DFF99600A60B00 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C4320DFF99600A60B00 /* APIManager.swift */; };
 		37425CB620DE568C005A3C93 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37425CB520DE568C005A3C93 /* SignUpViewController.swift */; };
 		37425CB820DE6064005A3C93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37425CB720DE6064005A3C93 /* Main.storyboard */; };
 		37425CBA20DE68AF005A3C93 /* SignUpViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37425CB920DE68AF005A3C93 /* SignUpViewPresenter.swift */; };
@@ -29,7 +28,6 @@
 		37326C3820DEC79200A60B00 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		37326C3A20DEC85E00A60B00 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		37326C3E20DFD98500A60B00 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
-		37326C4320DFF99600A60B00 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		37425CB520DE568C005A3C93 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		37425CB720DE6064005A3C93 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		37425CB920DE68AF005A3C93 /* SignUpViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewPresenter.swift; sourceTree = "<group>"; };
@@ -77,15 +75,6 @@
 			path = SignUp;
 			sourceTree = "<group>";
 		};
-		37326C4220DFF96900A60B00 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				37425CBD20DE70AE005A3C93 /* API.swift */,
-				37326C4320DFF99600A60B00 /* APIManager.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		37425CC120DE8928005A3C93 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,7 +104,6 @@
 		37FF360520DD4CFE00FB2C68 /* Parjob */ = {
 			isa = PBXGroup;
 			children = (
-				37326C4220DFF96900A60B00 /* API */,
 				37326C4020DFE32B00A60B00 /* SignUp */,
 				37425CC120DE8928005A3C93 /* Calendar */,
 				37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */,
@@ -124,6 +112,7 @@
 				37FF361420DD4D0200FB2C68 /* Info.plist */,
 				37425CB720DE6064005A3C93 /* Main.storyboard */,
 				37326C3620DE955D00A60B00 /* Utility.swift */,
+				37425CBD20DE70AE005A3C93 /* API.swift */,
 				37326C3820DEC79200A60B00 /* Extensions.swift */,
 				37326C3A20DEC85E00A60B00 /* Enum.swift */,
 				37326C3E20DFD98500A60B00 /* Setting.swift */,
@@ -267,7 +256,6 @@
 				37326C3720DE955D00A60B00 /* Utility.swift in Sources */,
 				37425CC320DE893E005A3C93 /* CalendarViewController.swift in Sources */,
 				37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */,
-				37326C4420DFF99600A60B00 /* APIManager.swift in Sources */,
 				37326C3920DEC79200A60B00 /* Extensions.swift in Sources */,
 				37425CBA20DE68AF005A3C93 /* SignUpViewPresenter.swift in Sources */,
 				37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */,
