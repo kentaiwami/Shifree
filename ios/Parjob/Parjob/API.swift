@@ -25,9 +25,9 @@ class API {
                 let json = JSON(obj)
 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    print("***** Post No Auth API Results *****")
+                    print("***** POST No Auth API Results *****")
                     print(json)
-                    print("***** Post No Auth API Results *****")
+                    print("***** POST No Auth API Results *****")
                     seal.fulfill(json)
                 }else {
                     let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
@@ -48,9 +48,32 @@ class API {
                 let json = JSON(obj)
                 
                 if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    print("***** Get Auth API Results *****")
+                    print("***** GET Auth API Results *****")
                     print(json)
-                    print("***** Get Auth API Results *****")
+                    print("***** GET Auth API Results *****")
+                    seal.fulfill(json)
+                }else {
+                    let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                    seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
+                }
+            }
+        }
+        return promise
+    }
+    
+    fileprivate func postPutDeleteAuth(url: String, params: [String:Any], httpMethod: HTTPMethod) -> Promise<JSON> {
+        let user = try! keychain.get("userCode")
+        let password = try! keychain.get("password")
+        
+        let promise = Promise<JSON> { seal in
+            Alamofire.request(url, method: httpMethod, parameters: params, encoding: JSONEncoding(options: [])).authenticate(user: user!, password: password!).responseJSON { (response) in
+                guard let obj = response.result.value else { return seal.reject(response.error!)}
+                let json = JSON(obj)
+                
+                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                    print("***** " + httpMethod.rawValue + " Auth API Results *****")
+                    print(json)
+                    print("***** " + httpMethod.rawValue + " Auth API Results *****")
                     seal.fulfill(json)
                 }else {
                     let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
