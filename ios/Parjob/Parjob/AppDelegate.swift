@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try! keychain.set(data.userCode, key: "userCode")
             try! keychain.set(data.userName, key: "userName")
             try! keychain.set(data.password, key: "password")
+            try! keychain.set(data.role, key: "role")
         }
 
         let key = try! keychain.getString("userId")

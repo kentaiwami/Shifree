@@ -45,6 +45,8 @@ def get():
     for date, date_group in groupby(user_shift, key=lambda tmp_user_shift: tmp_user_shift[0].date):
 
         tmp_shift_group = []
+        memo = None
+        access_user_shift = None
 
         # シフトカテゴリのidでグルーピング
         date_group = list(date_group)
@@ -56,6 +58,11 @@ def get():
             for shift in shift_category_group:
                 if shift[3].code == api_basic_auth.username():
                     memo = shift[0].memo
+                    access_user_shift = {
+                        'user': shift[3].name,
+                        'shift_id': shift[0].id,
+                        'shift_name': shift[1].name
+                    }
 
                 users_shift.append({
                     'user': shift[3].name,
@@ -68,6 +75,7 @@ def get():
         shit_results.append({
             'date': str(date),
             'shift_group': tmp_shift_group,
+            'user_shift': access_user_shift,
             'memo': memo
         })
 

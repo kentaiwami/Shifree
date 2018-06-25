@@ -6,7 +6,7 @@
 //  Copyright © 2018年 Kenta Iwami. All rights reserved.
 //
 
-//import Foundation
+import Foundation
 
 class SignUpViewPresenter {
     

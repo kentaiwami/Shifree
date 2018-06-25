@@ -95,4 +95,10 @@ extension API {
         let endPoint = "login"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func getUserShift(start: String, end: String) -> Promise<JSON> {
+        let endPoint = "usershift"
+        let getQuery = "?start=" + start + "&end=" + end
+        return getAuth(url: base + version + endPoint + getQuery)
+    }
 }
