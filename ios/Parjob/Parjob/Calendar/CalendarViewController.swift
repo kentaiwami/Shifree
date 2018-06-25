@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FSCalendar
 
 
 protocol CalendarViewInterface: class {
@@ -17,9 +18,10 @@ protocol CalendarViewInterface: class {
     func showErrorAlert(title: String, msg: String)
 }
 
-class CalendarViewController: UIViewController, CalendarViewInterface {
+class CalendarViewController: UIViewController, CalendarViewInterface, FSCalendarDelegate, FSCalendarDataSource {
 
     private var presenter: CalendarViewPresenter!
+    fileprivate weak var calendar: FSCalendar!
     
     var start: String {
         return "20180611"
@@ -41,7 +43,17 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     func initializeCalendar() {
-        self.view.backgroundColor = UIColor.darkGray
+        let hoge = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        let result = formatter.string(from: hoge)
+        print(result)
+        
+        let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+        calendar.dataSource = self
+        calendar.delegate = self
+        view.addSubview(calendar)
+        self.calendar = calendar
     }
     
     func showErrorAlert(title: String, msg: String) {
