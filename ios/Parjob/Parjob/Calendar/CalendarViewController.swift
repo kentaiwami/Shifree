@@ -14,22 +14,24 @@ import TinyConstraints
 protocol CalendarViewInterface: class {
     var start: String { get set }
     var end: String { get set }
+    var currentDate: String { get set }
     
     func initializeUI()
     func showErrorAlert(title: String, msg: String)
+    func updateTableViewData()
 }
 
 class CalendarViewController: UIViewController, CalendarViewInterface {
     var start: String = ""
     var end: String = ""
+    var currentDate: String = ""
+    
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
     fileprivate var tableView: UITableView!
     fileprivate var heightConst: Constraint!
     
-    //テーブルに表示するセル配列
-//    var items: [String] = ["田中 店長 岩見 山岸 赤間"]
-//    var sections: [String] = ["早番", "中番", "遅番", "その他", "休み"]
+    
     var items: [String] = []
     var sections: [String] = []
     
@@ -61,6 +63,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         self.calendar.left(to: self.view)
         self.calendar.right(to: self.view)
         heightConst = self.calendar.height(self.view.frame.height/2)
+        
+        currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: self.calendar.today!)
+        presenter.setShiftCategories()
     }
     
     func initializeTableView() {
@@ -90,6 +95,11 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         }
     }
     
+    func getUserShift() {
+        setStartEndDate()
+        presenter.getUserShift()
+    }
+    
     func showErrorAlert(title: String, msg: String) {
         ShowStandardAlert(title: title, msg: msg, vc: self)
     }
@@ -104,8 +114,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         heightConst.constant = bounds.height
         self.view.layoutIfNeeded()
         
-        setStartEndDate()
-        presenter.getUserShift()
+        getUserShift()
     }
     
     func setStartEndDate() {
@@ -121,12 +130,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
             endDate = self.calendar.gregorian.date(byAdding: .day, value: 41, to: startDate)!
         }
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd"
-        var result = formatter.string(from: startDate)
-        start = result
-        result = formatter.string(from: endDate)
-        end = result
+        start = GetFormatterDateString(format: "yyyyMMdd", date: startDate)
+        end = GetFormatterDateString(format: "yyyyMMdd", date: endDate)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
@@ -134,8 +139,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print(date)
-        print(monthPosition)
+        currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        updateTableViewData()
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
@@ -149,28 +154,34 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        setStartEndDate()
-        presenter.getUserShift()
+        getUserShift()
     }
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func updateTableViewData() {
+        presenter.setShiftCategories()
+        self.tableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //TODO: そのシフトカテゴリ内に属するユーザ名をスペースで連結したものをテキストラベルに設定？
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = self.items[indexPath.row]
+        cell.textLabel?.text = "self.items[indexPath.row]"
         cell.textLabel?.numberOfLines = 0
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return presenter.shiftCategories.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+        return presenter.shiftCategories[section]
     }
 }

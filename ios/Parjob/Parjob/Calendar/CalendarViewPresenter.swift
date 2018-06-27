@@ -14,6 +14,7 @@ class CalendarViewPresenter {
     weak var view: CalendarViewInterface?
     let calendarModel: CalendarModel
     
+    var shiftCategories: [String] = []
     
     init(view: CalendarViewInterface) {
         self.view = view
@@ -31,9 +32,18 @@ class CalendarViewPresenter {
         
         calendarModel.getUserShift(start: start, end: end)
     }
+    
+    func setShiftCategories() {
+        guard let currentDate = view?.currentDate else {return}
+        shiftCategories = calendarModel.GetShiftCategories(currentDate: currentDate)
+    }
 }
 
 extension CalendarViewPresenter: CalendarModelDelegate {
+    func updateTableViewData() {
+        view?.updateTableViewData()
+    }
+    
     func initializeUI() {
         view?.initializeUI()
     }

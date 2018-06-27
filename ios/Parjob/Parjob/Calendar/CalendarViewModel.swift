@@ -11,6 +11,7 @@ import KeychainAccess
 import SwiftyJSON
 
 protocol CalendarModelDelegate: class {
+    func updateTableViewData()
     func initializeUI()
     func faildAPI(title: String, msg: String)
 }
@@ -53,7 +54,15 @@ class CalendarModel {
     func getUserShift(start: String, end: String) {
         api.getUserShift(start: start, end: end).done { (json) in
             self.oneDayShifts = self.getData(json: json)
-            print(self.oneDayShifts.count)
+            self.delegate?.updateTableViewData()
+//            for hoge in self.oneDayShifts {
+//                let hoge2 = hoge.shift
+//
+//                hoge2.forEach({ (shiftcategory) in
+//                    print(shiftcategory.name)
+//                })
+//                break
+//            }
         }
         .catch { (err) in
             let tmp_err = err as NSError
@@ -96,5 +105,22 @@ class CalendarModel {
         }
         
         return oneDayShift
+    }
+    
+    func GetShiftCategories(currentDate: String) -> [String] {
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == currentDate
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return []
+        }
+        
+        var shiftCategories: [String] = []
+        
+        currentDateOneDayShifts[0].shift.forEach { (shiftCategory) in
+            shiftCategories.append(shiftCategory.name)
+        }
+        return shiftCategories
     }
 }

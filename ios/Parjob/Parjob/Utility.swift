@@ -44,4 +44,10 @@ func ShowStandardAlert(title: String, msg: String, vc: UIViewController) {
     vc.present(popup, animated: true, completion: nil)
 }
 
+func GetFormatterDateString(format: String, date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = format
+    
+    return formatter.string(from: date)
+}
 
