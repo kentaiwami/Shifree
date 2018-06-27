@@ -147,9 +147,9 @@ class CalendarModel {
         return userShifts
     }
     
-    func getUserColorScheme(currentDate: String) -> String {
+    func getUserColorScheme(date: String) -> String {
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == currentDate
+            $0.date == date
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -161,5 +161,20 @@ class CalendarModel {
         }
         
         return currentDateOneDayShifts[0].user.color
+    }
+    
+    func getEventNumber(date: String) -> Int {
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == date
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return 0
+        }
+        
+        if currentDateOneDayShifts[0].user.color.count == 0 || currentDateOneDayShifts[0].user.id == 0 || currentDateOneDayShifts[0].user.name.count == 0 {
+            return 0
+        }
+        return 1
     }
 }

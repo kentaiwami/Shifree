@@ -132,12 +132,12 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
         let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
-        presenter.setUserColorScheme(currentDate: dateString)
+        presenter.setUserColorScheme(date: dateString)
         
-        if presenter.color.count == 0 {
+        if presenter.userColorScheme.count == 0 {
             return nil
         }else {
-            return [UIColor.hex(presenter.color, alpha: 1.0)]
+            return [UIColor.hex(presenter.userColorScheme, alpha: 1.0)]
         }
     }
     
@@ -148,20 +148,19 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
         let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
-        presenter.setUserColorScheme(currentDate: dateString)
+        presenter.setUserColorScheme(date: dateString)
         
-        if presenter.color.count == 0 {
+        if presenter.userColorScheme.count == 0 {
             return nil
         }else {
-            return [UIColor.hex(presenter.color, alpha: 1.0)]
+            return [UIColor.hex(presenter.userColorScheme, alpha: 1.0)]
         }
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        //TODO: nullだったら0を返し、何かしらのシフトが入っていたら1を返す
-//        let startDate: Date
-//        startDate = Date(timeInterval: 60*60*24, since: self.calendar.currentPage)
-        return 1
+        let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        presenter.setEventNumber(date: dateString)
+        return presenter.eventNumber
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {

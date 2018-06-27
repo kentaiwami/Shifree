@@ -16,7 +16,8 @@ class CalendarViewPresenter {
     
     var shiftCategories: [String] = []
     var userShifts: [[String]] = []
-    var color: String = ""
+    var userColorScheme: String = ""
+    var eventNumber: Int = 0
     
     init(view: CalendarViewInterface) {
         self.view = view
@@ -41,8 +42,12 @@ class CalendarViewPresenter {
         userShifts = calendarModel.setUserShifts(currentDate: currentDate)
     }
     
-    func setUserColorScheme(currentDate: String) {
-        color = calendarModel.getUserColorScheme(currentDate: currentDate)
+    func setUserColorScheme(date: String) {
+        userColorScheme = calendarModel.getUserColorScheme(date: date)
+    }
+    
+    func setEventNumber(date: String) {
+        eventNumber = calendarModel.getEventNumber(date: date)
     }
 }
 
