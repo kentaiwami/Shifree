@@ -47,6 +47,9 @@ class CalendarModel {
     
     func login() {
         api.login().done { (json) in
+            let keychain = Keychain()
+            try! keychain.set(json["role"].stringValue, key: "role")
+            
             self.delegate?.initializeUI()
         }
         .catch { (err) in
