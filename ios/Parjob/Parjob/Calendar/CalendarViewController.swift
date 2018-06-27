@@ -66,8 +66,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     private func initializeTableView() {
         tableView = UITableView()
-        tableView.delegate      =   self
-        tableView.dataSource    =   self
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.allowsSelection = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         self.view.addSubview(tableView)
