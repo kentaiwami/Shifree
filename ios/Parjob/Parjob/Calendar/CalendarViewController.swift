@@ -131,13 +131,30 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        //TODO: ユーザが設定したカラースキームを適用する
-        return [UIColor.blue]
+        let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        presenter.setUserColorScheme(currentDate: dateString)
+        
+        if presenter.color.count == 0 {
+            return nil
+        }else {
+            return [UIColor.hex(presenter.color, alpha: 1.0)]
+        }
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
         updateTableViewData()
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
+        let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        presenter.setUserColorScheme(currentDate: dateString)
+        
+        if presenter.color.count == 0 {
+            return nil
+        }else {
+            return [UIColor.hex(presenter.color, alpha: 1.0)]
+        }
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
@@ -157,6 +174,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func updateTableViewData() {
         presenter.setUserShiftAndCategories()
         self.tableView.reloadData()
+        self.calendar.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
