@@ -14,6 +14,7 @@ class CalendarViewPresenter {
     weak var view: CalendarViewInterface?
     let calendarModel: CalendarModel
     
+    
     init(view: CalendarViewInterface) {
         self.view = view
         self.calendarModel = CalendarModel()
@@ -21,19 +22,23 @@ class CalendarViewPresenter {
     }
     
     func login() {
-        guard let start = view?.start else  { return }
-        guard let end = view?.end else  { return }
+        calendarModel.login()
+    }
+    
+    func getUserShift() {
+        guard let start = view?.start else {return}
+        guard let end = view?.end else {return}
         
-        calendarModel.login(start: start, end: end)
+        calendarModel.getUserShift(start: start, end: end)
     }
 }
 
 extension CalendarViewPresenter: CalendarModelDelegate {
-    func initializeCalendar() {
-        view?.initializeCalendar()
+    func initializeUI() {
+        view?.initializeUI()
     }
     
-    func faildLogin(title: String, msg: String) {
+    func faildAPI(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
     }
 }
