@@ -27,15 +27,20 @@ struct ShiftCategory {
     var userShift: [UserShift] = []
 }
 
+struct TargetUserShift {
+    var id: Int = 0
+    var name: String = ""
+    var color: String = ""
+}
+
 struct OneDayShift {
     var date: String = ""
     var memo: String = ""
     var shift: [ShiftCategory] = []
+    var user: TargetUserShift = TargetUserShift()
 }
 
 class CalendarModel {
-    
-    
     weak var delegate: CalendarModelDelegate?
     private let api = API()
     private(set) var oneDayShifts: [OneDayShift] = []
@@ -55,14 +60,6 @@ class CalendarModel {
         api.getUserShift(start: start, end: end).done { (json) in
             self.oneDayShifts = self.getData(json: json)
             self.delegate?.updateTableViewData()
-//            for hoge in self.oneDayShifts {
-//                let hoge2 = hoge.shift
-//
-//                hoge2.forEach({ (shiftcategory) in
-//                    print(shiftcategory.name)
-//                })
-//                break
-//            }
         }
         .catch { (err) in
             let tmp_err = err as NSError
@@ -79,6 +76,9 @@ class CalendarModel {
             var tmpOneDayShift = OneDayShift()
             tmpOneDayShift.date = shift["date"].stringValue
             tmpOneDayShift.memo = shift["memo"].stringValue
+            tmpOneDayShift.user.color = shift["user_shift"]["color"].stringValue
+            tmpOneDayShift.user.id = shift["user_shift"]["shift_id"].intValue
+            tmpOneDayShift.user.name = shift["user_shift"]["shift_name"].stringValue
             
             // カテゴリごとにループ処理
             shift["shift_group"].arrayValue.forEach({ (shiftCategory) in
@@ -122,5 +122,28 @@ class CalendarModel {
             shiftCategories.append(shiftCategory.name)
         }
         return shiftCategories
+    }
+    
+    func setUserShifts(currentDate: String) -> [[String]] {
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == currentDate
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return [[]]
+        }
+        
+        var userShifts: [[String]] = []
+        
+        currentDateOneDayShifts[0].shift.forEach { (shiftCategory) in
+            var tmp: [String] = []
+            
+            shiftCategory.userShift.forEach({ (userShift) in
+                tmp.append(userShift.user)
+            })
+            userShifts.append([tmp.joined(separator: "  ")])
+        }
+        
+        return userShifts
     }
 }

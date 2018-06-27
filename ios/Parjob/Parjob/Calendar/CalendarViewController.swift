@@ -31,17 +31,13 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate var tableView: UITableView!
     fileprivate var heightConst: Constraint!
     
-    
-    var items: [String] = []
-    var sections: [String] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
         presenter.login()
     }
     
-    func initializePresenter() {
+    private func initializePresenter() {
         presenter = CalendarViewPresenter(view: self)
     }
     
@@ -51,7 +47,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         initializeNavigationItem()
     }
     
-    func initializeCalendarView() {
+    private func initializeCalendarView() {
         let calendar = FSCalendar()
         calendar.dataSource = self
         calendar.delegate = self
@@ -65,10 +61,10 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         heightConst = self.calendar.height(self.view.frame.height/2)
         
         currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: self.calendar.today!)
-        presenter.setShiftCategories()
+        presenter.setUserShiftAndCategories()
     }
     
-    func initializeTableView() {
+    private func initializeTableView() {
         tableView = UITableView()
         tableView.delegate      =   self
         tableView.dataSource    =   self
@@ -82,12 +78,12 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         tableView.bottom(to: self.view)
     }
     
-    func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         self.tabBarController?.navigationItem.setRightBarButton(check, animated: true)
     }
     
-    func TapChangeCalendarButton(sendor: UIButton) {
+    @objc private func TapChangeCalendarButton(sendor: UIButton) {
         if self.calendar.scope == .month {
             self.calendar.setScope(.week, animated: true)
         }else {
@@ -95,7 +91,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         }
     }
     
-    func getUserShift() {
+    fileprivate func getUserShift() {
         setStartEndDate()
         presenter.getUserShift()
     }
@@ -104,20 +100,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         ShowStandardAlert(title: title, msg: msg, vc: self)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-}
-
-extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
-    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        heightConst.constant = bounds.height
-        self.view.layoutIfNeeded()
-        
-        getUserShift()
-    }
-    
-    func setStartEndDate() {
+    private func setStartEndDate() {
         let startDate: Date
         let endDate: Date
         
@@ -134,8 +117,22 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         end = GetFormatterDateString(format: "yyyyMMdd", date: endDate)
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+}
+
+extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
+    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        heightConst.constant = bounds.height
+        self.view.layoutIfNeeded()
+        
+        getUserShift()
+    }
+    
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        return [UIColor.brown, UIColor.blue, UIColor.red]
+        //TODO: ユーザが設定したカラースキームを適用する
+        return [UIColor.blue]
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -144,13 +141,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let startDate: Date
-        startDate = Date(timeInterval: 60*60*24, since: self.calendar.currentPage)
-        if date == startDate {
-            return 1
-        }else {
-            return 2
-        }
+        //TODO: nullだったら0を返し、何かしらのシフトが入っていたら1を返す
+//        let startDate: Date
+//        startDate = Date(timeInterval: 60*60*24, since: self.calendar.currentPage)
+        return 1
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
@@ -161,7 +155,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func updateTableViewData() {
-        presenter.setShiftCategories()
+        presenter.setUserShiftAndCategories()
         self.tableView.reloadData()
     }
     
@@ -170,9 +164,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //TODO: そのシフトカテゴリ内に属するユーザ名をスペースで連結したものをテキストラベルに設定？
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "self.items[indexPath.row]"
+        cell.textLabel?.text = presenter.userShifts[indexPath.section][indexPath.row]
         cell.textLabel?.numberOfLines = 0
         return cell
     }

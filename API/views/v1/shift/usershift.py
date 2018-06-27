@@ -1,7 +1,7 @@
 import inspect
 from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
-from model import User, UserShift, Shift, ShiftCategory, Company
+from model import User, UserShift, Shift, ShiftCategory, Company, ColorScheme
 from database import session
 from views.v1.response import response_msg_404, response_msg_403, response_msg_200, response_msg_400
 from basic_auth import api_basic_auth
@@ -57,11 +57,17 @@ def get():
 
             for shift in shift_category_group:
                 if shift[3].code == api_basic_auth.username():
+                    color_scheme = session.query(ColorScheme).filter(ColorScheme.user_id == shift[3].id, ColorScheme.shift_category_id == shift[2].id).one_or_none()
+                    hex = None
+                    if color_scheme is not None:
+                        hex = color_scheme.hex
+
                     memo = shift[0].memo
                     access_user_shift = {
                         'user': shift[3].name,
                         'shift_id': shift[0].id,
-                        'shift_name': shift[1].name
+                        'shift_name': shift[1].name,
+                        'color': hex
                     }
 
                 users_shift.append({
@@ -79,25 +85,8 @@ def get():
             'memo': memo
         })
 
-    if user.role.name != 'admin':
-        session.close()
-        return jsonify({'results': {'shift': shit_results}}), 200
-
-    '''
-    シフト名の抽出
-    '''
-    shift_name_results = []
-    shift_shift_categories = session.query(Shift, ShiftCategory).join(ShiftCategory, Company).filter(Company.id == user.company_id).order_by(Shift.id.asc()).all()
-    shift_shift_categories.sort(key=lambda m: m[1].id)
-    for key, group in groupby(shift_shift_categories, key=lambda m: m[1]):
-        tmp_shift_names = []
-        for q_results in group:
-            tmp_shift_names.append(q_results[0].name)
-
-        shift_name_results.append({key.name: tmp_shift_names})
-
     session.close()
-    return jsonify({'results': {'shift_category': shift_name_results, 'shift': shit_results}}), 200
+    return jsonify({'results': {'shift': shit_results}}), 200
 
 
 @app.route('/api/v1/usershift/<usershift_id>', methods=['PUT'])

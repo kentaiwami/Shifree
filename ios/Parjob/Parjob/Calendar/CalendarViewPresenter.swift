@@ -15,6 +15,7 @@ class CalendarViewPresenter {
     let calendarModel: CalendarModel
     
     var shiftCategories: [String] = []
+    var userShifts: [[String]] = []
     
     init(view: CalendarViewInterface) {
         self.view = view
@@ -33,9 +34,10 @@ class CalendarViewPresenter {
         calendarModel.getUserShift(start: start, end: end)
     }
     
-    func setShiftCategories() {
+    func setUserShiftAndCategories() {
         guard let currentDate = view?.currentDate else {return}
         shiftCategories = calendarModel.GetShiftCategories(currentDate: currentDate)
+        userShifts = calendarModel.setUserShifts(currentDate: currentDate)
     }
 }
 
