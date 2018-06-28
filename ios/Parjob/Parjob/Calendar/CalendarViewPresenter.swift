@@ -8,16 +8,33 @@
 
 import Foundation
 
+protocol CalendarViewPresentable :class{
+    var shiftCategories: [String] { get }
+    var eventNumber: Int { get }
+    var userColorScheme: String { get }
+}
 
 class CalendarViewPresenter {
     
     weak var view: CalendarViewInterface?
     let calendarModel: CalendarModel
     
-    var shiftCategories: [String] = []
     var userShifts: [[String]] = []
-    var userColorScheme: String = ""
-    var eventNumber: Int = 0
+    
+    var shiftCategories:[String] {
+        guard let currentDate = view?.currentDate else {return []}
+        return calendarModel.getShiftCategories(currentDate: currentDate)
+    }
+    
+    var eventNumber: Int {
+        guard let currentDate = view?.targetDate else {return 0}
+        return calendarModel.getEventNumber(date: currentDate)
+    }
+    
+    var userColorScheme: String {
+        guard let currentDate = view?.targetDate else {return ""}
+        return calendarModel.getUserColorScheme(date: currentDate)
+    }
     
     init(view: CalendarViewInterface) {
         self.view = view
@@ -33,21 +50,12 @@ class CalendarViewPresenter {
         guard let start = view?.start else {return}
         guard let end = view?.end else {return}
         
-        calendarModel.getUserShift(start: start, end: end)
+        calendarModel.getAllUserShift(start: start, end: end)
     }
     
-    func setUserShiftAndCategories() {
+    func setUserShift() {
         guard let currentDate = view?.currentDate else {return}
-        shiftCategories = calendarModel.getShiftCategories(currentDate: currentDate)
         userShifts = calendarModel.setUserShifts(currentDate: currentDate)
-    }
-    
-    func setUserColorScheme(date: String) {
-        userColorScheme = calendarModel.getUserColorScheme(date: date)
-    }
-    
-    func setEventNumber(date: String) {
-        eventNumber = calendarModel.getEventNumber(date: date)
     }
 }
 

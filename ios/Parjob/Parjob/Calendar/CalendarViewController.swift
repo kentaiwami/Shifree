@@ -15,6 +15,7 @@ protocol CalendarViewInterface: class {
     var start: String { get set }
     var end: String { get set }
     var currentDate: String { get set }
+    var targetDate: String { get set }
     
     func initializeUI()
     func showErrorAlert(title: String, msg: String)
@@ -25,6 +26,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     var start: String = ""
     var end: String = ""
     var currentDate: String = ""
+    var targetDate: String = ""
     
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
@@ -61,7 +63,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         heightConst = self.calendar.height(self.view.frame.height/2)
         
         currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: self.calendar.today!)
-        presenter.setUserShiftAndCategories()
+        presenter.setUserShift()
     }
     
     private func initializeTableView() {
@@ -131,8 +133,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
-        presenter.setUserColorScheme(date: dateString)
+        targetDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -147,8 +148,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
-        let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
-        presenter.setUserColorScheme(date: dateString)
+        targetDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -158,8 +158,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let dateString = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
-        presenter.setEventNumber(date: dateString)
+        targetDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
         return presenter.eventNumber
     }
     
@@ -171,7 +170,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func updateTableViewData() {
-        presenter.setUserShiftAndCategories()
+        presenter.setUserShift()
         self.tableView.reloadData()
         self.calendar.reloadData()
     }

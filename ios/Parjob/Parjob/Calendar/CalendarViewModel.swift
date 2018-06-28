@@ -45,6 +45,8 @@ class CalendarModel {
     private let api = API()
     private(set) var oneDayShifts: [OneDayShift] = []
     
+    
+    
     func login() {
         api.login().done { (json) in
             let keychain = Keychain()
@@ -59,7 +61,7 @@ class CalendarModel {
         }
     }
     
-    func getUserShift(start: String, end: String) {
+    func getAllUserShift(start: String, end: String) {
         api.getUserShift(start: start, end: end).done { (json) in
             self.oneDayShifts = self.getData(json: json)
             self.delegate?.updateTableViewData()
