@@ -70,7 +70,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.allowsSelection = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         self.view.addSubview(tableView)
         
@@ -195,6 +194,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = presenter.userShifts[indexPath.section].joined
         cell.textLabel?.numberOfLines = 0
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
@@ -224,5 +224,9 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         headerTitle?.contentView.backgroundColor = bgColor
         headerTitle?.textLabel?.textColor = txtColor
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
