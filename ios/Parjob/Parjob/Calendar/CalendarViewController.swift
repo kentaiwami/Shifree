@@ -39,6 +39,13 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         presenter.login()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.navigationItem.title = "Calendar"
+        initializeNavigationItem()
+    }
+    
     private func initializePresenter() {
         presenter = CalendarViewPresenter(view: self)
     }
@@ -46,7 +53,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     func initializeUI() {
         initializeCalendarView()
         initializeTableView()
-        initializeNavigationItem()
     }
     
     private func initializeCalendarView() {
@@ -228,5 +234,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let detailVC = CalendarDetailViewController()
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
 }

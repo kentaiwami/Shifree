@@ -37,7 +37,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="vi5-Wn-kGl"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Calendar" image="tab_overview" id="0VS-0e-k6v"/>
+                    <tabBarItem key="tabBarItem" title="Calendar" image="tab_calendar" id="0VS-0e-k6v"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvC-LE-rmh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -84,7 +84,7 @@
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="selectedImageTintColor" red="0.33333333329999998" green="0.70588235290000001" blue="0.92549019610000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" red="0.12549019607843137" green="0.19607843137254902" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="Sya-C7-WdG" kind="relationship" relationship="viewControllers" id="Wzz-go-RyQ"/>
@@ -98,8 +98,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="tab_calendar" width="30" height="30"/>
         <image name="tab_edit" width="16" height="16"/>
-        <image name="tab_overview" width="16" height="16"/>
         <image name="tab_setting" width="16" height="16"/>
     </resources>
 </document>
