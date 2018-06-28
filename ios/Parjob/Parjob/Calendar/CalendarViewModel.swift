@@ -16,6 +16,20 @@ protocol CalendarModelDelegate: class {
     func faildAPI(title: String, msg: String)
 }
 
+struct TableViewShift {
+    var joined: String = ""
+    var shifts: [UserShift] = []
+    
+    mutating func generateJoinedString() {
+        var tmp = ""
+        self.shifts.forEach { (userShift) in
+            tmp += userShift.user + " "
+        }
+        
+        joined = tmp.substring(to: tmp.index(before: tmp.endIndex))
+    }
+}
+
 struct UserShift {
     var id: Int = 0
     var name: String = ""
@@ -129,27 +143,29 @@ class CalendarModel {
         return shiftCategories
     }
     
-    func setUserShifts(currentDate: String) -> [[String]] {
+    func setUserShifts(currentDate: String) -> [TableViewShift] {
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDate
         }
         
         if currentDateOneDayShifts.count == 0 {
-            return [[]]
+            return []
         }
         
-        var userShifts: [[String]] = []
+        var tableViewShift: [TableViewShift] = []
         
         currentDateOneDayShifts[0].shift.forEach { (shiftCategory) in
-            var tmp: [String] = []
+            var tmp = TableViewShift()
             
             shiftCategory.userShift.forEach({ (userShift) in
-                tmp.append(userShift.user)
+                tmp.shifts.append(userShift)
             })
-            userShifts.append([tmp.joined(separator: "  ")])
+            
+            tmp.generateJoinedString()
+            tableViewShift.append(tmp)
         }
         
-        return userShifts
+        return tableViewShift
     }
     
     func getUserColorScheme(date: String) -> String {

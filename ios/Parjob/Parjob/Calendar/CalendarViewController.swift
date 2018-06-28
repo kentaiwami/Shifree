@@ -181,7 +181,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = presenter.userShifts[indexPath.section][indexPath.row]
+        cell.textLabel?.text = presenter.userShifts[indexPath.section].joined
         cell.textLabel?.numberOfLines = 0
         return cell
     }
@@ -192,5 +192,24 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return presenter.shiftCategories[section]
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        //TODO: カレンダーのイベントドットと同じ感じで文字色を変える
+//        if presenter.userColorScheme.count == 0 {
+//
+//        }else {
+//            print(presenter.userColorScheme)
+////            return [UIColor.hex(presenter.userColorScheme, alpha: 1.0)]
+//        }
+        
+//        if let headerTitle = view as? UITableViewHeaderFooterView {
+//            if section == 3 {
+//                headerTitle.textLabel?.textColor = UIColor.hex("#13fc03", alpha: 1.0)
+//            }
+        
+            
+//            headerTitle.contentView.backgroundColor = UIColor.clear
+//        }
     }
 }

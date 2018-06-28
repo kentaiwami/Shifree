@@ -19,7 +19,7 @@ class CalendarViewPresenter {
     weak var view: CalendarViewInterface?
     let calendarModel: CalendarModel
     
-    var userShifts: [[String]] = []
+    var userShifts: [TableViewShift] = []
     
     var shiftCategories:[String] {
         guard let currentDate = view?.currentDate else {return []}
@@ -27,13 +27,13 @@ class CalendarViewPresenter {
     }
     
     var eventNumber: Int {
-        guard let currentDate = view?.targetDate else {return 0}
-        return calendarModel.getEventNumber(date: currentDate)
+        guard let targetDate = view?.targetDate else {return 0}
+        return calendarModel.getEventNumber(date: targetDate)
     }
     
     var userColorScheme: String {
-        guard let currentDate = view?.targetDate else {return ""}
-        return calendarModel.getUserColorScheme(date: currentDate)
+        guard let targetDate = view?.targetDate else {return ""}
+        return calendarModel.getUserColorScheme(date: targetDate)
     }
     
     init(view: CalendarViewInterface) {
