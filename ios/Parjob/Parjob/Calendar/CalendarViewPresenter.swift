@@ -12,6 +12,7 @@ protocol CalendarViewPresentable :class{
     var shiftCategories: [String] { get }
     var eventNumber: Int { get }
     var userColorScheme: String { get }
+    var hoge: Int { get }
 }
 
 class CalendarViewPresenter {
@@ -34,6 +35,11 @@ class CalendarViewPresenter {
     var userColorScheme: String {
         guard let targetDate = view?.targetDate else {return ""}
         return calendarModel.getUserColorScheme(date: targetDate)
+    }
+    
+    var userSection: Int {
+        guard let targetDate = view?.targetDate else {return -1}
+        return calendarModel.getUserSection(userShifts: userShifts, date: targetDate)
     }
     
     init(view: CalendarViewInterface) {

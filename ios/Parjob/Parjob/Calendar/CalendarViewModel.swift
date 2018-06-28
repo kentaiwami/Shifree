@@ -198,4 +198,27 @@ class CalendarModel {
         }
         return 1
     }
+    
+    func getUserSection(userShifts: [TableViewShift], date: String) -> Int {
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == date
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return -1
+        }
+        
+        if currentDateOneDayShifts[0].user.id == 0 {
+            return -1
+        }
+        
+        for (i, tableViewShift) in userShifts.enumerated() {
+            for userShift in tableViewShift.shifts {
+                if currentDateOneDayShifts[0].user.id ==  userShift.id {
+                    return i
+                }
+            }
+        }
+        return -1
+    }
 }

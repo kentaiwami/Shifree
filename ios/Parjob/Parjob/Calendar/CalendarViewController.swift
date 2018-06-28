@@ -195,21 +195,22 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        //TODO: カレンダーのイベントドットと同じ感じで文字色を変える
-//        if presenter.userColorScheme.count == 0 {
-//
-//        }else {
-//            print(presenter.userColorScheme)
-////            return [UIColor.hex(presenter.userColorScheme, alpha: 1.0)]
-//        }
+        targetDate = currentDate
+        let headerTitle = view as? UITableViewHeaderFooterView
+        var bgColor = UIColor.clear
+        var txtColor = UIColor.black
         
-//        if let headerTitle = view as? UITableViewHeaderFooterView {
-//            if section == 3 {
-//                headerTitle.textLabel?.textColor = UIColor.hex("#13fc03", alpha: 1.0)
-//            }
+        if presenter.userColorScheme.count != 0 {
+            if section == presenter.userSection {
+                bgColor = UIColor.hex(presenter.userColorScheme, alpha: 0.9)
+                txtColor = UIColor.white
+            }else {
+                bgColor = UIColor.clear
+                txtColor = UIColor.black
+            }
+        }
         
-            
-//            headerTitle.contentView.backgroundColor = UIColor.clear
-//        }
+        headerTitle?.contentView.backgroundColor = bgColor
+        headerTitle?.textLabel?.textColor = txtColor
     }
 }
