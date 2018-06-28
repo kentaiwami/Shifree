@@ -167,6 +167,14 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        return UIColor.clear
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
+        return UIColor.black
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderSelectionColorFor date: Date) -> UIColor? {
         return UIColor.hex(Color.main.rawValue, alpha: 1.0)
     }
 }
