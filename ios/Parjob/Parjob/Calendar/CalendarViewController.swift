@@ -165,6 +165,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         getUserShift()
     }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        return UIColor.hex(Color.main.rawValue, alpha: 1.0)
+    }
 }
 
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
