@@ -236,6 +236,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let detailVC = CalendarDetailViewController()
+        detailVC.setIndexPath(at: indexPath)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
 }
