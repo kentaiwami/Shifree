@@ -40,17 +40,12 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     }
     
     private func initializeUI() {
-//        print("*********************")
-//        print(presenter.isTargetInclude)
-//        print(presenter.isAdmin)
-//        print("*********************")
-        if !presenter.isAdmin {
+        if presenter.isTargetInclude {
             form +++ Section("Memo")
                 <<< TextAreaRow(){
                     $0.title = "memo"
                     $0.tag = "memo"
-                    $0.add(rule: RuleRequired(msg: "必須項目です"))
-                    $0.validationOptions = .validatesOnChange
+                    $0.value = presenter.getMemo()
             }
         }
         
