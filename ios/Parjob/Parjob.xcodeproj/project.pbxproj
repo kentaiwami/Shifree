@@ -98,15 +98,14 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
-		3755199D20E50F5100EC930B /* CalendarDetail */ = {
+		375519A720E686F700EC930B /* CalendarDetail */ = {
 			isa = PBXGroup;
 			children = (
 				3755199E20E50F9B00EC930B /* CalendarDetailViewController.swift */,
 				375519A020E50FB700EC930B /* CalendarDetailViewPresenter.swift */,
 				375519A220E50FC700EC930B /* CalendarDetailViewModel.swift */,
 			);
-			name = CalendarDetail;
-			path = "New Group";
+			path = CalendarDetail;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
@@ -132,7 +131,7 @@
 			children = (
 				37326C4020DFE32B00A60B00 /* SignUp */,
 				37425CC120DE8928005A3C93 /* Calendar */,
-				3755199D20E50F5100EC930B /* CalendarDetail */,
+				375519A720E686F700EC930B /* CalendarDetail */,
 				37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */,
 				37FF360F20DD4D0200FB2C68 /* Assets.xcassets */,
 				37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */,
