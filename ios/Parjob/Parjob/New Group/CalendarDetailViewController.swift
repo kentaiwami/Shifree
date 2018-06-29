@@ -40,49 +40,30 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     }
     
     private func initializeUI() {
-        if presenter.isTargetInclude {
+        if presenter.isTargetInclude() {
             form +++ Section("Memo")
                 <<< TextAreaRow(){
-                    $0.title = "memo"
+                    $0.title = "Memo"
                     $0.tag = "memo"
                     $0.value = presenter.getMemo()
             }
         }
         
         form +++ Section("シフトの詳細")
-            <<< LabelRow() {
-                $0.title = "従業員名"
-                $0.value = "岩見"
-            }
-            
-            <<< PickerInputRow<String> {
-                $0.title = "シフト名"
-                //                $0.tag = "aaa"
-                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
-        }
         
-        form +++ Section("")
-            <<< LabelRow() {
-                $0.title = "従業員名"
-                $0.value = "岩見"
+        for userShift in presenter.getUsersShift() {
+            form +++ Section("")
+                <<< LabelRow() {
+                    $0.title = "従業員"
+                    $0.value = userShift.user
+//                    $0.tag = ""
             }
             
-            <<< PickerInputRow<String> {
-                $0.title = "シフト名"
-                //                $0.tag = "aaa"
-                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
-        }
-        
-        form +++ Section("")
-            <<< LabelRow() {
-                $0.title = "従業員名"
-                $0.value = "岩見"
+                <<< PickerInputRow<String> {
+                    $0.title = "シフト"
+//                    $0.tag = ""
+                    $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
             }
-            
-            <<< PickerInputRow<String> {
-                $0.title = "シフト名"
-                //                $0.tag = "aaa"
-                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
         }
     }
     
