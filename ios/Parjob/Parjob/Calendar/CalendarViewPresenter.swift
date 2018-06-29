@@ -18,9 +18,7 @@ class CalendarViewPresenter {
     
     weak var view: CalendarViewInterface?
     let calendarModel: CalendarModel
-    
-    var userShifts: [TableViewShift] = []
-    
+        
     var shiftCategories:[String] {
         guard let currentDate = view?.currentDate else {return []}
         return calendarModel.getShiftCategories(currentDate: currentDate)
@@ -38,7 +36,7 @@ class CalendarViewPresenter {
     
     var userSection: Int {
         guard let targetDate = view?.targetDate else {return -1}
-        return calendarModel.getUserSection(userShifts: userShifts, date: targetDate)
+        return calendarModel.getUserSection(date: targetDate)
     }
     
     init(view: CalendarViewInterface) {
@@ -58,9 +56,13 @@ class CalendarViewPresenter {
         calendarModel.getAllUserShift(start: start, end: end)
     }
     
-    func setUserShift() {
+    func setTableViewShift() {
         guard let currentDate = view?.currentDate else {return}
-        userShifts = calendarModel.setUserShifts(currentDate: currentDate)
+        calendarModel.setTableViewShift(currentDate: currentDate)
+    }
+    
+    func getTableViewShift() -> [TableViewShift] {
+        return calendarModel.tableViewShift
     }
 }
 

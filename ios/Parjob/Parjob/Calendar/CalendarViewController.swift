@@ -69,7 +69,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         heightConst = self.calendar.height(self.view.frame.height/2)
         
         currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: self.calendar.today!)
-        presenter.setUserShift()
+        presenter.setTableViewShift()
     }
     
     private func initializeTableView() {
@@ -187,7 +187,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func updateTableViewData() {
-        presenter.setUserShift()
+        presenter.setTableViewShift()
         self.tableView.reloadData()
         self.calendar.reloadData()
     }
@@ -198,7 +198,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = presenter.userShifts[indexPath.section].joined
+        cell.textLabel?.text = presenter.getTableViewShift()[indexPath.section].joined
         cell.textLabel?.numberOfLines = 0
         cell.accessoryType = .disclosureIndicator
         return cell

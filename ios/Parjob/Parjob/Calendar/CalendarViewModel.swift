@@ -20,6 +20,7 @@ class CalendarModel {
     weak var delegate: CalendarModelDelegate?
     private let api = API()
     private(set) var oneDayShifts: [OneDayShift] = []
+    private(set) var tableViewShift: [TableViewShift] = []
     
     func login() {
         api.login().done { (json) in
@@ -103,29 +104,29 @@ class CalendarModel {
         return shiftCategories
     }
     
-    func setUserShifts(currentDate: String) -> [TableViewShift] {
+    func setTableViewShift(currentDate: String) {
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDate
         }
         
         if currentDateOneDayShifts.count == 0 {
-            return []
-        }
-        
-        var tableViewShift: [TableViewShift] = []
-        
-        currentDateOneDayShifts[0].shift.forEach { (shiftCategory) in
-            var tmp = TableViewShift()
+            self.tableViewShift = []
+        }else {
+            var tmpTableViewShift: [TableViewShift] = []
             
-            shiftCategory.userShift.forEach({ (userShift) in
-                tmp.shifts.append(userShift)
-            })
+            currentDateOneDayShifts[0].shift.forEach { (shiftCategory) in
+                var tmp = TableViewShift()
+                
+                shiftCategory.userShift.forEach({ (userShift) in
+                    tmp.shifts.append(userShift)
+                })
+                
+                tmp.generateJoinedString()
+                tmpTableViewShift.append(tmp)
+            }
             
-            tmp.generateJoinedString()
-            tableViewShift.append(tmp)
+            self.tableViewShift = tmpTableViewShift
         }
-        
-        return tableViewShift
     }
     
     func getUserColorScheme(date: String) -> String {
@@ -159,7 +160,7 @@ class CalendarModel {
         return 1
     }
     
-    func getUserSection(userShifts: [TableViewShift], date: String) -> Int {
+    func getUserSection(date: String) -> Int {
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == date
         }
@@ -172,7 +173,7 @@ class CalendarModel {
             return -1
         }
         
-        for (i, tableViewShift) in userShifts.enumerated() {
+        for (i, tableViewShift) in self.tableViewShift.enumerated() {
             for userShift in tableViewShift.shifts {
                 if currentDateOneDayShifts[0].user.id ==  userShift.id {
                     return i
