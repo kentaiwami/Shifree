@@ -66,6 +66,18 @@ class CalendarViewPresenter {
     }
 }
 
+extension CalendarViewPresenter {
+    func getMemo() -> String {
+        guard let currentDate = view?.currentDate else {return ""}
+        return calendarModel.getMemo(date: currentDate)
+    }
+    
+    func getTargetUserShift() -> TargetUserShift {
+        guard let currentDate = view?.currentDate else {return TargetUserShift()}
+        return calendarModel.getTargetUserShift(date: currentDate)
+    }
+}
+
 extension CalendarViewPresenter: CalendarModelDelegate {
     func updateTableViewData() {
         view?.updateTableViewData()

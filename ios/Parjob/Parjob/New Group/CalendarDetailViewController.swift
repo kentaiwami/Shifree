@@ -12,11 +12,12 @@ import Eureka
 
 protocol CalendarDetailViewInterface: class {
     var indexPath: IndexPath { get }
+    
     func showErrorAlert(title: String, msg: String)
 }
 
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
-    
+
     var indexPath: IndexPath = []
     fileprivate var presenter: CalendarDetailViewPresenter!
     
@@ -24,60 +25,70 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         super.viewDidLoad()
         
         initializePresenter()
-        
-        form +++ Section("Memo")
-            <<< TextAreaRow(){
-                $0.title = "memo"
-                $0.tag = "memo"
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
-        }
-        
-        form +++ Section("シフトの詳細")
-            <<< LabelRow() {
-                $0.title = "従業員名"
-                $0.value = "岩見"
-        }
-        
-            <<< PickerInputRow<String> {
-                $0.title = "シフト名"
-//                $0.tag = "aaa"
-                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
-        }
-        
-        form +++ Section("")
-            <<< LabelRow() {
-                $0.title = "従業員名"
-                $0.value = "岩見"
-            }
-            
-            <<< PickerInputRow<String> {
-                $0.title = "シフト名"
-//                $0.tag = "aaa"
-                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
-        }
-        
-        form +++ Section("")
-            <<< LabelRow() {
-                $0.title = "従業員名"
-                $0.value = "岩見"
-            }
-            
-            <<< PickerInputRow<String> {
-                $0.title = "シフト名"
-//                $0.tag = "aaa"
-                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
-        }
-        
+        initializeUI()
     }
     
     private func initializePresenter() {
         let tabBarController = self.navigationController?.viewControllers[0] as! UITabBarController
         let calendarVC = tabBarController.viewControllers![0] as! CalendarViewController
         let tableViewShift = calendarVC.getTableViewShift()[indexPath.section]
+        let memo = calendarVC.getMemo()
+        let targetUserShift = calendarVC.getTargetUserShift()
         
         presenter = CalendarDetailViewPresenter(view: self)
-        presenter.setSelectedData(tableViewShift: tableViewShift)
+        presenter.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
+    }
+    
+    private func initializeUI() {
+//        print("*********************")
+//        print(presenter.isTargetInclude)
+//        print(presenter.isAdmin)
+//        print("*********************")
+        if !presenter.isAdmin {
+            form +++ Section("Memo")
+                <<< TextAreaRow(){
+                    $0.title = "memo"
+                    $0.tag = "memo"
+                    $0.add(rule: RuleRequired(msg: "必須項目です"))
+                    $0.validationOptions = .validatesOnChange
+            }
+        }
+        
+        form +++ Section("シフトの詳細")
+            <<< LabelRow() {
+                $0.title = "従業員名"
+                $0.value = "岩見"
+            }
+            
+            <<< PickerInputRow<String> {
+                $0.title = "シフト名"
+                //                $0.tag = "aaa"
+                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
+        }
+        
+        form +++ Section("")
+            <<< LabelRow() {
+                $0.title = "従業員名"
+                $0.value = "岩見"
+            }
+            
+            <<< PickerInputRow<String> {
+                $0.title = "シフト名"
+                //                $0.tag = "aaa"
+                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
+        }
+        
+        form +++ Section("")
+            <<< LabelRow() {
+                $0.title = "従業員名"
+                $0.value = "岩見"
+            }
+            
+            <<< PickerInputRow<String> {
+                $0.title = "シフト名"
+                //                $0.tag = "aaa"
+                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
+        }
     }
     
     func setIndexPath(at: IndexPath) {

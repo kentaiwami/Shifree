@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol CalendarDetailViewPresentable :class{
+    var isAdmin: Bool { get }
+    var isTargetInclude: Bool { get }
+}
+
 class CalendarDetailViewPresenter {
     
     weak var view: CalendarDetailViewInterface?
@@ -19,8 +24,21 @@ class CalendarDetailViewPresenter {
         calendarDetailModel.delegate = self
     }
     
-    func setSelectedData(tableViewShift: TableViewShift) {
-        calendarDetailModel.setSelectedData(tableViewShift: tableViewShift)
+    var isAdmin:Bool {
+        return calendarDetailModel.isAdmin()
+    }
+    
+    var isTargetInclude: Bool {
+        return calendarDetailModel.isTargetInclude()
+    }
+
+    
+    func setSelectedData(tableViewShift: TableViewShift, memo: String, targetUserShift: TargetUserShift) {
+        calendarDetailModel.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
+    }
+    
+    func getMemo() -> String {
+        return calendarDetailModel.memo
     }
 }
 

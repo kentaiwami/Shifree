@@ -182,4 +182,28 @@ class CalendarModel {
         }
         return -1
     }
+    
+    func getMemo(date: String) -> String {
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == date
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return ""
+        }
+        
+        return currentDateOneDayShifts[0].memo
+    }
+    
+    func getTargetUserShift(date: String) -> TargetUserShift {
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == date
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return TargetUserShift()
+        }
+        
+        return currentDateOneDayShifts[0].user
+    }
 }
