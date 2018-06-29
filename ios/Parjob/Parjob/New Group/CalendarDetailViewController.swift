@@ -7,13 +7,68 @@
 //
 
 import UIKit
+import Eureka
 
-class CalendarDetailViewController: UIViewController {
 
+protocol CalendarDetailViewInterface: class {
+    func showErrorAlert(title: String, msg: String)
+}
+
+class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
+    
+//    let indexPath: IndexPath
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.brown
+        form +++ Section("Memo")
+            <<< TextAreaRow(){
+                $0.title = "memo"
+                $0.tag = "memo"
+                $0.add(rule: RuleRequired(msg: "必須項目です"))
+                $0.validationOptions = .validatesOnChange
+        }
+        
+        form +++ Section("シフトの詳細")
+            <<< LabelRow() {
+                $0.title = "従業員名"
+                $0.value = "岩見"
+        }
+        
+            <<< PickerInputRow<String> {
+                $0.title = "シフト名"
+//                $0.tag = "aaa"
+                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
+        }
+        
+        form +++ Section("")
+            <<< LabelRow() {
+                $0.title = "従業員名"
+                $0.value = "岩見"
+            }
+            
+            <<< PickerInputRow<String> {
+                $0.title = "シフト名"
+//                $0.tag = "aaa"
+                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
+        }
+        
+        form +++ Section("")
+            <<< LabelRow() {
+                $0.title = "従業員名"
+                $0.value = "岩見"
+            }
+            
+            <<< PickerInputRow<String> {
+                $0.title = "シフト名"
+//                $0.tag = "aaa"
+                $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
+        }
+        
+    }
+    
+    func showErrorAlert(title: String, msg: String) {
+        ShowStandardAlert(title: title, msg: msg, vc: self)
     }
 
     override func didReceiveMemoryWarning() {
