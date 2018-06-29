@@ -46,8 +46,8 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     }
     
     func initializeUI() {
-        //TODO: form
         UIView.setAnimationsEnabled(false)
+        
         if presenter.isTargetInclude() {
             form +++ Section("Memo")
                 <<< TextAreaRow(){
@@ -74,6 +74,11 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
                     $0.value = userShift.name
                     $0.options = presenter.getCompanyShiftNames()
                     
+                    if presenter.isAdmin() {
+                        $0.disabled = false
+                    }else {
+                        $0.disabled = true
+                    }
             }
         }
         
