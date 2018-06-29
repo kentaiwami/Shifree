@@ -19,8 +19,8 @@ class CalendarDetailViewPresenter {
         calendarDetailModel.delegate = self
     }
     
-    func setSelectedData(indexPath: IndexPath) {
-        calendarDetailModel.setSelectedData(indexPath: indexPath)
+    func setSelectedData(tableViewShift: TableViewShift) {
+        calendarDetailModel.setSelectedData(tableViewShift: tableViewShift)
     }
 }
 

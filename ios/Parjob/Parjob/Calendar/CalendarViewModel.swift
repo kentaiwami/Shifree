@@ -20,7 +20,7 @@ class CalendarModel {
     weak var delegate: CalendarModelDelegate?
     private let api = API()
     private(set) var oneDayShifts: [OneDayShift] = []
-    private(set) var tableViewShift: [TableViewShift] = []
+    private(set) var tableViewShifts: [TableViewShift] = []
     
     func login() {
         api.login().done { (json) in
@@ -110,7 +110,7 @@ class CalendarModel {
         }
         
         if currentDateOneDayShifts.count == 0 {
-            self.tableViewShift = []
+            self.tableViewShifts = []
         }else {
             var tmpTableViewShift: [TableViewShift] = []
             
@@ -125,7 +125,7 @@ class CalendarModel {
                 tmpTableViewShift.append(tmp)
             }
             
-            self.tableViewShift = tmpTableViewShift
+            self.tableViewShifts = tmpTableViewShift
         }
     }
     
@@ -173,7 +173,7 @@ class CalendarModel {
             return -1
         }
         
-        for (i, tableViewShift) in self.tableViewShift.enumerated() {
+        for (i, tableViewShift) in self.tableViewShifts.enumerated() {
             for userShift in tableViewShift.shifts {
                 if currentDateOneDayShifts[0].user.id ==  userShift.id {
                     return i

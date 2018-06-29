@@ -124,6 +124,10 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         end = GetFormatterDateString(format: "yyyyMMdd", date: endDate)
     }
     
+    func getTableViewShift() -> [TableViewShift] {
+        return presenter.getTableViewShift()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

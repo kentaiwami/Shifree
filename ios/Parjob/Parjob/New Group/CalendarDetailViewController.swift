@@ -11,6 +11,7 @@ import Eureka
 
 
 protocol CalendarDetailViewInterface: class {
+    var indexPath: IndexPath { get }
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -71,8 +72,12 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     }
     
     private func initializePresenter() {
+        let tabBarController = self.navigationController?.viewControllers[0] as! UITabBarController
+        let calendarVC = tabBarController.viewControllers![0] as! CalendarViewController
+        let tableViewShift = calendarVC.getTableViewShift()[indexPath.section]
+        
         presenter = CalendarDetailViewPresenter(view: self)
-        presenter.setSelectedData(indexPath: indexPath)
+        presenter.setSelectedData(tableViewShift: tableViewShift)
     }
     
     func setIndexPath(at: IndexPath) {

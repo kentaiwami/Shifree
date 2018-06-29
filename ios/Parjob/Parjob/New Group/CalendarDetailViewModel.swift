@@ -15,8 +15,9 @@ protocol CalendarDetailModelDelegate: class {
 class CalendarDetailModel {
     weak var delegate: CalendarDetailModelDelegate?
     private let api = API()
+    private(set) var tableViewShift: TableViewShift!
     
-    func setSelectedData(indexPath: IndexPath) {
-        print(indexPath)
+    func setSelectedData(tableViewShift: TableViewShift) {
+        self.tableViewShift = tableViewShift
     }
 }

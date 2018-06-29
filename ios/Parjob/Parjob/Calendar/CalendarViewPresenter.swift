@@ -62,7 +62,7 @@ class CalendarViewPresenter {
     }
     
     func getTableViewShift() -> [TableViewShift] {
-        return calendarModel.tableViewShift
+        return calendarModel.tableViewShifts
     }
 }
 
