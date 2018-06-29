@@ -21,8 +21,6 @@ class CalendarModel {
     private let api = API()
     private(set) var oneDayShifts: [OneDayShift] = []
     
-    
-    
     func login() {
         api.login().done { (json) in
             let keychain = Keychain()

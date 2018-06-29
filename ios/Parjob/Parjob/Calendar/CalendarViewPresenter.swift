@@ -12,7 +12,6 @@ protocol CalendarViewPresentable :class{
     var shiftCategories: [String] { get }
     var eventNumber: Int { get }
     var userColorScheme: String { get }
-    var hoge: Int { get }
 }
 
 class CalendarViewPresenter {

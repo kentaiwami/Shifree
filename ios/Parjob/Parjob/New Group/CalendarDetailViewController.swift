@@ -17,11 +17,12 @@ protocol CalendarDetailViewInterface: class {
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
     
     var indexPath: IndexPath = []
+    fileprivate var presenter: CalendarDetailViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(indexPath)
+        initializePresenter()
         
         form +++ Section("Memo")
             <<< TextAreaRow(){
@@ -67,6 +68,11 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
                 $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
         }
         
+    }
+    
+    private func initializePresenter() {
+        presenter = CalendarDetailViewPresenter(view: self)
+        presenter.setSelectedData(indexPath: indexPath)
     }
     
     func setIndexPath(at: IndexPath) {

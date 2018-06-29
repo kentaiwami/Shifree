@@ -7,3 +7,16 @@
 //
 
 import Foundation
+
+protocol CalendarDetailModelDelegate: class {
+    func faildAPI(title: String, msg: String)
+}
+
+class CalendarDetailModel {
+    weak var delegate: CalendarDetailModelDelegate?
+    private let api = API()
+    
+    func setSelectedData(indexPath: IndexPath) {
+        print(indexPath)
+    }
+}

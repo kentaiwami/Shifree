@@ -7,3 +7,26 @@
 //
 
 import Foundation
+
+class CalendarDetailViewPresenter {
+    
+    weak var view: CalendarDetailViewInterface?
+    let calendarDetailModel: CalendarDetailModel
+    
+    init(view: CalendarDetailViewInterface) {
+        self.view = view
+        self.calendarDetailModel = CalendarDetailModel()
+        calendarDetailModel.delegate = self
+    }
+    
+    func setSelectedData(indexPath: IndexPath) {
+        calendarDetailModel.setSelectedData(indexPath: indexPath)
+    }
+}
+
+extension CalendarDetailViewPresenter: CalendarDetailModelDelegate {
+    func faildAPI(title: String, msg: String) {
+        view?.showErrorAlert(title: title, msg: msg)
+    }
+}
+
