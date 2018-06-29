@@ -54,6 +54,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
                     $0.title = "Memo"
                     $0.tag = "memo"
                     $0.value = presenter.getMemo()
+                    $0.placeholder = "このシフトに関するメモを残すことができます。"
             }
         }
         
