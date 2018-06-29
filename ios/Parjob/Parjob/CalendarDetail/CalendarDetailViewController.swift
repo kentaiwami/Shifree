@@ -27,7 +27,6 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         
         initializePresenter()
         setCompanyShiftNames()
-//        initializeUI()
     }
     
     private func initializePresenter() {
@@ -45,7 +44,16 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         presenter.setCompanyShiftNames()
     }
     
-    func initializeUI() {
+    private func initializeNavigationItem() {
+        let check = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapEditDoneButton))
+        self.navigationItem.setRightBarButton(check, animated: true)
+    }
+    
+    @objc private func TapEditDoneButton() {
+        
+    }
+    
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         if presenter.isTargetInclude() {
@@ -68,8 +76,8 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
                 <<< LabelRow() {
                     $0.title = "従業員"
                     $0.value = userShift.user
-            }
-            
+                }
+                
                 <<< PickerInputRow<String> {
                     $0.title = "シフト"
                     $0.value = userShift.name
@@ -82,8 +90,12 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
                     }
             }
         }
-        
         UIView.setAnimationsEnabled(true)
+    }
+    
+    func initializeUI() {
+        initializeNavigationItem()
+        initializeForm()
     }
     
     func setIndexPath(at: IndexPath) {
