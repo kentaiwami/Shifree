@@ -10,8 +10,15 @@ import Foundation
 import KeychainAccess
 
 protocol CalendarDetailModelDelegate: class {
+    func initializeUI()
     func faildAPI(title: String, msg: String)
 }
+
+struct Shift {
+    var id: Int = 0
+    var name: String = ""
+}
+
 
 class CalendarDetailModel {
     weak var delegate: CalendarDetailModelDelegate?
@@ -19,6 +26,7 @@ class CalendarDetailModel {
     private(set) var tableViewShift: TableViewShift!
     private(set) var targetUserShift: TargetUserShift!
     private(set) var memo: String = ""
+    private(set) var companyShiftNames: [String] = []
     
     func setSelectedData(tableViewShift: TableViewShift, memo: String, targetUserShift: TargetUserShift) {
         self.tableViewShift = tableViewShift
@@ -45,5 +53,19 @@ class CalendarDetailModel {
         }
         
         return false
+    }
+    
+    func getUserCompanyShiftNames() {
+        api.getUserCompanyShiftNames().done { (json) in
+            json["results"].arrayValue.forEach { (shift) in
+                self.companyShiftNames.append(shift["name"].stringValue)
+            }
+            self.delegate?.initializeUI()
+        }
+        .catch { (err) in
+            let tmp_err = err as NSError
+            let title = "Error(" + String(tmp_err.code) + ")"
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
     }
 }

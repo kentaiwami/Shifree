@@ -8,9 +8,6 @@
 
 import Foundation
 
-//protocol CalendarDetailViewPresentable :class{
-//    var isAdmin: Bool { get }
-//}
 
 class CalendarDetailViewPresenter {
     
@@ -42,11 +39,23 @@ class CalendarDetailViewPresenter {
     func getMemo() -> String {
         return calendarDetailModel.memo
     }
+    
+    func setCompanyShiftNames() {
+        calendarDetailModel.getUserCompanyShiftNames()
+    }
+    
+    func getCompanyShiftNames() -> [String] {
+        return calendarDetailModel.companyShiftNames
+    }
 }
 
 extension CalendarDetailViewPresenter: CalendarDetailModelDelegate {
     func faildAPI(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
+    }
+    
+    func initializeUI() {
+        view?.initializeUI()
     }
 }
 

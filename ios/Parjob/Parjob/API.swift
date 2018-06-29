@@ -101,4 +101,9 @@ extension API {
         let getQuery = "?start=" + start + "&end=" + end
         return getAuth(url: base + version + endPoint + getQuery)
     }
+    
+    func getUserCompanyShiftNames() -> Promise<JSON> {
+        let endPoint = "shift"
+        return getAuth(url: base + version + endPoint)
+    }
 }

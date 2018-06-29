@@ -13,6 +13,7 @@ import Eureka
 protocol CalendarDetailViewInterface: class {
     var indexPath: IndexPath { get }
     
+    func initializeUI()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -25,7 +26,8 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         super.viewDidLoad()
         
         initializePresenter()
-        initializeUI()
+        setCompanyShiftNames()
+//        initializeUI()
     }
     
     private func initializePresenter() {
@@ -39,8 +41,13 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         presenter.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
     }
     
-    private func initializeUI() {
+    func setCompanyShiftNames() {
+        presenter.setCompanyShiftNames()
+    }
+    
+    func initializeUI() {
         //TODO: form
+        UIView.setAnimationsEnabled(false)
         if presenter.isTargetInclude() {
             form +++ Section("Memo")
                 <<< TextAreaRow(){
@@ -50,22 +57,27 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
             }
         }
         
-        form +++ Section("シフトの詳細")
-        
-        for userShift in presenter.getUsersShift() {
-            form +++ Section("")
+        for (i, userShift) in presenter.getUsersShift().enumerated() {
+            var sectionName = "シフトの詳細"
+            if i != 0 {
+                sectionName = ""
+            }
+            
+            form +++ Section(sectionName)
                 <<< LabelRow() {
                     $0.title = "従業員"
                     $0.value = userShift.user
-//                    $0.tag = ""
             }
             
                 <<< PickerInputRow<String> {
                     $0.title = "シフト"
-//                    $0.tag = ""
-                    $0.options = ["早カ", "遅", "遅カ", "公", "帯広応援"]
+                    $0.value = userShift.name
+                    $0.options = presenter.getCompanyShiftNames()
+                    
             }
         }
+        
+        UIView.setAnimationsEnabled(true)
     }
     
     func setIndexPath(at: IndexPath) {
