@@ -39,10 +39,7 @@ class CalendarModel {
     
     func getAllUserShift(start: String, end: String) {
         api.getUserShift(start: start, end: end).done { (json) in
-            let results = self.getData(json: json)
-            self.oneDayShifts = results.oneDayShift
-            self.shiftCategoryColors = results.shiftCategoryColor
-            
+            self.oneDayShifts = self.getData(json: json)
             self.delegate?.updateTableViewData()
         }
         .catch { (err) in
@@ -175,9 +172,8 @@ class CalendarModel {
 
 
 extension CalendarModel {
-    fileprivate func getData(json: JSON) -> (oneDayShift: [OneDayShift], shiftCategoryColor: [ShiftCategoryColor]) {
+    fileprivate func getData(json: JSON) -> [OneDayShift] {
         var oneDayShift = [OneDayShift]()
-        var shiftCategoryColor = [ShiftCategoryColor]()
         
         // 1日ごとにループ処理
         json["results"]["shift"].arrayValue.forEach { (shift) in
@@ -212,14 +208,6 @@ extension CalendarModel {
             oneDayShift.append(tmpOneDayShift)
         }
         
-        json["results"]["shift_category"].arrayValue.forEach { (shiftCategory) in
-            var tmpShiftCategoryColor = ShiftCategoryColor()
-            tmpShiftCategoryColor.name = shiftCategory["name"].stringValue
-            tmpShiftCategoryColor.color = shiftCategory["hex"].stringValue
-            
-            shiftCategoryColor.append(tmpShiftCategoryColor)
-        }
-        
-        return (oneDayShift, shiftCategoryColor)
+        return oneDayShift
     }
 }

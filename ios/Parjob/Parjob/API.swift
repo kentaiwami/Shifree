@@ -124,4 +124,9 @@ extension API {
         
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+    
+    func getShiftCategory() -> Promise<JSON>  {
+        let endPoint = "setting/color"
+        return getAuth(url: base + version + endPoint)
+    }
 }

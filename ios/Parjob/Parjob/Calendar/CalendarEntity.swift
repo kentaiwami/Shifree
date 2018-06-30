@@ -45,8 +45,3 @@ struct OneDayShift {
     var shift: [ShiftCategory] = []
     var user: TargetUserShift = TargetUserShift()
 }
-
-struct ShiftCategoryColor {
-    var name: String = ""
-    var color: String = ""
-}

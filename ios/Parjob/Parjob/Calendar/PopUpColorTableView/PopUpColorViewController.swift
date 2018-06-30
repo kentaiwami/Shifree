@@ -9,12 +9,23 @@
 import UIKit
 import TinyConstraints
 
-class PopUpColorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+protocol PopUpColorViewInterface: class {
+    func updateTableData()
+    func showErrorAlert(title: String, msg: String)
+}
+
+class PopUpColorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, PopUpColorViewInterface {
     
     @IBOutlet weak var tableView: UITableView!
+    private var presenter: PopUpColorViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter = PopUpColorViewPresenter(view: self)
+        presenter.setShiftCategoryColor()
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -27,16 +38,31 @@ class PopUpColorViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! PopUpColorCell
-        cell.shiftCategoryNameLabel.text = "hoge"
+        let shiftCategoryColor = presenter.getShiftCategoryColor()
+        
+        cell.shiftCategoryNameLabel.text = shiftCategoryColor[indexPath.row].name
+        cell.colorView.backgroundColor = UIColor.hex(shiftCategoryColor[indexPath.row].color, alpha: 1.0)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return presenter.getShiftCategoryColor().count
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 }
+
+extension PopUpColorViewController {
+    func showErrorAlert(title: String, msg: String) {
+        ShowStandardAlert(title: title, msg: msg, vc: self)
+    }
+    
+    func updateTableData() {
+        tableView.reloadData()
+    }
+}
+
+

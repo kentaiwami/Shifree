@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */; };
+		3729107620E7EE4C00931BEA /* PopUpColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107520E7EE4C00931BEA /* PopUpColorModel.swift */; };
 		37326C3720DE955D00A60B00 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3620DE955D00A60B00 /* Utility.swift */; };
 		37326C3920DEC79200A60B00 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3820DEC79200A60B00 /* Extensions.swift */; };
 		37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3A20DEC85E00A60B00 /* Enum.swift */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewPresenter.swift; sourceTree = "<group>"; };
+		3729107520E7EE4C00931BEA /* PopUpColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorModel.swift; sourceTree = "<group>"; };
 		37326C3620DE955D00A60B00 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		37326C3820DEC79200A60B00 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		37326C3A20DEC85E00A60B00 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 			children = (
 				373F36D520E7CC470079B28F /* PopUpColorCell.swift */,
 				373F36D720E7CCCD0079B28F /* PopUpColorViewController.swift */,
+				3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */,
+				3729107520E7EE4C00931BEA /* PopUpColorModel.swift */,
 			);
 			path = PopUpColorTableView;
 			sourceTree = "<group>";
@@ -304,6 +310,7 @@
 				37326C3720DE955D00A60B00 /* Utility.swift in Sources */,
 				37425CC320DE893E005A3C93 /* CalendarViewController.swift in Sources */,
 				37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */,
+				3729107620E7EE4C00931BEA /* PopUpColorModel.swift in Sources */,
 				37326C4620E14B6500A60B00 /* CalendarViewPresenter.swift in Sources */,
 				375519A620E5BADA00EC930B /* CalendarEntity.swift in Sources */,
 				37326C3920DEC79200A60B00 /* Extensions.swift in Sources */,
@@ -311,6 +318,7 @@
 				37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */,
 				375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */,
 				37425CB620DE568C005A3C93 /* SignUpViewController.swift in Sources */,
+				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpModel.swift in Sources */,
 				3755199F20E50F9B00EC930B /* CalendarDetailViewController.swift in Sources */,
