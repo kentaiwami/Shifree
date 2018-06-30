@@ -148,7 +148,7 @@ extension CalendarViewController {
     }
 }
 
-// MARK: - CalendarViewDetailからアクセスして、変数を取り出すための関数一覧
+// MARK: - CalendarDetailViewからアクセスして、変数を取り出すための関数一覧
 extension CalendarViewController {
     func getTableViewShift() -> [TableViewShift] {
         return presenter.getTableViewShift()

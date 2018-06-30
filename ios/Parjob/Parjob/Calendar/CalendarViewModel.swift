@@ -48,45 +48,6 @@ class CalendarModel {
         }
     }
     
-    private func getData(json: JSON) -> [OneDayShift] {
-        var oneDayShift = [OneDayShift]()
-        
-        // 1日ごとにループ処理
-        json["results"]["shift"].arrayValue.forEach { (shift) in
-            var tmpOneDayShift = OneDayShift()
-            tmpOneDayShift.date = shift["date"].stringValue
-            tmpOneDayShift.memo = shift["memo"].stringValue
-            tmpOneDayShift.user.color = shift["user_shift"]["color"].stringValue
-            tmpOneDayShift.user.id = shift["user_shift"]["shift_id"].intValue
-            tmpOneDayShift.user.name = shift["user_shift"]["shift_name"].stringValue
-            
-            // カテゴリごとにループ処理
-            shift["shift_group"].arrayValue.forEach({ (shiftCategory) in
-                let categoryDict = shiftCategory.dictionaryValue
-                let categoryName = categoryDict.keys.first!
-                
-                var tmpShiftCategory = ShiftCategory()
-                tmpShiftCategory.name = categoryName
-                
-                // カテゴリ内の1人ごとにループ処理
-                (categoryDict[categoryName])!.arrayValue.forEach({ (userShift) in
-                    let tmpUserShift = UserShift(
-                        id: userShift["shift_id"].intValue,
-                        name: userShift["shift_name"].stringValue,
-                        user: userShift["user"].stringValue
-                    )
-                    tmpShiftCategory.userShift.append(tmpUserShift)
-                })
-                
-                tmpOneDayShift.shift.append(tmpShiftCategory)
-            })
-            
-            oneDayShift.append(tmpOneDayShift)
-        }
-        
-        return oneDayShift
-    }
-    
     func getShiftCategories(currentDate: String) -> [String] {
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDate
@@ -205,5 +166,47 @@ class CalendarModel {
         }
         
         return currentDateOneDayShifts[0].user
+    }
+}
+
+
+extension CalendarModel {
+    fileprivate func getData(json: JSON) -> [OneDayShift] {
+        var oneDayShift = [OneDayShift]()
+        
+        // 1日ごとにループ処理
+        json["results"]["shift"].arrayValue.forEach { (shift) in
+            var tmpOneDayShift = OneDayShift()
+            tmpOneDayShift.date = shift["date"].stringValue
+            tmpOneDayShift.memo = shift["memo"].stringValue
+            tmpOneDayShift.user.color = shift["user_shift"]["color"].stringValue
+            tmpOneDayShift.user.id = shift["user_shift"]["shift_id"].intValue
+            tmpOneDayShift.user.name = shift["user_shift"]["shift_name"].stringValue
+            
+            // カテゴリごとにループ処理
+            shift["shift_group"].arrayValue.forEach({ (shiftCategory) in
+                let categoryDict = shiftCategory.dictionaryValue
+                let categoryName = categoryDict.keys.first!
+                
+                var tmpShiftCategory = ShiftCategory()
+                tmpShiftCategory.name = categoryName
+                
+                // カテゴリ内の1人ごとにループ処理
+                (categoryDict[categoryName])!.arrayValue.forEach({ (userShift) in
+                    let tmpUserShift = UserShift(
+                        id: userShift["shift_id"].intValue,
+                        name: userShift["shift_name"].stringValue,
+                        user: userShift["user"].stringValue
+                    )
+                    tmpShiftCategory.userShift.append(tmpUserShift)
+                })
+                
+                tmpOneDayShift.shift.append(tmpShiftCategory)
+            })
+            
+            oneDayShift.append(tmpOneDayShift)
+        }
+        
+        return oneDayShift
     }
 }

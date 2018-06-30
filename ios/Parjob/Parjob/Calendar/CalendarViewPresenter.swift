@@ -18,7 +18,7 @@ class CalendarViewPresenter {
     
     weak var view: CalendarViewInterface?
     let calendarModel: CalendarModel
-        
+    
     var shiftCategories:[String] {
         guard let currentDate = view?.currentDate else {return []}
         return calendarModel.getShiftCategories(currentDate: currentDate)
@@ -61,12 +61,17 @@ class CalendarViewPresenter {
         calendarModel.setTableViewShift(currentDate: currentDate)
     }
     
+    
+    /// TableViewで描画、CalendarDetailViewからのアクセスで使用
+    ///
+    /// - Returns: TableViewで描画する選択状態にある日のシフト情報
     func getTableViewShift() -> [TableViewShift] {
         return calendarModel.tableViewShifts
     }
 }
 
 
+// MARK: - CalendarDetailViewからアクセスして、変数を取り出すための関数一覧
 extension CalendarViewPresenter {
     func getMemo() -> String {
         guard let currentDate = view?.currentDate else {return ""}
