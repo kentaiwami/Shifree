@@ -42,11 +42,11 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         presenter.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
     }
     
-    func setCompanyShiftNames() {
+    private func setCompanyShiftNames() {
         presenter.setCompanyShiftNames()
     }
     
-    private func initializeNavigationItem() {
+    fileprivate func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
@@ -56,7 +56,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         presenter.tapEditDoneButton()
     }
     
-    private func initializeForm() {
+    fileprivate func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         if presenter.isTargetInclude() {
@@ -97,14 +97,23 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         }
         UIView.setAnimationsEnabled(true)
     }
+        
+    /// どのセクションをタップしてインスタンス化したかを記録
+    ///
+    /// - Parameter at: タップされたIndexPath
+    func setIndexPath(at: IndexPath) {
+        self.indexPath = at
+    }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+}
+
+extension CalendarDetailViewController {
     func initializeUI() {
         initializeNavigationItem()
         initializeForm()
-    }
-    
-    func setIndexPath(at: IndexPath) {
-        self.indexPath = at
     }
     
     func showErrorAlert(title: String, msg: String) {
@@ -113,9 +122,5 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     
     func popViewController() {
         self.navigationController?.popViewController(animated: true)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 }

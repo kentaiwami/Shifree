@@ -18,11 +18,6 @@ protocol CalendarDetailModelDelegate: class {
     func popViewController()
 }
 
-struct Shift {
-    var id: Int = 0
-    var name: String = ""
-}
-
 
 class CalendarDetailModel {
     weak var delegate: CalendarDetailModelDelegate?
