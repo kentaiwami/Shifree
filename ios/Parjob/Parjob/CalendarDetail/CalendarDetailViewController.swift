@@ -12,14 +12,16 @@ import Eureka
 
 protocol CalendarDetailViewInterface: class {
     var indexPath: IndexPath { get }
+    var formValues: [String:Any?] { get }
     
     func initializeUI()
     func showErrorAlert(title: String, msg: String)
+    func popViewController()
 }
 
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
-
     var indexPath: IndexPath = []
+    var formValues: [String : Any?] = [:]
     fileprivate var presenter: CalendarDetailViewPresenter!
     
     override func viewDidLoad() {
@@ -45,12 +47,13 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     }
     
     private func initializeNavigationItem() {
-        let check = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapEditDoneButton))
+        let check = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
     
-    @objc private func TapEditDoneButton() {
-        
+    @objc private func tapEditDoneButton() {
+        self.formValues = self.form.values()
+        presenter.tapEditDoneButton()
     }
     
     private func initializeForm() {
@@ -65,7 +68,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
                     $0.placeholder = "このシフトに関するメモを残すことができます。"
             }
         }
-        
+
         for (i, userShift) in presenter.getUsersShift().enumerated() {
             var sectionName = "シフトの詳細"
             if i != 0 {
@@ -76,13 +79,15 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
                 <<< LabelRow() {
                     $0.title = "従業員"
                     $0.value = userShift.user
+                    $0.tag = String(userShift.id) + "_name"
                 }
                 
                 <<< PickerInputRow<String> {
                     $0.title = "シフト"
                     $0.value = userShift.name
                     $0.options = presenter.getCompanyShiftNames()
-                    
+                    $0.tag = String(userShift.id) + "_shift"
+
                     if presenter.isAdmin() {
                         $0.disabled = false
                     }else {
@@ -104,6 +109,10 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     
     func showErrorAlert(title: String, msg: String) {
         ShowStandardAlert(title: title, msg: msg, vc: self)
+    }
+    
+    func popViewController() {
+        self.navigationController?.popViewController(animated: true)
     }
 
     override func didReceiveMemoryWarning() {

@@ -47,6 +47,10 @@ class CalendarDetailViewPresenter {
     func getCompanyShiftNames() -> [String] {
         return calendarDetailModel.companyShiftNames
     }
+    
+    func tapEditDoneButton() {
+        calendarDetailModel.updateMemoAndShift(formValue: (view?.formValues)!)
+    }
 }
 
 extension CalendarDetailViewPresenter: CalendarDetailModelDelegate {
@@ -56,6 +60,10 @@ extension CalendarDetailViewPresenter: CalendarDetailModelDelegate {
     
     func initializeUI() {
         view?.initializeUI()
+    }
+    
+    func popViewController() {
+        view?.popViewController()
     }
 }
 

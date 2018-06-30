@@ -44,6 +44,12 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         
         self.tabBarController?.navigationItem.title = "Calendar"
         initializeNavigationItem()
+        
+        if calendar != nil && tableView != nil {
+            calendar.removeFromSuperview()
+            tableView.removeFromSuperview()
+            initializeUI()
+        }
     }
     
     private func initializePresenter() {

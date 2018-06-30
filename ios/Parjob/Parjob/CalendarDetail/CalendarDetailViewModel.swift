@@ -8,10 +8,14 @@
 
 import Foundation
 import KeychainAccess
+import PromiseKit
+import SwiftyJSON
+
 
 protocol CalendarDetailModelDelegate: class {
     func initializeUI()
     func faildAPI(title: String, msg: String)
+    func popViewController()
 }
 
 struct Shift {
@@ -66,6 +70,63 @@ class CalendarDetailModel {
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
+    }
+    
+    func updateMemoAndShift(formValue: [String:Any?]) {
+        var differentUserShift: [[String:Any]] = []
+        
+        for userShift in self.tableViewShift.shifts {
+            let key = String(userShift.id) + "_shift"
+            
+            if let value = formValue[key] as? String {
+                if value != userShift.name {
+                    differentUserShift.append([
+                        "id": userShift.id,
+                        "name": value
+                    ])
+                }
+            }
+        }
+        
+        if formValue["memo"] == nil && differentUserShift.count != 0 {
+            api.updateUserShift(shifts: differentUserShift).done { (json) in
+                self.delegate?.popViewController()
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            }
+        }else if formValue["memo"] != nil && differentUserShift.count == 0 {
+            var memo = ""
+            if let tmpMemo = formValue["memo"] as? String {
+                memo = tmpMemo
+            }
+            api.updateMemo(userShiftID: targetUserShift.id, text: memo).done { (json) in
+                self.delegate?.popViewController()
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            }
+        }else if formValue["memo"] != nil && differentUserShift.count != 0 {
+            var memo = ""
+            if let tmpMemo = formValue["memo"] as? String {
+                memo = tmpMemo
+            }
+            
+            when(resolved: [api.updateMemo(userShiftID: targetUserShift.id, text: memo), api.updateUserShift(shifts: differentUserShift)]).done { (json) in
+                self.delegate?.popViewController()
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            }
+        }else {
+            self.delegate?.popViewController()
         }
     }
 }

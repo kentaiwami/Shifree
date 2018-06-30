@@ -106,4 +106,22 @@ extension API {
         let endPoint = "shift"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func updateMemo(userShiftID: Int, text: String) -> Promise<JSON> {
+        let endPoint = "usershift/memo/" + String(userShiftID)
+        let params = [
+            "text": text
+        ] as [String:Any]
+        
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+    
+    func updateUserShift(shifts: [[String:Any]]) -> Promise<JSON> {
+        let endPoint = "usershift"
+        let params = [
+            "shifts": shifts
+            ] as [String:Any]
+        
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
 }
