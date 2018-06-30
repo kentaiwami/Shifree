@@ -85,8 +85,22 @@ def get():
             'memo': memo
         })
 
+
+    '''
+        シフトカテゴリの抽出
+    '''
+    shift_category_results = []
+    shift_category_color_list = session.query(ShiftCategory, ColorScheme).join(ColorScheme).filter(ShiftCategory.company_id == user.company_id, ColorScheme.user_id == user.id).order_by(ShiftCategory.id.asc()).all()
+
+    for shift_category_color in shift_category_color_list:
+        shift_category_results.append({
+            'name': shift_category_color[0].name,
+            'hex': shift_category_color[1].hex
+        })
+
     session.close()
-    return jsonify({'results': {'shift': shit_results}}), 200
+    return jsonify({'results': {'shift': shit_results, 'shift_category': shift_category_results}}), 200
+
 
 
 @app.route('/api/v1/usershift', methods=['PUT'])
