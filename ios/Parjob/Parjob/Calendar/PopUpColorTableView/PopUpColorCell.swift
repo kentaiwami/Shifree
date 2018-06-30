@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TinyConstraints
 
 class PopUpColorCell: UITableViewCell {
     
@@ -15,10 +16,18 @@ class PopUpColorCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        let height = colorView.frame.height
+        colorView.frame.size = CGSize(width: height, height: height)
+        colorView.layer.cornerRadius = colorView.frame.width / 2
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
+    func setCell(name: String, color: String) {
+        shiftCategoryNameLabel.text = name
+        colorView.backgroundColor = UIColor.hex(color, alpha: 1.0)
+    }
 }

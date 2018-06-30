@@ -28,6 +28,7 @@ class PopUpColorViewController: UIViewController, UITableViewDataSource, UITable
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.allowsSelection = false
         
         tableView.height(self.view.frame.height / 2)
         tableView.top(to: self.view)
@@ -40,8 +41,7 @@ class PopUpColorViewController: UIViewController, UITableViewDataSource, UITable
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! PopUpColorCell
         let shiftCategoryColor = presenter.getShiftCategoryColor()
         
-        cell.shiftCategoryNameLabel.text = shiftCategoryColor[indexPath.row].name
-        cell.colorView.backgroundColor = UIColor.hex(shiftCategoryColor[indexPath.row].color, alpha: 1.0)
+        cell.setCell(name: shiftCategoryColor[indexPath.row].name, color: shiftCategoryColor[indexPath.row].color)
         
         return cell
     }
