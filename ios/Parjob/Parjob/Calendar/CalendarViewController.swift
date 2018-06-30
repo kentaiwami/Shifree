@@ -56,12 +56,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         presenter = CalendarViewPresenter(view: self)
     }
     
-    func initializeUI() {
-        initializeCalendarView()
-        initializeTableView()
-    }
-    
-    private func initializeCalendarView() {
+    fileprivate func initializeCalendarView() {
         let calendar = FSCalendar()
         calendar.dataSource = self
         calendar.delegate = self
@@ -81,7 +76,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         presenter.setTableViewShift()
     }
     
-    private func initializeTableView() {
+    fileprivate func initializeTableView() {
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -112,10 +107,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         presenter.getUserShift()
     }
     
-    func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self)
-    }
-    
     private func setStartEndDate() {
         let startDate: Date
         let endDate: Date
@@ -138,6 +129,26 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
 }
 
+
+// MARK: - Presenterとのやり取りで使用
+extension CalendarViewController {
+    func initializeUI() {
+        initializeCalendarView()
+        initializeTableView()
+    }
+    
+    func updateTableViewData() {
+        presenter.setTableViewShift()
+        self.tableView.reloadData()
+        self.calendar.reloadData()
+    }
+    
+    func showErrorAlert(title: String, msg: String) {
+        ShowStandardAlert(title: title, msg: msg, vc: self)
+    }
+}
+
+// MARK: - CalendarViewDetailからアクセスして、変数を取り出すための関数一覧
 extension CalendarViewController {
     func getTableViewShift() -> [TableViewShift] {
         return presenter.getTableViewShift()
@@ -152,6 +163,9 @@ extension CalendarViewController {
     }
 }
 
+
+
+// MARK: - FSCalendar関連のデリゲート関数まとめ
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         heightConst.constant = bounds.height
@@ -207,14 +221,9 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
 }
 
+
+// MARK: - UITableView関連のデリゲート関数まとめ
 extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func updateTableViewData() {
-        presenter.setTableViewShift()
-        self.tableView.reloadData()
-        self.calendar.reloadData()
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
