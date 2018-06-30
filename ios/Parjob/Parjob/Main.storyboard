@@ -43,17 +43,19 @@
             </objects>
             <point key="canvasLocation" x="830" y="-798"/>
         </scene>
-        <!--Edit-->
+        <!--User-->
         <scene sceneID="Jdo-Aa-bJl">
             <objects>
-                <viewController storyboardIdentifier="Edit" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3TD-Sm-VO1" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="User" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3TD-Sm-VO1" customClass="UserTopViewController" customModule="Parjob" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wwg-YI-10D">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="HA9-2k-T9D"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Edit" image="tab_edit" selectedImage="tab_edit" id="m8l-Xv-Urp"/>
+                    <tabBarItem key="tabBarItem" title="User" image="user" id="m8l-Xv-Urp">
+                        <inset key="largeContentSizeImageInsets" minX="1" minY="1" maxX="0.0" maxY="1"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fTO-K1-Ipg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -152,7 +154,7 @@
     </scenes>
     <resources>
         <image name="tab_calendar" width="30" height="30"/>
-        <image name="tab_edit" width="16" height="16"/>
         <image name="tab_setting" width="16" height="16"/>
+        <image name="user" width="30" height="30"/>
     </resources>
 </document>
