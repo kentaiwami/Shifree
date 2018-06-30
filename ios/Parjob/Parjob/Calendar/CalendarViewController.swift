@@ -92,7 +92,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "switch_calendar"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
-        let info = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapColorInformationButton))
+        let info = UIBarButtonItem(image: UIImage(named: "information"), style: .plain, target: self, action: #selector(TapColorInformationButton))
 
         self.tabBarController?.navigationItem.setRightBarButton(check, animated: true)
         self.tabBarController?.navigationItem.setLeftBarButton(info, animated: true)
@@ -102,9 +102,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "ColorTable")
         let popUp = PopupDialog(viewController: vc)
-        let buttonOK = DefaultButton(title: "OK") {
-            print("OK")
-        }
+        let buttonOK = DefaultButton(title: "OK"){}
         
         popUp.addButton(buttonOK)
         
