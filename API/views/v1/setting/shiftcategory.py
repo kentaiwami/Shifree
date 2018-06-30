@@ -44,8 +44,7 @@ def add():
 @api_basic_auth.login_required
 def get():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    company = session.query(Company).filter(Company.id == user.company_id).one()
-    shift_categories = session.query(ShiftCategory).join(Company).filter(ShiftCategory.company_id == company.id).all()
+    shift_categories = session.query(ShiftCategory).join(Company).filter(ShiftCategory.company_id == user.company_id).all()
 
     results = []
 

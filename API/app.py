@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from model import db
 from config import secret_key
 from views.v1 import auth, login, salary, comment, table, company
-from views.v1.shift import usershift, memo
+from views.v1.shift import usershift, memo, shift
 from views.v1.setting import wage, username, password, user, shiftcategory, color
 from admin import AuthException, init_admin
 
@@ -25,7 +25,7 @@ def init_app():
 def add_bp(app_obj):
     modules_define = [
         auth.app, login.app, wage.app, username.app, password.app, user.app, shiftcategory.app,
-        color.app, salary.app, usershift.app, table.app, comment.app, memo.app, company.app
+        color.app, salary.app, usershift.app, table.app, comment.app, memo.app, company.app, shift.app
     ]
 
     for bp_app in modules_define:

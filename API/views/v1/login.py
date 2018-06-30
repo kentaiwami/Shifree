@@ -15,7 +15,7 @@ def login():
     session.close()
 
     if user_role is not None:
-        return jsonify({'results': {'user_code': user_role[0].code, 'role': user_role[1].name}}), 200
+        return jsonify({'user_code': user_role[0].code, 'role': user_role[1].name}), 200
     else:
         frame = inspect.currentframe()
         abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})

@@ -60,7 +60,7 @@ def create_or_update():
 @api_basic_auth.login_required
 def get():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    category_colorschemes = session.query(ShiftCategory, ColorScheme).outerjoin(ColorScheme).filter(ShiftCategory.company_id == user.company_id).order_by('id').all()
+    category_colorschemes = session.query(ShiftCategory, ColorScheme).outerjoin(ColorScheme).filter(ShiftCategory.company_id == user.company_id, ColorScheme.user_id == user.id).order_by('id').all()
     session.close()
 
     results = []

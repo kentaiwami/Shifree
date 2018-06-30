@@ -1,0 +1,7 @@
+## Various settings
+xcuserdata/
+
+# CocoaPods
+Pods/
+
+Parjob/Parjob/Setting.swift

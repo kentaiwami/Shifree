@@ -14,7 +14,7 @@ app = Blueprint('user_shift_memo_bp', __name__)
 def update(usershift_id):
     schema = {'type': 'object',
               'properties':
-                  {'text': {'type': 'string', 'minLength': 1}},
+                  {'text': {'type': 'string'}},
               'required': ['text']
               }
 
@@ -38,34 +38,6 @@ def update(usershift_id):
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     user_shift.memo = request.json['text']
-    session.commit()
-    session.close()
-
-    return jsonify({'results': {
-        'usershift_id': user_shift.id,
-        'date': str(user_shift.date),
-        'user_id': user_shift.user_id,
-        'memo': user_shift.memo
-    }}), 200
-
-
-@app.route('/api/v1/usershift/memo/<usershift_id>', methods=['DELETE'])
-@api_basic_auth.login_required
-def delete(usershift_id):
-    user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    user_shift = session.query(UserShift).filter(UserShift.id == usershift_id).one_or_none()
-
-    if user_shift is None:
-        session.close()
-        frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
-
-    if user_shift.user_id != user.id:
-        session.close()
-        frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
-
-    user_shift.memo = ''
     session.commit()
     session.close()
 
