@@ -9,6 +9,7 @@
 import UIKit
 import FSCalendar
 import TinyConstraints
+import PopupDialog
 
 
 protocol CalendarViewInterface: class {
@@ -91,7 +92,23 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "switch_calendar"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
+        let info = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapColorInformationButton))
+
         self.tabBarController?.navigationItem.setRightBarButton(check, animated: true)
+        self.tabBarController?.navigationItem.setLeftBarButton(info, animated: true)
+    }
+    
+    @objc private func TapColorInformationButton(sendor: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "ColorTable")
+        let popUp = PopupDialog(viewController: vc)
+        let buttonOK = DefaultButton(title: "OK") {
+            print("OK")
+        }
+        
+        popUp.addButton(buttonOK)
+        
+        present(popUp, animated: true, completion: nil)
     }
     
     @objc private func TapChangeCalendarButton(sendor: UIButton) {
