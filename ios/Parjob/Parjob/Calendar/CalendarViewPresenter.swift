@@ -52,7 +52,7 @@ class CalendarViewPresenter {
     func getUserShift() {
         guard let start = view?.start else {return}
         guard let end = view?.end else {return}
-        
+
         calendarModel.getAllUserShift(start: start, end: end)
     }
     
