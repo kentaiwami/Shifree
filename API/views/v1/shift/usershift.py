@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, UserShift, Shift, ShiftCategory, Company, ColorScheme
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_200, response_msg_400
+from views.v1.response import response_msg_404, response_msg_403, response_msg_400
 from basic_auth import api_basic_auth
 from itertools import groupby
 from datetime import datetime
