@@ -66,6 +66,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         calendar.dataSource = self
         calendar.delegate = self
         calendar.scope = .week
+        calendar.appearance.weekdayTextColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        calendar.appearance.headerTitleColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        calendar.appearance.headerDateFormat = "yyyy年MM月"
         view.addSubview(calendar)
         self.calendar = calendar
         
@@ -92,7 +95,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     private func initializeNavigationItem() {
-        let check = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
+        let check = UIBarButtonItem(image: UIImage(named: "switch_calendar"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         self.tabBarController?.navigationItem.setRightBarButton(check, animated: true)
     }
     
