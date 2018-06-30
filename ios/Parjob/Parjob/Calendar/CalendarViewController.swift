@@ -46,10 +46,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         self.tabBarController?.navigationItem.title = "Calendar"
         initializeNavigationItem()
         
+        // 起動時は実行せず、他画面から戻ってきた時に再取得&表示内容の更新
         if calendar != nil && tableView != nil {
-            calendar.removeFromSuperview()
-            tableView.removeFromSuperview()
-            initializeUI()
+            getUserShift()
         }
     }
     
