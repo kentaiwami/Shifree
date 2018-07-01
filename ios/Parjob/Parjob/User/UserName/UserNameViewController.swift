@@ -31,7 +31,7 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
         return self.form.values()["username"] as! String
     }
     
-    private func initializeUI() {
+    private func initializeForm() {
         form +++ Section("")
             <<< TextRow(){ row in
                 row.title = "UserName"
@@ -59,19 +59,19 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
                 }
             }
         }
-        
-        form +++ Section()
-            <<< ButtonRow(){
-                $0.title = "更新"
-                $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-                $0.baseCell.tintColor = UIColor.white
-                }
-                .onCellSelection {  cell, row in
-                    self.UpdateButtonTapped()
-        }
     }
     
-    private func UpdateButtonTapped() {
+    private func initializeUI() {
+        initializeNavigationItem()
+        initializeForm()
+    }
+    
+    private func initializeNavigationItem() {
+        let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
+        self.navigationItem.setRightBarButton(check, animated: true)
+    }
+    
+    @objc private func tapEditDoneButton() {
         if IsValidateFormValue(form: self.form) {
             presenter.updateUserName()
         }else {
@@ -85,6 +85,8 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
 }
 
 
+
+// MARK: - Presenterから呼び出される関数
 extension UserNameViewController {
     func success() {
         ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
