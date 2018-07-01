@@ -87,6 +87,16 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return salaryVC}, onDismiss: {salaryVC in salaryVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
+        
+        form +++ Section("")
+            <<< ButtonRow(){
+                $0.title = "リセット"
+                $0.baseCell.backgroundColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+                $0.baseCell.tintColor = UIColor.white
+                }
+                .onCellSelection {  cell, row in
+                    self.ResetButtonTapped()
+        }
     }
     
     private func initializeUI() {
@@ -102,6 +112,10 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         }
         
         initializeAnotherForm()
+    }
+    
+    private func ResetButtonTapped() {
+        //TODO: リセットボタン
     }
     
     private func initializePresenter() {
