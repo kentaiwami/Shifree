@@ -158,7 +158,7 @@ extension CalendarViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self)
+        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 

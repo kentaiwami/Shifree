@@ -36,9 +36,13 @@ func IsHTTPStatus(statusCode: Int?) -> Bool {
     }
 }
 
-func ShowStandardAlert(title: String, msg: String, vc: UIViewController) {
+func ShowStandardAlert(title: String, msg: String, vc: UIViewController, completion: (() -> Void)?) {
     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
-    let popup = PopupDialog(title: title, message: msg)
+    let popup = PopupDialog(title: title, message: msg) {
+        if let tmpCompletion = completion {
+            tmpCompletion()
+        }
+    }
     popup.transitionStyle = .zoomIn
     popup.addButtons([button])
     vc.present(popup, animated: true, completion: nil)
@@ -49,5 +53,16 @@ func GetFormatterDateString(format: String, date: Date) -> String {
     formatter.dateFormat = format
     
     return formatter.string(from: date)
+}
+
+func GetWageTime() -> [String] {
+    var wageTime: [String] = []
+    
+    for hour in 0...23 {
+        for minute in [0, 30] {
+            wageTime.append(String(format: "%02d", hour) + ":" + String(format: "%02d", minute))
+        }
+    }
+    return wageTime
 }
 

@@ -16,7 +16,6 @@ protocol SignUpViewInterface: class {
     var password: String { get }
     
     func navigateCalendar()
-    func signUpButtonTapped()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -47,7 +46,7 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
         initializePresenter()
     }
     
-    func initializeUI() {
+    private func initializeUI() {
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
             cell.textLabel?.textColor = .white
@@ -154,10 +153,26 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
             }
     }
     
-    func initializePresenter() {
-        presenter = SignUpViewPresenter(view: self)
+    private func signUpButtonTapped() {
+        if IsValidateFormValue(form: form) {
+            presenter.signUpButtonTapped()
+        }else {
+            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self, completion: nil)
+        }
     }
     
+    private func initializePresenter() {
+        presenter = SignUpViewPresenter(view: self)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+}
+
+
+// MARK: - Presenterから呼び出される関数一覧
+extension SignUpViewController {
     func navigateCalendar() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let topVC = storyboard.instantiateInitialViewController()
@@ -166,16 +181,6 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self)
-    }
-    
-    func signUpButtonTapped() {
-        if IsValidateFormValue(form: form) {
-            presenter.signUpButtonTapped()
-        }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }

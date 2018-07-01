@@ -12,48 +12,48 @@ import Foundation
 class CalendarDetailViewPresenter {
     
     weak var view: CalendarDetailViewInterface?
-    let calendarDetailModel: CalendarDetailModel
+    let model: CalendarDetailViewModel
     
     init(view: CalendarDetailViewInterface) {
         self.view = view
-        self.calendarDetailModel = CalendarDetailModel()
-        calendarDetailModel.delegate = self
+        self.model = CalendarDetailViewModel()
+        model.delegate = self
     }
     
     func setSelectedData(tableViewShift: TableViewShift, memo: String, targetUserShift: TargetUserShift) {
-        calendarDetailModel.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
+        model.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
     }
     
     func isAdmin() -> Bool {
-        return calendarDetailModel.isAdmin()
+        return model.isAdmin()
     }
     
     func isTargetInclude() -> Bool {
-        return calendarDetailModel.isTargetInclude()
+        return model.isTargetInclude()
     }
     
     func getUsersShift() -> [UserShift] {
-        return calendarDetailModel.tableViewShift.shifts
+        return model.tableViewShift.shifts
     }
     
     func getMemo() -> String {
-        return calendarDetailModel.memo
+        return model.memo
     }
     
     func setCompanyShiftNames() {
-        calendarDetailModel.getUserCompanyShiftNames()
+        model.getUserCompanyShiftNames()
     }
     
     func getCompanyShiftNames() -> [String] {
-        return calendarDetailModel.companyShiftNames
+        return model.companyShiftNames
     }
     
     func tapEditDoneButton() {
-        calendarDetailModel.updateMemoAndShift(formValue: (view?.formValues)!)
+        model.updateMemoAndShift(formValue: (view?.formValues)!)
     }
 }
 
-extension CalendarDetailViewPresenter: CalendarDetailModelDelegate {
+extension CalendarDetailViewPresenter: CalendarDetailViewModelDelegate {
     func faildAPI(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
     }

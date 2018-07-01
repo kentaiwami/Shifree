@@ -56,11 +56,12 @@ def get():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one_or_none()
     session.close()
 
+
     return jsonify({'results': {
-        'daytime_start': str(user.daytime_start),
-        'daytime_end': str(user.daytime_end),
-        'daytime_wage': user.daytime_wage,
-        'night_start': str(user.night_start),
-        'night_end': str(user.night_end),
-        'night_wage': user.night_wage
+        'daytime_start': user.daytime_start.strftime("%H:%M") if user.daytime_start != None else None,
+        'daytime_end': user.daytime_end.strftime("%H:%M") if user.daytime_end != None else None,
+        'daytime_wage': user.daytime_wage if user.daytime_wage != None else None,
+        'night_start': user.night_start.strftime("%H:%M") if user.night_start != None else None,
+        'night_end': user.night_end.strftime("%H:%M") if user.night_end != None else None,
+        'night_wage': user.night_wage if user.night_wage != None else None
     }}), 200

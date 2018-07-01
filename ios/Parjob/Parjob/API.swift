@@ -129,4 +129,34 @@ extension API {
         let endPoint = "setting/color"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func updateUserName(newUserName: String) -> Promise<JSON> {
+        let endPoint = "setting/username"
+        let params = ["username": newUserName] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+    
+    func getUserWage() -> Promise<JSON> {
+        let endPoint = "setting/wage"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func updateUserWage(daytimeStart: String, daytimeEnd: String, nightStart: String, nightEnd: String, daytimeWage: Int, nightWage: Int) -> Promise<JSON> {
+        let endPoint = "setting/wage"
+        let params = [
+            "daytime_start": daytimeStart,
+            "daytime_end": daytimeEnd,
+            "night_start": nightStart,
+            "night_end": nightEnd,
+            "daytime_wage": daytimeWage,
+            "night_wage": nightWage
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+    
+    func updatePassword(new: String) -> Promise<JSON> {
+        let endPoint = "setting/password"
+        let params = ["new_password": new] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
 }

@@ -10,14 +10,14 @@ import Foundation
 import KeychainAccess
 import SwiftyJSON
 
-protocol CalendarModelDelegate: class {
+protocol CalendarViewModelDelegate: class {
     func updateTableViewData()
     func initializeUI()
     func faildAPI(title: String, msg: String)
 }
 
-class CalendarModel {
-    weak var delegate: CalendarModelDelegate?
+class CalendarViewModel {
+    weak var delegate: CalendarViewModelDelegate?
     private let api = API()
     private(set) var oneDayShifts: [OneDayShift] = []
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
@@ -171,7 +171,7 @@ class CalendarModel {
 }
 
 
-extension CalendarModel {
+extension CalendarViewModel {
     fileprivate func getData(json: JSON) -> [OneDayShift] {
         var oneDayShift = [OneDayShift]()
         
