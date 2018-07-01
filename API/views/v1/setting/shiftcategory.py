@@ -60,7 +60,7 @@ def get():
 def update(category_id):
     schema = {'type': 'object',
               'properties':
-                  {'category_name': {'type': 'string', 'minLength': 1}},
+                  {'name': {'type': 'string', 'minLength': 1}},
               'required': ['category_name']
               }
 
@@ -89,13 +89,13 @@ def update(category_id):
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    category.name = request.json['category_name']
+    category.name = request.json['name']
 
     session.add(category)
     session.commit()
 
     session.close()
-    return jsonify({'results': {'category_id': category_id, 'category_name': request.json['category_name']}}), 200
+    return jsonify({'results': {'category_id': category_id, 'category_name': request.json['name']}}), 200
 
 
 @app.route('/api/v1/setting/shiftcategory/<category_id>', methods=['DELETE'])
