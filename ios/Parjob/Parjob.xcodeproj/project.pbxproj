@@ -30,7 +30,7 @@
 		375519A920E75C7B00EC930B /* CalendarDetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375519A820E75C7B00EC930B /* CalendarDetailEntity.swift */; };
 		37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */; };
 		37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */; };
-		37A69B1420E897AE004E8C66 /* UserTopModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1320E897AE004E8C66 /* UserTopModel.swift */; };
+		37A69B1420E897AE004E8C66 /* UserTopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1320E897AE004E8C66 /* UserTopViewModel.swift */; };
 		37A69B1820E89D19004E8C66 /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1720E89D19004E8C66 /* UserListViewController.swift */; };
 		37A69B1A20E89D28004E8C66 /* ShiftCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1920E89D28004E8C66 /* ShiftCategoryViewController.swift */; };
 		37A69B1D20E8A09A004E8C66 /* WageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1C20E8A09A004E8C66 /* WageViewController.swift */; };
@@ -72,7 +72,7 @@
 		375519A820E75C7B00EC930B /* CalendarDetailEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailEntity.swift; sourceTree = "<group>"; };
 		37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewController.swift; sourceTree = "<group>"; };
 		37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewPresenter.swift; sourceTree = "<group>"; };
-		37A69B1320E897AE004E8C66 /* UserTopModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopModel.swift; sourceTree = "<group>"; };
+		37A69B1320E897AE004E8C66 /* UserTopViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewModel.swift; sourceTree = "<group>"; };
 		37A69B1720E89D19004E8C66 /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		37A69B1920E89D28004E8C66 /* ShiftCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCategoryViewController.swift; sourceTree = "<group>"; };
 		37A69B1C20E8A09A004E8C66 /* WageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageViewController.swift; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 			children = (
 				37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */,
 				37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */,
-				37A69B1320E897AE004E8C66 /* UserTopModel.swift */,
+				37A69B1320E897AE004E8C66 /* UserTopViewModel.swift */,
 			);
 			path = Top;
 			sourceTree = "<group>";
@@ -439,7 +439,7 @@
 				37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */,
 				375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */,
 				37425CB620DE568C005A3C93 /* SignUpViewController.swift in Sources */,
-				37A69B1420E897AE004E8C66 /* UserTopModel.swift in Sources */,
+				37A69B1420E897AE004E8C66 /* UserTopViewModel.swift in Sources */,
 				37A69B3320E957F2004E8C66 /* WageViewPresenter.swift in Sources */,
 				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,

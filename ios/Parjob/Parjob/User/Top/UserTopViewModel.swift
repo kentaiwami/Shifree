@@ -1,5 +1,5 @@
 //
-//  UserTopModel.swift
+//  UserTopViewModel.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/06/23.
@@ -9,7 +9,7 @@
 import Foundation
 import KeychainAccess
 
-class UserTopModel {
+class UserTopViewModel {
     func isAdmin() -> Bool {
         let keychain = Keychain()
         let role = try! keychain.get("role")!
