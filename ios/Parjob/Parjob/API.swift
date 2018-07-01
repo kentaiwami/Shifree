@@ -141,15 +141,15 @@ extension API {
         return getAuth(url: base + version + endPoint)
     }
     
-    func updateUserWage(daytime_start: String, daytime_end: String, night_start: String, night_end: String, daytime_wage: Int, night_wage: Int) -> Promise<JSON> {
+    func updateUserWage(daytimeStart: String, daytimeEnd: String, nightStart: String, nightEnd: String, daytimeWage: Int, nightWage: Int) -> Promise<JSON> {
         let endPoint = "setting/wage"
         let params = [
-            "daytime_start": daytime_start,
-            "daytime_end": daytime_end,
-            "night_start": night_start,
-            "night_end": night_end,
-            "daytime_wage": daytime_wage,
-            "night_wage": night_wage
+            "daytime_start": daytimeStart,
+            "daytime_end": daytimeEnd,
+            "night_start": nightStart,
+            "night_end": nightEnd,
+            "daytime_wage": daytimeWage,
+            "night_wage": nightWage
             ] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }

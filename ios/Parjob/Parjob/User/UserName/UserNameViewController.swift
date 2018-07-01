@@ -32,13 +32,6 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
     }
     
     private func initializeUI() {
-        LabelRow.defaultCellUpdate = { cell, row in
-            cell.contentView.backgroundColor = .red
-            cell.textLabel?.textColor = .white
-            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-            cell.textLabel?.textAlignment = .right
-        }
-        
         form +++ Section("")
             <<< TextRow(){ row in
                 row.title = "UserName"
@@ -57,7 +50,11 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
                     let labelRow = LabelRow() {
                         $0.title = err
                         $0.cell.height = { 30 }
-                    }
+                        $0.cell.contentView.backgroundColor = .red
+                        $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+                        }.cellUpdate({ (cell, row) in
+                            cell.textLabel?.textColor = .white
+                        })
                     row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
                 }
             }

@@ -9,7 +9,7 @@
 import Foundation
 
 protocol WageViewPresentable: class {
-    var username: String { get }
+//    var username: String { get }
 }
 
 class WageViewPresenter {
@@ -23,17 +23,36 @@ class WageViewPresenter {
         model.delegate = self
     }
     
-    var username: String {
-        return model.getUsername()
+    func getUserWage() -> UserWage {
+        return model.userWage
     }
     
-    func updateUserName() {
-        guard let username = view?.username else {return }
-        model.updateUserName(newUserName: username)
+    func setUserWage() {
+        model.setUserWage()
     }
+    
+    func updateUserWage() {
+        guard let daytimeStart = view?.daytimeStart else {return }
+        guard let daytimeEnd = view?.daytimeEnd else {return }
+        guard let nightStart = view?.nightStart else {return }
+        guard let nightEnd = view?.nightEnd else {return }
+        guard let daytimeWage = view?.daytimeWage else {return }
+        guard let nightWage = view?.nightWage else {return }
+        
+        model.updateUserWage(daytimeStart: daytimeStart, daytimeEnd: daytimeEnd, nightStart: nightStart, nightEnd: nightEnd, daytimeWage: daytimeWage, nightWage: nightWage)
+    }
+    
+//    func updateUserName() {
+//        guard let username = view?.username else {return }
+//        model.updateUserName(newUserName: username)
+//    }
 }
 
 extension WageViewPresenter: WageViewModelDelegate {
+    func initializeUI() {
+        view?.initializeUI()
+    }
+    
     func success() {
         view?.success()
     }
