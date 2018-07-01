@@ -15,15 +15,6 @@ protocol WageViewModelDelegate: class {
     func faildAPI(title: String, msg: String)
 }
 
-struct UserWage {
-    var daytimeStart: String = ""
-    var daytimeEnd: String = ""
-    var nightStart: String = ""
-    var nightEnd: String = ""
-    var daytimeWage: Int = 0
-    var nightWage: Int = 0
-}
-
 class WageViewModel {
     weak var delegate: WageViewModelDelegate?
     private let api = API()

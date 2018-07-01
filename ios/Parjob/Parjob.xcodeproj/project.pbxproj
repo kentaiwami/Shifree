@@ -42,6 +42,7 @@
 		37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2C20E8D3E1004E8C66 /* UserNameViewModel.swift */; };
 		37A69B3320E957F2004E8C66 /* WageViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3120E957F1004E8C66 /* WageViewPresenter.swift */; };
 		37A69B3420E957F2004E8C66 /* WageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3220E957F1004E8C66 /* WageViewModel.swift */; };
+		37A69B3620E97F80004E8C66 /* WageViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3520E97F80004E8C66 /* WageViewEntity.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -84,6 +85,7 @@
 		37A69B2C20E8D3E1004E8C66 /* UserNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewModel.swift; sourceTree = "<group>"; };
 		37A69B3120E957F1004E8C66 /* WageViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WageViewPresenter.swift; sourceTree = "<group>"; };
 		37A69B3220E957F1004E8C66 /* WageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WageViewModel.swift; sourceTree = "<group>"; };
+		37A69B3520E97F80004E8C66 /* WageViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageViewEntity.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				37A69B1C20E8A09A004E8C66 /* WageViewController.swift */,
 				37A69B3120E957F1004E8C66 /* WageViewPresenter.swift */,
 				37A69B3220E957F1004E8C66 /* WageViewModel.swift */,
+				37A69B3520E97F80004E8C66 /* WageViewEntity.swift */,
 			);
 			path = Wage;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				37326C3920DEC79200A60B00 /* Extensions.swift in Sources */,
 				37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */,
 				37425CBA20DE68AF005A3C93 /* SignUpViewPresenter.swift in Sources */,
+				37A69B3620E97F80004E8C66 /* WageViewEntity.swift in Sources */,
 				37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */,
 				375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */,
 				37425CB620DE568C005A3C93 /* SignUpViewController.swift in Sources */,

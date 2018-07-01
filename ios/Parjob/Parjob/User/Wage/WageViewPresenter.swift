@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol WageViewPresentable: class {
-//    var username: String { get }
-}
-
 class WageViewPresenter {
     
     weak var view: WageViewInterface?
@@ -41,11 +37,6 @@ class WageViewPresenter {
         
         model.updateUserWage(daytimeStart: daytimeStart, daytimeEnd: daytimeEnd, nightStart: nightStart, nightEnd: nightEnd, daytimeWage: daytimeWage, nightWage: nightWage)
     }
-    
-//    func updateUserName() {
-//        guard let username = view?.username else {return }
-//        model.updateUserName(newUserName: username)
-//    }
 }
 
 extension WageViewPresenter: WageViewModelDelegate {
