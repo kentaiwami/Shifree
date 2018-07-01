@@ -135,4 +135,9 @@ extension API {
         let params = ["username": newUserName] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+    
+    func getUserWage() -> Promise<JSON> {
+        let endPoint = "setting/wage"
+        return getAuth(url: base + version + endPoint)
+    }
 }
