@@ -39,7 +39,7 @@
 		37A69B2620E8A0EC004E8C66 /* ColorSchemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2520E8A0EC004E8C66 /* ColorSchemeViewController.swift */; };
 		37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2820E8A162004E8C66 /* SalaryViewController.swift */; };
 		37A69B2B20E8D3D6004E8C66 /* UserNameViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2A20E8D3D6004E8C66 /* UserNameViewPresenter.swift */; };
-		37A69B2D20E8D3E1004E8C66 /* UserNameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2C20E8D3E1004E8C66 /* UserNameModel.swift */; };
+		37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2C20E8D3E1004E8C66 /* UserNameViewModel.swift */; };
 		37A69B3320E957F2004E8C66 /* WageViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3120E957F1004E8C66 /* WageViewPresenter.swift */; };
 		37A69B3420E957F2004E8C66 /* WageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3220E957F1004E8C66 /* WageViewModel.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
@@ -81,7 +81,7 @@
 		37A69B2520E8A0EC004E8C66 /* ColorSchemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewController.swift; sourceTree = "<group>"; };
 		37A69B2820E8A162004E8C66 /* SalaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewController.swift; sourceTree = "<group>"; };
 		37A69B2A20E8D3D6004E8C66 /* UserNameViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewPresenter.swift; sourceTree = "<group>"; };
-		37A69B2C20E8D3E1004E8C66 /* UserNameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameModel.swift; sourceTree = "<group>"; };
+		37A69B2C20E8D3E1004E8C66 /* UserNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewModel.swift; sourceTree = "<group>"; };
 		37A69B3120E957F1004E8C66 /* WageViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WageViewPresenter.swift; sourceTree = "<group>"; };
 		37A69B3220E957F1004E8C66 /* WageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WageViewModel.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -215,7 +215,7 @@
 			children = (
 				37A69B1F20E8A0B0004E8C66 /* UserNameViewController.swift */,
 				37A69B2A20E8D3D6004E8C66 /* UserNameViewPresenter.swift */,
-				37A69B2C20E8D3E1004E8C66 /* UserNameModel.swift */,
+				37A69B2C20E8D3E1004E8C66 /* UserNameViewModel.swift */,
 			);
 			path = UserName;
 			sourceTree = "<group>";
@@ -445,7 +445,7 @@
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpModel.swift in Sources */,
-				37A69B2D20E8D3E1004E8C66 /* UserNameModel.swift in Sources */,
+				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
 				37A69B3420E957F2004E8C66 /* WageViewModel.swift in Sources */,
 				3755199F20E50F9B00EC930B /* CalendarDetailViewController.swift in Sources */,
 				373F36D820E7CCCD0079B28F /* PopUpColorViewController.swift in Sources */,

@@ -15,21 +15,21 @@ protocol UserNameViewPresentable: class {
 class UserNameViewPresenter {
     
     weak var view: UserNameViewInterface?
-    let userNameModel: UserNameModel
+    let model: UserNameViewModel
     
     init(view: UserNameViewInterface) {
         self.view = view
-        self.userNameModel = UserNameModel()
-        userNameModel.delegate = self
+        self.model = UserNameViewModel()
+        model.delegate = self
     }
     
     var username: String {
-        return userNameModel.getUsername()
+        return model.getUsername()
     }
     
     func updateUserName() {
         guard let username = view?.username else {return }
-        userNameModel.updateUserName(newUserName: username)
+        model.updateUserName(newUserName: username)
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  UserNameModel.swift
+//  UserNameViewModel.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/01.
@@ -14,7 +14,7 @@ protocol UserNameModelDelegate: class {
     func faildAPI(title: String, msg: String)
 }
 
-class UserNameModel {
+class UserNameViewModel {
     weak var delegate: UserNameModelDelegate?
     private let api = API()
     

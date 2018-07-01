@@ -15,26 +15,25 @@ protocol WageViewPresentable: class {
 class WageViewPresenter {
     
     weak var view: WageViewInterface?
-    let userNameModel: UserNameModel
+    let model: WageViewModel
     
     init(view: WageViewInterface) {
         self.view = view
-        self.userNameModel = UserNameModel()
-        userNameModel.delegate = self
+        self.model = WageViewModel()
+        model.delegate = self
     }
     
     var username: String {
-        return userNameModel.getUsername()
+        return model.getUsername()
     }
     
     func updateUserName() {
         guard let username = view?.username else {return }
-        userNameModel.updateUserName(newUserName: username)
+        model.updateUserName(newUserName: username)
     }
-    
 }
 
-extension WageViewPresenter: UserNameModelDelegate {
+extension WageViewPresenter: WageViewModelDelegate {
     func success() {
         view?.success()
     }
