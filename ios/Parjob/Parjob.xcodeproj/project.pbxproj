@@ -38,6 +38,8 @@
 		37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2220E8A0C2004E8C66 /* PasswordViewController.swift */; };
 		37A69B2620E8A0EC004E8C66 /* ColorSchemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2520E8A0EC004E8C66 /* ColorSchemeViewController.swift */; };
 		37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2820E8A162004E8C66 /* SalaryViewController.swift */; };
+		37A69B2B20E8D3D6004E8C66 /* UserNameViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2A20E8D3D6004E8C66 /* UserNameViewPresenter.swift */; };
+		37A69B2D20E8D3E1004E8C66 /* UserNameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2C20E8D3E1004E8C66 /* UserNameModel.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -76,6 +78,8 @@
 		37A69B2220E8A0C2004E8C66 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		37A69B2520E8A0EC004E8C66 /* ColorSchemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewController.swift; sourceTree = "<group>"; };
 		37A69B2820E8A162004E8C66 /* SalaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewController.swift; sourceTree = "<group>"; };
+		37A69B2A20E8D3D6004E8C66 /* UserNameViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewPresenter.swift; sourceTree = "<group>"; };
+		37A69B2C20E8D3E1004E8C66 /* UserNameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameModel.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -204,6 +208,8 @@
 			isa = PBXGroup;
 			children = (
 				37A69B1F20E8A0B0004E8C66 /* UserNameViewController.swift */,
+				37A69B2A20E8D3D6004E8C66 /* UserNameViewPresenter.swift */,
+				37A69B2C20E8D3E1004E8C66 /* UserNameModel.swift */,
 			);
 			path = UserName;
 			sourceTree = "<group>";
@@ -414,6 +420,7 @@
 				37326C3F20DFD98500A60B00 /* Setting.swift in Sources */,
 				37326C3720DE955D00A60B00 /* Utility.swift in Sources */,
 				37A69B1820E89D19004E8C66 /* UserListViewController.swift in Sources */,
+				37A69B2B20E8D3D6004E8C66 /* UserNameViewPresenter.swift in Sources */,
 				37425CC320DE893E005A3C93 /* CalendarViewController.swift in Sources */,
 				37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */,
 				3729107620E7EE4C00931BEA /* PopUpColorModel.swift in Sources */,
@@ -431,6 +438,7 @@
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpModel.swift in Sources */,
+				37A69B2D20E8D3E1004E8C66 /* UserNameModel.swift in Sources */,
 				3755199F20E50F9B00EC930B /* CalendarDetailViewController.swift in Sources */,
 				373F36D820E7CCCD0079B28F /* PopUpColorViewController.swift in Sources */,
 				37A69B1D20E8A09A004E8C66 /* WageViewController.swift in Sources */,

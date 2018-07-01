@@ -156,6 +156,8 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
     private func signUpButtonTapped() {
         if IsValidateFormValue(form: form) {
             presenter.signUpButtonTapped()
+        }else {
+            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self)
         }
     }
     

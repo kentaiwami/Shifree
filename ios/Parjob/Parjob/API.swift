@@ -129,4 +129,10 @@ extension API {
         let endPoint = "setting/color"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func updateUserName(newUserName: String) -> Promise<JSON> {
+        let endPoint = "setting/username"
+        let params = ["username": newUserName] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
 }

@@ -29,11 +29,3 @@ def update():
     session.commit()
     session.close()
     return jsonify({'results': {'name': request.json['username']}}), 200
-
-
-@app.route('/api/v1/setting/username', methods=['GET'])
-@api_basic_auth.login_required
-def get():
-    user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    session.close()
-    return jsonify({'results': {'name': user.name}}), 200

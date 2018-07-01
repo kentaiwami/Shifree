@@ -7,29 +7,93 @@
 //
 
 import UIKit
+import Eureka
 
-class UserNameViewController: UIViewController {
+protocol UserNameViewInterface: class {
+    var username: String { get }
+    func success()
+    func showErrorAlert(title: String, msg: String)
+}
 
+
+class UserNameViewController: FormViewController, UserNameViewInterface {
+    
+    private var presenter: UserNameViewPresenter!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        presenter = UserNameViewPresenter(view: self)
+        initializeUI()
+    }
+    
+    var username: String {
+        return self.form.values()["username"] as! String
+    }
+    
+    private func initializeUI() {
+        LabelRow.defaultCellUpdate = { cell, row in
+            cell.contentView.backgroundColor = .red
+            cell.textLabel?.textColor = .white
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+            cell.textLabel?.textAlignment = .right
+        }
+        
+        form +++ Section("")
+            <<< TextRow(){ row in
+                row.title = "UserName"
+                row.tag = "username"
+                row.value = presenter.username
+                row.add(rule: RuleRequired(msg: "必須項目です"))
+                row.validationOptions = .validatesOnChange
+        }
+        .onRowValidationChanged {cell, row in
+            let rowIndex = row.indexPath!.row
+            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                row.section?.remove(at: rowIndex + 1)
+            }
+            if !row.isValid {
+                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
+                    let labelRow = LabelRow() {
+                        $0.title = err
+                        $0.cell.height = { 30 }
+                    }
+                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                }
+            }
+        }
+        
+        form +++ Section()
+            <<< ButtonRow(){
+                $0.title = "更新"
+                $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+                $0.baseCell.tintColor = UIColor.white
+                }
+                .onCellSelection {  cell, row in
+                    self.UpdateButtonTapped()
+        }
+    }
+    
+    private func UpdateButtonTapped() {
+        if IsValidateFormValue(form: self.form) {
+            presenter.updateUserName()
+        }else {
+            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+}
+
+
+extension UserNameViewController {
+    func success() {
+        self.navigationController?.popViewController(animated: true)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func showErrorAlert(title: String, msg: String) {
+        ShowStandardAlert(title: title, msg: msg, vc: self)
     }
-    */
-
 }
