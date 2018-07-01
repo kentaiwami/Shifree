@@ -21,7 +21,6 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
-        initializeUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -29,6 +28,12 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         self.tabBarController?.navigationItem.title = "User"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
+        
+        // 各設定画面から戻ってきた際、フォーム値を楽に更新するため再描画
+        UIView.setAnimationsEnabled(false)
+        self.form.removeAll()
+       initializeUI()
+        UIView.setAnimationsEnabled(true)
     }
     
     private func initializeAdminUserOnlyForm() {
