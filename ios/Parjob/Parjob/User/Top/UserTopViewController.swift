@@ -20,123 +20,91 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeUI()
         initializePresenter()
+        initializeUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.navigationItem.title = "User"
+        self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
+        self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
     }
     
-    func initializeUI() {
+    private func initializeAdminUserOnlyForm() {
+        let userListVC = UserListViewController()
+        let shiftCategoryVC = ShiftCategoryViewController()
+        
+        form +++ Section("")
+            <<< ButtonRow() {
+                $0.title = "ユーザリストの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userListVC}, onDismiss: {userListVC in userListVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "シフトカテゴリの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return shiftCategoryVC}, onDismiss: {shiftCategoryVC in shiftCategoryVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+    }
+    
+    private func initializeAnotherForm() {
+        let wageVC = WageViewController()
+        let userNameVC = UserNameViewController()
+        let passwordVC = PasswordViewController()
+        let colorSchemeVC = ColorSchemeViewController()
+        let salaryVC = SalaryViewController()
+        
+        form +++ Section("")
+            <<< ButtonRow() {
+                $0.title = "時給の設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return wageVC}, onDismiss: {wageVC in wageVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "ユーザ名の設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userNameVC}, onDismiss: {userNameVC in userNameVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "パスワードの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return passwordVC}, onDismiss: {passwordVC in passwordVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "カラースキームの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return colorSchemeVC}, onDismiss: {colorSchemeVC in colorSchemeVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+        form +++ Section("")
+            <<< ButtonRow() {
+                $0.title = "給与の閲覧"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return salaryVC}, onDismiss: {salaryVC in salaryVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+    }
+    
+    private func initializeUI() {
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
             cell.textLabel?.textColor = .white
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
             cell.textLabel?.textAlignment = .right
         }
-
-        form +++ Section("")
-            <<< PhoneRow(){
-                $0.title = "CompanyCode"
-                $0.tag = "companyCode"
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
-                }
-                .onRowValidationChanged {cell, row in
-                    let rowIndex = row.indexPath!.row
-                    while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                        row.section?.remove(at: rowIndex + 1)
-                    }
-                    if !row.isValid {
-                        for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                            let labelRow = LabelRow() {
-                                $0.title = err
-                                $0.cell.height = { 30 }
-                            }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                        }
-                    }
-                }
-            
-            <<< PhoneRow(){
-                $0.title = "UserCode"
-                $0.tag = "userCode"
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
-                }
-                .onRowValidationChanged {cell, row in
-                    let rowIndex = row.indexPath!.row
-                    while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                        row.section?.remove(at: rowIndex + 1)
-                    }
-                    if !row.isValid {
-                        for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                            let labelRow = LabelRow() {
-                                $0.title = err
-                                $0.cell.height = { 30 }
-                            }
-                            row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                        }
-                    }
-                }
-            <<< TextRow(){ row in
-                row.title = "UserName"
-                row.tag = "userName"
-                row.add(rule: RuleRequired(msg: "必須項目です"))
-                row.validationOptions = .validatesOnChange
-            }
-            .onRowValidationChanged {cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                        }
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
-            }
-            
-            <<< PasswordRow(){
-                $0.title = "PassWord"
-                $0.tag = "password"
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
-            }
-            .onRowValidationChanged {cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                        }
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
-            }
         
-        form +++ Section()
-            <<< ButtonRow(){
-                $0.title = "Sign Up"
-                $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-                $0.baseCell.tintColor = UIColor.white
-                }
-                .onCellSelection {  cell, row in
-                    
-            }
+        if presenter.isAdmin() {
+            initializeAdminUserOnlyForm()
+        }
+        
+        initializeAnotherForm()
     }
     
-    func initializePresenter() {
+    private func initializePresenter() {
         presenter = UserTopViewPresenter(view: self)
     }
 

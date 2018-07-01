@@ -11,8 +11,14 @@ import Foundation
 class UserTopViewPresenter {
     
     weak var view: UserTopViewInterface?
+    let userTopModel: UserTopModel
     
     init(view: UserTopViewInterface) {
         self.view = view
+        self.userTopModel = UserTopModel()
+    }
+    
+    func isAdmin() -> Bool {
+        return userTopModel.isAdmin()
     }
 }

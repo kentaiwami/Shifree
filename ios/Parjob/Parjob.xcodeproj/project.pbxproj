@@ -30,6 +30,14 @@
 		375519A920E75C7B00EC930B /* CalendarDetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375519A820E75C7B00EC930B /* CalendarDetailEntity.swift */; };
 		37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */; };
 		37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */; };
+		37A69B1420E897AE004E8C66 /* UserTopModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1320E897AE004E8C66 /* UserTopModel.swift */; };
+		37A69B1820E89D19004E8C66 /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1720E89D19004E8C66 /* UserListViewController.swift */; };
+		37A69B1A20E89D28004E8C66 /* ShiftCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1920E89D28004E8C66 /* ShiftCategoryViewController.swift */; };
+		37A69B1D20E8A09A004E8C66 /* WageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1C20E8A09A004E8C66 /* WageViewController.swift */; };
+		37A69B2020E8A0B0004E8C66 /* UserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1F20E8A0B0004E8C66 /* UserNameViewController.swift */; };
+		37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2220E8A0C2004E8C66 /* PasswordViewController.swift */; };
+		37A69B2620E8A0EC004E8C66 /* ColorSchemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2520E8A0EC004E8C66 /* ColorSchemeViewController.swift */; };
+		37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B2820E8A162004E8C66 /* SalaryViewController.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -60,6 +68,14 @@
 		375519A820E75C7B00EC930B /* CalendarDetailEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailEntity.swift; sourceTree = "<group>"; };
 		37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewController.swift; sourceTree = "<group>"; };
 		37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewPresenter.swift; sourceTree = "<group>"; };
+		37A69B1320E897AE004E8C66 /* UserTopModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopModel.swift; sourceTree = "<group>"; };
+		37A69B1720E89D19004E8C66 /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
+		37A69B1920E89D28004E8C66 /* ShiftCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCategoryViewController.swift; sourceTree = "<group>"; };
+		37A69B1C20E8A09A004E8C66 /* WageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageViewController.swift; sourceTree = "<group>"; };
+		37A69B1F20E8A0B0004E8C66 /* UserNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewController.swift; sourceTree = "<group>"; };
+		37A69B2220E8A0C2004E8C66 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
+		37A69B2520E8A0EC004E8C66 /* ColorSchemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewController.swift; sourceTree = "<group>"; };
+		37A69B2820E8A162004E8C66 /* SalaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewController.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,6 +154,13 @@
 		37A69B0B20E83027004E8C66 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				37A69B2720E8A155004E8C66 /* Salary */,
+				37A69B2420E8A0CC004E8C66 /* ColorScheme */,
+				37A69B2120E8A0B5004E8C66 /* Password */,
+				37A69B1E20E8A0A5004E8C66 /* UserName */,
+				37A69B1B20E8A07A004E8C66 /* Wage */,
+				37A69B1620E89B7E004E8C66 /* ShiftCategory */,
+				37A69B1520E89B65004E8C66 /* UserList */,
 				37A69B1220E839D1004E8C66 /* Top */,
 			);
 			path = User;
@@ -148,8 +171,65 @@
 			children = (
 				37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */,
 				37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */,
+				37A69B1320E897AE004E8C66 /* UserTopModel.swift */,
 			);
 			path = Top;
+			sourceTree = "<group>";
+		};
+		37A69B1520E89B65004E8C66 /* UserList */ = {
+			isa = PBXGroup;
+			children = (
+				37A69B1720E89D19004E8C66 /* UserListViewController.swift */,
+			);
+			path = UserList;
+			sourceTree = "<group>";
+		};
+		37A69B1620E89B7E004E8C66 /* ShiftCategory */ = {
+			isa = PBXGroup;
+			children = (
+				37A69B1920E89D28004E8C66 /* ShiftCategoryViewController.swift */,
+			);
+			path = ShiftCategory;
+			sourceTree = "<group>";
+		};
+		37A69B1B20E8A07A004E8C66 /* Wage */ = {
+			isa = PBXGroup;
+			children = (
+				37A69B1C20E8A09A004E8C66 /* WageViewController.swift */,
+			);
+			path = Wage;
+			sourceTree = "<group>";
+		};
+		37A69B1E20E8A0A5004E8C66 /* UserName */ = {
+			isa = PBXGroup;
+			children = (
+				37A69B1F20E8A0B0004E8C66 /* UserNameViewController.swift */,
+			);
+			path = UserName;
+			sourceTree = "<group>";
+		};
+		37A69B2120E8A0B5004E8C66 /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				37A69B2220E8A0C2004E8C66 /* PasswordViewController.swift */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		37A69B2420E8A0CC004E8C66 /* ColorScheme */ = {
+			isa = PBXGroup;
+			children = (
+				37A69B2520E8A0EC004E8C66 /* ColorSchemeViewController.swift */,
+			);
+			path = ColorScheme;
+			sourceTree = "<group>";
+		};
+		37A69B2720E8A155004E8C66 /* Salary */ = {
+			isa = PBXGroup;
+			children = (
+				37A69B2820E8A162004E8C66 /* SalaryViewController.swift */,
+			);
+			path = Salary;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
@@ -327,13 +407,18 @@
 			files = (
 				37326C4820E14B7500A60B00 /* CalendarViewModel.swift in Sources */,
 				375519A920E75C7B00EC930B /* CalendarDetailEntity.swift in Sources */,
+				37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */,
 				373F36D620E7CC470079B28F /* PopUpColorCell.swift in Sources */,
+				37A69B1A20E89D28004E8C66 /* ShiftCategoryViewController.swift in Sources */,
+				37A69B2620E8A0EC004E8C66 /* ColorSchemeViewController.swift in Sources */,
 				37326C3F20DFD98500A60B00 /* Setting.swift in Sources */,
 				37326C3720DE955D00A60B00 /* Utility.swift in Sources */,
+				37A69B1820E89D19004E8C66 /* UserListViewController.swift in Sources */,
 				37425CC320DE893E005A3C93 /* CalendarViewController.swift in Sources */,
 				37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */,
 				3729107620E7EE4C00931BEA /* PopUpColorModel.swift in Sources */,
 				37326C4620E14B6500A60B00 /* CalendarViewPresenter.swift in Sources */,
+				37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */,
 				375519A620E5BADA00EC930B /* CalendarEntity.swift in Sources */,
 				37326C3920DEC79200A60B00 /* Extensions.swift in Sources */,
 				37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */,
@@ -341,12 +426,15 @@
 				37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */,
 				375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */,
 				37425CB620DE568C005A3C93 /* SignUpViewController.swift in Sources */,
+				37A69B1420E897AE004E8C66 /* UserTopModel.swift in Sources */,
 				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpModel.swift in Sources */,
 				3755199F20E50F9B00EC930B /* CalendarDetailViewController.swift in Sources */,
 				373F36D820E7CCCD0079B28F /* PopUpColorViewController.swift in Sources */,
+				37A69B1D20E8A09A004E8C66 /* WageViewController.swift in Sources */,
+				37A69B2020E8A0B0004E8C66 /* UserNameViewController.swift in Sources */,
 				37425CBE20DE70AE005A3C93 /* API.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
