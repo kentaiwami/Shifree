@@ -153,4 +153,10 @@ extension API {
             ] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+    
+    func updatePassword(new: String) -> Promise<JSON> {
+        let endPoint = "setting/password"
+        let params = ["new_password": new] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
 }
