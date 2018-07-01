@@ -78,7 +78,7 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
         if IsValidateFormValue(form: self.form) {
             presenter.updateUserName()
         }else {
-            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self)
+            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self, completion: nil)
         }
     }
 
@@ -90,10 +90,12 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
 
 extension UserNameViewController {
     func success() {
-        self.navigationController?.popViewController(animated: true)
+        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self)
+        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
