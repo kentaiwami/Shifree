@@ -17,48 +17,48 @@ protocol CalendarViewPresentable :class{
 class CalendarViewPresenter {
     
     weak var view: CalendarViewInterface?
-    let calendarModel: CalendarModel
+    let model: CalendarViewModel
     
     var shiftCategories:[String] {
         guard let currentDate = view?.currentDate else {return []}
-        return calendarModel.getShiftCategories(currentDate: currentDate)
+        return model.getShiftCategories(currentDate: currentDate)
     }
     
     var eventNumber: Int {
         guard let targetDate = view?.targetDate else {return 0}
-        return calendarModel.getEventNumber(date: targetDate)
+        return model.getEventNumber(date: targetDate)
     }
     
     var userColorScheme: String {
         guard let targetDate = view?.targetDate else {return ""}
-        return calendarModel.getUserColorScheme(date: targetDate)
+        return model.getUserColorScheme(date: targetDate)
     }
     
     var userSection: Int {
         guard let targetDate = view?.targetDate else {return -1}
-        return calendarModel.getUserSection(date: targetDate)
+        return model.getUserSection(date: targetDate)
     }
     
     init(view: CalendarViewInterface) {
         self.view = view
-        self.calendarModel = CalendarModel()
-        calendarModel.delegate = self
+        self.model = CalendarViewModel()
+        model.delegate = self
     }
     
     func login() {
-        calendarModel.login()
+        model.login()
     }
     
     func getUserShift() {
         guard let start = view?.start else {return}
         guard let end = view?.end else {return}
 
-        calendarModel.getAllUserShift(start: start, end: end)
+        model.getAllUserShift(start: start, end: end)
     }
     
     func setTableViewShift() {
         guard let currentDate = view?.currentDate else {return}
-        calendarModel.setTableViewShift(currentDate: currentDate)
+        model.setTableViewShift(currentDate: currentDate)
     }
     
     
@@ -66,7 +66,7 @@ class CalendarViewPresenter {
     ///
     /// - Returns: TableViewで描画する選択状態にある日のシフト情報
     func getTableViewShift() -> [TableViewShift] {
-        return calendarModel.tableViewShifts
+        return model.tableViewShifts
     }
 }
 
@@ -75,16 +75,16 @@ class CalendarViewPresenter {
 extension CalendarViewPresenter {
     func getMemo() -> String {
         guard let currentDate = view?.currentDate else {return ""}
-        return calendarModel.getMemo(date: currentDate)
+        return model.getMemo(date: currentDate)
     }
     
     func getTargetUserShift() -> TargetUserShift {
         guard let currentDate = view?.currentDate else {return TargetUserShift()}
-        return calendarModel.getTargetUserShift(date: currentDate)
+        return model.getTargetUserShift(date: currentDate)
     }
 }
 
-extension CalendarViewPresenter: CalendarModelDelegate {
+extension CalendarViewPresenter: CalendarViewModelDelegate {
     func updateTableViewData() {
         view?.updateTableViewData()
     }

@@ -11,12 +11,12 @@ import Foundation
 class SignUpViewPresenter {
     
     weak var view: SignUpViewInterface?
-    let signUpModel: SignUpModel
+    let model: SignUpViewModel
     
     init(view: SignUpViewInterface) {
         self.view = view
-        self.signUpModel = SignUpModel()
-        signUpModel.delegate = self
+        self.model = SignUpViewModel()
+        model.delegate = self
     }
 
     func signUpButtonTapped() {
@@ -24,11 +24,11 @@ class SignUpViewPresenter {
         guard let userCode = view?.userCode else  { return }
         guard let userName = view?.userName else  { return }
         guard let password = view?.password else  { return }
-        signUpModel.signUp(companyCode: companyCode, userCode: userCode, userName: userName, password: password)
+        model.signUp(companyCode: companyCode, userCode: userCode, userName: userName, password: password)
     }
 }
 
-extension SignUpViewPresenter: SignUpModelDelegate {
+extension SignUpViewPresenter: SignUpViewModelDelegate {
     func successSignUp() {
         view?.navigateCalendar()
     }

@@ -1,5 +1,5 @@
 //
-//  SignUpModel.swift
+//  SignUpViewModel.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/06/23.
@@ -10,13 +10,13 @@ import Foundation
 import KeychainAccess
 
 
-protocol SignUpModelDelegate: class {
+protocol SignUpViewModelDelegate: class {
     func successSignUp()
     func faildSignUp(title: String, msg: String)
 }
 
-class SignUpModel {
-    weak var delegate: SignUpModelDelegate?
+class SignUpViewModel {
+    weak var delegate: SignUpViewModelDelegate?
     private let api = API()
     
     func signUp(companyCode: String, userCode: String, userName: String, password: String) {

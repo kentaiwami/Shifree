@@ -12,15 +12,15 @@ import PromiseKit
 import SwiftyJSON
 
 
-protocol CalendarDetailModelDelegate: class {
+protocol CalendarDetailViewModelDelegate: class {
     func initializeUI()
     func faildAPI(title: String, msg: String)
     func popViewController()
 }
 
 
-class CalendarDetailModel {
-    weak var delegate: CalendarDetailModelDelegate?
+class CalendarDetailViewModel {
+    weak var delegate: CalendarDetailViewModelDelegate?
     private let api = API()
     private(set) var tableViewShift: TableViewShift!
     private(set) var targetUserShift: TargetUserShift!

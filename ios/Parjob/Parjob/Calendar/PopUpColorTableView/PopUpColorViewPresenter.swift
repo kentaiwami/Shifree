@@ -12,25 +12,25 @@ import Foundation
 class PopUpColorViewPresenter {
     
     weak var view: PopUpColorViewInterface?
-    let popUpColorModel: PopUpColorModel
+    let model: PopUpColorViewModel
     
     init(view: PopUpColorViewInterface) {
         self.view = view
-        self.popUpColorModel = PopUpColorModel()
-        popUpColorModel.delegate = self
+        self.model = PopUpColorViewModel()
+        model.delegate = self
     }
     
     func setShiftCategoryColor() {
-        popUpColorModel.setShiftCategoryColor()
+        model.setShiftCategoryColor()
     }
     
     func getShiftCategoryColor() -> [ShiftCategoryColor] {
-        return popUpColorModel.shiftCategoryColors
+        return model.shiftCategoryColors
     }
     
 }
 
-extension PopUpColorViewPresenter: PopUpColorModelDelegate {
+extension PopUpColorViewPresenter: PopUpColorViewModelDelegate {
     func successGetShiftCategory() {
         view?.updateTableData()
     }

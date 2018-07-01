@@ -9,13 +9,13 @@
 import Foundation
 import KeychainAccess
 
-protocol UserNameModelDelegate: class {
+protocol UserNameViewModelDelegate: class {
     func success()
     func faildAPI(title: String, msg: String)
 }
 
 class UserNameViewModel {
-    weak var delegate: UserNameModelDelegate?
+    weak var delegate: UserNameViewModelDelegate?
     private let api = API()
     
     func getUsername() -> String {

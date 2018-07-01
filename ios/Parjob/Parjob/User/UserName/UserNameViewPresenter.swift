@@ -34,7 +34,7 @@ class UserNameViewPresenter {
     
 }
 
-extension UserNameViewPresenter: UserNameModelDelegate {
+extension UserNameViewPresenter: UserNameViewModelDelegate {
     func success() {
         view?.success()
     }

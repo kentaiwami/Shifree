@@ -1,5 +1,5 @@
 //
-//  CalendarEntity.swift
+//  CalendarViewEntity.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/06/29.
