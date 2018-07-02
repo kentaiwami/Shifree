@@ -174,4 +174,9 @@ extension API {
             ] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+    
+    func getUserList() -> Promise<JSON> {
+        let endPoint = "setting/users"
+        return getAuth(url: base + version + endPoint)
+    }
 }

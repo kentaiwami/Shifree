@@ -1,5 +1,5 @@
 //
-//  ShiftCategoryEntity.swift
+//  UserListEntity.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/02.
@@ -8,7 +8,9 @@
 
 import Foundation
 
-struct ShiftCategory {
-    var id: Int = 0
+struct User {
     var name: String = ""
+    var code: String = ""
+    var password: String = ""
+    var order: Int = 0
 }

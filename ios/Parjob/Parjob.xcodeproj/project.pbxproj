@@ -28,9 +28,12 @@
 		375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375519A220E50FC700EC930B /* CalendarDetailViewModel.swift */; };
 		375519A620E5BADA00EC930B /* CalendarViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375519A520E5BADA00EC930B /* CalendarViewEntity.swift */; };
 		375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375519A820E75C7B00EC930B /* CalendarDetailViewEntity.swift */; };
+		3772662820EA70CE0056D3D0 /* UserListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3772662520EA70CE0056D3D0 /* UserListViewModel.swift */; };
+		3772662920EA70CE0056D3D0 /* UserListViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3772662620EA70CE0056D3D0 /* UserListViewPresenter.swift */; };
+		3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3772662720EA70CE0056D3D0 /* UserListViewEntity.swift */; };
 		378E382B20E9957F003BB689 /* ShiftCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E382920E9957F003BB689 /* ShiftCategoryViewModel.swift */; };
 		378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E382A20E9957F003BB689 /* ShiftCategoryViewPresenter.swift */; };
-		378E382E20EA02EC003BB689 /* ShiftCategoryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E382D20EA02EC003BB689 /* ShiftCategoryEntity.swift */; };
+		378E382E20EA02EC003BB689 /* ShiftCategoryViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E382D20EA02EC003BB689 /* ShiftCategoryViewEntity.swift */; };
 		37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */; };
 		37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */; };
 		37A69B1420E897AE004E8C66 /* UserTopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1320E897AE004E8C66 /* UserTopViewModel.swift */; };
@@ -48,6 +51,7 @@
 		37A69B3620E97F80004E8C66 /* WageViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3520E97F80004E8C66 /* WageViewEntity.swift */; };
 		37A69B3920E986F6004E8C66 /* PasswordViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3720E986F5004E8C66 /* PasswordViewPresenter.swift */; };
 		37A69B3A20E986F6004E8C66 /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3820E986F6004E8C66 /* PasswordViewModel.swift */; };
+		37CC330220EA87320059C8D7 /* UserListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CC330120EA87320059C8D7 /* UserListDetailViewController.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -76,9 +80,12 @@
 		375519A220E50FC700EC930B /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
 		375519A520E5BADA00EC930B /* CalendarViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewEntity.swift; sourceTree = "<group>"; };
 		375519A820E75C7B00EC930B /* CalendarDetailViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewEntity.swift; sourceTree = "<group>"; };
+		3772662520EA70CE0056D3D0 /* UserListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewModel.swift; sourceTree = "<group>"; };
+		3772662620EA70CE0056D3D0 /* UserListViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewPresenter.swift; sourceTree = "<group>"; };
+		3772662720EA70CE0056D3D0 /* UserListViewEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewEntity.swift; sourceTree = "<group>"; };
 		378E382920E9957F003BB689 /* ShiftCategoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftCategoryViewModel.swift; sourceTree = "<group>"; };
 		378E382A20E9957F003BB689 /* ShiftCategoryViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftCategoryViewPresenter.swift; sourceTree = "<group>"; };
-		378E382D20EA02EC003BB689 /* ShiftCategoryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCategoryEntity.swift; sourceTree = "<group>"; };
+		378E382D20EA02EC003BB689 /* ShiftCategoryViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCategoryViewEntity.swift; sourceTree = "<group>"; };
 		37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewController.swift; sourceTree = "<group>"; };
 		37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewPresenter.swift; sourceTree = "<group>"; };
 		37A69B1320E897AE004E8C66 /* UserTopViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewModel.swift; sourceTree = "<group>"; };
@@ -96,6 +103,7 @@
 		37A69B3520E97F80004E8C66 /* WageViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageViewEntity.swift; sourceTree = "<group>"; };
 		37A69B3720E986F5004E8C66 /* PasswordViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordViewPresenter.swift; sourceTree = "<group>"; };
 		37A69B3820E986F6004E8C66 /* PasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
+		37CC330120EA87320059C8D7 /* UserListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListDetailViewController.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -199,7 +207,11 @@
 		37A69B1520E89B65004E8C66 /* UserList */ = {
 			isa = PBXGroup;
 			children = (
+				37CC330020EA871A0059C8D7 /* UserListDetail */,
 				37A69B1720E89D19004E8C66 /* UserListViewController.swift */,
+				3772662620EA70CE0056D3D0 /* UserListViewPresenter.swift */,
+				3772662520EA70CE0056D3D0 /* UserListViewModel.swift */,
+				3772662720EA70CE0056D3D0 /* UserListViewEntity.swift */,
 			);
 			path = UserList;
 			sourceTree = "<group>";
@@ -210,7 +222,7 @@
 				37A69B1920E89D28004E8C66 /* ShiftCategoryViewController.swift */,
 				378E382A20E9957F003BB689 /* ShiftCategoryViewPresenter.swift */,
 				378E382920E9957F003BB689 /* ShiftCategoryViewModel.swift */,
-				378E382D20EA02EC003BB689 /* ShiftCategoryEntity.swift */,
+				378E382D20EA02EC003BB689 /* ShiftCategoryViewEntity.swift */,
 			);
 			path = ShiftCategory;
 			sourceTree = "<group>";
@@ -260,6 +272,14 @@
 				37A69B2820E8A162004E8C66 /* SalaryViewController.swift */,
 			);
 			path = Salary;
+			sourceTree = "<group>";
+		};
+		37CC330020EA871A0059C8D7 /* UserListDetail */ = {
+			isa = PBXGroup;
+			children = (
+				37CC330120EA87320059C8D7 /* UserListDetailViewController.swift */,
+			);
+			path = UserListDetail;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
@@ -437,6 +457,7 @@
 			files = (
 				37326C4820E14B7500A60B00 /* CalendarViewModel.swift in Sources */,
 				375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */,
+				3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */,
 				37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */,
 				373F36D620E7CC470079B28F /* PopUpColorCell.swift in Sources */,
 				37A69B1A20E89D28004E8C66 /* ShiftCategoryViewController.swift in Sources */,
@@ -451,6 +472,7 @@
 				37326C4620E14B6500A60B00 /* CalendarViewPresenter.swift in Sources */,
 				37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */,
 				375519A620E5BADA00EC930B /* CalendarViewEntity.swift in Sources */,
+				3772662920EA70CE0056D3D0 /* UserListViewPresenter.swift in Sources */,
 				37326C3920DEC79200A60B00 /* Extensions.swift in Sources */,
 				37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */,
 				37425CBA20DE68AF005A3C93 /* SignUpViewPresenter.swift in Sources */,
@@ -466,12 +488,14 @@
 				378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpViewModel.swift in Sources */,
+				37CC330220EA87320059C8D7 /* UserListDetailViewController.swift in Sources */,
 				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
 				378E382B20E9957F003BB689 /* ShiftCategoryViewModel.swift in Sources */,
-				378E382E20EA02EC003BB689 /* ShiftCategoryEntity.swift in Sources */,
+				378E382E20EA02EC003BB689 /* ShiftCategoryViewEntity.swift in Sources */,
 				37A69B3420E957F2004E8C66 /* WageViewModel.swift in Sources */,
 				3755199F20E50F9B00EC930B /* CalendarDetailViewController.swift in Sources */,
 				37A69B3A20E986F6004E8C66 /* PasswordViewModel.swift in Sources */,
+				3772662820EA70CE0056D3D0 /* UserListViewModel.swift in Sources */,
 				373F36D820E7CCCD0079B28F /* PopUpColorViewController.swift in Sources */,
 				37A69B1D20E8A09A004E8C66 /* WageViewController.swift in Sources */,
 				37A69B2020E8A0B0004E8C66 /* UserNameViewController.swift in Sources */,

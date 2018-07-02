@@ -68,15 +68,11 @@ def get():
 
     results = []
     for user in users:
-        is_active = False
-        if len(user.password) != 7:
-            is_active = True
-
         results.append({
             'name': user.name,
             'code': user.code,
             'order': user.order,
-            'active': is_active
+            'password': '*******' if len(user.password) != 7 else user.password
         })
 
     session.close()
