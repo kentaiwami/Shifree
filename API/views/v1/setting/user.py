@@ -64,15 +64,16 @@ def get():
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    users = session.query(User).filter(User.company_id == admin_user.company_id).all()
+    users_role = session.query(User, Role).join(Role).filter(User.company_id == admin_user.company_id).all()
 
     results = []
-    for user in users:
+    for user_role in users_role:
         results.append({
-            'name': user.name,
-            'code': user.code,
-            'order': user.order,
-            'password': '*******' if len(user.password) != 7 else user.password
+            'name': user_role[0].name,
+            'code': user_role[0].code,
+            'order': user_role[0].order,
+            'role': user_role[1].name,
+            'password': '*******' if len(user_role[0].password) != 7 else user_role[0].password
         })
 
     session.close()

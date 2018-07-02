@@ -66,3 +66,31 @@ func GetWageTime() -> [String] {
     return wageTime
 }
 
+func GetMatchStrings(targetString: String, pattern: String) -> [String] {
+    
+    var matchStrings:[String] = []
+    
+    do {
+        
+        let regex = try NSRegularExpression(pattern: pattern, options: [])
+        let targetStringRange = NSRange(location: 0, length: (targetString as NSString).length)
+        
+        let matches = regex.matches(in: targetString, options: [], range: targetStringRange)
+        
+        for match in matches {
+            
+            // rangeAtIndexに0を渡すとマッチ全体が、1以降を渡すと括弧でグループにした部分マッチが返される
+            let range = match.rangeAt(0)
+            let result = (targetString as NSString).substring(with: range)
+            
+            matchStrings.append(result)
+        }
+        
+        return matchStrings
+        
+    } catch {
+        print("error: getMatchStrings")
+    }
+    return []
+}
+

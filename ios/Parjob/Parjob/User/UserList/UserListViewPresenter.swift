@@ -22,9 +22,14 @@ class UserListViewPresenter {
     func setUserList() {
         model.setUserList()
     }
-    
+        
     func getUserList() -> [User] {
         return model.userList
+    }
+    
+    func updateUserList() {
+        guard let formValues = view?.formValues else {return }
+        model.updateUserList(formValues: formValues)
     }
 }
 
@@ -38,6 +43,6 @@ extension UserListViewPresenter: UserListViewModelDelegate {
     }
 
     func faildAPI(title: String, msg: String) {
-//        view?.showErrorAlert(title: title, msg: msg)
+        view?.showErrorAlert(title: title, msg: msg)
     }
 }

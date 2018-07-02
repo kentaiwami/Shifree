@@ -27,6 +27,7 @@ class UserListViewModel {
                 tmpUser.name = userJson["name"].stringValue
                 tmpUser.code = userJson["code"].stringValue
                 tmpUser.order = userJson["order"].intValue
+                tmpUser.role = userJson["role"].stringValue
                 tmpUser.password = userJson["password"].stringValue
                 
                 self.userList.append(tmpUser)
@@ -39,6 +40,16 @@ class UserListViewModel {
             let title = "Error(" + String(tmp_err.code) + ")"
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
+    }
+    
+    //TODO: delete, addを判別
+    func updateUserList(formValues: [String:Any?]) {
+        //TODO:
+        //add valueがnil出ない時
+        let add = formValues.filter({$0.value != nil})
+        
+        //delete formValuesになくてuserListにあるmono
+        
     }
     
 }

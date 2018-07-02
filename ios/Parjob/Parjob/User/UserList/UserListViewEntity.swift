@@ -12,5 +12,6 @@ struct User {
     var name: String = ""
     var code: String = ""
     var password: String = ""
+    var role: String = ""
     var order: Int = 0
 }
