@@ -18,7 +18,7 @@ struct TableViewShift {
             tmp += userShift.user + " "
         }
         
-        joined = tmp.substring(to: tmp.index(before: tmp.endIndex))
+        joined = String(tmp[tmp.startIndex..<tmp.index(before: tmp.endIndex)])
     }
 }
 
@@ -28,7 +28,7 @@ struct UserShift {
     var user: String = ""
 }
 
-struct ShiftCategory {
+struct ShiftCategoryWithUserShift {
     var name: String = ""
     var userShift: [UserShift] = []
 }
@@ -42,6 +42,6 @@ struct TargetUserShift {
 struct OneDayShift {
     var date: String = ""
     var memo: String = ""
-    var shift: [ShiftCategory] = []
+    var shift: [ShiftCategoryWithUserShift] = []
     var user: TargetUserShift = TargetUserShift()
 }

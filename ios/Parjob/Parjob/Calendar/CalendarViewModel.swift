@@ -189,7 +189,7 @@ extension CalendarViewModel {
                 let categoryDict = shiftCategory.dictionaryValue
                 let categoryName = categoryDict.keys.first!
                 
-                var tmpShiftCategory = ShiftCategory()
+                var tmpShiftCategory = ShiftCategoryWithUserShift()
                 tmpShiftCategory.name = categoryName
                 
                 // カテゴリ内の1人ごとにループ処理

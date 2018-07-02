@@ -24,7 +24,7 @@ class PopUpColorViewModel {
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     
     func setShiftCategoryColor() {
-        api.getShiftCategory().done { (json) in
+        api.getShiftCategoryColor().done { (json) in
             json["results"].arrayValue.forEach({ (shiftCategoryColor) in
                 var tmp = ShiftCategoryColor()
                 tmp.name = shiftCategoryColor["category_name"].stringValue

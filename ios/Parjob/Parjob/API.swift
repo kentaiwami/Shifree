@@ -125,7 +125,7 @@ extension API {
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
     
-    func getShiftCategory() -> Promise<JSON>  {
+    func getShiftCategoryColor() -> Promise<JSON>  {
         let endPoint = "setting/color"
         return getAuth(url: base + version + endPoint)
     }
@@ -157,6 +157,21 @@ extension API {
     func updatePassword(new: String) -> Promise<JSON> {
         let endPoint = "setting/password"
         let params = ["new_password": new] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+    
+    func getShiftCategory() -> Promise<JSON> {
+        let endPoint = "setting/shiftcategory"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func updateShiftCategory(adds:[String], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
+        let endPoint = "setting/shiftcategory"
+        let params = [
+            "adds": adds,
+            "updates": updates,
+            "deletes": deletes
+            ] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
 }
