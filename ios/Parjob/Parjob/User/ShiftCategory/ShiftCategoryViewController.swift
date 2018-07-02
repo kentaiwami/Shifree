@@ -10,9 +10,9 @@ import UIKit
 import Eureka
 
 protocol ShiftCategoryViewInterface: class {
-//    var nowPassword: String { get }
-//    var newPassword: String { get }
+    var formValues: [String:Any?] { get }
     
+    func initializeUI()
     func success()
     func showErrorAlert(title: String, msg: String)
 }
@@ -26,84 +26,54 @@ class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterfac
         super.viewDidLoad()
         
         presenter = ShiftCategoryViewPresenter(view: self)
-        initializeUI()
+        presenter.setShiftCategory()
     }
     
-    private func initializeForm() {
+    fileprivate func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
-        form +++ Section("")
-            <<< PasswordRow() {
-                $0.title = "現在のパスワード"
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
-                $0.tag = "now"
-            }
-            .onRowValidationChanged { cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                            $0.cell.contentView.backgroundColor = .red
-                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                            }.cellUpdate({ (cell, row) in
-                                cell.textLabel?.textColor = .white
-                            })
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+        var count = 0
+        
+        form +++ MultivaluedSection(
+            multivaluedOptions: [.Insert, .Delete],
+            header: "",
+            footer: "既にあるカテゴリーを削除して同じ名前のカテゴリを登録しても、新規登録となるので注意してください。") {
+                $0.addButtonProvider = { section in
+                    section.showInsertIconInAddButton = true
+                    return ButtonRow(){
+                        $0.title = "シフトカテゴリーを追加"
                     }
                 }
-            }
-        
-            <<< PasswordRow() {
-                $0.title = "新しいパスワード"
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
-                $0.tag = "new"
-            }
-            .onRowValidationChanged { cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                            $0.cell.contentView.backgroundColor = .red
-                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                            }.cellUpdate({ (cell, row) in
-                                cell.textLabel?.textColor = .white
-                            })
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+
+                $0.multivaluedRowToInsertAt = { _ in
+                    return TextRow() {
+                        $0.title = "カテゴリー名"
+                        $0.tag = String(count) + "_new"
+                        count += 1
                     }
                 }
-            }
+
+                for shiftCategory in presenter.getShiftCategory() {
+                    $0 <<< TextRow() {
+                        $0.title = "カテゴリ名ー"
+                        $0.value = shiftCategory.name
+                        $0.tag = String(shiftCategory.id) + "_exist"
+                    }
+                }
+        }
         
+        presenter.setInitShiftCategory(values: form.values())
+
         UIView.setAnimationsEnabled(true)
     }
     
-    private func initializeNavigationItem() {
+    fileprivate func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
     
     @objc private func tapEditDoneButton() {
-        if IsValidateFormValue(form: self.form) {
-//            presenter.updatePassword()
-        }else {
-            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self, completion: nil)
-        }
-    }
-    
-    private func initializeUI() {
-        initializeNavigationItem()
-        initializeForm()
+        presenter.updateShiftCategory()
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,19 +82,20 @@ class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterfac
 }
 
 
-// MARK: - formでユーザが設定する値の一覧
+// MARK: - formでユーザが設定する値
 extension ShiftCategoryViewController {
-//    var nowPassword: String {
-//        return self.form.values()["now"] as! String
-//    }
-//
-//    var newPassword: String {
-//        return self.form.values()["new"] as! String
-//    }
+    var formValues: [String:Any?] {
+        return self.form.values()
+    }
 }
 
 // MARK: - Presenterから呼び出される関数
 extension ShiftCategoryViewController {
+    func initializeUI() {
+        initializeNavigationItem()
+        initializeForm()
+    }
+    
     func success() {
         ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)

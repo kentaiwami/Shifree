@@ -3,41 +3,10 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, ShiftCategory, Company
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_200
+from views.v1.response import response_msg_404, response_msg_403, response_msg_409
 from basic_auth import api_basic_auth
 
 app = Blueprint('setting_shitcategory_bp', __name__)
-
-
-@app.route('/api/v1/setting/shiftcategory', methods=['POST'])
-@api_basic_auth.login_required
-def add():
-    schema = {'type': 'object',
-              'properties':
-                  {'name': {'type': 'string', 'minLength': 1}},
-              'required': ['name']
-              }
-
-    try:
-        validate(request.json, schema)
-    except ValidationError as e:
-        frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
-
-    admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-
-    if admin_user.role.name != 'admin':
-        session.close()
-        frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
-
-    new_category = ShiftCategory(name=request.json['name'], company_id=admin_user.company_id)
-
-    session.add(new_category)
-    session.commit()
-    session.close()
-
-    return jsonify({'results': {'category_id': new_category.id, 'category_name': new_category.name}}), 200
 
 
 @app.route('/api/v1/setting/shiftcategory', methods=['GET'])
@@ -55,13 +24,20 @@ def get():
     return jsonify({'results': results}), 200
 
 
-@app.route('/api/v1/setting/shiftcategory/<category_id>', methods=['PUT'])
+@app.route('/api/v1/setting/shiftcategory', methods=['PUT'])
 @api_basic_auth.login_required
-def update(category_id):
+def add_update_delete():
     schema = {'type': 'object',
               'properties':
-                  {'name': {'type': 'string', 'minLength': 1}},
-              'required': ['category_name']
+                  {'adds': {'type': 'array', 'items': {'type': 'string'}},
+                   'updates': {'type': 'array',
+                               'items': {'type': 'object',
+                                         'properties': {'id': {'type': 'number'}, 'name': {'type': 'string'}},
+                                         'required': ['id', 'name']
+                                         }
+                               },
+                   'deletes': {'type': 'array', 'items': {'type': 'number'}}},
+              'required': ['adds', 'updates', 'deletes']
               }
 
     try:
@@ -77,51 +53,54 @@ def update(category_id):
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    category = session.query(ShiftCategory).filter(ShiftCategory.id == category_id).one_or_none()
 
-    if not category:
-        session.close()
-        frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+    for delete_id in request.json['deletes']:
+        category = session.query(ShiftCategory).filter(ShiftCategory.id == delete_id).one_or_none()
 
-    if admin_user.company_id != category.company_id:
-        session.close()
-        frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        if not category:
+            session.close()
+            frame = inspect.currentframe()
+            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
-    category.name = request.json['name']
+        if admin_user.company_id != category.company_id:
+            session.close()
+            frame = inspect.currentframe()
+            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    session.add(category)
+        session.delete(category)
+
     session.commit()
 
-    session.close()
-    return jsonify({'results': {'category_id': category_id, 'category_name': request.json['name']}}), 200
+    for new_name in request.json['adds']:
+        category = session.query(ShiftCategory).filter(ShiftCategory.name == new_name, ShiftCategory.company_id == admin_user.company_id).one_or_none()
+
+        if category:
+            session.close()
+            frame = inspect.currentframe()
+            abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+        else:
+            new_category = ShiftCategory(name=new_name, company_id=admin_user.company_id)
+            session.add(new_category)
 
 
-@app.route('/api/v1/setting/shiftcategory/<category_id>', methods=['DELETE'])
-@api_basic_auth.login_required
-def delete(category_id):
-    admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+    for update_shift_category in request.json['updates']:
+        category = session.query(ShiftCategory).filter(ShiftCategory.id == update_shift_category['id']).one_or_none()
 
-    if admin_user.role.name != 'admin':
-        session.close()
-        frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        if not category:
+            session.close()
+            frame = inspect.currentframe()
+            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
-    category = session.query(ShiftCategory).filter(ShiftCategory.id == category_id).one_or_none()
+        if admin_user.company_id != category.company_id:
+            session.close()
+            frame = inspect.currentframe()
+            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    if not category:
-        session.close()
-        frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        category.name = update_shift_category['name']
 
-    if admin_user.company_id != category.company_id:
-        session.close()
-        frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        session.add(category)
 
-    session.delete(category)
     session.commit()
     session.close()
 
-    return jsonify({'msg': response_msg_200()}), 200
+    return jsonify({'results': 'ok'}), 200

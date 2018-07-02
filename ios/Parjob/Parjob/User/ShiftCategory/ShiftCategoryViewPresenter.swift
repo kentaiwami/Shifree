@@ -19,15 +19,29 @@ class ShiftCategoryViewPresenter {
         model.delegate = self
     }
     
-//    func updatePassword() {
-//        guard let nowPassword = view?.nowPassword else {return}
-//        guard let newPassword = view?.newPassword else {return}
-//
-//        model.updatePassword(now: nowPassword, new: newPassword)
-//    }
+    func setShiftCategory() {
+        model.setShiftCategory()
+    }
+    
+    func getShiftCategory() -> [ShiftCategory] {
+        return model.shiftCategory
+    }
+    
+    func updateShiftCategory() {
+        guard let values = view?.formValues else {return}
+        model.updateShiftCategory(values: values)
+    }
+    
+    func setInitShiftCategory(values: [String:Any?]) {
+        model.setInitShiftCategory(values: values)
+    }
 }
 
 extension ShiftCategoryViewPresenter: ShiftCategoryViewModelDelegate {
+    func initializeUI() {
+        view?.initializeUI()
+    }
+    
     func success() {
         view?.success()
     }
