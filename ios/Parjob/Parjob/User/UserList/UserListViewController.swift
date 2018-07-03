@@ -53,6 +53,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
                 $0.multivaluedRowToInsertAt = { index in
                     return ButtonRow() {
                         $0.title = defaultTitle
+                        $0.value = defaultTitle
                         $0.tag = String(count) + "_new"
                         count += 1
                     }.cellUpdate({ (cell, row) in
@@ -69,8 +70,10 @@ class UserListViewController: FormViewController, UserListViewInterface {
                 }
                 
                 for user in presenter.getUserList() {
+                    let title = String(format: "%@ (%@)", arguments: [user.name, user.role])
                     $0 <<< ButtonRow() {
-                        $0.title = String(format: "%@ (%@)", arguments: [user.name, user.role])
+                        $0.title = title
+                        $0.value = title
                         $0.cell.textLabel?.numberOfLines = 0
                         $0.tag = String(user.code) + "_exist"
                         }.cellUpdate({ (cell, row) in
@@ -97,6 +100,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
             if IsValidateFormValue(form: vc.form) {
                 let detaiVCValues = vc.form.values()
                 row.title = String(format: "%@ (%@)", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String])
+                row.value = String(format: "%@ (%@)", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String])
                 row.updateCell()
             }else {
                 ShowStandardAlert(title: "Error", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
