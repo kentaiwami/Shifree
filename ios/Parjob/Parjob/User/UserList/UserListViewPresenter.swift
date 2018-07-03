@@ -22,7 +22,7 @@ class UserListViewPresenter {
     func setUserList() {
         model.setUserList()
     }
-        
+    
     func getUserList() -> [User] {
         return model.userList
     }

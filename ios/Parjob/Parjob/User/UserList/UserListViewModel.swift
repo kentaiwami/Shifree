@@ -44,10 +44,11 @@ class UserListViewModel {
     
     //TODO: delete, addを判別
     func updateUserList(formValues: [String:Any?]) {
+        print(formValues)
         //TODO:
-        let add = formValues.filter({$0.key.contains("_new")})
+//        let add = formValues.filter({$0.key.contains("_new")}).map({$0.value as! String})
         //add valueからユーザ名と権限を抽出できたもの
-        print(add)
+//        print(add)
         //delete formValuesになくてuserListにあるmono
         
     }

@@ -65,23 +65,23 @@ class UserListViewController: FormViewController, UserListViewInterface {
                         }
                     }).onCellSelection({ (cell, row) in
                         let value = self.getUsernameRoleFromCellTitle(title: row.title!)
-                        self.TapUserCell(username: value.username, role: value.role, isNew: true, row: row, cell: cell)
+                        self.TapUserCell(username: value.username, role: value.role, isNew: true, row: row, code: "", index: (row.indexPath?.row)!)
                     })
                 }
                 
-                for user in presenter.getUserList() {
-                    let title = String(format: "%@ (%@)", arguments: [user.name, user.role])
+                for (i, user) in presenter.getUserList().enumerated() {
                     $0 <<< ButtonRow() {
-                        $0.title = title
-                        $0.value = title
+                        $0.title = String(format: "%@ (%@)", arguments: [user.name, user.role])
+                        $0.value = String(format: "%@,%@,%@,%@", arguments: [user.name, user.role, user.code, String(i)])
                         $0.cell.textLabel?.numberOfLines = 0
                         $0.tag = String(user.code) + "_exist"
                         }.cellUpdate({ (cell, row) in
                             cell.textLabel?.textAlignment = .left
                             cell.textLabel?.textColor = .black
                         }).onCellSelection({ (cell, row) in
+//                            print(row.indexPath?.row)
                             let value = self.getUsernameRoleFromCellTitle(title: row.title!)
-                            self.TapUserCell(username: value.username, role: value.role, isNew: false, row: row, cell: cell)
+                            self.TapUserCell(username: value.username, role: value.role, isNew: false, row: row, code: user.code, index: (row.indexPath?.row)!)
                         })
                 }
         }
@@ -89,7 +89,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
-    private func TapUserCell(username: String, role: String, isNew: Bool, row: ButtonRow, cell: ButtonCell) {
+    private func TapUserCell(username: String, role: String, isNew: Bool, row: ButtonRow, code: String, index: Int) {
         let vc = UserListDetailViewController()
         vc.username = username
         vc.role = role
@@ -100,7 +100,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
             if IsValidateFormValue(form: vc.form) {
                 let detaiVCValues = vc.form.values()
                 row.title = String(format: "%@ (%@)", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String])
-                row.value = String(format: "%@ (%@)", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String])
+                row.value = String(format: "%@,%@,%@,%@", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String, code, String(index)])
                 row.updateCell()
             }else {
                 ShowStandardAlert(title: "Error", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
