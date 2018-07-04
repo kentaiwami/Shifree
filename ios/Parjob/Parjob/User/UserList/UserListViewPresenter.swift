@@ -39,7 +39,7 @@ extension UserListViewPresenter: UserListViewModelDelegate {
     }
 
     func success() {
-//        view?.success()
+        view?.success()
     }
 
     func faildAPI(title: String, msg: String) {

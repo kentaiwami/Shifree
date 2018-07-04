@@ -11,8 +11,9 @@ import Eureka
 import PopupDialog
 
 protocol UserListViewInterface: class {
-    var formValues: [String:Any?] { get }
+    var formValues: [String] { get }
     
+    func success()
     func showErrorAlert(title: String, msg: String)
     func initializeUI()
 }
@@ -65,23 +66,22 @@ class UserListViewController: FormViewController, UserListViewInterface {
                         }
                     }).onCellSelection({ (cell, row) in
                         let value = self.getUsernameRoleFromCellTitle(title: row.title!)
-                        self.TapUserCell(username: value.username, role: value.role, isNew: true, row: row, code: "", index: (row.indexPath?.row)!)
+                        self.TapUserCell(username: value.username, role: value.role, isNew: true, row: row, code: "")
                     })
                 }
                 
-                for (i, user) in presenter.getUserList().enumerated() {
+                for user in presenter.getUserList() {
                     $0 <<< ButtonRow() {
                         $0.title = String(format: "%@ (%@)", arguments: [user.name, user.role])
-                        $0.value = String(format: "%@,%@,%@,%@", arguments: [user.name, user.role, user.code, String(i)])
+                        $0.value = String(format: "%@,%@,%@", arguments: [user.name, user.role, user.code])
                         $0.cell.textLabel?.numberOfLines = 0
                         $0.tag = String(user.code) + "_exist"
                         }.cellUpdate({ (cell, row) in
                             cell.textLabel?.textAlignment = .left
                             cell.textLabel?.textColor = .black
                         }).onCellSelection({ (cell, row) in
-//                            print(row.indexPath?.row)
                             let value = self.getUsernameRoleFromCellTitle(title: row.title!)
-                            self.TapUserCell(username: value.username, role: value.role, isNew: false, row: row, code: user.code, index: (row.indexPath?.row)!)
+                            self.TapUserCell(username: value.username, role: value.role, isNew: false, row: row, code: user.code)
                         })
                 }
         }
@@ -89,7 +89,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
-    private func TapUserCell(username: String, role: String, isNew: Bool, row: ButtonRow, code: String, index: Int) {
+    private func TapUserCell(username: String, role: String, isNew: Bool, row: ButtonRow, code: String) {
         let vc = UserListDetailViewController()
         vc.username = username
         vc.role = role
@@ -100,7 +100,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
             if IsValidateFormValue(form: vc.form) {
                 let detaiVCValues = vc.form.values()
                 row.title = String(format: "%@ (%@)", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String])
-                row.value = String(format: "%@,%@,%@,%@", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String, code, String(index)])
+                row.value = String(format: "%@,%@,%@", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String, code])
                 row.updateCell()
             }else {
                 ShowStandardAlert(title: "Error", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
@@ -150,8 +150,15 @@ extension UserListViewController {
 
 // MARK: - formでユーザが設定する値
 extension UserListViewController {
-    var formValues: [String:Any?] {
-        return self.form.values()
+    var formValues: [String] {
+        var results: [String] = []
+        
+        for baseRow in form.allRows {
+            if let tmp = baseRow.baseValue as? String {
+                results.append(tmp)
+            }
+        }
+        return results
     }
 }
 
@@ -161,13 +168,13 @@ extension UserListViewController {
         initializeNavigationItem()
         initializeForm()
     }
-//
-//    func success() {
-//        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
-//            self.navigationController?.popViewController(animated: true)
-//        }
-//    }
-//
+
+    func success() {
+        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
     func showErrorAlert(title: String, msg: String) {
         ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }

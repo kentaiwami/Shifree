@@ -179,4 +179,15 @@ extension API {
         let endPoint = "setting/users"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func updateUserList(adds:[[String:Any]], updates:[[String:Any]], deletes:[String]) -> Promise<JSON> {
+        let endPoint = "setting/users"
+        let params = [
+            "adds": adds,
+            "updates": updates,
+            "deletes": deletes
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+
+    }
 }
