@@ -1,7 +1,7 @@
 import inspect
 from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
-from model import User, Role
+from model import User, Role, Company
 from database import session
 from views.v1.response import response_msg_404, response_msg_403, response_msg_200
 from basic_auth import api_basic_auth
@@ -106,10 +106,11 @@ def get():
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     users_role = session.query(User, Role).join(Role).filter(User.company_id == admin_user.company_id).order_by(User.order.asc()).all()
+    company = session.query(Company).filter(Company.id == admin_user.company_id).one()
 
-    results = []
+    users = []
     for user_role in users_role:
-        results.append({
+        users.append({
             'name': user_role[0].name,
             'code': user_role[0].code,
             'order': user_role[0].order,
@@ -118,4 +119,4 @@ def get():
         })
 
     session.close()
-    return jsonify({'results': results}), 200
+    return jsonify({'results': {'users': users, 'company': company.code}}), 200

@@ -10,7 +10,7 @@ import UIKit
 import Eureka
 import TinyConstraints
 
-class UserListDetailViewController: FormViewController {
+class UserListSettingDetailViewController: FormViewController {
 
     var username: String = ""
     var role: String = ""

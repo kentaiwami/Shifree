@@ -37,16 +37,23 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     }
     
     private func initializeAdminUserOnlyForm() {
+        let userListSettingVC = UserListSettingViewController()
         let userListVC = UserListViewController()
         let shiftCategoryVC = ShiftCategoryViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
                 $0.title = "ユーザリストの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userListSettingVC}, onDismiss: {userListVC in userListVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+            <<< ButtonRow() {
+                $0.title = "ユーザリストの閲覧"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userListVC}, onDismiss: {userListVC in userListVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
+        form +++ Section("")
             <<< ButtonRow() {
                 $0.title = "シフトカテゴリの設定"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return shiftCategoryVC}, onDismiss: {shiftCategoryVC in shiftCategoryVC.navigationController?.popViewController(animated: true)})

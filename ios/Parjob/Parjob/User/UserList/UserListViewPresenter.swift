@@ -26,20 +26,11 @@ class UserListViewPresenter {
     func getUserList() -> [User] {
         return model.userList
     }
-    
-    func updateUserList() {
-        guard let formValues = view?.formValues else {return }
-        model.updateUserList(formValues: formValues)
-    }
 }
 
 extension UserListViewPresenter: UserListViewModelDelegate {
     func initializeUI() {
         view?.initializeUI()
-    }
-
-    func success() {
-        view?.success()
     }
 
     func faildAPI(title: String, msg: String) {
