@@ -8,10 +8,11 @@
 
 import UIKit
 import Eureka
+import PopupDialog
 
 
 protocol UserTopViewInterface: class {
-//    func navigateCalendar()
+    func navigateSignUp()
 }
 
 class UserTopViewController: FormViewController, UserTopViewInterface {
@@ -120,7 +121,15 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     }
     
     private func ResetButtonTapped() {
-        //TODO: リセットボタン
+        let popUp = PopupDialog(title: "再確認", message: "この端末に保存されている情報を削除し、Sign Up状態に戻します。\n既に登録されているシフト情報は削除されません。")
+        let buttonOK = DefaultButton(title: "OK") {
+            self.presenter.tapResetButton()
+        }
+        let buttonCancel = CancelButton(title: "Cancel"){}
+        
+        popUp.addButton(buttonOK)
+        popUp.addButton(buttonCancel)
+        present(popUp, animated: true, completion: nil)
     }
     
     private func initializePresenter() {
@@ -129,5 +138,16 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+}
+
+
+extension UserTopViewController {
+    func navigateSignUp() {
+        let signupVC = SignUpViewController()
+        signupVC.modalTransitionStyle = .flipHorizontal
+        let nav = UINavigationController()
+        nav.viewControllers = [signupVC]
+        self.present(nav, animated: true, completion: nil)
     }
 }

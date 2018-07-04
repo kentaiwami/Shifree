@@ -9,7 +9,13 @@
 import Foundation
 import KeychainAccess
 
+protocol UserTopViewModelDelegate: class {
+    func navigateSignUp()
+}
+
 class UserTopViewModel {
+    weak var delegate: UserTopViewModelDelegate?
+    
     func isAdmin() -> Bool {
         let keychain = Keychain()
         let role = try! keychain.get("role")!
@@ -19,5 +25,11 @@ class UserTopViewModel {
         }else {
             return false
         }
+    }
+    
+    func resetUser() {
+        let keychain = Keychain()
+        try! keychain.removeAll()
+        self.delegate?.navigateSignUp()
     }
 }
