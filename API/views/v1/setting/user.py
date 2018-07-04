@@ -115,7 +115,7 @@ def get():
             'code': user_role[0].code,
             'order': user_role[0].order,
             'role': user_role[1].name,
-            'password': '*******' if len(user_role[0].password) != 7 else user_role[0].password
+            'password': '*******' if user_role[0].is_authed else user_role[0].password
         })
 
     session.close()
