@@ -188,7 +188,6 @@
 		37A69B0B20E83027004E8C66 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				37D169CC20EC940000265186 /* UserList */,
 				37A69B2720E8A155004E8C66 /* Salary */,
 				37A69B2420E8A0CC004E8C66 /* ColorSchemeSetting */,
 				37A69B2120E8A0B5004E8C66 /* PasswordSetting */,
@@ -196,6 +195,7 @@
 				37A69B1B20E8A07A004E8C66 /* WageSetting */,
 				37A69B1620E89B7E004E8C66 /* ShiftCategorySetting */,
 				37A69B1520E89B65004E8C66 /* UserListSetting */,
+				37D169CC20EC940000265186 /* UserList */,
 				37A69B1220E839D1004E8C66 /* Top */,
 			);
 			path = User;

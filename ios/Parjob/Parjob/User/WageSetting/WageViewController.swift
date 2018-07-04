@@ -34,6 +34,11 @@ class WageViewController: FormViewController, WageViewInterface {
         presenter.setUserWage()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Wage Setting"
+    }
+    
     fileprivate func initializeForm() {
         UIView.setAnimationsEnabled(false)
         

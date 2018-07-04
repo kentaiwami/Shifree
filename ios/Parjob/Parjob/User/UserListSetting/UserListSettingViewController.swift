@@ -29,6 +29,11 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
         presenter.setUserList()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "User List Setting"
+    }
+    
     fileprivate func initializeForm() {
         UIView.setAnimationsEnabled(false)
         

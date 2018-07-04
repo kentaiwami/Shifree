@@ -27,6 +27,11 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
         initializeUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "User Name Setting"
+    }
+    
     var username: String {
         return self.form.values()["username"] as! String
     }

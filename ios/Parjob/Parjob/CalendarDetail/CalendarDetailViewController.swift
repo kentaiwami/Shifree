@@ -33,7 +33,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "シフトの詳細"
+        self.navigationItem.title = "Calendar Detail"
     }
     
     private func initializePresenter() {
@@ -74,7 +74,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
             }
         }
 
-        for (i, userShift) in presenter.getUsersShift().enumerated() {
+        for userShift in presenter.getUsersShift() {
             form +++ Section("")
                 <<< LabelRow() {
                     $0.title = "従業員"
