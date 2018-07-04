@@ -46,6 +46,11 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
         initializePresenter()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Sign Up"
+    }
+    
     private func initializeUI() {
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
