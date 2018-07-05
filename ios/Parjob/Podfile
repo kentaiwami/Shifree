@@ -13,4 +13,5 @@ target 'Parjob' do
   pod 'PromiseKit', '~> 6.0'
   pod 'PopupDialog', '0.5.4'
   pod 'FSCalendar'
+  pod 'ChromaColorPicker'
 end

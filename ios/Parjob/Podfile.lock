@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.7.0)
+  - ChromaColorPicker (1.7)
   - Eureka (3.0.0)
   - FSCalendar (2.7.9)
   - KeychainAccess (3.1.0)
@@ -18,6 +19,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
+  - ChromaColorPicker
   - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `Swift-3.3`)
   - FSCalendar
   - KeychainAccess
@@ -29,6 +31,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - ChromaColorPicker
     - FSCalendar
     - KeychainAccess
     - PopupDialog
@@ -53,6 +56,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
+  ChromaColorPicker: 33efa67b17cca51dd253689d18b83ac7e05642c2
   Eureka: 5b9418d7bfdc21ca977d69d124a6409f3e9af2c7
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
@@ -61,6 +65,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
 
-PODFILE CHECKSUM: c2b6d5cecccc75985c92adf62d9e2e063faf561e
+PODFILE CHECKSUM: 7003c65492bc7e5d356d8e136c17d68e0958726d
 
 COCOAPODS: 1.5.3

@@ -1,5 +1,5 @@
 //
-//  PopUpColorViewModel.swift
+//  ColorSchemViewModel.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/01.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-protocol PopUpColorViewModelDelegate: class {
+protocol ColorSchemViewModelDelegate: class {
     func successGetShiftCategory()
     func faildAPI(title: String, msg: String)
 }
 
-class PopUpColorViewModel {
-    weak var delegate: PopUpColorViewModelDelegate?
+class ColorSchemViewModel {
+    weak var delegate: ColorSchemViewModelDelegate?
     private let api = API()
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     

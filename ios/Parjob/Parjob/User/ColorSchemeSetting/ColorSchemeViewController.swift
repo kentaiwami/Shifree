@@ -7,29 +7,70 @@
 //
 
 import UIKit
+import TinyConstraints
 
-class ColorSchemeViewController: UIViewController {
+protocol ColorSchemViewInterface: class {
+    func updateTableData()
+    func showErrorAlert(title: String, msg: String)
+}
+
+class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
+    
+    var tableView = UITableView()
+    fileprivate var presenter: ColorSchemViewPresenter!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter = ColorSchemViewPresenter(view: self)
+        presenter.setShiftCategoryColor()
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UINib(nibName: "CustomColorTableViewCell", bundle: nil), forCellReuseIdentifier: "CustomColorCell")
+        self.view.addSubview(tableView)
 
-        // Do any additional setup after loading the view.
+        tableView.height(to: self.view)
+        tableView.top(to: self.view)
+        tableView.left(to: self.view)
+        tableView.right(to: self.view)
+        tableView.bottom(to: self.view)
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+}
+
+
+// MARK: - Presenterから呼び出される関数
+extension ColorSchemeViewController {
+    func updateTableData() {
+        tableView.reloadData()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func showErrorAlert(title: String, msg: String) {
+        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
-    */
+}
 
+
+extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return presenter.getShiftCategoryColor().count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "CustomColorCell") as! CustomColorTableViewCell
+        let shiftCategoryColor = presenter.getShiftCategoryColor()
+        
+        cell.setCell(name: shiftCategoryColor[indexPath.row].name, color: shiftCategoryColor[indexPath.row].color)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
+    }
 }
