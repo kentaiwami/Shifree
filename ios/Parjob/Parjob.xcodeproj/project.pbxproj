@@ -149,6 +149,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		370031A520EDEB4300813685 /* Xib */ = {
+			isa = PBXGroup;
+			children = (
+				3700319B20EDDC2800813685 /* CustomColorTableViewCell.swift */,
+				3700319C20EDDC2800813685 /* CustomColorTableViewCell.xib */,
+			);
+			path = Xib;
+			sourceTree = "<group>";
+		};
 		37326C4020DFE32B00A60B00 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +339,7 @@
 		37FF360520DD4CFE00FB2C68 /* Parjob */ = {
 			isa = PBXGroup;
 			children = (
+				370031A520EDEB4300813685 /* Xib */,
 				37A69B0B20E83027004E8C66 /* User */,
 				37326C4020DFE32B00A60B00 /* SignUp */,
 				37425CC120DE8928005A3C93 /* Calendar */,
@@ -344,8 +354,6 @@
 				37326C3820DEC79200A60B00 /* Extensions.swift */,
 				37326C3A20DEC85E00A60B00 /* Enum.swift */,
 				37326C3E20DFD98500A60B00 /* Setting.swift */,
-				3700319B20EDDC2800813685 /* CustomColorTableViewCell.swift */,
-				3700319C20EDDC2800813685 /* CustomColorTableViewCell.xib */,
 			);
 			path = Parjob;
 			sourceTree = "<group>";
