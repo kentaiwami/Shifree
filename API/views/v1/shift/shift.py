@@ -49,11 +49,12 @@ def add_update_delete():
               'properties':
                   {'adds': {'type': 'array',
                             'items': {'type': 'object',
-                                      'properties': {'name': {'type': 'string'},
-                                                     'category_id': {'type': 'integer', 'minimum': 0},
+                                      'properties': {'category_id': {'type': 'integer', 'minimum': 0},
                                                      'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
-                                                     'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'}},
-                                      'required': ['category_id', 'start', 'end']
+                                                     'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
+                                                     'name': {'type': 'string', 'minLength': 1}
+                                                     },
+                                      'required': ['category_id', 'start', 'end', 'name']
                                       }
                             },
                    'updates': {'type': 'array',
@@ -61,9 +62,10 @@ def add_update_delete():
                                          'properties': {'id': {'type': 'integer', 'minimum': 0},
                                                         'category_id': {'type': 'integer', 'minimum': 0},
                                                         'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
-                                                        'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'}
+                                                        'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
+                                                        'name': {'type': 'string', 'minLength': 1}
                                                         },
-                                         'required': ['id', 'category_id', 'start', 'end']
+                                         'required': ['id', 'category_id', 'start', 'end', 'name']
                                          }
                                },
                    'deletes': {'type': 'array', 'items': {'type': 'integer'}}},
@@ -96,6 +98,33 @@ def add_update_delete():
             abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
         session.delete(shift_company[0])
+
+
+    for shift_obj in request.json['updates']:
+        shift_company = session.query(Shift, Company).join(ShiftCategory, Company).filter(Shift.id == shift_obj['id']).one_or_none()
+
+        if shift_company is None:
+            session.close()
+            frame = inspect.currentframe()
+            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+
+        if admin_user.company_id != shift_company[1].id:
+            frame = inspect.currentframe()
+            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+
+        shift_category = session.query(ShiftCategory).filter(ShiftCategory.id == shift_obj['category_id']).one_or_none()
+
+        if shift_category is None:
+            session.close()
+            frame = inspect.currentframe()
+            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+
+        shift_company[0].name = shift_obj['name']
+        shift_company[0].shift_category_id = shift_category.id
+        shift_company[0].start = shift_obj['start']
+        shift_company[0].end = shift_obj['end']
+
+        session.commit()
 
 
     # session.commit()
