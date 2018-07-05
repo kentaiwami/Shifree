@@ -1,6 +1,9 @@
-from flask import Blueprint, jsonify
-from model import User, Shift, ShiftCategory, Company
+import inspect
+from flask import Blueprint, request, jsonify, abort
+from jsonschema import validate, ValidationError
+from model import User, Role, Company, Shift, ShiftCategory
 from database import session
+from views.v1.response import response_msg_404, response_msg_403, response_msg_200
 from basic_auth import api_basic_auth
 
 
@@ -37,3 +40,64 @@ def get():
 
     session.close()
     return jsonify({'results': results}), 200
+
+
+@app.route('/api/v1/shift', methods=['PUT'])
+@api_basic_auth.login_required
+def add_update_delete():
+    schema = {'type': 'object',
+              'properties':
+                  {'adds': {'type': 'array',
+                            'items': {'type': 'object',
+                                      'properties': {'name': {'type': 'string'},
+                                                     'category_id': {'type': 'integer', 'minimum': 0},
+                                                     'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
+                                                     'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'}},
+                                      'required': ['category_id', 'start', 'end']
+                                      }
+                            },
+                   'updates': {'type': 'array',
+                               'items': {'type': 'object',
+                                         'properties': {'id': {'type': 'integer', 'minimum': 0},
+                                                        'category_id': {'type': 'integer', 'minimum': 0},
+                                                        'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
+                                                        'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'}
+                                                        },
+                                         'required': ['id', 'category_id', 'start', 'end']
+                                         }
+                               },
+                   'deletes': {'type': 'array', 'items': {'type': 'integer'}}},
+              'required': ['adds', 'updates', 'deletes']
+              }
+
+    try:
+        validate(request.json, schema)
+    except ValidationError as e:
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
+
+    admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one_or_none()
+
+    if admin_user.role.name != 'admin':
+        session.close()
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+
+    for shift_id in request.json['deletes']:
+        shift_company = session.query(Shift, Company).join(ShiftCategory, Company).filter(Shift.id == shift_id).one_or_none()
+
+        if shift_company is None:
+            session.close()
+            frame = inspect.currentframe()
+            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+
+        if admin_user.company_id != shift_company[1].id:
+            frame = inspect.currentframe()
+            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+
+        session.delete(shift_company[0])
+
+
+    # session.commit()
+    session.close()
+    return jsonify({'a': 10}), 200
