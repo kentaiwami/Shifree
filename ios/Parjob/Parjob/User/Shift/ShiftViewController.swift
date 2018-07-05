@@ -26,7 +26,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         super.viewDidLoad()
         
         presenter = ShiftViewPresenter(view: self)
-        presenter.setShift()
+        presenter.setShiftDetail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,35 +39,66 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         
         var count = 0
         
-//        form +++ MultivaluedSection(
-//            multivaluedOptions: [.Insert, .Delete],
-//            header: "",
-//            footer: "既にあるカテゴリを削除して同じ名前のカテゴリを登録しても、新規登録となるので注意してください。") {
-//                $0.addButtonProvider = { section in
-//                    section.showInsertIconInAddButton = true
-//                    return ButtonRow(){
-//                        $0.title = "カテゴリを追加"
-//                        }.cellUpdate({ (cell, row) in
-//                            cell.textLabel?.textAlignment = .left
-//                        })
-//                }
-//
-//                $0.multivaluedRowToInsertAt = { _ in
-//                    return NameRow() {
-//                        $0.placeholder = "カテゴリ名"
-//                        $0.tag = String(count) + "_new"
-//                        count += 1
-//                    }
-//                }
-
-//                for shiftCategory in presenter.getShiftCategory() {
-//                    $0 <<< NameRow() {
-//                        $0.value = shiftCategory.name
-//                        $0.tag = String(shiftCategory.id) + "_exist"
-//                    }
-//                }
-//        }
-        
+        for (shiftCategory, shiftDetails) in zip(presenter.getShiftCategory(), presenter.getShiftDetail()) {
+            
+            form +++
+                MultivaluedSection(
+                    multivaluedOptions: [.Insert, .Delete],
+                    header: shiftCategory.name,
+                    footer: "") {
+                        $0.tag = "textfields"
+                        $0.addButtonProvider = { section in
+                            return ButtonRow(){
+                                $0.title = "シフトを追加"
+                            }.cellUpdate({ (cell, row) in
+                                cell.textLabel?.textAlignment = .left
+                            })
+                        }
+                        
+                        let defaultTitle = "タップしてシフト情報を入力"
+                        
+                        $0.multivaluedRowToInsertAt = { index in
+                            return ButtonRow() {
+                                $0.title = defaultTitle
+                                $0.value = defaultTitle
+                                $0.tag = String(count) + "_new"
+                                count += 1
+                            }.cellUpdate({ (cell, row) in
+                                cell.textLabel?.textAlignment = .left
+                                if row.title! == defaultTitle {
+                                    cell.textLabel?.textColor = .gray
+                                }else {
+                                    cell.textLabel?.textColor = .black
+                                }
+                            }).onCellSelection({ (cell, row) in
+//                                let value = self.getUsernameRoleFromCellTitle(title: row.title!)
+//                                self.TapUserCell(username: value.username, role: value.role, isNew: true, row: row, code: "")
+                            })
+                        }
+                        
+                        for shiftDetail in shiftDetails {
+                            var format = "%@ %@ 〜 %@"
+                            var arguments = [shiftDetail.name, shiftDetail.start, shiftDetail.end]
+                            if shiftDetail.start == "" || shiftDetail.end == "" {
+                                format = "%@"
+                                arguments = [shiftDetail.name]
+                            }
+                            
+                            $0 <<< ButtonRow() {
+                                $0.title = String(format: format, arguments: arguments)
+                                $0.value = String(format: format, arguments: arguments)
+                                $0.cell.textLabel?.numberOfLines = 0
+                                $0.tag = String(shiftDetail.id) + "_exist"
+                            }.cellUpdate({ (cell, row) in
+                                cell.textLabel?.textAlignment = .left
+                                cell.textLabel?.textColor = .black
+                            }).onCellSelection({ (cell, row) in
+//                                let value = self.getUsernameRoleFromCellTitle(title: row.title!)
+//                                self.TapUserCell(username: value.username, role: value.role, isNew: false, row: row, code: user.code)
+                            })
+                        }
+                }
+        }
 //        presenter.setInitShiftCategory(values: form.values())
 
         UIView.setAnimationsEnabled(true)

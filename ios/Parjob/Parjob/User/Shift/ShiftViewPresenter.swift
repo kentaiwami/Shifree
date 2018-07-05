@@ -36,8 +36,16 @@ class ShiftViewPresenter {
 //        model.setInitShiftCategory(values: values)
 //    }
     
-    func setShift() {
-        model.setShift()
+    func setShiftDetail() {
+        model.setShiftDetail()
+    }
+    
+    func getShiftCategory() -> [ShiftCategory] {
+        return model.shiftCategory
+    }
+    
+    func getShiftDetail() -> [[ShiftDetail]] {
+        return model.shiftDetail
     }
 }
 

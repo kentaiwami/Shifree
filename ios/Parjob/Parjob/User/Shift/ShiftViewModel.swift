@@ -18,10 +18,10 @@ protocol ShiftViewModelDelegate: class {
 class ShiftViewModel {
     weak var delegate: ShiftViewModelDelegate?
     private let api = API()
-    private(set) var shift: [[ShiftDetail]] = []
+    private(set) var shiftDetail: [[ShiftDetail]] = []
     private(set) var shiftCategory: [ShiftCategory] = []
     
-    func setShift() {
+    func setShiftDetail() {
         api.getShift().done { (json) in
             json["results"].arrayValue.forEach({ (category) in
                 self.shiftCategory.append(ShiftCategory(id: category["category_id"].intValue, name: category["category_name"].stringValue))
@@ -31,7 +31,7 @@ class ShiftViewModel {
                     tmpShiftDetails.append(ShiftDetail(id: shift["id"].intValue, name: shift["name"].stringValue, start: shift["start"].stringValue, end: shift["end"].stringValue))
                 })
                 
-                self.shift.append(tmpShiftDetails)
+                self.shiftDetail.append(tmpShiftDetails)
             })
             
             self.delegate?.initializeUI()
