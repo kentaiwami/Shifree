@@ -8,13 +8,18 @@
 
 import UIKit
 import TinyConstraints
+import MKColorPicker
 
 protocol ColorSchemViewInterface: class {
+    var selectedColor: String { get }
+    var selectedCellIndexPath: IndexPath { get }
     func updateTableData()
     func showErrorAlert(title: String, msg: String)
 }
 
 class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
+    var selectedColor = ""
+    var selectedCellIndexPath = IndexPath()
     
     var tableView = UITableView()
     fileprivate var presenter: ColorSchemViewPresenter!
@@ -22,8 +27,11 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        
         presenter = ColorSchemViewPresenter(view: self)
-        presenter.setShiftCategoryColor()
+        presenter.setOriginShiftCategoryColor()
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -71,6 +79,27 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedCell = tableView.cellForRow(at: indexPath) as! CustomColorTableViewCell
+        selectedCellIndexPath = indexPath
+        showColorPicker(sendor: selectedCell)
+    }
+}
+
+extension ColorSchemeViewController{
+    func showColorPicker(sendor: UIView) {
+        let MKColorPicker = ColorPickerViewController()
+        MKColorPicker.selectedColor = { color in
+            self.tableView.deselectRow(at: self.tableView.indexPathForSelectedRow!, animated: true)
+            self.selectedColor = color.toHexString
+            self.presenter.setShiftCategoryColor()
+        }
+
+        if let popoverController = MKColorPicker.popoverPresentationController{
+            popoverController.delegate = MKColorPicker
+            popoverController.permittedArrowDirections = .any
+            popoverController.sourceView = sendor
+            popoverController.sourceRect = sendor.bounds
+        }
+        self.present(MKColorPicker, animated: true, completion: nil)
     }
 }

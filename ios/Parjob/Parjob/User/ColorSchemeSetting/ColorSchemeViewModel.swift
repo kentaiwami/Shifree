@@ -18,7 +18,7 @@ class ColorSchemViewModel {
     private let api = API()
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     
-    func setShiftCategoryColor() {
+    func setOriginShiftCategoryColor() {
         api.getShiftCategoryColor().done { (json) in
             json["results"].arrayValue.forEach({ (shiftCategoryColor) in
                 var tmp = ShiftCategoryColor()
@@ -34,5 +34,10 @@ class ColorSchemViewModel {
             let title = "Error(" + String(tmp_err.code) + ")"
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
+    }
+    
+    func setShiftCategoryColor(color: String, indexPath: IndexPath) {
+        shiftCategoryColors[indexPath.row].color = color
+        self.delegate?.successGetShiftCategory()
     }
 }

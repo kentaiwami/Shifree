@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class ColorSchemViewPresenter {
     
     weak var view: ColorSchemViewInterface?
@@ -20,12 +19,18 @@ class ColorSchemViewPresenter {
         model.delegate = self
     }
     
-    func setShiftCategoryColor() {
-        model.setShiftCategoryColor()
+    func setOriginShiftCategoryColor() {
+        model.setOriginShiftCategoryColor()
     }
     
     func getShiftCategoryColor() -> [ShiftCategoryColor] {
         return model.shiftCategoryColors
+    }
+    
+    func setShiftCategoryColor() {
+        guard let color = view?.selectedColor else {return}
+        guard let indexPath = view?.selectedCellIndexPath else {return}
+        model.setShiftCategoryColor(color: color, indexPath: indexPath)
     }
     
 }
