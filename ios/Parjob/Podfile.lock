@@ -3,6 +3,7 @@ PODS:
   - Eureka (3.0.0)
   - FSCalendar (2.7.9)
   - KeychainAccess (3.1.0)
+  - MKColorPicker (1.1)
   - PopupDialog (0.5.4)
   - PromiseKit (6.2.3):
     - PromiseKit/CorePromise (= 6.2.3)
@@ -21,6 +22,7 @@ DEPENDENCIES:
   - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `Swift-3.3`)
   - FSCalendar
   - KeychainAccess
+  - MKColorPicker
   - PopupDialog (= 0.5.4)
   - PromiseKit (~> 6.0)
   - SwiftyJSON
@@ -31,6 +33,7 @@ SPEC REPOS:
     - Alamofire
     - FSCalendar
     - KeychainAccess
+    - MKColorPicker
     - PopupDialog
     - PromiseKit
     - SwiftyJSON
@@ -56,11 +59,12 @@ SPEC CHECKSUMS:
   Eureka: 5b9418d7bfdc21ca977d69d124a6409f3e9af2c7
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
+  MKColorPicker: c75af5993af472935cbfff18bc46d5ed8ff6f638
   PopupDialog: 75cf955693590b0cb2fdde00223fb65d99c57247
   PromiseKit: 62f37bb4900a9b0b7550d017e41497171d93face
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
 
-PODFILE CHECKSUM: c2b6d5cecccc75985c92adf62d9e2e063faf561e
+PODFILE CHECKSUM: 772e911bf1a1373255c3520a58a0205521fe65e5
 
 COCOAPODS: 1.5.3

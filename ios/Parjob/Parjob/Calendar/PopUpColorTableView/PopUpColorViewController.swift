@@ -1,5 +1,5 @@
 //
-//  hoge.swift
+//  PopUpColorViewController.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/06/30.
@@ -15,10 +15,10 @@ protocol PopUpColorViewInterface: class {
     func showErrorAlert(title: String, msg: String)
 }
 
-class PopUpColorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, PopUpColorViewInterface {
+class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
     
     @IBOutlet weak var tableView: UITableView!
-    private var presenter: PopUpColorViewPresenter!
+    fileprivate var presenter: PopUpColorViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +29,7 @@ class PopUpColorViewController: UIViewController, UITableViewDataSource, UITable
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsSelection = false
+        tableView.register(UINib(nibName: "CustomColorTableViewCell", bundle: nil), forCellReuseIdentifier: "CustomColorCell")
         
         tableView.height(self.view.frame.height / 2)
         tableView.top(to: self.view)
@@ -37,8 +38,28 @@ class PopUpColorViewController: UIViewController, UITableViewDataSource, UITable
         tableView.bottom(to: self.view)
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+}
+
+
+
+// MARK: - Presenterから呼び出される関数
+extension PopUpColorViewController {
+    func showErrorAlert(title: String, msg: String) {
+        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+    }
+    
+    func updateTableData() {
+        tableView.reloadData()
+    }
+}
+
+
+extension PopUpColorViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! PopUpColorCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "CustomColorCell") as! CustomColorTableViewCell
         let shiftCategoryColor = presenter.getShiftCategoryColor()
         
         cell.setCell(name: shiftCategoryColor[indexPath.row].name, color: shiftCategoryColor[indexPath.row].color)
@@ -48,20 +69,6 @@ class PopUpColorViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.getShiftCategoryColor().count
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-}
-
-extension PopUpColorViewController {
-    func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
-    }
-    
-    func updateTableData() {
-        tableView.reloadData()
     }
 }
 
