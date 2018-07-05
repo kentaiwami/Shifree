@@ -22,18 +22,17 @@ def get():
             tmp_shifts.append({
                 'id': shift_category[0].id,
                 'name': shift_category[0].name,
-                'start': shift_category[0].start.strftime("%H:%M") if shift_category[0].start != None else None,
-                'end': shift_category[0].end.strftime("%H:%M") if shift_category[0].end != None else None
+                'start': None if shift_category[0].start is None else shift_category[0].start.strftime("%H:%M"),
+                'end': None if shift_category[0].end is None else shift_category[0].end.strftime("%H:%M")
             })
         else:
             results.append({'category_name': current_category.name, 'category_id': current_category.id, 'shifts': tmp_shifts})
-            tmp_shifts = []
-            tmp_shifts.append({
+            tmp_shifts = [{
                 'id': shift_category[0].id,
                 'name': shift_category[0].name,
-                'start': shift_category[0].start.strftime("%H:%M") if shift_category[0].start != None else None,
-                'end': shift_category[0].end.strftime("%H:%M") if shift_category[0].end != None else None
-            })
+                'start': None if shift_category[0].start is None else shift_category[0].start.strftime("%H:%M"),
+                'end': None if shift_category[0].end is None else shift_category[0].end.strftime("%H:%M")
+            }]
             current_category = shift_category[1]
 
     session.close()
