@@ -212,7 +212,7 @@
 				37A69B1B20E8A07A004E8C66 /* WageSetting */,
 				37A69B1620E89B7E004E8C66 /* ShiftCategorySetting */,
 				37A69B1520E89B65004E8C66 /* UserListSetting */,
-				37D169CC20EC940000265186 /* UserList */,
+				37D169CC20EC940000265186 /* UserListView */,
 				37A69B1220E839D1004E8C66 /* Top */,
 			);
 			path = User;
@@ -308,14 +308,14 @@
 			path = UserListSettingDetail;
 			sourceTree = "<group>";
 		};
-		37D169CC20EC940000265186 /* UserList */ = {
+		37D169CC20EC940000265186 /* UserListView */ = {
 			isa = PBXGroup;
 			children = (
 				3769F6FA20EC960600BA8920 /* UserListViewController.swift */,
 				3769F6F820EC960600BA8920 /* UserListViewModel.swift */,
 				3769F6F920EC960600BA8920 /* UserListViewPresenter.swift */,
 			);
-			path = UserList;
+			path = UserListView;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
