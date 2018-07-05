@@ -1,9 +1,9 @@
 import inspect
 from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
-from model import User, Role, Company, Shift, ShiftCategory
+from model import User, Company, Shift, ShiftCategory
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_200
+from views.v1.response import response_msg_404, response_msg_403, response_msg_200, response_msg_409
 from basic_auth import api_basic_auth
 
 
@@ -50,8 +50,8 @@ def add_update_delete():
                   {'adds': {'type': 'array',
                             'items': {'type': 'object',
                                       'properties': {'category_id': {'type': 'integer', 'minimum': 0},
-                                                     'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
-                                                     'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
+                                                     'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$|'},
+                                                     'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$|'},
                                                      'name': {'type': 'string', 'minLength': 1}
                                                      },
                                       'required': ['category_id', 'start', 'end', 'name']
@@ -127,6 +127,29 @@ def add_update_delete():
         session.commit()
 
 
-    # session.commit()
+    for shift_obj in request.json['adds']:
+        shift_category = session.query(ShiftCategory).filter(ShiftCategory.id == shift_obj['category_id']).one_or_none()
+
+        if shift_category.company_id != admin_user.company_id:
+            frame = inspect.currentframe()
+            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+
+
+        shift = session.query(Shift).join(ShiftCategory, Company).filter(Shift.name == shift_obj['name'], Company.id == admin_user.company_id).one_or_none()
+
+        if shift is not None:
+            frame = inspect.currentframe()
+            abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+
+        new_shift = Shift(
+            name=shift_obj['name'],
+            shift_category_id=shift_category.id,
+            start=None if shift_obj['start'] is '' else shift_obj['start'],
+            end=None if shift_obj['end'] is '' else shift_obj['end']
+        )
+
+        session.add(new_shift)
+
+    session.commit()
     session.close()
-    return jsonify({'a': 10}), 200
+    return jsonify({'msg': response_msg_200()}), 200
