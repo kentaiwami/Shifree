@@ -10,6 +10,7 @@ import Foundation
 
 protocol ColorSchemViewModelDelegate: class {
     func successGetShiftCategory()
+    func successUpdateShiftCategory()
     func faildAPI(title: String, msg: String)
 }
 
@@ -24,6 +25,7 @@ class ColorSchemViewModel {
                 var tmp = ShiftCategoryColor()
                 tmp.name = shiftCategoryColor["category_name"].stringValue
                 tmp.color = shiftCategoryColor["hex"].stringValue
+                tmp.categoryId = shiftCategoryColor["category_id"].intValue
                 self.shiftCategoryColors.append(tmp)
             })
             
@@ -39,5 +41,22 @@ class ColorSchemViewModel {
     func setShiftCategoryColor(color: String, indexPath: IndexPath) {
         shiftCategoryColors[indexPath.row].color = color
         self.delegate?.successGetShiftCategory()
+    }
+    
+    func updateShiftCategoryColor() {
+        var schemas:[[String:Any]] = []
+        
+        shiftCategoryColors.forEach { (shiftCategoryColor) in
+            schemas.append(["category_id": shiftCategoryColor.categoryId, "hex": shiftCategoryColor.color])
+        }
+        
+        api.updateShiftCategoryColor(schemas: schemas).done { (json) in
+            self.delegate?.successUpdateShiftCategory()
+        }
+        .catch { (err) in
+            let tmp_err = err as NSError
+            let title = "Error(" + String(tmp_err.code) + ")"
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
     }
 }

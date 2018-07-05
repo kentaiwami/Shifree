@@ -33,11 +33,19 @@ class ColorSchemViewPresenter {
         model.setShiftCategoryColor(color: color, indexPath: indexPath)
     }
     
+    func updateShiftCategory() {
+        model.updateShiftCategoryColor()
+    }
+    
 }
 
 extension ColorSchemViewPresenter: ColorSchemViewModelDelegate {
     func successGetShiftCategory() {
         view?.updateTableData()
+    }
+    
+    func successUpdateShiftCategory() {
+        view?.successUpdateShiftCategory()
     }
     
     func faildAPI(title: String, msg: String) {

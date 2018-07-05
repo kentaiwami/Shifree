@@ -12,4 +12,5 @@ import Foundation
 struct ShiftCategoryColor {
     var name: String = ""
     var color: String = ""
+    var categoryId: Int = 0
 }
