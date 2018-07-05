@@ -26,7 +26,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         super.viewDidLoad()
         
         presenter = ShiftViewPresenter(view: self)
-        presenter.setShiftCategory()
+        presenter.setShift()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,36 +39,36 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         
         var count = 0
         
-        form +++ MultivaluedSection(
-            multivaluedOptions: [.Insert, .Delete],
-            header: "",
-            footer: "既にあるカテゴリを削除して同じ名前のカテゴリを登録しても、新規登録となるので注意してください。") {
-                $0.addButtonProvider = { section in
-                    section.showInsertIconInAddButton = true
-                    return ButtonRow(){
-                        $0.title = "カテゴリを追加"
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textAlignment = .left
-                        })
-                }
+//        form +++ MultivaluedSection(
+//            multivaluedOptions: [.Insert, .Delete],
+//            header: "",
+//            footer: "既にあるカテゴリを削除して同じ名前のカテゴリを登録しても、新規登録となるので注意してください。") {
+//                $0.addButtonProvider = { section in
+//                    section.showInsertIconInAddButton = true
+//                    return ButtonRow(){
+//                        $0.title = "カテゴリを追加"
+//                        }.cellUpdate({ (cell, row) in
+//                            cell.textLabel?.textAlignment = .left
+//                        })
+//                }
+//
+//                $0.multivaluedRowToInsertAt = { _ in
+//                    return NameRow() {
+//                        $0.placeholder = "カテゴリ名"
+//                        $0.tag = String(count) + "_new"
+//                        count += 1
+//                    }
+//                }
 
-                $0.multivaluedRowToInsertAt = { _ in
-                    return NameRow() {
-                        $0.placeholder = "カテゴリ名"
-                        $0.tag = String(count) + "_new"
-                        count += 1
-                    }
-                }
-
-                for shiftCategory in presenter.getShiftCategory() {
-                    $0 <<< NameRow() {
-                        $0.value = shiftCategory.name
-                        $0.tag = String(shiftCategory.id) + "_exist"
-                    }
-                }
-        }
+//                for shiftCategory in presenter.getShiftCategory() {
+//                    $0 <<< NameRow() {
+//                        $0.value = shiftCategory.name
+//                        $0.tag = String(shiftCategory.id) + "_exist"
+//                    }
+//                }
+//        }
         
-        presenter.setInitShiftCategory(values: form.values())
+//        presenter.setInitShiftCategory(values: form.values())
 
         UIView.setAnimationsEnabled(true)
     }
@@ -79,7 +79,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
     }
     
     @objc private func tapEditDoneButton() {
-        presenter.updateShiftCategory()
+//        presenter.updateShiftCategory()
     }
 
     override func didReceiveMemoryWarning() {
