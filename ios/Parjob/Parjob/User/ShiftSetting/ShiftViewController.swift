@@ -8,9 +8,10 @@
 
 import UIKit
 import Eureka
+import PopupDialog
 
 protocol ShiftViewInterface: class {
-    var formValues: [String:Any?] { get }
+    var formValues: [[String]] { get }
     
     func initializeUI()
     func success()
@@ -71,8 +72,8 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                                     cell.textLabel?.textColor = .black
                                 }
                             }).onCellSelection({ (cell, row) in
-//                                let value = self.getUsernameRoleFromCellTitle(title: row.title!)
-//                                self.TapUserCell(username: value.username, role: value.role, isNew: true, row: row, code: "")
+                                let value = self.getShiftnameStartEndFromCellTitle(title: row.title!)
+                                self.TapUserCell(name: value.name, start: value.start, end: value.end, row: row)
                             })
                         }
                         
@@ -84,19 +85,17 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                                 arguments = [shiftDetail.name]
                             }
                             
-                            print(self.getShiftnameStartEndFromCellTitle(title: String(format: format, arguments: arguments)))
-                            
                             $0 <<< ButtonRow() {
                                 $0.title = String(format: format, arguments: arguments)
-                                $0.value = String(format: format, arguments: arguments)
+                                $0.value = String(format: "%@,%@,%@", arguments: [shiftDetail.name, shiftDetail.start, shiftDetail.end])
                                 $0.cell.textLabel?.numberOfLines = 0
                                 $0.tag = String(shiftDetail.id) + "_exist"
                             }.cellUpdate({ (cell, row) in
                                 cell.textLabel?.textAlignment = .left
                                 cell.textLabel?.textColor = .black
                             }).onCellSelection({ (cell, row) in
-//                                let value = self.getShiftnameStartEndFromCellTitle(title: row.title!)
-//                                self.TapUserCell(username: value.username, role: value.role, isNew: false, row: row, code: user.code)
+                                let value = self.getShiftnameStartEndFromCellTitle(title: row.title!)
+                                self.TapUserCell(name: value.name, start: value.start, end: value.end, row: row)
                             })
                         }
                 }
@@ -107,13 +106,44 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
+    private func TapUserCell(name: String, start: String, end: String, row: ButtonRow) {
+        let vc = ShiftSettingDetailViewController()
+        vc.name = name
+        vc.start = start
+        vc.end = end
+        
+        let popUp = PopupDialog(viewController: vc)
+        let buttonOK = DefaultButton(title: "OK"){
+            if IsValidateFormValue(form: vc.form) {
+                let detaiVCValues = vc.form.values()
+                var format = "%@ %@ 〜 %@"
+                var arguments = [detaiVCValues["name"] as! String, detaiVCValues["start"] as! String, detaiVCValues["end"] as! String]
+                if detaiVCValues["start"] as! String == "" || detaiVCValues["end"] as! String == "" {
+                    format = "%@"
+                    arguments = [detaiVCValues["name"] as! String]
+                }
+                
+                row.title = String(format: format, arguments: arguments)
+                row.value = String(format: "%@,%@,%@", arguments: [detaiVCValues["name"] as! String, detaiVCValues["start"] as! String, detaiVCValues["end"] as! String])
+                row.updateCell()
+            }else {
+                ShowStandardAlert(title: "Error", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
+            }
+        }
+        
+        let buttonCancel = CancelButton(title: "Cancel"){}
+        popUp.addButton(buttonOK)
+        popUp.addButton(buttonCancel)
+        present(popUp, animated: true, completion: nil)
+    }
+    
     fileprivate func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
     
     @objc private func tapEditDoneButton() {
-//        presenter.updateShiftCategory()
+        presenter.updateShiftDetail()
     }
 
     override func didReceiveMemoryWarning() {
@@ -124,8 +154,21 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
 
 // MARK: - formでユーザが設定する値
 extension ShiftViewController {
-    var formValues: [String:Any?] {
-        return self.form.values()
+    var formValues: [[String]] {
+        var results: [[String]] = []
+        
+        for section in self.form.allSections {
+            var tmpRowValues: [String] = []
+            for hoge in section {
+                if let tmp = hoge.baseValue as? String {
+                    tmpRowValues.append(tmp)
+                }
+            }
+            
+            results.append(tmpRowValues)
+        }
+        
+        return results
     }
 }
 

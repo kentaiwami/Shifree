@@ -62,6 +62,7 @@
 		37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168A720EE82C7003A453A /* ShiftViewModel.swift */; };
 		37C168AC20EE82C7003A453A /* ShiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168A820EE82C7003A453A /* ShiftViewController.swift */; };
 		37C168AD20EE82C7003A453A /* ShiftViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168A920EE82C7003A453A /* ShiftViewEntity.swift */; };
+		37C168B020EEB2DA003A453A /* ShiftSettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168AF20EEB2DA003A453A /* ShiftSettingDetailViewController.swift */; };
 		37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
@@ -125,6 +126,7 @@
 		37C168A720EE82C7003A453A /* ShiftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftViewModel.swift; sourceTree = "<group>"; };
 		37C168A820EE82C7003A453A /* ShiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftViewController.swift; sourceTree = "<group>"; };
 		37C168A920EE82C7003A453A /* ShiftViewEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftViewEntity.swift; sourceTree = "<group>"; };
+		37C168AF20EEB2DA003A453A /* ShiftSettingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftSettingDetailViewController.swift; sourceTree = "<group>"; };
 		37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListSettingDetailViewController.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -213,7 +215,7 @@
 		37A69B0B20E83027004E8C66 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				37C168A520EE824D003A453A /* Shift */,
+				37C168A520EE824D003A453A /* ShiftSetting */,
 				37A69B2720E8A155004E8C66 /* Salary */,
 				37A69B2420E8A0CC004E8C66 /* ColorSchemeSetting */,
 				37A69B2120E8A0B5004E8C66 /* PasswordSetting */,
@@ -309,15 +311,24 @@
 			path = Salary;
 			sourceTree = "<group>";
 		};
-		37C168A520EE824D003A453A /* Shift */ = {
+		37C168A520EE824D003A453A /* ShiftSetting */ = {
 			isa = PBXGroup;
 			children = (
+				37C168AE20EEB26C003A453A /* ShiftSettingVeiwDetail */,
 				37C168A820EE82C7003A453A /* ShiftViewController.swift */,
 				37C168A620EE82C7003A453A /* ShiftViewPresenter.swift */,
 				37C168A720EE82C7003A453A /* ShiftViewModel.swift */,
 				37C168A920EE82C7003A453A /* ShiftViewEntity.swift */,
 			);
-			path = Shift;
+			path = ShiftSetting;
+			sourceTree = "<group>";
+		};
+		37C168AE20EEB26C003A453A /* ShiftSettingVeiwDetail */ = {
+			isa = PBXGroup;
+			children = (
+				37C168AF20EEB2DA003A453A /* ShiftSettingDetailViewController.swift */,
+			);
+			path = ShiftSettingVeiwDetail;
 			sourceTree = "<group>";
 		};
 		37CC330020EA871A0059C8D7 /* UserListSettingDetail */ = {
@@ -546,6 +557,7 @@
 				37A69B3920E986F6004E8C66 /* PasswordViewPresenter.swift in Sources */,
 				37C168AA20EE82C7003A453A /* ShiftViewPresenter.swift in Sources */,
 				37A69B3320E957F2004E8C66 /* WageViewPresenter.swift in Sources */,
+				37C168B020EEB2DA003A453A /* ShiftSettingDetailViewController.swift in Sources */,
 				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
 				378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */,

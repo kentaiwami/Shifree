@@ -47,6 +47,11 @@ class ShiftViewPresenter {
     func getShiftDetail() -> [[ShiftDetail]] {
         return model.shiftDetail
     }
+    
+    func updateShiftDetail() {
+        guard let formValues = view?.formValues else {return}
+        model.updateShiftDetail(formValues: formValues)
+    }
 }
 
 extension ShiftViewPresenter: ShiftViewModelDelegate {
