@@ -84,6 +84,8 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                                 arguments = [shiftDetail.name]
                             }
                             
+                            print(self.getShiftnameStartEndFromCellTitle(title: String(format: format, arguments: arguments)))
+                            
                             $0 <<< ButtonRow() {
                                 $0.title = String(format: format, arguments: arguments)
                                 $0.value = String(format: format, arguments: arguments)
@@ -93,7 +95,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                                 cell.textLabel?.textAlignment = .left
                                 cell.textLabel?.textColor = .black
                             }).onCellSelection({ (cell, row) in
-//                                let value = self.getUsernameRoleFromCellTitle(title: row.title!)
+//                                let value = self.getShiftnameStartEndFromCellTitle(title: row.title!)
 //                                self.TapUserCell(username: value.username, role: value.role, isNew: false, row: row, code: user.code)
                             })
                         }
@@ -101,6 +103,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         }
 //        presenter.setInitShiftCategory(values: form.values())
 
+        
         UIView.setAnimationsEnabled(true)
     }
     
@@ -141,5 +144,28 @@ extension ShiftViewController {
     
     func showErrorAlert(title: String, msg: String) {
         ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+    }
+}
+
+
+// MARK: - 可読性のために関数化
+extension ShiftViewController {
+    fileprivate func getShiftnameStartEndFromCellTitle(title: String) -> (name: String, start: String, end: String) {
+        let shiftNameMatch = GetMatchStrings(targetString: title, pattern: ".*? ")
+        let startMatch = GetMatchStrings(targetString: title, pattern: "[0-9]{2}:[0-9]{2} 〜")
+        let endMatch = GetMatchStrings(targetString: title, pattern: "〜 [0-9]{2}:[0-9]{2}")
+        
+        if startMatch.count == 0 || endMatch.count == 0 {
+            return (title, "", "")
+        }
+        
+        if shiftNameMatch.count == 0 {
+            return ("", "", "")
+        }
+        
+        let shiftname = shiftNameMatch[0].substring(to: shiftNameMatch[0].index(before: shiftNameMatch[0].endIndex))
+        let start = startMatch[0].replacingOccurrences(of: " |〜", with: "", options: NSString.CompareOptions.regularExpression, range: nil)
+        let end = endMatch[0].replacingOccurrences(of: " |〜", with: "", options: NSString.CompareOptions.regularExpression, range: nil)
+        return (shiftname, start, end)
     }
 }
