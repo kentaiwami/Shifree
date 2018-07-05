@@ -71,6 +71,6 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

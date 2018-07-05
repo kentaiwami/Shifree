@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class CustomColorTableViewCell: UITableViewCell {
 
@@ -19,14 +20,27 @@ class CustomColorTableViewCell: UITableViewCell {
         view.frame.size = CGSize(width: height, height: height)
         view.layer.cornerRadius = view.frame.width / 2
     }
+    
+    var viewBackgroundColor = UIColor.clear
+    var first = true
 
     override func setSelected(_ selected: Bool, animated: Bool) {
+        
+        if first {
+            viewBackgroundColor = self.view.backgroundColor!
+            
+            first = false
+        }
+        
         super.setSelected(selected, animated: animated)
+        
+        if(selected) {
+            self.view.backgroundColor = viewBackgroundColor
+        }
     }
     
     func setCell(name: String, color: String) {
         label.text = name
         view.backgroundColor = UIColor.hex(color, alpha: 1.0)
     }
-    
 }
