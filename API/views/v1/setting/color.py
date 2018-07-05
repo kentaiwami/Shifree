@@ -14,7 +14,7 @@ app = Blueprint('setting_color_bp', __name__)
 def create_or_update():
     schema = {'type': 'object',
               'properties':
-                  {'schemas': {'type': 'array',
+                  {'schemes': {'type': 'array',
                                'items': {'type': 'object',
                                          'properties': {
                                              'category_id': {'type': 'integer', 'minimum': 0},
@@ -24,7 +24,7 @@ def create_or_update():
                                          }
                                },
                    },
-              'required': ['schemas']
+              'required': ['schemes']
               }
 
     try:
@@ -36,7 +36,7 @@ def create_or_update():
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
-    for schema in request.json['schemas']:
+    for schema in request.json['schemes']:
         category = session.query(ShiftCategory).filter(ShiftCategory.id == schema['category_id']).one_or_none()
 
         if not category:

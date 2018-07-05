@@ -190,9 +190,9 @@ extension API {
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
     
-    func updateShiftCategoryColor(schemas:[[String:Any]]) -> Promise<JSON> {
+    func updateShiftCategoryColor(schemes:[[String:Any]]) -> Promise<JSON> {
         let endPoint = "setting/color"
-        let params = ["schemas": schemas] as [String:Any]
+        let params = ["schemes": schemes] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
 }

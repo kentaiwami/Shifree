@@ -44,13 +44,13 @@ class ColorSchemViewModel {
     }
     
     func updateShiftCategoryColor() {
-        var schemas:[[String:Any]] = []
+        var schemes:[[String:Any]] = []
         
         shiftCategoryColors.forEach { (shiftCategoryColor) in
-            schemas.append(["category_id": shiftCategoryColor.categoryId, "hex": shiftCategoryColor.color])
+            schemes.append(["category_id": shiftCategoryColor.categoryId, "hex": shiftCategoryColor.color])
         }
         
-        api.updateShiftCategoryColor(schemas: schemas).done { (json) in
+        api.updateShiftCategoryColor(schemes: schemes).done { (json) in
             self.delegate?.successUpdateShiftCategory()
         }
         .catch { (err) in

@@ -34,6 +34,11 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
         initializeUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Color Scheme Setting"
+    }
+    
     private func initializeUI() {
         initializeTableView()
         initializeNavigationItem()
