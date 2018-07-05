@@ -105,6 +105,7 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
         let selectedCell = tableView.cellForRow(at: indexPath) as! CustomColorTableViewCell
         selectedCellIndexPath = indexPath
         showColorPicker(sendor: selectedCell)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -115,7 +116,6 @@ extension ColorSchemeViewController{
     func showColorPicker(sendor: UIView) {
         let MKColorPicker = ColorPickerViewController()
         MKColorPicker.selectedColor = { color in
-            self.tableView.deselectRow(at: self.tableView.indexPathForSelectedRow!, animated: true)
             self.selectedColor = color.toHexString
             self.presenter.setShiftCategoryColor()
         }
