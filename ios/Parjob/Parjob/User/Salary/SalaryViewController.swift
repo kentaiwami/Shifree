@@ -7,29 +7,47 @@
 //
 
 import UIKit
+import Eureka
+import PopupDialog
 
-class SalaryViewController: UIViewController {
+protocol SalaryViewInterface: class {
+    func showErrorAlert(title: String, msg: String)
+    func initializeUI()
+}
 
+
+class SalaryViewController: FormViewController, SalaryViewInterface {
+    fileprivate var presenter: SalaryViewPresenter!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        presenter = SalaryViewPresenter(view: self)
+        presenter.setSalary()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    fileprivate func initializeGraph() {
+        
     }
-    */
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Salary View"
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+}
 
+
+// MARK: - Presenterから呼び出される関数
+extension SalaryViewController {
+    func initializeUI() {
+        initializeGraph()
+    }
+    
+    func showErrorAlert(title: String, msg: String) {
+        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+    }
 }
