@@ -22,6 +22,7 @@ protocol ShiftViewInterface: class {
 class ShiftViewController: FormViewController, ShiftViewInterface {
     
     fileprivate var presenter: ShiftViewPresenter!
+    let defaultTitle = "タップしてシフト情報を入力"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,17 +57,15 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                             })
                         }
                         
-                        let defaultTitle = "タップしてシフト情報を入力"
-                        
                         $0.multivaluedRowToInsertAt = { index in
                             return ButtonRow() {
-                                $0.title = defaultTitle
-                                $0.value = defaultTitle
+                                $0.title = self.defaultTitle
+                                $0.value = self.defaultTitle
                                 $0.tag = String(count) + "_new"
                                 count += 1
                             }.cellUpdate({ (cell, row) in
                                 cell.textLabel?.textAlignment = .left
-                                if row.title! == defaultTitle {
+                                if row.title! == self.defaultTitle {
                                     cell.textLabel?.textColor = .gray
                                 }else {
                                     cell.textLabel?.textColor = .black
@@ -196,6 +195,10 @@ extension ShiftViewController {
         let startMatch = GetMatchStrings(targetString: title, pattern: "[0-9]{2}:[0-9]{2} 〜")
         let endMatch = GetMatchStrings(targetString: title, pattern: "〜 [0-9]{2}:[0-9]{2}")
         
+        if title == defaultTitle {
+            return ("", "", "")
+        }
+        
         if startMatch.count == 0 || endMatch.count == 0 {
             return (title, "", "")
         }
@@ -204,7 +207,7 @@ extension ShiftViewController {
             return ("", "", "")
         }
         
-        let shiftname = shiftNameMatch[0].substring(to: shiftNameMatch[0].index(before: shiftNameMatch[0].endIndex))
+        let shiftname = shiftNameMatch[0].replacingOccurrences(of: " ", with: "")
         let start = startMatch[0].replacingOccurrences(of: " |〜", with: "", options: NSString.CompareOptions.regularExpression, range: nil)
         let end = endMatch[0].replacingOccurrences(of: " |〜", with: "", options: NSString.CompareOptions.regularExpression, range: nil)
         return (shiftname, start, end)
