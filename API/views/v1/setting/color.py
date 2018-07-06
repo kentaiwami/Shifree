@@ -67,19 +67,29 @@ def create_or_update():
 @api_basic_auth.login_required
 def get():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    categories = session.query(ShiftCategory).filter(ShiftCategory.company_id == user.company_id).order_by('id').all()
+    category_scheme_results = session.query(ShiftCategory, ColorScheme)\
+        .outerjoin(ColorScheme, ShiftCategory.id == ColorScheme.shift_category_id)\
+        .filter(ShiftCategory.company_id == user.company_id)\
+        .all()
     session.close()
 
     results = []
 
-    for category in categories:
-        color_scheme = session.query(ColorScheme).filter(ColorScheme.user_id == user.id, ColorScheme.shift_category_id == category.id).one_or_none()
-
-        results.append({
-            'category_id': category.id,
-            'category_name': category.name,
-            'hex': None if color_scheme is None else color_scheme.hex,
-            'color_scheme_id': None if color_scheme is None else color_scheme.id
-        })
+    for category, scheme in category_scheme_results:
+        if scheme is None:
+            results.append({
+                'category_id': category.id,
+                'category_name': category.name,
+                'hex': None if scheme is None else scheme.hex,
+                'color_scheme_id': None if scheme is None else scheme.id
+            })
+        else:
+            if scheme.user_id == user.id:
+                results.append({
+                    'category_id': category.id,
+                    'category_name': category.name,
+                    'hex': scheme.hex,
+                    'color_scheme_id': scheme.id
+                })
 
     return jsonify({'results': results}), 200
