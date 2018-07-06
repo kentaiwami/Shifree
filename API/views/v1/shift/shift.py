@@ -14,30 +14,42 @@ app = Blueprint('shift_bp', __name__)
 @api_basic_auth.login_required
 def get():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    shift_category_list = session.query(Shift, ShiftCategory).join(ShiftCategory, Company).filter(ShiftCategory.company_id == user.company_id).order_by(ShiftCategory.id.asc()).all()
+    category_shift_results = session.query(ShiftCategory, Shift)\
+        .outerjoin(Shift, ShiftCategory.id == Shift.shift_category_id) \
+        .filter(ShiftCategory.company_id == user.company_id)\
+        .order_by(ShiftCategory.id.asc())\
+        .all()
 
     results = []
-    current_category = shift_category_list[0][1]
+    current_category = category_shift_results[0][0]
     tmp_shifts = []
 
-    for shift_category in shift_category_list:
-        if current_category == shift_category[1]:
-            tmp_shifts.append({
-                'id': shift_category[0].id,
-                'name': shift_category[0].name,
-                'start': None if shift_category[0].start is None else shift_category[0].start.strftime("%H:%M"),
-                'end': None if shift_category[0].end is None else shift_category[0].end.strftime("%H:%M")
-            })
+    for category, shift in category_shift_results:
+        if current_category == category:
+            if shift is None:
+                tmp_shifts = []
+            else:
+                tmp_shifts.append({
+                    'id': shift.id,
+                    'name': shift.name,
+                    'start': None if shift.start is None else shift.start.strftime("%H:%M"),
+                    'end': None if shift.end is None else shift.end.strftime("%H:%M")
+                })
         else:
             results.append({'category_name': current_category.name, 'category_id': current_category.id, 'shifts': tmp_shifts})
-            tmp_shifts = [{
-                'id': shift_category[0].id,
-                'name': shift_category[0].name,
-                'start': None if shift_category[0].start is None else shift_category[0].start.strftime("%H:%M"),
-                'end': None if shift_category[0].end is None else shift_category[0].end.strftime("%H:%M")
-            }]
-            current_category = shift_category[1]
 
+            if shift is None:
+                tmp_shifts = []
+            else:
+                tmp_shifts = [{
+                    'id': shift.id,
+                    'name': shift.name,
+                    'start': None if shift.start is None else shift.start.strftime("%H:%M"),
+                    'end': None if shift.end is None else shift.end.strftime("%H:%M")
+                }]
+            current_category = category
+
+    results.append({'category_name': current_category.name, 'category_id': current_category.id, 'shifts': tmp_shifts})
     session.close()
     return jsonify({'results': results}), 200
 
