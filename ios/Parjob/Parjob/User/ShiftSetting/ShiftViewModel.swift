@@ -44,68 +44,51 @@ class ShiftViewModel {
     }
     
     func updateShiftDetail(formValues: [[String]]) {
-    }
-//        var tmpUserList: [[ShiftDetail]] = shiftDetail
-//        var adds: [[String:Any]] = []
-//        var deletes: [String] = []
-//        var updates: [[String:Any]] = []
-//
-//        for (i, value) in formValues.enumerated() {
-//            // ["ユーザ名", "権限", "ユーザコード"]に分割
-//            let split = value.components(separatedBy: ",")
-//
-//            if split.count != 3 {
-//                continue
-//            }
-//
-//            // 新規ユーザはコードが未配布で空文字
-//            if split[2].count == 0 {
-//                adds.append(["name": split[0], "role": split[1], "order": i+1])
-//
-//            }else {
-//                let searchResult = tmpUserList.filter({$0.code == split[2]})
-//                if searchResult[0].role != split[1] || searchResult[0].order != i+1 {
-//                    updates.append(["user_code": split[2], "role": split[1], "order": i+1])
-//                }
-//                // 残ったものを削除されたものと判別するため、対象となったUserオブジェクトを削除
-//                let index = tmpUserList.indices.filter({tmpUserList[$0].code == searchResult[0].code}).first!
-//                tmpUserList.remove(at: index.advanced(by: 0))
-//            }
-//        }
-//
-//        tmpUserList.forEach { (user) in
-//            deletes.append(user.code)
-//        }
-//
-//        api.updateUserList(adds: adds, updates: updates, deletes: deletes).done { (json) in
-//            self.delegate?.success()
-//            }
-//            .catch { (err) in
-//                let tmp_err = err as NSError
-//                let title = "Error(" + String(tmp_err.code) + ")"
-//                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
-//        }
-//    }
-}
-
-
-
-// MARK: - 記述簡略化のため関数化
-extension ShiftViewModel  {
-    func getNoNullableDict(nullableDict: [String:Any?]) -> [String:Any] {
-        let dict = nullableDict.reduce([String : Any]()) { (dict, e) in
-            guard let value = e.1 else { return dict }
-            var dict = dict
-            dict[e.0] = value
-            return dict
-        }
-        return dict
-    }
-    
-    func getNumber(mixText: String) -> Int {
-        let splitNumbers = (mixText.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
-        let number = splitNumbers.joined()
+        var tmpShiftDetail: [[ShiftDetail]] = shiftDetail
+        var adds: [[String:Any]] = []
+        var updates: [[String:Any]] = []
+        var deletes: [Int] = []
         
-        return Int(number)!
+        for(i, rowValues) in formValues.enumerated() {
+            for value in rowValues {
+                let currentShiftCategory = shiftCategory[i]
+                let currentShiftDetails = shiftDetail[i]
+                
+                // ["ID", "シフト名", "開始時間", "終了時間"]に分割
+                let split = value.components(separatedBy: ",")
+                
+                if split.count != 4 {
+                    continue
+                }
+                
+                if Int(split[0]) == -1 {
+                    adds.append(["category_id": currentShiftCategory.id, "name": split[1], "start": split[2], "end": split[3]])
+                }else {
+                    let searchShiftDetailResult = currentShiftDetails.filter({$0.id == Int(split[0])})
+                    if searchShiftDetailResult[0].name != split[1] || searchShiftDetailResult[0].start != split[2] || searchShiftDetailResult[0].end != split[3] {
+                        updates.append(["id": searchShiftDetailResult[0].id, "category_id": currentShiftCategory.id, "name": split[1], "start": split[2], "end": split[3]])
+                    }
+                    
+                    let index = tmpShiftDetail[i].indices.filter({tmpShiftDetail[i][$0].id == Int(split[0])}).first!
+                    tmpShiftDetail[i].remove(at: index.advanced(by: 0))
+                }
+            }
+        }
+        
+        tmpShiftDetail.forEach { (shiftDetails) in
+            shiftDetails.forEach({ (shiftDetail) in
+                deletes.append(shiftDetail.id)
+            })
+        }
+
+        api.updateShift(adds: adds, updates: updates, deletes: deletes).done { (json) in
+            self.delegate?.success()
+        }
+        .catch { (err) in
+            let tmp_err = err as NSError
+            let title = "Error(" + String(tmp_err.code) + ")"
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
     }
+
 }

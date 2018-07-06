@@ -18,24 +18,7 @@ class ShiftViewPresenter {
         self.model = ShiftViewModel()
         model.delegate = self
     }
-    
-//    func setShiftCategory() {
-//        model.setShiftCategory()
-//    }
-//
-//    func getShiftCategory() -> [ShiftCategory] {
-//        return model.shiftCategory
-//    }
-//
-//    func updateShiftCategory() {
-//        guard let values = view?.formValues else {return}
-//        model.updateShiftCategory(values: values)
-//    }
-//
-//    func setInitShiftCategory(values: [String:Any?]) {
-//        model.setInitShiftCategory(values: values)
-//    }
-    
+        
     func setShiftDetail() {
         model.setShiftDetail()
     }

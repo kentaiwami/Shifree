@@ -200,4 +200,14 @@ extension API {
         let endPoint = "shift"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func updateShift(adds:[[String:Any]], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
+        let endPoint = "shift"
+        let params = [
+            "adds": adds,
+            "updates": updates,
+            "deletes": deletes
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
 }

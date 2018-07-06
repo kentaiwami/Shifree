@@ -73,7 +73,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                                 }
                             }).onCellSelection({ (cell, row) in
                                 let value = self.getShiftnameStartEndFromCellTitle(title: row.title!)
-                                self.TapUserCell(name: value.name, start: value.start, end: value.end, row: row)
+                                self.TapUserCell(id: -1, name: value.name, start: value.start, end: value.end, row: row)
                             })
                         }
                         
@@ -87,7 +87,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                             
                             $0 <<< ButtonRow() {
                                 $0.title = String(format: format, arguments: arguments)
-                                $0.value = String(format: "%@,%@,%@", arguments: [shiftDetail.name, shiftDetail.start, shiftDetail.end])
+                                $0.value = String(format: "%@,%@,%@,%@", arguments: [String(shiftDetail.id), shiftDetail.name, shiftDetail.start, shiftDetail.end])
                                 $0.cell.textLabel?.numberOfLines = 0
                                 $0.tag = String(shiftDetail.id) + "_exist"
                             }.cellUpdate({ (cell, row) in
@@ -95,18 +95,16 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                                 cell.textLabel?.textColor = .black
                             }).onCellSelection({ (cell, row) in
                                 let value = self.getShiftnameStartEndFromCellTitle(title: row.title!)
-                                self.TapUserCell(name: value.name, start: value.start, end: value.end, row: row)
+                                self.TapUserCell(id: shiftDetail.id, name: value.name, start: value.start, end: value.end, row: row)
                             })
                         }
                 }
         }
-//        presenter.setInitShiftCategory(values: form.values())
-
         
         UIView.setAnimationsEnabled(true)
     }
     
-    private func TapUserCell(name: String, start: String, end: String, row: ButtonRow) {
+    private func TapUserCell(id: Int, name: String, start: String, end: String, row: ButtonRow) {
         let vc = ShiftSettingDetailViewController()
         vc.name = name
         vc.start = start
@@ -124,7 +122,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                 }
                 
                 row.title = String(format: format, arguments: arguments)
-                row.value = String(format: "%@,%@,%@", arguments: [detaiVCValues["name"] as! String, detaiVCValues["start"] as! String, detaiVCValues["end"] as! String])
+                row.value = String(format: "%@,%@,%@,%@", arguments: [String(id), detaiVCValues["name"] as! String, detaiVCValues["start"] as! String, detaiVCValues["end"] as! String])
                 row.updateCell()
             }else {
                 ShowStandardAlert(title: "Error", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
