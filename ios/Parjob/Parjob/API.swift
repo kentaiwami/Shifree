@@ -215,4 +215,9 @@ extension API {
         let endPoint = "salary"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func reCalcSalary() -> Promise<JSON> {
+        let endPoint = "salary"
+        return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .put)
+    }
 }

@@ -36,7 +36,7 @@ class SalaryViewController: FormViewController, SalaryViewInterface {
     }
     
     @objc private func tapReloadButton() {
-//        presenter.updateShiftCategory()
+        presenter.reloadSalary()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -26,3 +26,9 @@ def get():
         results.append({'pay': salary_table[0].pay, 'title': salary_table[1].title})
 
     return jsonify({'results': results}), 200
+
+
+@app.route('/api/v1/salary', methods=['PUT'])
+@api_basic_auth.login_required
+def update():
+    return jsonify({'results': [{'pay': 100, 'title': 'UNKO'}]}), 200

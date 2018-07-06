@@ -26,6 +26,10 @@ class SalaryViewPresenter {
     func getSalary() -> [Salary] {
         return model.salaryList
     }
+    
+    func reloadSalary() {
+        model.reCalcSalary()
+    }
 }
 
 extension SalaryViewPresenter: SalaryViewModelDelegate {
