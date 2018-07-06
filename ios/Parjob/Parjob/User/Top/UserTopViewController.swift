@@ -41,6 +41,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let userListSettingVC = UserListSettingViewController()
         let userListVC = UserListViewController()
         let shiftCategoryVC = ShiftCategoryViewController()
+        let shiftVC = ShiftViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
@@ -58,6 +59,11 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
             <<< ButtonRow() {
                 $0.title = "シフトカテゴリの設定"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return shiftCategoryVC}, onDismiss: {shiftCategoryVC in shiftCategoryVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+            <<< ButtonRow() {
+                $0.title = "シフトの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return shiftVC}, onDismiss: {shiftVC in shiftVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
     }
