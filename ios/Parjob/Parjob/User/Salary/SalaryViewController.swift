@@ -30,6 +30,15 @@ class SalaryViewController: FormViewController, SalaryViewInterface {
         
     }
     
+    fileprivate func initializeNavigationItem() {
+        let check = UIBarButtonItem(image: UIImage(named: "reload"), style: .plain, target: self, action: #selector(tapReloadButton))
+        self.navigationItem.setRightBarButton(check, animated: true)
+    }
+    
+    @objc private func tapReloadButton() {
+//        presenter.updateShiftCategory()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Salary View"
@@ -45,6 +54,7 @@ class SalaryViewController: FormViewController, SalaryViewInterface {
 extension SalaryViewController {
     func initializeUI() {
         initializeGraph()
+        initializeNavigationItem()
     }
     
     func showErrorAlert(title: String, msg: String) {
