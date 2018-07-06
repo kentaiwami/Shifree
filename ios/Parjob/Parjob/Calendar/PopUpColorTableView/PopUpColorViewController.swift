@@ -17,8 +17,8 @@ protocol PopUpColorViewInterface: class {
 
 class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
     
-    @IBOutlet weak var tableView: UITableView!
     fileprivate var presenter: PopUpColorViewPresenter!
+    var tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +30,7 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
         tableView.delegate = self
         tableView.allowsSelection = false
         tableView.register(UINib(nibName: "CustomColorTableViewCell", bundle: nil), forCellReuseIdentifier: "CustomColorCell")
+        self.view.addSubview(tableView)
         
         tableView.height(self.view.frame.height / 2)
         tableView.top(to: self.view)

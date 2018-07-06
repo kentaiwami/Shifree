@@ -22,17 +22,12 @@ class CustomColorTableViewCell: UITableViewCell {
     }
     
     var viewBackgroundColor = UIColor.clear
-    var first = true
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        
-        if first {
-            viewBackgroundColor = self.view.backgroundColor!
-            
-            first = false
-        }
-        
         super.setSelected(selected, animated: animated)
+        if view.backgroundColor != UIColor.clear {
+            viewBackgroundColor = self.view.backgroundColor!
+        }
         
         if(selected) {
             self.view.backgroundColor = viewBackgroundColor

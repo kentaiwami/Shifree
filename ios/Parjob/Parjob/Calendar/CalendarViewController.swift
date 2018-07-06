@@ -98,8 +98,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     @objc private func TapColorInformationButton(sendor: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ColorTable")
+        let vc = PopUpColorViewController()
         let popUp = PopupDialog(viewController: vc)
         let buttonOK = DefaultButton(title: "OK"){}
         

@@ -46,7 +46,7 @@ class ColorSchemViewModel {
     func updateShiftCategoryColor() {
         var schemes:[[String:Any]] = []
         
-        shiftCategoryColors.forEach { (shiftCategoryColor) in
+        shiftCategoryColors.filter({$0.color != ""}).forEach { (shiftCategoryColor) in
             schemes.append(["category_id": shiftCategoryColor.categoryId, "hex": shiftCategoryColor.color])
         }
         
