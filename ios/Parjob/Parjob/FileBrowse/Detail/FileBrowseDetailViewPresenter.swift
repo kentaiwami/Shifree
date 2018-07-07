@@ -19,7 +19,10 @@ class FileBrowseDetailViewPresenter {
         model.delegate = self
     }
         
-    
+    func setFileTableDetail() {
+        guard let id = view?.tableID else { return }
+        model.setFileTableDetail(id: id)
+    }
 }
 
 extension FileBrowseDetailViewPresenter: FileBrowseDetailViewModelDelegate {

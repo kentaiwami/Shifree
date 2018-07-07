@@ -225,4 +225,9 @@ extension API {
         let endPoint = "tables"
         return getAuth(url: base + version + endPoint)
     }
+    
+    func getFileTableDetail(id: Int) -> Promise<JSON> {
+        let endPoint = "tables/" + String(id)
+        return getAuth(url: base + version + endPoint)
+    }
 }

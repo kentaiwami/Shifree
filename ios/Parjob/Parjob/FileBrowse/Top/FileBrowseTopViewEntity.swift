@@ -9,7 +9,7 @@
 import Foundation
 
 struct FileTable {
-    var id: String = ""
+    var id: Int = 0
     var title: String = ""
     var origin: String = ""
     var thumbnail: String = ""

@@ -18,71 +18,24 @@ protocol FileBrowseDetailViewModelDelegate: class {
 class FileBrowseDetailViewModel {
     weak var delegate: FileBrowseDetailViewModelDelegate?
     private let api = API()
-    private(set) var shiftDetail: [[ShiftDetail]] = []
-    private(set) var shiftCategory: [ShiftCategory] = []
+    private(set) var fileTable: FileTable = FileTable()
+    private(set) var commentList: [Comment] = []
     
-    func setShiftDetail() {
-        api.getShift().done { (json) in
-            json["results"].arrayValue.forEach({ (category) in
-                self.shiftCategory.append(ShiftCategory(id: category["category_id"].intValue, name: category["category_name"].stringValue))
-                
-                var tmpShiftDetails: [ShiftDetail] = []
-                category["shifts"].arrayValue.forEach({ (shift) in
-                    tmpShiftDetails.append(ShiftDetail(id: shift["id"].intValue, name: shift["name"].stringValue, start: shift["start"].stringValue, end: shift["end"].stringValue))
-                })
-                
-                self.shiftDetail.append(tmpShiftDetails)
-            })
+    func setFileTableDetail(id: Int) {
+        api.getFileTableDetail(id: id).done { (json) in
+            self.fileTable.id = json["results"]["table_id"].intValue
+            self.fileTable.origin = json["results"]["origin"].stringValue
+            self.fileTable.title = json["results"]["title"].stringValue
             
-            self.delegate?.initializeUI()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
-        }
-    }
-    
-    func updateShiftDetail(formValues: [[String]]) {
-        var tmpShiftDetail: [[ShiftDetail]] = shiftDetail
-        var adds: [[String:Any]] = []
-        var updates: [[String:Any]] = []
-        var deletes: [Int] = []
-        
-        for(i, rowValues) in formValues.enumerated() {
-            for value in rowValues {
-                let currentShiftCategory = shiftCategory[i]
-                let currentShiftDetails = shiftDetail[i]
-                
-                // ["ID", "シフト名", "開始時間", "終了時間"]に分割
-                let split = value.components(separatedBy: ",")
-                
-                if split.count != 4 {
-                    continue
-                }
-                
-                if Int(split[0]) == -1 {
-                    adds.append(["category_id": currentShiftCategory.id, "name": split[1], "start": split[2], "end": split[3]])
-                }else {
-                    let searchShiftDetailResult = currentShiftDetails.filter({$0.id == Int(split[0])})
-                    if searchShiftDetailResult[0].name != split[1] || searchShiftDetailResult[0].start != split[2] || searchShiftDetailResult[0].end != split[3] {
-                        updates.append(["id": searchShiftDetailResult[0].id, "category_id": currentShiftCategory.id, "name": split[1], "start": split[2], "end": split[3]])
-                    }
-                    
-                    let index = tmpShiftDetail[i].indices.filter({tmpShiftDetail[i][$0].id == Int(split[0])}).first!
-                    tmpShiftDetail[i].remove(at: index.advanced(by: 0))
-                }
-            }
-        }
-        
-        tmpShiftDetail.forEach { (shiftDetails) in
-            shiftDetails.forEach({ (shiftDetail) in
-                deletes.append(shiftDetail.id)
+            json["results"]["comment"].arrayValue.forEach({ (comment) in
+                self.commentList.append(Comment(
+                    id: comment["id"].intValue,
+                    text: comment["text"].stringValue,
+                    user: comment["user"].stringValue,
+                    userID: comment["user_id"].intValue,
+                    created: comment["created_at"].stringValue
+                ))
             })
-        }
-
-        api.updateShift(adds: adds, updates: updates, deletes: deletes).done { (json) in
-            self.delegate?.success()
         }
         .catch { (err) in
             let tmp_err = err as NSError

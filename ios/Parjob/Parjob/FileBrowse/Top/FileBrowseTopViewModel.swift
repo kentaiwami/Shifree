@@ -24,7 +24,7 @@ class FileBrowseTopViewModel {
         api.getFileTable().done { (json) in
             json["results"].arrayValue.forEach({ (fileTable) in
                 self.fileTableList.append(
-                    FileTable(id: fileTable["table_id"].stringValue, title: fileTable["title"].stringValue, origin: fileTable["origin"].stringValue, thumbnail: fileTable["thumbnail"].stringValue)
+                    FileTable(id: fileTable["table_id"].intValue, title: fileTable["title"].stringValue, origin: fileTable["origin"].stringValue, thumbnail: fileTable["thumbnail"].stringValue)
                 )
             })
             

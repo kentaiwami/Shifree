@@ -11,6 +11,8 @@ import Eureka
 import PopupDialog
 
 protocol FileBrowseDetailViewInterface: class {
+    var tableID: Int { get }
+    
     func initializeUI()
     func success()
     func showErrorAlert(title: String, msg: String)
@@ -20,22 +22,19 @@ protocol FileBrowseDetailViewInterface: class {
 class FileBrowseDetailViewController: FormViewController, FileBrowseDetailViewInterface {
     
     fileprivate var presenter: FileBrowseDetailViewPresenter!
-    var navigationTitle = ""
+    var navigationTitle: String = ""
+    var tableID: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = FileBrowseDetailViewPresenter(view: self)
-//        presenter.setShiftDetail()
+        presenter.setFileTableDetail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = navigationTitle
-    }
-    
-    func setTitle(title: String) {
-        self.navigationTitle = title
     }
     
     override func didReceiveMemoryWarning() {
@@ -61,6 +60,13 @@ extension FileBrowseDetailViewController {
 }
 
 
-// MARK: - 可読性のために関数化
+// MARK: - インスタンス化される前に呼ばれるべき関数
 extension FileBrowseDetailViewController {
+    func setTitle(title: String) {
+        self.navigationTitle = title
+    }
+    
+    func setTableID(id: Int) {
+        self.tableID = id
+    }
 }
