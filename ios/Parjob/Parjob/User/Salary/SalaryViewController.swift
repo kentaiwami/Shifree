@@ -20,12 +20,8 @@ protocol SalaryViewInterface: class {
 
 class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, SalaryViewInterface {
     
-    
     fileprivate var presenter: SalaryViewPresenter!
     var graphView = ScrollableGraphView()
-    
-//    let testData = [1.0, 3.0, 5.0, 7.0]
-//    let testLabel = ["A", "B", "C", "D"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
