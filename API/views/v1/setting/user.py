@@ -109,13 +109,13 @@ def get():
     company = session.query(Company).filter(Company.id == admin_user.company_id).one()
 
     users = []
-    for user_role in users_role:
+    for user, role in users_role:
         users.append({
-            'name': user_role[0].name,
-            'code': user_role[0].code,
-            'order': user_role[0].order,
-            'role': user_role[1].name,
-            'password': '*******' if user_role[0].is_authed else user_role[0].password
+            'name': user.name,
+            'code': user.code,
+            'order': user.order,
+            'role': role.name,
+            'password': '*******' if user.is_authed else user.password
         })
 
     session.close()

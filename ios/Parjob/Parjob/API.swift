@@ -210,4 +210,14 @@ extension API {
             ] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+    
+    func getSalary() -> Promise<JSON> {
+        let endPoint = "salary"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func reCalcSalary() -> Promise<JSON> {
+        let endPoint = "salary"
+        return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .put)
+    }
 }
