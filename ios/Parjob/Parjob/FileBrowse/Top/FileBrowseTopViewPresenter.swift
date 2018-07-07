@@ -19,17 +19,21 @@ class FileBrowseTopViewPresenter {
         model.delegate = self
     }
         
-    func setShiftDetail() {
-        model.setShiftDetail()
+    func setFileTable() {
+        model.setFileTable()
     }
     
-    func getShiftCategory() -> [ShiftCategory] {
-        return model.shiftCategory
+    func getTable() -> [FileTable] {
+        return model.fileTableList
     }
     
-    func getShiftDetail() -> [[ShiftDetail]] {
-        return model.shiftDetail
-    }
+//    func getShiftCategory() -> [ShiftCategory] {
+//        return model.shiftCategory
+//    }
+    
+//    func getShiftDetail() -> [[ShiftDetail]] {
+//        return model.shiftDetail
+//    }
     
     func updateShiftDetail() {
 //        guard let formValues = view?.formValues else {return}

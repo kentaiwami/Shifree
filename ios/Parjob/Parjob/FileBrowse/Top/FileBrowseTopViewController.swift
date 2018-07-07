@@ -26,7 +26,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         super.viewDidLoad()
         
         presenter = FileBrowseTopViewPresenter(view: self)
-        presenter.setShiftDetail()
+        presenter.setFileTable()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,7 +37,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     fileprivate func initializeCollectionView() {
         let wh = self.view.frame.width/2
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: wh, height: wh*1.5)
+        layout.itemSize = CGSize(width: wh, height: wh)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
@@ -79,11 +79,12 @@ extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FileBrowseCell", for: indexPath) as! FileBrowseCollectionViewCell
         cell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 0.3)
+        cell.setAll(title: presenter.getTable()[indexPath.row].title)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return presenter.getTable().count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

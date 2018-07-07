@@ -19,20 +19,25 @@
                 <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dqb-Kb-xUF">
-                        <rect key="frame" x="79" y="90" width="42" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dqb-Kb-xUF">
+                        <rect key="frame" x="79" y="159" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YvA-vv-lSZ">
+                        <rect key="frame" x="20" y="20" width="160" height="131"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
             </view>
-            <constraints>
-                <constraint firstItem="Dqb-Kb-xUF" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="XsC-Mg-Ys4"/>
-                <constraint firstItem="Dqb-Kb-xUF" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="dfN-Gc-JS7"/>
-            </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="200" height="200"/>
+            <connections>
+                <outlet property="thumbnailImageView" destination="YvA-vv-lSZ" id="f3Q-sx-Nh4"/>
+                <outlet property="titleLabel" destination="Dqb-Kb-xUF" id="I1N-BC-4FW"/>
+            </connections>
             <point key="canvasLocation" x="109" y="-21"/>
         </collectionViewCell>
     </objects>

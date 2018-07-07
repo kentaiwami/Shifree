@@ -220,4 +220,9 @@ extension API {
         let endPoint = "salary"
         return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .put)
     }
+    
+    func getFileTable() -> Promise<JSON> {
+        let endPoint = "tables"
+        return getAuth(url: base + version + endPoint)
+    }
 }
