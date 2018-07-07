@@ -38,31 +38,32 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         
         let linePlot = LinePlot(identifier: "darkLine")
         linePlot.lineWidth = 1
-        linePlot.lineColor = UIColor.hex("#777777", alpha: 1.0)
+        linePlot.lineColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         linePlot.lineStyle = ScrollableGraphViewLineStyle.smooth
         linePlot.shouldFill = true
         linePlot.fillType = ScrollableGraphViewFillType.gradient
         linePlot.fillGradientType = ScrollableGraphViewGradientType.linear
-        linePlot.fillGradientStartColor = UIColor.hex("#555555", alpha: 1.0)
-        linePlot.fillGradientEndColor = UIColor.hex("#444444", alpha: 1.0)
+        linePlot.fillGradientStartColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        linePlot.fillGradientEndColor = UIColor.hex(Color.main.rawValue, alpha: 0.7)
         linePlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
         
         let dotPlot = DotPlot(identifier: "darkLineDot")
         dotPlot.dataPointSize = 2
-        dotPlot.dataPointFillColor = UIColor.white
+        dotPlot.dataPointFillColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         dotPlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
         
         let referenceLines = ReferenceLines()
         referenceLines.referenceLineLabelFont = UIFont.boldSystemFont(ofSize: 13)
-        referenceLines.referenceLineColor = UIColor.white.withAlphaComponent(0.2)
-        referenceLines.referenceLineLabelColor = UIColor.white
+        referenceLines.referenceLineColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        referenceLines.referenceLineLabelColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         referenceLines.shouldShowLabels = true
         referenceLines.positionType = .relative
         referenceLines.relativePositions = [0, 0.25, 0.5, 0.75, 1]
         referenceLines.includeMinMax = true
-        referenceLines.dataPointLabelColor = UIColor.white.withAlphaComponent(0.5)
+        referenceLines.dataPointLabelColor = UIColor.white
+        referenceLines.dataPointLabelFont = UIFont.boldSystemFont(ofSize: 12)
         
-        graphView.backgroundFillColor = UIColor.hex("#333333", alpha: 1.0)
+        graphView.backgroundFillColor = UIColor.white
         graphView.dataPointSpacing = 80
         graphView.shouldAnimateOnStartup = true
         graphView.shouldAdaptRange = true
