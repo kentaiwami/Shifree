@@ -19,22 +19,7 @@ class FileBrowseDetailViewPresenter {
         model.delegate = self
     }
         
-    func setShiftDetail() {
-        model.setShiftDetail()
-    }
     
-    func getShiftCategory() -> [ShiftCategory] {
-        return model.shiftCategory
-    }
-    
-    func getShiftDetail() -> [[ShiftDetail]] {
-        return model.shiftDetail
-    }
-    
-    func updateShiftDetail() {
-        guard let formValues = view?.formValues else {return}
-        model.updateShiftDetail(formValues: formValues)
-    }
 }
 
 extension FileBrowseDetailViewPresenter: FileBrowseDetailViewModelDelegate {
