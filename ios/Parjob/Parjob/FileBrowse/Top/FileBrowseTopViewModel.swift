@@ -11,7 +11,6 @@ import KeychainAccess
 
 protocol FileBrowseTopViewModelDelegate: class {
     func initializeUI()
-    func success()
     func faildAPI(title: String, msg: String)
 }
 

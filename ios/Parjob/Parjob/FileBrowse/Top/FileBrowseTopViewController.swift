@@ -11,7 +11,6 @@ import PopupDialog
 
 protocol FileBrowseTopViewInterface: class {
     func initializeUI()
-    func success()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -65,12 +64,6 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
 extension FileBrowseTopViewController {
     func initializeUI() {
         initializeCollectionView()
-    }
-    
-    func success() {
-        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
-            self.navigationController?.popViewController(animated: true)
-        }
     }
     
     func showErrorAlert(title: String, msg: String) {

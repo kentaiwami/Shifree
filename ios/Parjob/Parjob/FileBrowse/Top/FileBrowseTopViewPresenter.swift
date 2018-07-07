@@ -26,28 +26,11 @@ class FileBrowseTopViewPresenter {
     func getTable() -> [FileTable] {
         return model.fileTableList
     }
-    
-//    func getShiftCategory() -> [ShiftCategory] {
-//        return model.shiftCategory
-//    }
-    
-//    func getShiftDetail() -> [[ShiftDetail]] {
-//        return model.shiftDetail
-//    }
-    
-    func updateShiftDetail() {
-//        guard let formValues = view?.formValues else {return}
-//        model.updateShiftDetail(formValues: formValues)
-    }
 }
 
 extension FileBrowseTopViewPresenter: FileBrowseTopViewModelDelegate {
     func initializeUI() {
         view?.initializeUI()
-    }
-    
-    func success() {
-        view?.success()
     }
     
     func faildAPI(title: String, msg: String) {
