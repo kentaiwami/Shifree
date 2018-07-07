@@ -30,11 +30,19 @@ class SalaryViewPresenter {
     func reloadSalary() {
         model.reCalcSalary()
     }
+    
+    func getSalaryMax() -> Double {
+        return model.salaryMax
+    }
 }
 
 extension SalaryViewPresenter: SalaryViewModelDelegate {
     func initializeUI() {
         view?.initializeUI()
+    }
+    
+    func reloadUI() {
+        view?.reloadUI()
     }
 
     func faildAPI(title: String, msg: String) {

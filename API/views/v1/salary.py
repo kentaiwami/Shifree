@@ -31,4 +31,8 @@ def get():
 @app.route('/api/v1/salary', methods=['PUT'])
 @api_basic_auth.login_required
 def update():
-    return jsonify({'results': [{'pay': 100, 'title': 'UNKO'}]}), 200
+    results = []
+    for i in range(0, 10):
+        results.append({'pay': i, 'title': str(i)})
+
+    return jsonify({'results': results}), 200
