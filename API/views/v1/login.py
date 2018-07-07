@@ -11,11 +11,11 @@ app = Blueprint('login_bp', __name__)
 @app.route('/api/v1/login', methods=['GET'])
 @api_basic_auth.login_required
 def login():
-    user_role = session.query(User, Role).join(Role).filter(User.code == api_basic_auth.username()).one_or_none()
+    user_role_results = session.query(User, Role).join(Role).filter(User.code == api_basic_auth.username()).one_or_none()
     session.close()
 
-    if user_role is not None:
-        return jsonify({'user_code': user_role[0].code, 'role': user_role[1].name}), 200
+    if user_role_results is not None:
+        return jsonify({'user_code': user_role_results[0].code, 'role': user_role_results[1].name}), 200
     else:
         frame = inspect.currentframe()
         abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})

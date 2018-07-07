@@ -19,15 +19,15 @@ def get():
         frame = inspect.currentframe()
         abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
-    salary_tables = session.query(Salary, ShiftTable)\
+    salary_tables_results = session.query(Salary, ShiftTable)\
         .join(ShiftTable)\
         .filter(Salary.user_id == user.id)\
         .order_by(Salary.created_at.desc())\
         .all()
 
     results = []
-    for salary_table in salary_tables:
-        results.append({'pay': salary_table[0].pay, 'title': salary_table[1].title})
+    for salary, table in salary_tables_results:
+        results.append({'pay': salary.pay, 'title': table.title})
 
     return jsonify({'results': results}), 200
 
@@ -81,15 +81,15 @@ def update():
 
     session.commit()
 
-    salary_tables = session.query(Salary, ShiftTable)\
+    salary_tables_results = session.query(Salary, ShiftTable)\
         .join(ShiftTable)\
         .filter(Salary.user_id == user.id)\
         .order_by(Salary.created_at.desc())\
         .all()
 
     results = []
-    for salary_table in salary_tables:
-        results.append({'pay': salary_table[0].pay, 'title': salary_table[1].title})
+    for salary, table in salary_tables_results:
+        results.append({'pay': salary.pay, 'title': table.title})
     session.close()
 
     return jsonify({'results': results}), 200

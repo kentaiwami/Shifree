@@ -304,21 +304,21 @@ def get_detail(table_id):
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    comment_users = session.query(Comment, User).join(User).filter(Comment.shifttable_id == table.id).order_by(
+    comments = session.query(Comment).join(User).filter(Comment.shifttable_id == table.id).order_by(
         Comment.created_at.desc()).all()
 
     comment_list = []
-    for comment_user in comment_users:
-        if comment_user[0].user_id == user.id:
+    for comment in comments:
+        if comment.user_id == user.id:
             comment_list.append({
-                'text': comment_user[0].text,
-                'id': comment_user[0].id,
-                'created_at': str(comment_user[0].created_at)
+                'text': comment.text,
+                'id': comment.id,
+                'created_at': str(comment.created_at)
             })
         else:
             comment_list.append({
-                'text': comment_user[0].text,
-                'created_at': str(comment_user[0].created_at)
+                'text': comment.text,
+                'created_at': str(comment.created_at)
             })
 
     results = {
