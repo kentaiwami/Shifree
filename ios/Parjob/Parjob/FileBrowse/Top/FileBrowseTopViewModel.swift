@@ -21,6 +21,7 @@ class FileBrowseTopViewModel {
     private(set) var fileTableList: [FileTable] = []
     
     func setFileTable() {
+        fileTableList = []
         api.getFileTable().done { (json) in
             json["results"].arrayValue.forEach({ (fileTable) in
                 self.fileTableList.append(

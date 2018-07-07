@@ -283,60 +283,6 @@ def get_all():
             'origin': table.origin_path,
             'thumbnail': table.thumbnail_path
         })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
 
     return jsonify({'results': results}), 200
 

@@ -26,12 +26,14 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         super.viewDidLoad()
         
         presenter = FileBrowseTopViewPresenter(view: self)
-        presenter.setFileTable()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "File View"
+        
+        collectionView.removeFromSuperview()
+        presenter.setFileTable()
     }
     
     fileprivate func initializeCollectionView() {
@@ -78,7 +80,7 @@ extension FileBrowseTopViewController {
 extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FileBrowseCell", for: indexPath) as! FileBrowseCollectionViewCell
-        cell.setAll(title: presenter.getTable()[indexPath.row].title)
+        cell.setAll(title: presenter.getTable()[indexPath.row].title, url: presenter.getTable()[indexPath.row].thumbnail)
         return cell
     }
     

@@ -32,10 +32,7 @@ class FileBrowseCollectionViewCell: UICollectionViewCell {
     
     func setAll(title: String, url: String) {
         titleLabel.text = title
-        thumbnailImageView.image = UIImage(named: "user")
-        
-        let urlRequest = URL(string: "https://kentaiwami.jp/portfolio/media/images/p_work/main/photo6_main.JPG")!
-//        let urlRequest = URL(string: url)!
-        thumbnailImageView.af_setImage(withURL: urlRequest)
+        let encURL = URL(string: GetHost()+url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
+        thumbnailImageView.af_setImage(withURL: encURL)
     }
 }
