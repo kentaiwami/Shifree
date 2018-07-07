@@ -22,7 +22,7 @@ def get():
     salary_tables_results = session.query(Salary, ShiftTable)\
         .join(ShiftTable)\
         .filter(Salary.user_id == user.id)\
-        .order_by(Salary.created_at.desc())\
+        .order_by(Salary.created_at.asc())\
         .all()
 
     results = []
@@ -84,7 +84,7 @@ def update():
     salary_tables_results = session.query(Salary, ShiftTable)\
         .join(ShiftTable)\
         .filter(Salary.user_id == user.id)\
-        .order_by(Salary.created_at.desc())\
+        .order_by(Salary.created_at.asc())\
         .all()
 
     results = []

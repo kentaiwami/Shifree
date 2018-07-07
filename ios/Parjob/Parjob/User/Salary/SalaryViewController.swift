@@ -53,7 +53,7 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         dotPlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
         
         let referenceLines = ReferenceLines()
-        referenceLines.referenceLineLabelFont = UIFont.boldSystemFont(ofSize: 8)
+        referenceLines.referenceLineLabelFont = UIFont.boldSystemFont(ofSize: 13)
         referenceLines.referenceLineColor = UIColor.white.withAlphaComponent(0.2)
         referenceLines.referenceLineLabelColor = UIColor.white
         referenceLines.shouldShowLabels = true
@@ -77,8 +77,11 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         self.view.addSubview(graphView)
         
         graphView.width(to: self.view)
-        graphView.height(self.view.frame.height / 2)
-        graphView.center(in: self.view)
+        graphView.height(to: self.view)
+        graphView.left(to: self.view)
+        graphView.right(to: self.view)
+//        graphView.height(self.view.frame.height / 2)
+//        graphView.center(in: self.view)
     }
     
     fileprivate func initializeNavigationItem() {
