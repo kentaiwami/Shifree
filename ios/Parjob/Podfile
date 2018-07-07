@@ -15,4 +15,5 @@ target 'Parjob' do
   pod 'FSCalendar'
   pod "MKColorPicker"
   pod 'ScrollableGraphView'
+  pod 'AlamofireImage', '~> 3.3'
 end

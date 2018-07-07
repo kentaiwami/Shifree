@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class FileBrowseCollectionViewCell: UICollectionViewCell {
 
@@ -23,17 +24,18 @@ class FileBrowseCollectionViewCell: UICollectionViewCell {
         thumbnailImageView.height(self.frame.height * 0.7)
         
         titleLabel.textAlignment = .center
-        titleLabel.topToBottom(of: thumbnailImageView)
+        titleLabel.topToBottom(of: thumbnailImageView, offset: 10)
         titleLabel.left(to: self)
         titleLabel.right(to: self)
-        titleLabel.bottom(to: self, offset: 5)
+        titleLabel.sizeToFit()
     }
     
-    func setAll(title: String) {
+    func setAll(title: String, url: String) {
         titleLabel.text = title
         thumbnailImageView.image = UIImage(named: "user")
         
-//        thumbnailImageView.backgroundColor = UIColor.red
-//        titleLabel.backgroundColor = UIColor.blue
+        let urlRequest = URL(string: "https://kentaiwami.jp/portfolio/media/images/p_work/main/photo6_main.JPG")!
+//        let urlRequest = URL(string: url)!
+        thumbnailImageView.af_setImage(withURL: urlRequest)
     }
 }
