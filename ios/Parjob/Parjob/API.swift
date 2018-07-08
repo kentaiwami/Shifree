@@ -236,4 +236,13 @@ extension API {
         let params = ["text": text] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+    
+    func addComment(text: String, id: Int) -> Promise<JSON> {
+        let endPoint = "comment"
+        let params = [
+            "text": text,
+            "table_id": id
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .post)
+    }
 }

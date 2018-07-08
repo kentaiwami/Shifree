@@ -1,5 +1,5 @@
 //
-//  EditCommentViewModel.swift
+//  AddCommentViewModel.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/06/28.
@@ -12,28 +12,20 @@ import PromiseKit
 import SwiftyJSON
 
 
-protocol EditCommentViewModelDelegate: class {
+protocol AddCommentViewModelDelegate: class {
     func success()
     func faildAPI(title: String, msg: String)
 }
 
 
-class EditCommentViewModel {
-    weak var delegate: EditCommentViewModelDelegate?
+class AddCommentViewModel {
+    weak var delegate: AddCommentViewModelDelegate?
     private let api = API()
-    private(set) var comment: Comment!
     
-    func setSelectedCommentData(comment: Comment) {
-        self.comment = comment
-    }
-    
-    func updateComment(formValue: [String:Any?]) {
-        var text = ""
-        if let tmpComment = formValue["Comment"] as? String {
-            text = tmpComment
-        }
+    func addComment(formValue: [String:Any?], tableID: Int) {
+        let text = formValue["Comment"] as! String
         
-        api.updateComment(text: text, id: comment.id).done { (json) in
+        api.addComment(text: text, id: tableID).done { (json) in
             self.delegate?.success()
         }
         .catch { (err) in

@@ -73,6 +73,9 @@
 		37A69B3620E97F80004E8C66 /* WageViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3520E97F80004E8C66 /* WageViewEntity.swift */; };
 		37A69B3920E986F6004E8C66 /* PasswordViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3720E986F5004E8C66 /* PasswordViewPresenter.swift */; };
 		37A69B3A20E986F6004E8C66 /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3820E986F6004E8C66 /* PasswordViewModel.swift */; };
+		37C0CCDC20F20B54003D650F /* AddCommentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C0CCD920F20B54003D650F /* AddCommentViewPresenter.swift */; };
+		37C0CCDD20F20B54003D650F /* AddCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C0CCDA20F20B54003D650F /* AddCommentViewModel.swift */; };
+		37C0CCDE20F20B54003D650F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C0CCDB20F20B54003D650F /* AddCommentViewController.swift */; };
 		37C168AA20EE82C7003A453A /* ShiftViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168A620EE82C7003A453A /* ShiftViewPresenter.swift */; };
 		37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168A720EE82C7003A453A /* ShiftViewModel.swift */; };
 		37C168AC20EE82C7003A453A /* ShiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168A820EE82C7003A453A /* ShiftViewController.swift */; };
@@ -155,6 +158,9 @@
 		37A69B3520E97F80004E8C66 /* WageViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageViewEntity.swift; sourceTree = "<group>"; };
 		37A69B3720E986F5004E8C66 /* PasswordViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordViewPresenter.swift; sourceTree = "<group>"; };
 		37A69B3820E986F6004E8C66 /* PasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
+		37C0CCD920F20B54003D650F /* AddCommentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewPresenter.swift; sourceTree = "<group>"; };
+		37C0CCDA20F20B54003D650F /* AddCommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewModel.swift; sourceTree = "<group>"; };
+		37C0CCDB20F20B54003D650F /* AddCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
 		37C168A620EE82C7003A453A /* ShiftViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftViewPresenter.swift; sourceTree = "<group>"; };
 		37C168A720EE82C7003A453A /* ShiftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftViewModel.swift; sourceTree = "<group>"; };
 		37C168A820EE82C7003A453A /* ShiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftViewController.swift; sourceTree = "<group>"; };
@@ -255,6 +261,7 @@
 		3765CD5D20F0D8940031D235 /* FileBrowse */ = {
 			isa = PBXGroup;
 			children = (
+				37C0CCD820F20B33003D650F /* AddComment */,
 				3790330020F1EA3600C2534F /* EditComment */,
 				3765CD6520F0D99D0031D235 /* Detail */,
 				3765CD6420F0D98F0031D235 /* Top */,
@@ -394,6 +401,16 @@
 				37C168B520F031BE003A453A /* SalaryViewEntity.swift */,
 			);
 			path = Salary;
+			sourceTree = "<group>";
+		};
+		37C0CCD820F20B33003D650F /* AddComment */ = {
+			isa = PBXGroup;
+			children = (
+				37C0CCDB20F20B54003D650F /* AddCommentViewController.swift */,
+				37C0CCD920F20B54003D650F /* AddCommentViewPresenter.swift */,
+				37C0CCDA20F20B54003D650F /* AddCommentViewModel.swift */,
+			);
+			path = AddComment;
 			sourceTree = "<group>";
 		};
 		37C168A520EE824D003A453A /* ShiftSetting */ = {
@@ -640,6 +657,7 @@
 				3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */,
 				37326C4620E14B6500A60B00 /* CalendarViewPresenter.swift in Sources */,
 				37C168B620F031BE003A453A /* SalaryViewEntity.swift in Sources */,
+				37C0CCDC20F20B54003D650F /* AddCommentViewPresenter.swift in Sources */,
 				37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */,
 				375519A620E5BADA00EC930B /* CalendarViewEntity.swift in Sources */,
 				3772662920EA70CE0056D3D0 /* UserListSettingViewPresenter.swift in Sources */,
@@ -660,6 +678,7 @@
 				37C168B020EEB2DA003A453A /* ShiftSettingDetailViewController.swift in Sources */,
 				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
+				37C0CCDE20F20B54003D650F /* AddCommentViewController.swift in Sources */,
 				378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */,
@@ -673,6 +692,7 @@
 				37C168AC20EE82C7003A453A /* ShiftViewController.swift in Sources */,
 				378E382E20EA02EC003BB689 /* ShiftCategoryViewEntity.swift in Sources */,
 				37A69B3420E957F2004E8C66 /* WageViewModel.swift in Sources */,
+				37C0CCDD20F20B54003D650F /* AddCommentViewModel.swift in Sources */,
 				3769F6FD20EC960600BA8920 /* UserListViewController.swift in Sources */,
 				3790330520F1EA9100C2534F /* EditCommentViewPresenter.swift in Sources */,
 				3765CD6A20F0D9D10031D235 /* FileBrowseDetailViewController.swift in Sources */,

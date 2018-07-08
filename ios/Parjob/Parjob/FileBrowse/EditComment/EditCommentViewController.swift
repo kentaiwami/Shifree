@@ -14,10 +14,8 @@ protocol EditCommentViewInterface: class {
     var indexPath: IndexPath { get }
     var formValues: [String:Any?] { get }
     
-//    func initializeUI()
     func showErrorAlert(title: String, msg: String)
     func popupViewController()
-//    func popViewController()
 }
 
 class EditCommentViewController: FormViewController, EditCommentViewInterface {

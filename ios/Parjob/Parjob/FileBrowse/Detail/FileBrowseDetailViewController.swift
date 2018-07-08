@@ -75,20 +75,18 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     }
     
     fileprivate func initializeNavigationItem() {
-        let add = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapAddCommentButton))
+        let add = UIBarButtonItem(image: UIImage(named: "add"), style: .plain, target: self, action: #selector(TapAddCommentButton))
         
         self.navigationItem.setRightBarButton(add, animated: true)
     }
     
     @objc private func TapAddCommentButton(sendor: UIButton) {
-        //TODO:TapAddCommentButton
-//        let vc = PopUpColorViewController()
-//        let popUp = PopupDialog(viewController: vc)
-//        let buttonOK = DefaultButton(title: "OK"){}
-//
-//        popUp.addButton(buttonOK)
-//
-//        present(popUp, animated: true, completion: nil)
+        let addCommentVC = AddCommentViewController()
+        addCommentVC.setTableID(id: tableID)
+        let nav = UINavigationController()
+        nav.viewControllers = [addCommentVC]
+        nav.modalTransitionStyle = .coverVertical
+        present(nav, animated: true, completion: nil)
     }
 
     
