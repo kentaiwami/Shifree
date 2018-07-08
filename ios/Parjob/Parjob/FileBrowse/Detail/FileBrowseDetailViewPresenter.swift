@@ -27,6 +27,10 @@ class FileBrowseDetailViewPresenter {
     func getFileTable() -> FileTable {
         return model.fileTable
     }
+    
+    func getComments() -> [Comment] {
+        return model.commentList
+    }
 }
 
 extension FileBrowseDetailViewPresenter: FileBrowseDetailViewModelDelegate {

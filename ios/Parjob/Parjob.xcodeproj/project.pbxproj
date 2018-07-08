@@ -51,6 +51,8 @@
 		378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E382A20E9957F003BB689 /* ShiftCategoryViewPresenter.swift */; };
 		378E382E20EA02EC003BB689 /* ShiftCategoryViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E382D20EA02EC003BB689 /* ShiftCategoryViewEntity.swift */; };
 		379032F820F13F7E00C2534F /* FileBrowseDetailViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379032F720F13F7E00C2534F /* FileBrowseDetailViewEntity.swift */; };
+		379032FB20F1A3F200C2534F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379032F920F1A3F200C2534F /* CommentCell.swift */; };
+		379032FC20F1A3F200C2534F /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379032FA20F1A3F200C2534F /* CommentCell.xib */; };
 		37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */; };
 		37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */; };
 		37A69B1420E897AE004E8C66 /* UserTopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B1320E897AE004E8C66 /* UserTopViewModel.swift */; };
@@ -128,6 +130,8 @@
 		378E382A20E9957F003BB689 /* ShiftCategoryViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftCategoryViewPresenter.swift; sourceTree = "<group>"; };
 		378E382D20EA02EC003BB689 /* ShiftCategoryViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCategoryViewEntity.swift; sourceTree = "<group>"; };
 		379032F720F13F7E00C2534F /* FileBrowseDetailViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowseDetailViewEntity.swift; sourceTree = "<group>"; };
+		379032F920F1A3F200C2534F /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		379032FA20F1A3F200C2534F /* CommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		37A69B0C20E8308B004E8C66 /* UserTopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewController.swift; sourceTree = "<group>"; };
 		37A69B0D20E8308C004E8C66 /* UserTopViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewPresenter.swift; sourceTree = "<group>"; };
 		37A69B1320E897AE004E8C66 /* UserTopViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTopViewModel.swift; sourceTree = "<group>"; };
@@ -192,6 +196,8 @@
 				3700319C20EDDC2800813685 /* CustomColorTableViewCell.xib */,
 				3765CD6C20F0E7880031D235 /* FileBrowseCollectionViewCell.swift */,
 				3765CD6D20F0E7880031D235 /* FileBrowseCollectionViewCell.xib */,
+				379032F920F1A3F200C2534F /* CommentCell.swift */,
+				379032FA20F1A3F200C2534F /* CommentCell.xib */,
 			);
 			path = Xib;
 			sourceTree = "<group>";
@@ -523,6 +529,7 @@
 				37425CB820DE6064005A3C93 /* Main.storyboard in Resources */,
 				37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */,
 				3700319E20EDDC2800813685 /* CustomColorTableViewCell.xib in Resources */,
+				379032FC20F1A3F200C2534F /* CommentCell.xib in Resources */,
 				37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */,
 				3765CD6F20F0E7880031D235 /* FileBrowseCollectionViewCell.xib in Resources */,
 			);
@@ -653,6 +660,7 @@
 				370031A120EDE2B600813685 /* ColorSchemeViewModel.swift in Sources */,
 				3755199F20E50F9B00EC930B /* CalendarDetailViewController.swift in Sources */,
 				3769F6FC20EC960600BA8920 /* UserListViewPresenter.swift in Sources */,
+				379032FB20F1A3F200C2534F /* CommentCell.swift in Sources */,
 				37A69B3A20E986F6004E8C66 /* PasswordViewModel.swift in Sources */,
 				3772662820EA70CE0056D3D0 /* UserListSettingViewModel.swift in Sources */,
 				37C168B320F0308F003A453A /* SalaryViewPresenter.swift in Sources */,

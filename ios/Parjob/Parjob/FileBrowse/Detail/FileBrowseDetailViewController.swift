@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Eureka
 import PopupDialog
 
 protocol FileBrowseDetailViewInterface: class {
@@ -19,17 +18,17 @@ protocol FileBrowseDetailViewInterface: class {
 }
 
 
-class FileBrowseDetailViewController: FormViewController, FileBrowseDetailViewInterface {
+class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInterface {
     
     fileprivate var presenter: FileBrowseDetailViewPresenter!
     private var pdfView: UIWebView!
+    fileprivate var commentTableView: UITableView!
+    
     var navigationTitle: String = ""
     var tableID: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         
         presenter = FileBrowseDetailViewPresenter(view: self)
         presenter.setFileTableDetail()
@@ -56,6 +55,19 @@ class FileBrowseDetailViewController: FormViewController, FileBrowseDetailViewIn
         pdfView.loadRequest(urlRequest)
     }
     
+    fileprivate func initializeCommentTableView() {
+        commentTableView = UITableView()
+        commentTableView.delegate = self
+        commentTableView.dataSource = self
+        commentTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
+        self.view.addSubview(commentTableView)
+        
+        commentTableView.topToBottom(of: pdfView)
+        commentTableView.left(to: self.view)
+        commentTableView.right(to: self.view)
+        commentTableView.bottom(to: self.view)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -65,6 +77,7 @@ class FileBrowseDetailViewController: FormViewController, FileBrowseDetailViewIn
 extension FileBrowseDetailViewController {
     func initializeUI() {
         initializePDFView()
+        initializeCommentTableView()
     }
     
     func success() {
@@ -90,6 +103,21 @@ extension FileBrowseDetailViewController {
     }
 }
 
+extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return presenter.getComments().count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "コメントの一覧"
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = commentTableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+        cell.textLabel?.text = presenter.getComments()[indexPath.row].text
+        return cell
+    }
+}
 
 extension FileBrowseDetailViewController: UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
