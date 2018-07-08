@@ -11,7 +11,7 @@ from admin import AuthException, init_admin
 
 
 def init_app():
-    app_obj = Flask(__name__)
+    app_obj = Flask(__name__, static_folder='uploads')
     app_obj.config.from_object('config.BaseConfig')
     app_obj.secret_key = secret_key
 

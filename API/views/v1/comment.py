@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request, abort
 from jsonschema import validate, ValidationError
 from model import User, Comment, ShiftTable
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_200
+from views.v1.response import response_msg_404, response_msg_403
 from basic_auth import api_basic_auth
 
 app = Blueprint('comment_bp', __name__)
@@ -49,10 +49,10 @@ def add():
 
 @app.route('/api/v1/comment/<comment_id>', methods=['PUT'])
 @api_basic_auth.login_required
-def update(comment_id):
+def update_or_delete(comment_id):
     schema = {'type': 'object',
               'properties':
-                  {'text': {'type': 'string', 'minLength': 1}},
+                  {'text': {'type': 'string'}},
               'required': ['text']
               }
 
@@ -75,29 +75,11 @@ def update(comment_id):
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-    comment.text = request.json['text']
+    if len(request.json['text']) == 0:
+        session.delete(comment)
+    else:
+        comment.text = request.json['text']
+
     session.commit()
     session.close()
     return jsonify({'results': {'text': request.json['text'], 'comment_id': comment.id}}), 200
-
-
-@app.route('/api/v1/comment/<comment_id>', methods=['DELETE'])
-@api_basic_auth.login_required
-def delete(comment_id):
-    user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    comment = session.query(Comment).filter(Comment.id == comment_id).one_or_none()
-
-    if comment is None:
-        session.close()
-        frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
-
-    if comment.user_id != user.id:
-        session.close()
-        frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
-
-    session.delete(comment)
-    session.commit()
-    session.close()
-    return jsonify({'msg': response_msg_200()}), 200
