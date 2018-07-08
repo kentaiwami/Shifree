@@ -1,5 +1,5 @@
 //
-//  FileBrowseCollectionViewCell.swift
+//  FileBrowseCell.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/07.
@@ -9,7 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class FileBrowseCollectionViewCell: UICollectionViewCell {
+class FileBrowseCell: UICollectionViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var thumbnailImageView: UIImageView!

@@ -46,7 +46,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         
         collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.white
-        collectionView.register(UINib(nibName: "FileBrowseCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FileBrowseCell")
+        collectionView.register(UINib(nibName: "FileBrowseCell", bundle: nil), forCellWithReuseIdentifier: "FileBrowseCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
@@ -74,7 +74,7 @@ extension FileBrowseTopViewController {
 
 extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FileBrowseCell", for: indexPath) as! FileBrowseCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FileBrowseCell", for: indexPath) as! FileBrowseCell
         cell.setAll(title: presenter.getTable()[indexPath.row].title, url: presenter.getTable()[indexPath.row].thumbnail)
         return cell
     }

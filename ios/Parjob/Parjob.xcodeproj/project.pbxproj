@@ -38,8 +38,8 @@
 		3765CD6920F0D9D10031D235 /* FileBrowseDetailViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765CD6620F0D9D10031D235 /* FileBrowseDetailViewPresenter.swift */; };
 		3765CD6A20F0D9D10031D235 /* FileBrowseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765CD6720F0D9D10031D235 /* FileBrowseDetailViewController.swift */; };
 		3765CD6B20F0D9D10031D235 /* FileBrowseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765CD6820F0D9D10031D235 /* FileBrowseDetailViewModel.swift */; };
-		3765CD6E20F0E7880031D235 /* FileBrowseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765CD6C20F0E7880031D235 /* FileBrowseCollectionViewCell.swift */; };
-		3765CD6F20F0E7880031D235 /* FileBrowseCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3765CD6D20F0E7880031D235 /* FileBrowseCollectionViewCell.xib */; };
+		3765CD6E20F0E7880031D235 /* FileBrowseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765CD6C20F0E7880031D235 /* FileBrowseCell.swift */; };
+		3765CD6F20F0E7880031D235 /* FileBrowseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3765CD6D20F0E7880031D235 /* FileBrowseCell.xib */; };
 		3765CD7120F0EDCF0031D235 /* FileBrowseTopViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3765CD7020F0EDCF0031D235 /* FileBrowseTopViewEntity.swift */; };
 		3769F6FB20EC960600BA8920 /* UserListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3769F6F820EC960600BA8920 /* UserListViewModel.swift */; };
 		3769F6FC20EC960600BA8920 /* UserListViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3769F6F920EC960600BA8920 /* UserListViewPresenter.swift */; };
@@ -123,8 +123,8 @@
 		3765CD6620F0D9D10031D235 /* FileBrowseDetailViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowseDetailViewPresenter.swift; sourceTree = "<group>"; };
 		3765CD6720F0D9D10031D235 /* FileBrowseDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowseDetailViewController.swift; sourceTree = "<group>"; };
 		3765CD6820F0D9D10031D235 /* FileBrowseDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileBrowseDetailViewModel.swift; sourceTree = "<group>"; };
-		3765CD6C20F0E7880031D235 /* FileBrowseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowseCollectionViewCell.swift; sourceTree = "<group>"; };
-		3765CD6D20F0E7880031D235 /* FileBrowseCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileBrowseCollectionViewCell.xib; sourceTree = "<group>"; };
+		3765CD6C20F0E7880031D235 /* FileBrowseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowseCell.swift; sourceTree = "<group>"; };
+		3765CD6D20F0E7880031D235 /* FileBrowseCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FileBrowseCell.xib; sourceTree = "<group>"; };
 		3765CD7020F0EDCF0031D235 /* FileBrowseTopViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileBrowseTopViewEntity.swift; sourceTree = "<group>"; };
 		3769F6F820EC960600BA8920 /* UserListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewModel.swift; sourceTree = "<group>"; };
 		3769F6F920EC960600BA8920 /* UserListViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListViewPresenter.swift; sourceTree = "<group>"; };
@@ -206,8 +206,8 @@
 			children = (
 				3700319B20EDDC2800813685 /* ColorCell.swift */,
 				3700319C20EDDC2800813685 /* ColorCell.xib */,
-				3765CD6C20F0E7880031D235 /* FileBrowseCollectionViewCell.swift */,
-				3765CD6D20F0E7880031D235 /* FileBrowseCollectionViewCell.xib */,
+				3765CD6C20F0E7880031D235 /* FileBrowseCell.swift */,
+				3765CD6D20F0E7880031D235 /* FileBrowseCell.xib */,
 				379032F920F1A3F200C2534F /* CommentCell.swift */,
 				379032FA20F1A3F200C2534F /* CommentCell.xib */,
 			);
@@ -565,7 +565,7 @@
 				3700319E20EDDC2800813685 /* ColorCell.xib in Resources */,
 				379032FC20F1A3F200C2534F /* CommentCell.xib in Resources */,
 				37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */,
-				3765CD6F20F0E7880031D235 /* FileBrowseCollectionViewCell.xib in Resources */,
+				3765CD6F20F0E7880031D235 /* FileBrowseCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,7 +685,7 @@
 				37425CBC20DE700A005A3C93 /* SignUpViewModel.swift in Sources */,
 				3765CD6120F0D9140031D235 /* FileBrowseTopViewModel.swift in Sources */,
 				37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */,
-				3765CD6E20F0E7880031D235 /* FileBrowseCollectionViewCell.swift in Sources */,
+				3765CD6E20F0E7880031D235 /* FileBrowseCell.swift in Sources */,
 				3765CD6B20F0D9D10031D235 /* FileBrowseDetailViewModel.swift in Sources */,
 				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
 				378E382B20E9957F003BB689 /* ShiftCategoryViewModel.swift in Sources */,
