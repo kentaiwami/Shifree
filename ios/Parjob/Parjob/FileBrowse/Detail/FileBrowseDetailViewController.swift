@@ -69,6 +69,24 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         commentTableView.bottom(to: self.view)
     }
     
+    fileprivate func initializeNavigationItem() {
+        let add = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(TapAddCommentButton))
+        
+        self.navigationItem.setRightBarButton(add, animated: true)
+    }
+    
+    @objc private func TapAddCommentButton(sendor: UIButton) {
+        //TODO:TapAddCommentButton
+//        let vc = PopUpColorViewController()
+//        let popUp = PopupDialog(viewController: vc)
+//        let buttonOK = DefaultButton(title: "OK"){}
+//
+//        popUp.addButton(buttonOK)
+//
+//        present(popUp, animated: true, completion: nil)
+    }
+
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -77,6 +95,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
 // MARK: - Presenterから呼び出される関数
 extension FileBrowseDetailViewController {
     func initializeUI() {
+        initializeNavigationItem()
         initializePDFView()
         initializeCommentTableView()
     }
