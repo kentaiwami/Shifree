@@ -9,6 +9,7 @@ api_basic_auth = HTTPBasicAuth()
 @api_basic_auth.verify_password
 def verify_pw(user_code, password):
     user = session.query(User).filter(User.code == user_code).one_or_none()
+    session.close()
 
     if user is None:
         return False
