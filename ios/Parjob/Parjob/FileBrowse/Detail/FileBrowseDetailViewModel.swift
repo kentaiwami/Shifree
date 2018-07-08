@@ -36,6 +36,8 @@ class FileBrowseDetailViewModel {
                     created: comment["created_at"].stringValue
                 ))
             })
+            
+            self.delegate?.initializeUI()
         }
         .catch { (err) in
             let tmp_err = err as NSError

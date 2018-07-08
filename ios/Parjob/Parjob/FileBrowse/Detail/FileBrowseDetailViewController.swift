@@ -22,11 +22,14 @@ protocol FileBrowseDetailViewInterface: class {
 class FileBrowseDetailViewController: FormViewController, FileBrowseDetailViewInterface {
     
     fileprivate var presenter: FileBrowseDetailViewPresenter!
+    private var pdfView: UIWebView!
     var navigationTitle: String = ""
     var tableID: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         presenter = FileBrowseDetailViewPresenter(view: self)
         presenter.setFileTableDetail()
@@ -37,6 +40,22 @@ class FileBrowseDetailViewController: FormViewController, FileBrowseDetailViewIn
         self.navigationItem.title = navigationTitle
     }
     
+    fileprivate func initializePDFView() {
+        pdfView = UIWebView()
+        pdfView.delegate = self
+        self.view.addSubview(pdfView)
+        
+        pdfView.top(to: self.view)
+        pdfView.left(to: self.view)
+        pdfView.right(to: self.view)
+        pdfView.height(self.view.frame.height/2)
+        
+        let url = presenter.getFileTable().origin
+        let encURL = URL(string: GetHost()+url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
+        let urlRequest = URLRequest(url: encURL)
+        pdfView.loadRequest(urlRequest)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -45,7 +64,7 @@ class FileBrowseDetailViewController: FormViewController, FileBrowseDetailViewIn
 // MARK: - Presenterから呼び出される関数
 extension FileBrowseDetailViewController {
     func initializeUI() {
-        
+        initializePDFView()
     }
     
     func success() {
@@ -68,5 +87,12 @@ extension FileBrowseDetailViewController {
     
     func setTableID(id: Int) {
         self.tableID = id
+    }
+}
+
+
+extension FileBrowseDetailViewController: UIWebViewDelegate {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        return true
     }
 }
