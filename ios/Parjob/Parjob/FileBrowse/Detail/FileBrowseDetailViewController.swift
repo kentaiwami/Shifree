@@ -22,7 +22,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     fileprivate var presenter: FileBrowseDetailViewPresenter!
     private var pdfView: UIWebView!
     fileprivate var commentTableView: UITableView!
-    fileprivate var myIndiator = UIActivityIndicatorView()
+    fileprivate var myIndicator = UIActivityIndicatorView()
 
     var navigationTitle: String = ""
     var tableID: Int = 0
@@ -57,16 +57,18 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         pdfView.right(to: self.view)
         pdfView.height(self.view.frame.height/2)
         
-        myIndiator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        myIndiator.center = pdfView.center
-        myIndiator.hidesWhenStopped = true
-        myIndiator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        pdfView.addSubview(myIndiator)
-        
         let url = presenter.getFileTable().origin
         let encURL = URL(string: GetHost()+url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
         let urlRequest = URLRequest(url: encURL)
         pdfView.loadRequest(urlRequest)
+    }
+    
+    fileprivate func initializeIndicator() {
+        myIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        myIndicator.hidesWhenStopped = true
+        myIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        pdfView.addSubview(myIndicator)
+        myIndicator.center(in: pdfView)
     }
     
     fileprivate func initializeCommentTableView() {
@@ -109,6 +111,7 @@ extension FileBrowseDetailViewController {
     func initializeUI() {
         initializeNavigationItem()
         initializePDFView()
+        initializeIndicator()
         initializeCommentTableView()
         commentTableView.reloadData()
     }
@@ -171,17 +174,17 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
 // MARK: - PDFを表示するためにWebView関連
 extension FileBrowseDetailViewController: UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        myIndiator.startAnimating()
+        myIndicator.startAnimating()
         return true
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        myIndiator.stopAnimating()
+        myIndicator.stopAnimating()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        myIndiator.stopAnimating()
+        myIndicator.stopAnimating()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }
