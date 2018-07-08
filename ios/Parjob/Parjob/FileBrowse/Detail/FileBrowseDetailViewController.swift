@@ -120,8 +120,10 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
         
         if presenter.isMyComment(row: indexPath.row) {
             cell.selectionStyle = .blue
+            cell.accessoryType = .disclosureIndicator
         }else {
             cell.selectionStyle = .none
+            cell.accessoryType = .none
         }
         
         return cell
