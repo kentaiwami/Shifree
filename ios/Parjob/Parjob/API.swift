@@ -14,7 +14,7 @@ import KeychainAccess
 
 
 class API {
-    let base = "http://127.0.0.1:5000/api/"
+    let base = GetHost() + "api/"
     let version = "v1/"
     let keychain = Keychain()
     
