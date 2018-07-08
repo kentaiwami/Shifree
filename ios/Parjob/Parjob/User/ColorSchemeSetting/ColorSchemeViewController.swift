@@ -47,7 +47,7 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
     private func initializeTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UINib(nibName: "ColorTableViewCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
+        tableView.register(UINib(nibName: "ColorCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
         self.view.addSubview(tableView)
         
         tableView.height(to: self.view)
@@ -98,7 +98,7 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "ColorCell") as! ColorTableViewCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "ColorCell") as! ColorCell
         let shiftCategoryColor = presenter.getShiftCategoryColor()
         
         cell.setCell(name: shiftCategoryColor[indexPath.row].name, color: shiftCategoryColor[indexPath.row].color)
@@ -107,7 +107,7 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCell = tableView.cellForRow(at: indexPath) as! ColorTableViewCell
+        let selectedCell = tableView.cellForRow(at: indexPath) as! ColorCell
         selectedCellIndexPath = indexPath
         showColorPicker(sendor: selectedCell)
         tableView.deselectRow(at: indexPath, animated: true)
