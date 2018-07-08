@@ -17,16 +17,19 @@ class CommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        usernameLabel.top(to: self)
+        usernameLabel.top(to: self, offset: 5)
         usernameLabel.left(to: self, offset: 15)
+        usernameLabel.font = UIFont.systemFont(ofSize: 16)
         usernameLabel.sizeToFit()
         
-        createdLabel.top(to: self)
-        createdLabel.right(to: self, offset: -15)
+        createdLabel.bottom(to: self)
+        createdLabel.right(to: self, offset: -30)
+        createdLabel.font = UIFont.systemFont(ofSize: 15)
+        createdLabel.textColor = UIColor.gray
         createdLabel.sizeToFit()
         
-        commentTextLabel.bottom(to: self)
         commentTextLabel.left(to: self, offset: 15)
+        commentTextLabel.topToBottom(of: usernameLabel, offset: 10)
         commentTextLabel.sizeToFit()
     }
 

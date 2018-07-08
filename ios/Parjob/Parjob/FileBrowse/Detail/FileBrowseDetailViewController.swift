@@ -66,6 +66,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         commentTableView.delegate = self
         commentTableView.dataSource = self
         commentTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
+        commentTableView.rowHeight = 60
         self.view.addSubview(commentTableView)
         
         commentTableView.topToBottom(of: pdfView)
