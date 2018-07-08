@@ -6,6 +6,9 @@ PODS:
   - FSCalendar (2.7.9)
   - KeychainAccess (3.1.0)
   - MKColorPicker (1.1)
+  - NVActivityIndicatorView (4.1.1):
+    - NVActivityIndicatorView/Presenter (= 4.1.1)
+  - NVActivityIndicatorView/Presenter (4.1.1)
   - PopupDialog (0.5.4)
   - PromiseKit (6.2.3):
     - PromiseKit/CorePromise (= 6.2.3)
@@ -27,6 +30,7 @@ DEPENDENCIES:
   - FSCalendar
   - KeychainAccess
   - MKColorPicker
+  - NVActivityIndicatorView
   - PopupDialog (= 0.5.4)
   - PromiseKit (~> 6.0)
   - ScrollableGraphView
@@ -40,6 +44,7 @@ SPEC REPOS:
     - FSCalendar
     - KeychainAccess
     - MKColorPicker
+    - NVActivityIndicatorView
     - PopupDialog
     - PromiseKit
     - ScrollableGraphView
@@ -68,12 +73,13 @@ SPEC CHECKSUMS:
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
   MKColorPicker: c75af5993af472935cbfff18bc46d5ed8ff6f638
+  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
   PopupDialog: 75cf955693590b0cb2fdde00223fb65d99c57247
   PromiseKit: 62f37bb4900a9b0b7550d017e41497171d93face
   ScrollableGraphView: 072ea302f4ca27779692656a49d51fe537b2b1e7
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
 
-PODFILE CHECKSUM: 2214f78791491462c941a074fbbd8e067ba43fcd
+PODFILE CHECKSUM: 192af56bead1a829e37a62a3977e1cbb30c6c118
 
 COCOAPODS: 1.5.3

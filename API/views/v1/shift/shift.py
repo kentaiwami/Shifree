@@ -73,8 +73,8 @@ def add_update_delete():
                                'items': {'type': 'object',
                                          'properties': {'id': {'type': 'integer', 'minimum': 0},
                                                         'category_id': {'type': 'integer', 'minimum': 0},
-                                                        'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
-                                                        'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$'},
+                                                        'start': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$|'},
+                                                        'end': {'type': 'string', 'pattern': '^[0-9]{2}:[0-9]{2}$|'},
                                                         'name': {'type': 'string', 'minLength': 1}
                                                         },
                                          'required': ['id', 'category_id', 'start', 'end', 'name']
@@ -133,8 +133,8 @@ def add_update_delete():
 
         shift_company[0].name = shift_obj['name']
         shift_company[0].shift_category_id = shift_category.id
-        shift_company[0].start = shift_obj['start']
-        shift_company[0].end = shift_obj['end']
+        shift_company[0].start = None if shift_obj['start'] == '' else shift_obj['start']
+        shift_company[0].end = None if shift_obj['end'] == '' else shift_obj['end']
 
         session.commit()
 

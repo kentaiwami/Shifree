@@ -16,4 +16,5 @@ target 'Parjob' do
   pod "MKColorPicker"
   pod 'ScrollableGraphView'
   pod 'AlamofireImage', '~> 3.3'
+  pod 'NVActivityIndicatorView'
 end

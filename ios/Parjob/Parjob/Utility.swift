@@ -8,6 +8,8 @@
 
 import Eureka
 import PopupDialog
+import NVActivityIndicatorView
+import TinyConstraints
 
 func IsValidateFormValue(form: Form) -> Bool {
     var err_count = 0
@@ -92,5 +94,25 @@ func GetMatchStrings(targetString: String, pattern: String) -> [String] {
         print("error: getMatchStrings")
     }
     return []
+}
+
+
+class Indicator {
+    let indicator = NVActivityIndicatorView(frame: CGRect.zero, type: .circleStrokeSpin, color: UIColor.lightGray)
+    let wh: CGFloat = 50
+    
+    func start() {
+        if let topController = UIApplication.topViewController() {
+            topController.view.addSubview(indicator)
+            indicator.center(in: topController.view)
+            indicator.width(wh)
+            indicator.height(wh)
+            indicator.startAnimating()
+        }
+    }
+    
+    func stop() {
+        indicator.stopAnimating()
+    }
 }
 

@@ -17,13 +17,14 @@ class API {
     let base = GetHost() + "api/"
     let version = "v1/"
     let keychain = Keychain()
+    let indicator = Indicator()
     
     fileprivate func postNoAuth(url: String, params: [String:Any]) -> Promise<JSON> {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        indicator.start()
         
         let promise = Promise<JSON> { seal in
             Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding(options: [])).responseJSON { (response) in
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.indicator.stop()
                 
                 guard let obj = response.result.value else { return seal.reject(response.error!)}
                 let json = JSON(obj)
@@ -43,14 +44,14 @@ class API {
     }
     
     fileprivate func getAuth(url: String) -> Promise<JSON> {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        indicator.start()
         
         let user = try! keychain.get("userCode")
         let password = try! keychain.get("password")
         
         let promise = Promise<JSON> { seal in
             Alamofire.request(url, method: .get).authenticate(user: user!, password: password!).responseJSON { (response) in
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.indicator.stop()
                 
                 guard let obj = response.result.value else { return seal.reject(response.error!)}
                 let json = JSON(obj)
@@ -70,14 +71,14 @@ class API {
     }
     
     fileprivate func postPutDeleteAuth(url: String, params: [String:Any], httpMethod: HTTPMethod) -> Promise<JSON> {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        indicator.start()
         
         let user = try! keychain.get("userCode")
         let password = try! keychain.get("password")
         
         let promise = Promise<JSON> { seal in
             Alamofire.request(url, method: httpMethod, parameters: params, encoding: JSONEncoding(options: [])).authenticate(user: user!, password: password!).responseJSON { (response) in
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.indicator.stop()
                 
                 guard let obj = response.result.value else { return seal.reject(response.error!)}
                 let json = JSON(obj)
