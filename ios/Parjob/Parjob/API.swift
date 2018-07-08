@@ -230,4 +230,10 @@ extension API {
         let endPoint = "tables/" + String(id)
         return getAuth(url: base + version + endPoint)
     }
+    
+    func updateComment(text: String, id: Int) -> Promise<JSON> {
+        let endPoint = "comment/" + String(id)
+        let params = ["text": text] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
 }

@@ -54,10 +54,12 @@ class CalendarDetailViewModel {
         return false
     }
     
-    func getUserCompanyShiftNames() {
+    func setUserCompanyShiftNames() {
         api.getUserCompanyShiftNames().done { (json) in
-            json["results"].arrayValue.forEach { (shift) in
-                self.companyShiftNames.append(shift["name"].stringValue)
+            json["results"].arrayValue.forEach { (category) in
+                category["shifts"].arrayValue.forEach({ (shift) in
+                    self.companyShiftNames.append(shift["name"].stringValue)
+                })
             }
             self.delegate?.initializeUI()
         }

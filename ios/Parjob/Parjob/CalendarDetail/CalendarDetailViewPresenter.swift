@@ -41,7 +41,7 @@ class CalendarDetailViewPresenter {
     }
     
     func setCompanyShiftNames() {
-        model.getUserCompanyShiftNames()
+        model.setUserCompanyShiftNames()
     }
     
     func getCompanyShiftNames() -> [String] {

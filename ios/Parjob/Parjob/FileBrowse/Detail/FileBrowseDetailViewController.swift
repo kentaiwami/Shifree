@@ -13,7 +13,6 @@ protocol FileBrowseDetailViewInterface: class {
     var tableID: Int { get }
     
     func initializeUI()
-    func success()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -32,12 +31,18 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         self.view.backgroundColor = UIColor.white
         
         presenter = FileBrowseDetailViewPresenter(view: self)
-        presenter.setFileTableDetail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = navigationTitle
+        
+        presenter.setFileTableDetail()
+        
+        if pdfView != nil {
+            pdfView.removeFromSuperview()
+            commentTableView.removeFromSuperview()
+        }
     }
     
     fileprivate func initializePDFView() {
@@ -98,12 +103,7 @@ extension FileBrowseDetailViewController {
         initializeNavigationItem()
         initializePDFView()
         initializeCommentTableView()
-    }
-    
-    func success() {
-        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
-            self.navigationController?.popViewController(animated: true)
-        }
+        commentTableView.reloadData()
     }
     
     func showErrorAlert(title: String, msg: String) {
@@ -150,11 +150,30 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        if presenter.isMyComment(row: indexPath.row) {
+            let editCommentVC = EditCommentViewController()
+            editCommentVC.setIndexPath(at: indexPath)
+            self.navigationController!.pushViewController(editCommentVC, animated: true)
+        }
     }
 }
 
+
+
+// MARK: - PDFを表示するためにWebView関連
 extension FileBrowseDetailViewController: UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         return true
     }
 }
+
+
+
+// MARK: - EditCommentViewControllerへコメントデータを渡すための関数
+extension FileBrowseDetailViewController {
+    func getComment() -> [Comment] {
+        return presenter.getComments()
+    }
+}
+

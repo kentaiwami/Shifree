@@ -11,7 +11,6 @@ import KeychainAccess
 
 protocol FileBrowseDetailViewModelDelegate: class {
     func initializeUI()
-    func success()
     func faildAPI(title: String, msg: String)
 }
 
@@ -22,6 +21,8 @@ class FileBrowseDetailViewModel {
     private(set) var commentList: [Comment] = []
     
     func setFileTableDetail(id: Int) {
+        commentList = []
+        
         api.getFileTableDetail(id: id).done { (json) in
             self.fileTable.id = json["results"]["table_id"].intValue
             self.fileTable.origin = json["results"]["origin"].stringValue
