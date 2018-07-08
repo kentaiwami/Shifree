@@ -29,6 +29,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.white
         
         presenter = FileBrowseDetailViewPresenter(view: self)
         presenter.setFileTableDetail()
@@ -114,7 +115,8 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
-        cell.textLabel?.text = presenter.getComments()[indexPath.row].text
+        let comment = presenter.getComments()[indexPath.row]
+        cell.setAll(username: comment.user, created: comment.created, text: comment.text)
         return cell
     }
 }

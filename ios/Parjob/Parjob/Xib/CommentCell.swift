@@ -10,15 +10,33 @@ import UIKit
 
 class CommentCell: UITableViewCell {
 
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var createdLabel: UILabel!
+    @IBOutlet weak var commentTextLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        usernameLabel.top(to: self)
+        usernameLabel.left(to: self, offset: 15)
+        usernameLabel.sizeToFit()
+        
+        createdLabel.top(to: self)
+        createdLabel.right(to: self, offset: -15)
+        createdLabel.sizeToFit()
+        
+        commentTextLabel.bottom(to: self)
+        commentTextLabel.left(to: self, offset: 15)
+        commentTextLabel.sizeToFit()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
+    func setAll(username: String, created: String, text: String) {
+        usernameLabel.text = username
+        createdLabel.text = created
+        commentTextLabel.text = text
+    }
 }

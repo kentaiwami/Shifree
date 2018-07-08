@@ -317,7 +317,7 @@ def get_detail(table_id):
             'id': comment.id,
             'user_id': user.id,
             'user': user.name,
-            'created_at': str(comment.created_at)
+            'created_at': comment.created_at.strftime('%Y-%m-%d %H:%M')
         })
 
     results = {
