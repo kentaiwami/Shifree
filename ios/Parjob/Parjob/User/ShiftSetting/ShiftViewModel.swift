@@ -22,7 +22,7 @@ class ShiftViewModel {
     private(set) var shiftCategory: [ShiftCategory] = []
     
     func setShiftDetail() {
-        api.getShift().done { (json) in
+        api.getUserCompanyShiftNames().done { (json) in
             json["results"].arrayValue.forEach({ (category) in
                 self.shiftCategory.append(ShiftCategory(id: category["category_id"].intValue, name: category["category_name"].stringValue))
                 

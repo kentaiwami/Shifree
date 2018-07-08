@@ -85,6 +85,8 @@ class API {
     }
 }
 
+
+// MARK: - Auth Login API
 extension API {
     func signUp(params: [String:Any]) -> Promise<JSON> {
         let endPoint = "auth"
@@ -95,25 +97,36 @@ extension API {
         let endPoint = "login"
         return getAuth(url: base + version + endPoint)
     }
+}
+
+
+
+// MARK: - Comment API
+extension API {
+    func updateComment(text: String, id: Int) -> Promise<JSON> {
+        let endPoint = "comment/" + String(id)
+        let params = ["text": text] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
     
+    func addComment(text: String, id: Int) -> Promise<JSON> {
+        let endPoint = "comment"
+        let params = [
+            "text": text,
+            "table_id": id
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .post)
+    }
+}
+
+
+
+// MARK: - UserShift API
+extension API {
     func getUserShift(start: String, end: String) -> Promise<JSON> {
         let endPoint = "usershift"
         let getQuery = "?start=" + start + "&end=" + end
         return getAuth(url: base + version + endPoint + getQuery)
-    }
-    
-    func getUserCompanyShiftNames() -> Promise<JSON> {
-        let endPoint = "shift"
-        return getAuth(url: base + version + endPoint)
-    }
-    
-    func updateMemo(userShiftID: Int, text: String) -> Promise<JSON> {
-        let endPoint = "usershift/memo/" + String(userShiftID)
-        let params = [
-            "text": text
-        ] as [String:Any]
-        
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
     
     func updateUserShift(shifts: [[String:Any]]) -> Promise<JSON> {
@@ -124,18 +137,122 @@ extension API {
         
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+}
+
+
+// MARK: - Tables API
+extension API {
+    func getFileTable() -> Promise<JSON> {
+        let endPoint = "tables"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func getFileTableDetail(id: Int) -> Promise<JSON> {
+        let endPoint = "tables/" + String(id)
+        return getAuth(url: base + version + endPoint)
+    }
+}
+
+
+// MARK: - Salary API
+extension API {
+    func getSalary() -> Promise<JSON> {
+        let endPoint = "salary"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func reCalcSalary() -> Promise<JSON> {
+        let endPoint = "salary"
+        return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .put)
+    }
+}
+
+
+// MARK: - Shift API
+extension API {
+    func getUserCompanyShiftNames() -> Promise<JSON> {
+        let endPoint = "shift"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func updateShift(adds:[[String:Any]], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
+        let endPoint = "shift"
+        let params = [
+            "adds": adds,
+            "updates": updates,
+            "deletes": deletes
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+}
+
+
+// MARK: - Setting Color API
+extension API {
+    func updateShiftCategoryColor(schemes:[[String:Any]]) -> Promise<JSON> {
+        let endPoint = "setting/color"
+        let params = ["schemes": schemes] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
     
     func getShiftCategoryColor() -> Promise<JSON>  {
         let endPoint = "setting/color"
         return getAuth(url: base + version + endPoint)
     }
-    
-    func updateUserName(newUserName: String) -> Promise<JSON> {
-        let endPoint = "setting/username"
-        let params = ["username": newUserName] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+}
+
+
+// MARK: - Setting Users API
+extension API {
+    func getUserList() -> Promise<JSON> {
+        let endPoint = "setting/users"
+        return getAuth(url: base + version + endPoint)
     }
     
+    func updateUserList(adds:[[String:Any]], updates:[[String:Any]], deletes:[String]) -> Promise<JSON> {
+        let endPoint = "setting/users"
+        let params = [
+            "adds": adds,
+            "updates": updates,
+            "deletes": deletes
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+}
+
+
+
+// MARK: - Setting ShiftCategory API
+extension API {
+    func getShiftCategory() -> Promise<JSON> {
+        let endPoint = "setting/shiftcategory"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func updateShiftCategory(adds:[String], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
+        let endPoint = "setting/shiftcategory"
+        let params = [
+            "adds": adds,
+            "updates": updates,
+            "deletes": deletes
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+}
+
+
+// MARK: - Setting Password API
+extension API {
+    func updatePassword(new: String) -> Promise<JSON> {
+        let endPoint = "setting/password"
+        let params = ["new_password": new] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+}
+
+
+// MARK: - Setting Wage API
+extension API {
     func getUserWage() -> Promise<JSON> {
         let endPoint = "setting/wage"
         return getAuth(url: base + version + endPoint)
@@ -153,96 +270,28 @@ extension API {
             ] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
-    
-    func updatePassword(new: String) -> Promise<JSON> {
-        let endPoint = "setting/password"
-        let params = ["new_password": new] as [String:Any]
+}
+
+
+// MARK: - Setting Username API
+extension API {
+    func updateUserName(newUserName: String) -> Promise<JSON> {
+        let endPoint = "setting/username"
+        let params = ["username": newUserName] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
-    
-    func getShiftCategory() -> Promise<JSON> {
-        let endPoint = "setting/shiftcategory"
-        return getAuth(url: base + version + endPoint)
-    }
-    
-    func updateShiftCategory(adds:[String], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
-        let endPoint = "setting/shiftcategory"
+}
+
+
+
+// MARK: - UserShift Memo API
+extension API {
+    func updateMemo(userShiftID: Int, text: String) -> Promise<JSON> {
+        let endPoint = "usershift/memo/" + String(userShiftID)
         let params = [
-            "adds": adds,
-            "updates": updates,
-            "deletes": deletes
+            "text": text
             ] as [String:Any]
+        
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
-    }
-    
-    func getUserList() -> Promise<JSON> {
-        let endPoint = "setting/users"
-        return getAuth(url: base + version + endPoint)
-    }
-    
-    func updateUserList(adds:[[String:Any]], updates:[[String:Any]], deletes:[String]) -> Promise<JSON> {
-        let endPoint = "setting/users"
-        let params = [
-            "adds": adds,
-            "updates": updates,
-            "deletes": deletes
-            ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
-    }
-    
-    func updateShiftCategoryColor(schemes:[[String:Any]]) -> Promise<JSON> {
-        let endPoint = "setting/color"
-        let params = ["schemes": schemes] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
-    }
-    
-    func getShift() -> Promise<JSON> {
-        let endPoint = "shift"
-        return getAuth(url: base + version + endPoint)
-    }
-    
-    func updateShift(adds:[[String:Any]], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
-        let endPoint = "shift"
-        let params = [
-            "adds": adds,
-            "updates": updates,
-            "deletes": deletes
-            ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
-    }
-    
-    func getSalary() -> Promise<JSON> {
-        let endPoint = "salary"
-        return getAuth(url: base + version + endPoint)
-    }
-    
-    func reCalcSalary() -> Promise<JSON> {
-        let endPoint = "salary"
-        return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .put)
-    }
-    
-    func getFileTable() -> Promise<JSON> {
-        let endPoint = "tables"
-        return getAuth(url: base + version + endPoint)
-    }
-    
-    func getFileTableDetail(id: Int) -> Promise<JSON> {
-        let endPoint = "tables/" + String(id)
-        return getAuth(url: base + version + endPoint)
-    }
-    
-    func updateComment(text: String, id: Int) -> Promise<JSON> {
-        let endPoint = "comment/" + String(id)
-        let params = ["text": text] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
-    }
-    
-    func addComment(text: String, id: Int) -> Promise<JSON> {
-        let endPoint = "comment"
-        let params = [
-            "text": text,
-            "table_id": id
-            ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .post)
     }
 }
