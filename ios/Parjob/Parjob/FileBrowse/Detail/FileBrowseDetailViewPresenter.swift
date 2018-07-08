@@ -31,6 +31,10 @@ class FileBrowseDetailViewPresenter {
     func getComments() -> [Comment] {
         return model.commentList
     }
+    
+    func isMyComment(row: Int) -> Bool {
+        return model.isMyComment(row: row)
+    }
 }
 
 extension FileBrowseDetailViewPresenter: FileBrowseDetailViewModelDelegate {

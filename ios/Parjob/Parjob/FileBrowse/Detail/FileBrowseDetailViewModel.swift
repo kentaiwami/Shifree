@@ -45,5 +45,16 @@ class FileBrowseDetailViewModel {
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
+    
+    func isMyComment(row: Int) -> Bool {
+        let keychain = Keychain()
+        let userID = try! keychain.get("userId")!
+        
+        if String(commentList[row].userID) == userID {
+            return true
+        }else {
+            return false
+        }        
+    }
 
 }

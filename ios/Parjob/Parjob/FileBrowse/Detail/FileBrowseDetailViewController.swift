@@ -117,7 +117,18 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
         let cell = commentTableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
         let comment = presenter.getComments()[indexPath.row]
         cell.setAll(username: comment.user, created: comment.created, text: comment.text)
+        
+        if presenter.isMyComment(row: indexPath.row) {
+            cell.selectionStyle = .blue
+        }else {
+            cell.selectionStyle = .none
+        }
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
