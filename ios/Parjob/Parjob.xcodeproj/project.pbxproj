@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3700319D20EDDC2800813685 /* CustomColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3700319B20EDDC2800813685 /* CustomColorTableViewCell.swift */; };
-		3700319E20EDDC2800813685 /* CustomColorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3700319C20EDDC2800813685 /* CustomColorTableViewCell.xib */; };
+		3700319D20EDDC2800813685 /* ColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3700319B20EDDC2800813685 /* ColorTableViewCell.swift */; };
+		3700319E20EDDC2800813685 /* ColorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3700319C20EDDC2800813685 /* ColorTableViewCell.xib */; };
 		370031A120EDE2B600813685 /* ColorSchemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3700319F20EDE2B600813685 /* ColorSchemeViewModel.swift */; };
 		370031A220EDE2B600813685 /* ColorSchemeViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370031A020EDE2B600813685 /* ColorSchemeViewPresenter.swift */; };
 		370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370031A320EDE31500813685 /* PopUpColorViewEntity.swift */; };
@@ -92,8 +92,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3700319B20EDDC2800813685 /* CustomColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorTableViewCell.swift; sourceTree = "<group>"; };
-		3700319C20EDDC2800813685 /* CustomColorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomColorTableViewCell.xib; sourceTree = "<group>"; };
+		3700319B20EDDC2800813685 /* ColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTableViewCell.swift; sourceTree = "<group>"; };
+		3700319C20EDDC2800813685 /* ColorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorTableViewCell.xib; sourceTree = "<group>"; };
 		3700319F20EDE2B600813685 /* ColorSchemeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModel.swift; sourceTree = "<group>"; };
 		370031A020EDE2B600813685 /* ColorSchemeViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewPresenter.swift; sourceTree = "<group>"; };
 		370031A320EDE31500813685 /* PopUpColorViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewEntity.swift; sourceTree = "<group>"; };
@@ -204,8 +204,8 @@
 		370031A520EDEB4300813685 /* Xib */ = {
 			isa = PBXGroup;
 			children = (
-				3700319B20EDDC2800813685 /* CustomColorTableViewCell.swift */,
-				3700319C20EDDC2800813685 /* CustomColorTableViewCell.xib */,
+				3700319B20EDDC2800813685 /* ColorTableViewCell.swift */,
+				3700319C20EDDC2800813685 /* ColorTableViewCell.xib */,
 				3765CD6C20F0E7880031D235 /* FileBrowseCollectionViewCell.swift */,
 				3765CD6D20F0E7880031D235 /* FileBrowseCollectionViewCell.xib */,
 				379032F920F1A3F200C2534F /* CommentCell.swift */,
@@ -562,7 +562,7 @@
 			files = (
 				37425CB820DE6064005A3C93 /* Main.storyboard in Resources */,
 				37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */,
-				3700319E20EDDC2800813685 /* CustomColorTableViewCell.xib in Resources */,
+				3700319E20EDDC2800813685 /* ColorTableViewCell.xib in Resources */,
 				379032FC20F1A3F200C2534F /* CommentCell.xib in Resources */,
 				37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */,
 				3765CD6F20F0E7880031D235 /* FileBrowseCollectionViewCell.xib in Resources */,
@@ -706,7 +706,7 @@
 				373F36D820E7CCCD0079B28F /* PopUpColorViewController.swift in Sources */,
 				3769F6FB20EC960600BA8920 /* UserListViewModel.swift in Sources */,
 				37A69B1D20E8A09A004E8C66 /* WageViewController.swift in Sources */,
-				3700319D20EDDC2800813685 /* CustomColorTableViewCell.swift in Sources */,
+				3700319D20EDDC2800813685 /* ColorTableViewCell.swift in Sources */,
 				37A69B2020E8A0B0004E8C66 /* UserNameViewController.swift in Sources */,
 				3790330420F1EA9100C2534F /* EditCommentViewModel.swift in Sources */,
 				37425CBE20DE70AE005A3C93 /* API.swift in Sources */,

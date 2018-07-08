@@ -1,5 +1,5 @@
 //
-//  CustomColorTableViewCell.swift
+//  ColorTableViewCell.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/05.
@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class CustomColorTableViewCell: UITableViewCell {
+class ColorTableViewCell: UITableViewCell {
 
     @IBOutlet weak var view: UIView!
     @IBOutlet weak var label: UILabel!

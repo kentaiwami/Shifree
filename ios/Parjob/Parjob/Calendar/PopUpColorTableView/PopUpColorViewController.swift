@@ -29,7 +29,7 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsSelection = false
-        tableView.register(UINib(nibName: "CustomColorTableViewCell", bundle: nil), forCellReuseIdentifier: "CustomColorCell")
+        tableView.register(UINib(nibName: "ColorTableViewCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
         self.view.addSubview(tableView)
         
         tableView.height(self.view.frame.height / 2)
@@ -60,7 +60,7 @@ extension PopUpColorViewController {
 
 extension PopUpColorViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "CustomColorCell") as! CustomColorTableViewCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "ColorCell") as! ColorTableViewCell
         
         let shiftCategoryColor = presenter.getShiftCategoryColor()
         
