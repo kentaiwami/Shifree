@@ -22,6 +22,7 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
     
     fileprivate var presenter: SalaryViewPresenter!
     var graphView = ScrollableGraphView()
+    var emptyView = GetEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,8 +82,17 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         graphView.height(to: self.view)
         graphView.left(to: self.view)
         graphView.right(to: self.view)
-//        graphView.height(self.view.frame.height / 2)
-//        graphView.center(in: self.view)
+        
+        self.view.addSubview(emptyView)
+        emptyView.edges(to: self.view)
+        
+        if presenter.getSalary().count == 0 {
+            graphView.isHidden = true
+            emptyView.isHidden = false
+        }else {
+            graphView.isHidden = false
+            emptyView.isHidden = true
+        }
     }
     
     fileprivate func initializeNavigationItem() {
@@ -114,6 +124,7 @@ extension SalaryViewController {
     
     func reloadUI() {
         graphView.removeFromSuperview()
+        emptyView.removeFromSuperview()
         initializeGraph()
     }
     

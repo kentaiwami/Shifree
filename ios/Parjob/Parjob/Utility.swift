@@ -116,3 +116,26 @@ class Indicator {
     }
 }
 
+func GetEmptyView(msg: String) -> UIView {
+    let imageView = UIImageView(image: UIImage(named: "empty")?.withRenderingMode(.alwaysTemplate))
+    imageView.tintColor = UIColor.lightGray
+    let msgLabel = UILabel()
+    msgLabel.text = msg
+    msgLabel.textColor = UIColor.lightGray
+    msgLabel.numberOfLines = 0
+    msgLabel.textAlignment = .center
+    msgLabel.sizeToFit()
+    
+    let view = UIView()
+    view.addSubview(imageView)
+    view.addSubview(msgLabel)
+    imageView.centerY(to: view, offset: -30)
+    imageView.centerX(to: view)
+    imageView.width(40)
+    imageView.height(40)
+    msgLabel.centerX(to: view)
+    msgLabel.topToBottom(of: imageView, offset: 10)
+    
+    return view
+}
+

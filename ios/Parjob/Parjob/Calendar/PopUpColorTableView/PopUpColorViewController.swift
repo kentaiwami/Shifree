@@ -30,6 +30,7 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
         tableView.delegate = self
         tableView.allowsSelection = false
         tableView.register(UINib(nibName: "ColorCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         self.view.addSubview(tableView)
         
         tableView.height(self.view.frame.height / 2)
@@ -54,6 +55,12 @@ extension PopUpColorViewController {
     
     func updateTableData() {
         tableView.reloadData()
+        
+        if presenter.getShiftCategoryColor().count == 0 {
+            tableView.backgroundView?.isHidden = false
+        }else {
+            tableView.backgroundView?.isHidden = true
+        }
     }
 }
 

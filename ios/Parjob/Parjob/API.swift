@@ -164,6 +164,11 @@ extension API {
         let endPoint = "tables/" + String(id)
         return getAuth(url: base + version + endPoint)
     }
+    
+    func deleteTable(id: Int) -> Promise<JSON> {
+        let endPoint = "tables/" + String(id)
+        return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .delete)
+    }
 }
 
 

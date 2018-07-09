@@ -48,7 +48,7 @@ def update():
         .filter(UserShift.user_id == user.id)\
         .all()
 
-    if table_usershift_results is None:
+    if len(table_usershift_results) == 0:
         session.close()
         frame = inspect.currentframe()
         abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})

@@ -3,6 +3,7 @@ PODS:
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
   - Eureka (3.0.0)
+  - FloatingActionSheetController (2.1.0)
   - FSCalendar (2.7.9)
   - KeychainAccess (3.1.0)
   - MKColorPicker (1.1)
@@ -20,6 +21,7 @@ PODS:
   - PromiseKit/UIKit (6.2.3):
     - PromiseKit/CorePromise
   - ScrollableGraphView (4.0.4)
+  - StatusProvider (1.2.7)
   - SwiftyJSON (4.0.0)
   - TinyConstraints (2.1.2)
 
@@ -27,6 +29,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.5)
   - AlamofireImage (~> 3.3)
   - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `Swift-3.3`)
+  - FloatingActionSheetController
   - FSCalendar
   - KeychainAccess
   - MKColorPicker
@@ -34,6 +37,7 @@ DEPENDENCIES:
   - PopupDialog (= 0.5.4)
   - PromiseKit (~> 6.0)
   - ScrollableGraphView
+  - StatusProvider
   - SwiftyJSON
   - TinyConstraints (from `https://github.com/roberthein/TinyConstraints.git`, branch `Release_2.1.2`)
 
@@ -41,6 +45,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
+    - FloatingActionSheetController
     - FSCalendar
     - KeychainAccess
     - MKColorPicker
@@ -48,6 +53,7 @@ SPEC REPOS:
     - PopupDialog
     - PromiseKit
     - ScrollableGraphView
+    - StatusProvider
     - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -70,6 +76,7 @@ SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Eureka: 5b9418d7bfdc21ca977d69d124a6409f3e9af2c7
+  FloatingActionSheetController: 460dff2035765c89389fe83cea08f11b45058f19
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
   MKColorPicker: c75af5993af472935cbfff18bc46d5ed8ff6f638
@@ -77,9 +84,10 @@ SPEC CHECKSUMS:
   PopupDialog: 75cf955693590b0cb2fdde00223fb65d99c57247
   PromiseKit: 62f37bb4900a9b0b7550d017e41497171d93face
   ScrollableGraphView: 072ea302f4ca27779692656a49d51fe537b2b1e7
+  StatusProvider: e75bc9f63b935f5eec6fe49447b8e9ebbc871a87
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
 
-PODFILE CHECKSUM: 192af56bead1a829e37a62a3977e1cbb30c6c118
+PODFILE CHECKSUM: 89b2f117d87108d7982cdc765449eaceb99e1df6
 
 COCOAPODS: 1.5.3

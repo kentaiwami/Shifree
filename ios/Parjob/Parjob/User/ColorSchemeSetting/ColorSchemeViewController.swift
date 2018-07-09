@@ -48,6 +48,7 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UINib(nibName: "ColorCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         self.view.addSubview(tableView)
         
         tableView.height(to: self.view)
@@ -76,6 +77,12 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
 extension ColorSchemeViewController {
     func updateTableData() {
         tableView.reloadData()
+        
+        if presenter.getShiftCategoryColor().count == 0 {
+            tableView.backgroundView?.isHidden = false
+        }else {
+            tableView.backgroundView?.isHidden = true
+        }
     }
     
     func successUpdateShiftCategory() {

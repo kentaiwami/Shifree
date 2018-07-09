@@ -46,6 +46,14 @@ class UserListViewController: FormViewController, UserListViewInterface {
         
         form.append(section)
         
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoUser.rawValue)
+        
+        if presenter.getUserList().count == 0 {
+            tableView.backgroundView?.isHidden = false
+        }else {
+            tableView.backgroundView?.isHidden = true
+        }
+        
         UIView.setAnimationsEnabled(true)
     }
     

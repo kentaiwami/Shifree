@@ -100,6 +100,14 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                 }
         }
         
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
+        
+        if presenter.getShiftCategory().count == 0 {
+            tableView.backgroundView?.isHidden = false
+        }else {
+            tableView.backgroundView?.isHidden = true
+        }
+        
         UIView.setAnimationsEnabled(true)
     }
     
