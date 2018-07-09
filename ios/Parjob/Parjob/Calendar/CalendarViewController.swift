@@ -87,6 +87,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         tableView.left(to: self.view)
         tableView.right(to: self.view)
         tableView.bottom(to: self.view)
+        
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
     }
     
     private func initializeNavigationItem() {
@@ -98,8 +100,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     @objc private func TapColorInformationButton(sendor: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ColorTable")
+        let vc = PopUpColorViewController()
         let popUp = PopupDialog(viewController: vc)
         let buttonOK = DefaultButton(title: "OK"){}
         
@@ -155,6 +156,12 @@ extension CalendarViewController {
         presenter.setTableViewShift()
         self.tableView.reloadData()
         self.calendar.reloadData()
+        
+        if presenter.getTableViewShift().count == 0 {
+            tableView.backgroundView?.isHidden = false
+        }else {
+            tableView.backgroundView?.isHidden = true
+        }
     }
     
     func showErrorAlert(title: String, msg: String) {

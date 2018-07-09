@@ -8,6 +8,8 @@
 
 import Eureka
 import PopupDialog
+import NVActivityIndicatorView
+import TinyConstraints
 
 func IsValidateFormValue(form: Form) -> Bool {
     var err_count = 0
@@ -64,5 +66,76 @@ func GetWageTime() -> [String] {
         }
     }
     return wageTime
+}
+
+func GetMatchStrings(targetString: String, pattern: String) -> [String] {
+    
+    var matchStrings:[String] = []
+    
+    do {
+        
+        let regex = try NSRegularExpression(pattern: pattern, options: [])
+        let targetStringRange = NSRange(location: 0, length: (targetString as NSString).length)
+        
+        let matches = regex.matches(in: targetString, options: [], range: targetStringRange)
+        
+        for match in matches {
+            
+            // rangeAtIndexに0を渡すとマッチ全体が、1以降を渡すと括弧でグループにした部分マッチが返される
+            let range = match.rangeAt(0)
+            let result = (targetString as NSString).substring(with: range)
+            
+            matchStrings.append(result)
+        }
+        
+        return matchStrings
+        
+    } catch {
+        print("error: getMatchStrings")
+    }
+    return []
+}
+
+
+class Indicator {
+    let indicator = NVActivityIndicatorView(frame: CGRect.zero, type: .circleStrokeSpin, color: UIColor.lightGray)
+    let wh: CGFloat = 50
+    
+    func start() {
+        if let topController = UIApplication.topViewController() {
+            topController.view.addSubview(indicator)
+            indicator.center(in: topController.view)
+            indicator.width(wh)
+            indicator.height(wh)
+            indicator.startAnimating()
+        }
+    }
+    
+    func stop() {
+        indicator.stopAnimating()
+    }
+}
+
+func GetEmptyView(msg: String) -> UIView {
+    let imageView = UIImageView(image: UIImage(named: "empty")?.withRenderingMode(.alwaysTemplate))
+    imageView.tintColor = UIColor.lightGray
+    let msgLabel = UILabel()
+    msgLabel.text = msg
+    msgLabel.textColor = UIColor.lightGray
+    msgLabel.numberOfLines = 0
+    msgLabel.textAlignment = .center
+    msgLabel.sizeToFit()
+    
+    let view = UIView()
+    view.addSubview(imageView)
+    view.addSubview(msgLabel)
+    imageView.centerY(to: view, offset: -30)
+    imageView.centerX(to: view)
+    imageView.width(40)
+    imageView.height(40)
+    msgLabel.centerX(to: view)
+    msgLabel.topToBottom(of: imageView, offset: 10)
+    
+    return view
 }
 

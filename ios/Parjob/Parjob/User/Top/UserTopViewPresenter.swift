@@ -16,9 +16,21 @@ class UserTopViewPresenter {
     init(view: UserTopViewInterface) {
         self.view = view
         self.model = UserTopViewModel()
+        model.delegate = self
     }
     
     func isAdmin() -> Bool {
         return model.isAdmin()
+    }
+    
+    func tapResetButton() {
+        model.resetUser()
+    }
+}
+
+extension UserTopViewPresenter: UserTopViewModelDelegate {
+    func navigateSignUp() {
+        print("OK")
+        view?.navigateSignUp()
     }
 }

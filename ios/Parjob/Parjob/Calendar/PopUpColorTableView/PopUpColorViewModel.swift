@@ -13,11 +13,6 @@ protocol PopUpColorViewModelDelegate: class {
     func faildAPI(title: String, msg: String)
 }
 
-struct ShiftCategoryColor {
-    var name: String = ""
-    var color: String = ""
-}
-
 class PopUpColorViewModel {
     weak var delegate: PopUpColorViewModelDelegate?
     private let api = API()

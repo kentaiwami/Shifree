@@ -31,6 +31,11 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         setCompanyShiftNames()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Calendar Detail"
+    }
+    
     private func initializePresenter() {
         let tabBarController = self.navigationController?.viewControllers[0] as! UITabBarController
         let calendarVC = tabBarController.viewControllers![0] as! CalendarViewController
@@ -69,13 +74,8 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
             }
         }
 
-        for (i, userShift) in presenter.getUsersShift().enumerated() {
-            var sectionName = "シフトの詳細"
-            if i != 0 {
-                sectionName = ""
-            }
-            
-            form +++ Section(sectionName)
+        for userShift in presenter.getUsersShift() {
+            form +++ Section("")
                 <<< LabelRow() {
                     $0.title = "従業員"
                     $0.value = userShift.user

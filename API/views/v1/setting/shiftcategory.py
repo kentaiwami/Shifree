@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, ShiftCategory, Company
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_409
+from views.v1.response import response_msg_404, response_msg_403, response_msg_409, response_msg_200
 from basic_auth import api_basic_auth
 
 app = Blueprint('setting_shitcategory_bp', __name__)
@@ -103,4 +103,4 @@ def add_update_delete():
     session.commit()
     session.close()
 
-    return jsonify({'results': 'ok'}), 200
+    return jsonify({'results': response_msg_200()}), 200

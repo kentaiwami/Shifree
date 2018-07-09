@@ -58,10 +58,10 @@ def get():
 
 
     return jsonify({'results': {
-        'daytime_start': user.daytime_start.strftime("%H:%M") if user.daytime_start != None else None,
-        'daytime_end': user.daytime_end.strftime("%H:%M") if user.daytime_end != None else None,
-        'daytime_wage': user.daytime_wage if user.daytime_wage != None else None,
-        'night_start': user.night_start.strftime("%H:%M") if user.night_start != None else None,
-        'night_end': user.night_end.strftime("%H:%M") if user.night_end != None else None,
-        'night_wage': user.night_wage if user.night_wage != None else None
+        'daytime_start': None if user.daytime_start is None else user.daytime_start.strftime("%H:%M"),
+        'daytime_end': None if user.daytime_end is None else user.daytime_end.strftime("%H:%M"),
+        'daytime_wage': None if user.daytime_wage is None else user.daytime_wage,
+        'night_start': None if user.night_start is None else user.night_start.strftime("%H:%M"),
+        'night_end': None if user.night_end is None else user.night_end.strftime("%H:%M"),
+        'night_wage': None if user.night_wage is None else user.night_wage
     }}), 200

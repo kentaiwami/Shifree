@@ -49,6 +49,7 @@ class User(db.Model):
     night_start = db.Column(db.Time, nullable=True)
     night_end = db.Column(db.Time, nullable=True)
     night_wage = db.Column(db.Integer, nullable=True)
+    is_authed = db.Column(db.Boolean, default=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)

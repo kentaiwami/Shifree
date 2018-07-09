@@ -8,10 +8,11 @@
 
 import UIKit
 import Eureka
+import PopupDialog
 
 
 protocol UserTopViewInterface: class {
-//    func navigateCalendar()
+    func navigateSignUp()
 }
 
 class UserTopViewController: FormViewController, UserTopViewInterface {
@@ -37,19 +38,32 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     }
     
     private func initializeAdminUserOnlyForm() {
+        let userListSettingVC = UserListSettingViewController()
         let userListVC = UserListViewController()
         let shiftCategoryVC = ShiftCategoryViewController()
+        let shiftVC = ShiftViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
                 $0.title = "ユーザリストの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userListSettingVC}, onDismiss: {userListVC in userListVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+            <<< ButtonRow() {
+                $0.title = "ユーザリストの閲覧"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userListVC}, onDismiss: {userListVC in userListVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
+        form +++ Section("")
             <<< ButtonRow() {
-                $0.title = "シフトカテゴリの設定"
+                $0.title = "シフトカテゴリ"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return shiftCategoryVC}, onDismiss: {shiftCategoryVC in shiftCategoryVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+            <<< ButtonRow() {
+                $0.title = "シフト"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return shiftVC}, onDismiss: {shiftVC in shiftVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
     }
@@ -63,32 +77,32 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         
         form +++ Section("")
             <<< ButtonRow() {
-                $0.title = "時給の設定"
+                $0.title = "時給"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return wageVC}, onDismiss: {wageVC in wageVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
             <<< ButtonRow() {
-                $0.title = "ユーザ名の設定"
+                $0.title = "ユーザ名"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userNameVC}, onDismiss: {userNameVC in userNameVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
             <<< ButtonRow() {
-                $0.title = "パスワードの設定"
+                $0.title = "パスワード"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return passwordVC}, onDismiss: {passwordVC in passwordVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
             <<< ButtonRow() {
-                $0.title = "カラースキームの設定"
+                $0.title = "カラースキーム"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return colorSchemeVC}, onDismiss: {colorSchemeVC in colorSchemeVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
         form +++ Section("")
             <<< ButtonRow() {
-                $0.title = "給与の閲覧"
+                $0.title = "給与"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return salaryVC}, onDismiss: {salaryVC in salaryVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
@@ -113,7 +127,15 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     }
     
     private func ResetButtonTapped() {
-        //TODO: リセットボタン
+        let popUp = PopupDialog(title: "再確認", message: "この端末に保存されている情報を削除し、Sign Up状態に戻します。\n既に登録されているシフト情報は削除されません。")
+        let buttonOK = DefaultButton(title: "OK") {
+            self.presenter.tapResetButton()
+        }
+        let buttonCancel = CancelButton(title: "Cancel"){}
+        
+        popUp.addButton(buttonOK)
+        popUp.addButton(buttonCancel)
+        present(popUp, animated: true, completion: nil)
     }
     
     private func initializePresenter() {
@@ -122,5 +144,16 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+}
+
+
+extension UserTopViewController {
+    func navigateSignUp() {
+        let signupVC = SignUpViewController()
+        signupVC.modalTransitionStyle = .flipHorizontal
+        let nav = UINavigationController()
+        nav.viewControllers = [signupVC]
+        self.present(nav, animated: true, completion: nil)
     }
 }

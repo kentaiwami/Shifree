@@ -1,4 +1,4 @@
-from database import init_db
+from database import init_db, session
 from flask import Flask, jsonify
 from flask_basicauth import BasicAuth
 from flask_migrate import Migrate
@@ -11,7 +11,7 @@ from admin import AuthException, init_admin
 
 
 def init_app():
-    app_obj = Flask(__name__)
+    app_obj = Flask(__name__, static_folder='uploads')
     app_obj.config.from_object('config.BaseConfig')
     app_obj.secret_key = secret_key
 
@@ -61,3 +61,13 @@ def error_handler(error):
         'status': error.code
     })
     return response, error.code
+
+
+@app.teardown_appcontext
+def session_clear(exception):
+    if exception and session.is_active:
+        session.rollback()
+    else:
+        session.commit()
+
+    session.close()
