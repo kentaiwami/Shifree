@@ -30,7 +30,7 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
         tableView.delegate = self
         tableView.allowsSelection = false
         tableView.register(UINib(nibName: "ColorCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
-        tableView.backgroundView = GetEmptyView(msg: "シフトカテゴリが登録されていないため、\n表示されません。")
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         self.view.addSubview(tableView)
         
         tableView.height(self.view.frame.height / 2)

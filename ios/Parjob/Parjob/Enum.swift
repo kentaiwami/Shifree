@@ -12,3 +12,10 @@ enum Color: String {
     case main = "#20324f"
     case red = "#FF2726"
 }
+
+enum EmptyMessage: String {
+    case noShiftInfo = "シフト情報はありません"
+    case becauseNoShiftCategory = "シフトカテゴリが登録されていないため、\n表示されません。"
+    case becauseNoImportShiftFile = "シフトファイルが取り込まれていないため、\n表示されません。"
+    case becauseNoUser = "ユーザが登録されていないため、\n表示されません。"
+}

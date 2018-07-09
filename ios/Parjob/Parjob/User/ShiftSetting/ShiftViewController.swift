@@ -100,7 +100,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                 }
         }
         
-        tableView.backgroundView = GetEmptyView(msg: "シフトカテゴリが登録されていないため、\n表示されません。")
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         
         if presenter.getShiftCategory().count == 0 {
             tableView.backgroundView?.isHidden = false

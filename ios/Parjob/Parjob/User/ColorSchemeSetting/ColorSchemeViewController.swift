@@ -48,7 +48,7 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UINib(nibName: "ColorCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
-        tableView.backgroundView = GetEmptyView(msg: "シフトカテゴリが登録されていないため、\n表示されません。")
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         self.view.addSubview(tableView)
         
         tableView.height(to: self.view)

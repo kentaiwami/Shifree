@@ -88,7 +88,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         tableView.right(to: self.view)
         tableView.bottom(to: self.view)
         
-        tableView.backgroundView = GetEmptyView(msg: "シフト情報はありません")
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
     }
     
     private func initializeNavigationItem() {

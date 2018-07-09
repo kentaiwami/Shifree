@@ -50,7 +50,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
-        collectionView.backgroundView = GetEmptyView(msg: "ファイルが登録されていないため、\n表示されません。")
+        collectionView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
         self.view.addSubview(collectionView)
         
         if presenter.getTable().count == 0 {

@@ -46,7 +46,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
         
         form.append(section)
         
-        tableView.backgroundView = GetEmptyView(msg: "ユーザが登録されていないため、\n表示されません。")
+        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoUser.rawValue)
         
         if presenter.getUserList().count == 0 {
             tableView.backgroundView?.isHidden = false
