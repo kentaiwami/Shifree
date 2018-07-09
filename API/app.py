@@ -1,4 +1,4 @@
-from database import init_db
+from database import init_db, session
 from flask import Flask, jsonify
 from flask_basicauth import BasicAuth
 from flask_migrate import Migrate
@@ -61,3 +61,13 @@ def error_handler(error):
         'status': error.code
     })
     return response, error.code
+
+
+@app.teardown_appcontext
+def session_clear(exception):
+    if exception and session.is_active:
+        session.rollback()
+    else:
+        session.commit()
+
+    session.close()

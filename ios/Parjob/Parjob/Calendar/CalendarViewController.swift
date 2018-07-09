@@ -87,6 +87,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         tableView.left(to: self.view)
         tableView.right(to: self.view)
         tableView.bottom(to: self.view)
+        
+        tableView.backgroundView = GetEmptyView(msg: "シフト情報はありません", isShowImage: true)
     }
     
     private func initializeNavigationItem() {
@@ -154,6 +156,12 @@ extension CalendarViewController {
         presenter.setTableViewShift()
         self.tableView.reloadData()
         self.calendar.reloadData()
+        
+        if presenter.getTableViewShift().count == 0 {
+            tableView.backgroundView?.isHidden = false
+        }else {
+            tableView.backgroundView?.isHidden = true
+        }
     }
     
     func showErrorAlert(title: String, msg: String) {

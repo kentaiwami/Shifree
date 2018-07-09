@@ -17,4 +17,5 @@ target 'Parjob' do
   pod 'ScrollableGraphView'
   pod 'AlamofireImage', '~> 3.3'
   pod 'NVActivityIndicatorView'
+  pod 'StatusProvider'
 end

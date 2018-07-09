@@ -20,6 +20,7 @@ PODS:
   - PromiseKit/UIKit (6.2.3):
     - PromiseKit/CorePromise
   - ScrollableGraphView (4.0.4)
+  - StatusProvider (1.2.7)
   - SwiftyJSON (4.0.0)
   - TinyConstraints (2.1.2)
 
@@ -34,6 +35,7 @@ DEPENDENCIES:
   - PopupDialog (= 0.5.4)
   - PromiseKit (~> 6.0)
   - ScrollableGraphView
+  - StatusProvider
   - SwiftyJSON
   - TinyConstraints (from `https://github.com/roberthein/TinyConstraints.git`, branch `Release_2.1.2`)
 
@@ -48,6 +50,7 @@ SPEC REPOS:
     - PopupDialog
     - PromiseKit
     - ScrollableGraphView
+    - StatusProvider
     - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -77,9 +80,10 @@ SPEC CHECKSUMS:
   PopupDialog: 75cf955693590b0cb2fdde00223fb65d99c57247
   PromiseKit: 62f37bb4900a9b0b7550d017e41497171d93face
   ScrollableGraphView: 072ea302f4ca27779692656a49d51fe537b2b1e7
+  StatusProvider: e75bc9f63b935f5eec6fe49447b8e9ebbc871a87
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
 
-PODFILE CHECKSUM: 192af56bead1a829e37a62a3977e1cbb30c6c118
+PODFILE CHECKSUM: 963b37b671d8e333a652701140bc3f3a17285d08
 
 COCOAPODS: 1.5.3
