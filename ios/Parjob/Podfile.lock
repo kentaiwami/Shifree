@@ -3,6 +3,7 @@ PODS:
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
   - Eureka (3.0.0)
+  - FloatingActionSheetController (2.1.0)
   - FSCalendar (2.7.9)
   - KeychainAccess (3.1.0)
   - MKColorPicker (1.1)
@@ -28,6 +29,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.5)
   - AlamofireImage (~> 3.3)
   - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `Swift-3.3`)
+  - FloatingActionSheetController
   - FSCalendar
   - KeychainAccess
   - MKColorPicker
@@ -43,6 +45,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
+    - FloatingActionSheetController
     - FSCalendar
     - KeychainAccess
     - MKColorPicker
@@ -73,6 +76,7 @@ SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Eureka: 5b9418d7bfdc21ca977d69d124a6409f3e9af2c7
+  FloatingActionSheetController: 460dff2035765c89389fe83cea08f11b45058f19
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   KeychainAccess: 94c5540b32eabf7bc32bfb976a268e8ea05fd6da
   MKColorPicker: c75af5993af472935cbfff18bc46d5ed8ff6f638
@@ -84,6 +88,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TinyConstraints: 3a841eba583f2492c405f88552c5c274056f47e2
 
-PODFILE CHECKSUM: 963b37b671d8e333a652701140bc3f3a17285d08
+PODFILE CHECKSUM: 89b2f117d87108d7982cdc765449eaceb99e1df6
 
 COCOAPODS: 1.5.3

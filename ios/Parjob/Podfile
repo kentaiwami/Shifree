@@ -18,4 +18,5 @@ target 'Parjob' do
   pod 'AlamofireImage', '~> 3.3'
   pod 'NVActivityIndicatorView'
   pod 'StatusProvider'
+  pod 'FloatingActionSheetController'
 end

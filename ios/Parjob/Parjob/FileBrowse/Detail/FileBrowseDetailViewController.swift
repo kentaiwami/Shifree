@@ -8,6 +8,8 @@
 
 import UIKit
 import PopupDialog
+import FloatingActionSheetController
+
 
 protocol FileBrowseDetailViewInterface: class {
     var tableID: Int { get }
@@ -93,18 +95,38 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     }
     
     fileprivate func initializeNavigationItem() {
-        let add = UIBarButtonItem(image: UIImage(named: "add"), style: .plain, target: self, action: #selector(TapAddCommentButton))
-        
-        self.navigationItem.setRightBarButton(add, animated: true)
+        let add = UIBarButtonItem(image: UIImage(named: "action"), style: .plain, target: self, action: #selector(TapActionButton))
+        self.navigationItem.setRightBarButton(add, animated: false)
     }
     
-    @objc private func TapAddCommentButton(sendor: UIButton) {
-        let addCommentVC = AddCommentViewController()
-        addCommentVC.setTableID(id: tableID)
-        let nav = UINavigationController()
-        nav.viewControllers = [addCommentVC]
-        nav.modalTransitionStyle = .coverVertical
-        present(nav, animated: true, completion: nil)
+    @objc private func TapActionButton(sendor: UIButton) {
+        let action1 = FloatingAction(title: "コメントの追加") { action in
+            let addCommentVC = AddCommentViewController()
+            addCommentVC.setTableID(id: self.tableID)
+            let nav = UINavigationController()
+            nav.viewControllers = [addCommentVC]
+            nav.modalTransitionStyle = .coverVertical
+            self.present(nav, animated: true, completion: nil)
+        }
+        action1.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        action1.tintColor = UIColor.white
+        
+        let action2 = FloatingAction(title: "シフトの削除") { action in
+            //popup
+            
+        }
+        action2.textColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+        action2.tintColor = UIColor.white
+        
+        let action3 = FloatingAction(title: "Cancel") { action in
+        }
+        action3.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        action3.tintColor = UIColor.white
+        
+        let group1 = FloatingActionGroup(action: action1, action2)
+        let group2 = FloatingActionGroup(action: action3)
+        FloatingActionSheetController(actionGroup: group1, group2)
+            .present(in: self)
     }
 
     
