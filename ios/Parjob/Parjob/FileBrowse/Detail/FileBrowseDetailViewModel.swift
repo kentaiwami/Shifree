@@ -11,6 +11,7 @@ import KeychainAccess
 
 protocol FileBrowseDetailViewModelDelegate: class {
     func initializeUI()
+    func successDelete()
     func faildAPI(title: String, msg: String)
 }
 
@@ -55,7 +56,18 @@ class FileBrowseDetailViewModel {
             return true
         }else {
             return false
-        }        
+        }
+    }
+    
+    func deleteTable(tableID: Int) {
+        api.deleteTable(id: tableID).done { (json) in
+            self.delegate?.successDelete()
+        }
+        .catch { (err) in
+            let tmp_err = err as NSError
+            let title = "Error(" + String(tmp_err.code) + ")"
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
     }
 
 }

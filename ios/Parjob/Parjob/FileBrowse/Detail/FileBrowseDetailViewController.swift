@@ -14,6 +14,7 @@ import FloatingActionSheetController
 protocol FileBrowseDetailViewInterface: class {
     var tableID: Int { get }
     
+    func popView()
     func initializeUI()
     func showErrorAlert(title: String, msg: String)
 }
@@ -112,14 +113,18 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         action1.tintColor = UIColor.white
         
         let action2 = FloatingAction(title: "シフトの削除") { action in
-            //popup
-            
+            let popup = PopupDialog(title: "再確認", message: "取り込んだシフトを削除しますか？")
+            let cancelBtn = CancelButton(title: "Cancel") {}
+            let deleteBtn = DestructiveButton(title: "削除", action: {
+                self.presenter.deleteFileTable()
+            })
+            popup.addButtons([deleteBtn, cancelBtn])
+            self.present(popup, animated: true, completion: nil)
         }
         action2.textColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
         action2.tintColor = UIColor.white
         
-        let action3 = FloatingAction(title: "Cancel") { action in
-        }
+        let action3 = FloatingAction(title: "Cancel") { action in}
         action3.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         action3.tintColor = UIColor.white
         
@@ -147,6 +152,11 @@ extension FileBrowseDetailViewController {
     
     func showErrorAlert(title: String, msg: String) {
         ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+    }
+    
+    func popView() {
+        print("++++++++++++++++++++++++++++++++")
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

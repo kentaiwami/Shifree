@@ -35,9 +35,18 @@ class FileBrowseDetailViewPresenter {
     func isMyComment(row: Int) -> Bool {
         return model.isMyComment(row: row)
     }
+    
+    func deleteFileTable() {
+        guard let tableID = view?.tableID else {return}
+        model.deleteTable(tableID: tableID)
+    }
 }
 
 extension FileBrowseDetailViewPresenter: FileBrowseDetailViewModelDelegate {
+    func successDelete() {
+        view?.popView()
+    }
+    
     func initializeUI() {
         view?.initializeUI()
     }
