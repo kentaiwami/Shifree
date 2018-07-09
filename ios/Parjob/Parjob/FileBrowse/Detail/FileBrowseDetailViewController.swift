@@ -155,7 +155,6 @@ extension FileBrowseDetailViewController {
     }
     
     func popView() {
-        print("++++++++++++++++++++++++++++++++")
         self.navigationController?.popViewController(animated: true)
     }
 }
