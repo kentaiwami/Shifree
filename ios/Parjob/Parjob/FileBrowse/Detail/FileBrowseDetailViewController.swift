@@ -77,12 +77,19 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         commentTableView.dataSource = self
         commentTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
         commentTableView.rowHeight = 60
+        commentTableView.backgroundView = GetEmptyView(msg: EmptyMessage.noComment.rawValue)
         self.view.addSubview(commentTableView)
         
         commentTableView.topToBottom(of: pdfView)
         commentTableView.left(to: self.view)
         commentTableView.right(to: self.view)
         commentTableView.bottom(to: self.view)
+        
+        if presenter.getComments().count == 0 {
+            commentTableView.backgroundView?.isHidden = false
+        }else {
+            commentTableView.backgroundView?.isHidden = true
+        }
     }
     
     fileprivate func initializeNavigationItem() {

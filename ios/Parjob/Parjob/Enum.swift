@@ -18,4 +18,5 @@ enum EmptyMessage: String {
     case becauseNoShiftCategory = "シフトカテゴリが登録されていないため、\n表示されません。"
     case becauseNoImportShiftFile = "シフトファイルが取り込まれていないため、\n表示されません。"
     case becauseNoUser = "ユーザが登録されていないため、\n表示されません。"
+    case noComment = "コメントはありません"
 }
