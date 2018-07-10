@@ -15,6 +15,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        print("+++++++++++++++++++++++++++++++++++")
+        print(url)
+        print("+++++++++++++++++++++++++++++++++++")
+        
+        let shiftImportVC = ShiftImportViewController()
+        shiftImportVC.setFilePath(path: url)
+        let nav = UINavigationController()
+        nav.viewControllers = [shiftImportVC]
+        self.window!.rootViewController = nav
+        self.window?.makeKeyAndVisible()
+        
+        return true
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         UINavigationBar.appearance().isTranslucent = false
@@ -66,6 +81,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        let manager = FileManager.default
+        let inboxDir = manager.urls(for: .documentDirectory, in: .userDomainMask)[0].path + "/Inbox/"
+        var fileNames: [String] {
+            do {
+                return try manager.contentsOfDirectory(atPath: inboxDir)
+            }catch {
+                return []
+            }
+        }
+        
+        for filename in fileNames {
+            do {
+                try manager.removeItem(atPath: inboxDir + filename)
+            }catch {
+                print("Remove Error File")
+                print(filename)
+            }
+        }
     }
 }
 

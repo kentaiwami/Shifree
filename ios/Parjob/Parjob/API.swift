@@ -114,6 +114,16 @@ extension API {
 
 
 
+// MARK: - Company API
+extension API {
+    func getThreshold() -> Promise<JSON> {
+        let endPoint = "company"
+        return getAuth(url: base + version + endPoint)
+    }
+}
+
+
+
 // MARK: - Comment API
 extension API {
     func updateComment(text: String, id: Int) -> Promise<JSON> {
@@ -168,6 +178,58 @@ extension API {
     func deleteTable(id: Int) -> Promise<JSON> {
         let endPoint = "tables/" + String(id)
         return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .delete)
+    }
+    
+    func importShift(number:String, start:String, end:String, title:String, sameLine:String, username:String, join:String, dayShift:String, file:URL) -> Promise<JSON> {
+        let endPoint = "table"
+        let url = base + version + endPoint
+        let user = try! keychain.get("userCode")
+        let password = try! keychain.get("password")
+        
+        indicator.start()
+        
+        let promise = Promise<JSON> { seal in
+            Alamofire.upload(
+                multipartFormData: { multipartFormData in
+                    multipartFormData.append(number.data(using: .utf8)!, withName: "number")
+                    multipartFormData.append(start.data(using: .utf8)!, withName: "start")
+                    multipartFormData.append(end.data(using: .utf8)!, withName: "end")
+                    multipartFormData.append(title.data(using: .utf8)!, withName: "title")
+                    multipartFormData.append(sameLine.data(using: .utf8)!, withName: "same_line_threshold")
+                    multipartFormData.append(username.data(using: .utf8)!, withName: "username_threshold")
+                    multipartFormData.append(join.data(using: .utf8)!, withName: "join_threshold")
+                    multipartFormData.append(dayShift.data(using: .utf8)!, withName: "day_shift_threshold")
+                    multipartFormData.append(file, withName: "file")
+            },
+                to: url,
+                encodingCompletion: { encodingResult in
+                    switch encodingResult {
+                    case .success(let upload, _, _):
+                        upload
+                        .authenticate(user: user!, password: password!)
+                        .responseJSON { response in
+                            self.indicator.stop()
+                            guard let obj = response.result.value else { return seal.reject(response.error!)}
+                            let json = JSON(obj)
+                            if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                                print("***** GET Auth API Results *****")
+                                print(json)
+                                print("***** GET Auth API Results *****")
+                                seal.fulfill(json)
+                            }else {
+                                let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                                seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
+                            }
+                        }
+                    case .failure(let encodingError):
+                        self.indicator.stop()
+                        seal.reject(encodingError)
+                    }
+            }
+            )
+        }
+        
+        return promise
     }
 }
 

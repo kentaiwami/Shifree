@@ -85,6 +85,9 @@
 		37C168B420F0308F003A453A /* SalaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168B220F0308E003A453A /* SalaryViewModel.swift */; };
 		37C168B620F031BE003A453A /* SalaryViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168B520F031BE003A453A /* SalaryViewEntity.swift */; };
 		37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */; };
+		37DE67A320F4797400DB7EBC /* ShiftImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */; };
+		37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */; };
+		37DE67A520F4797400DB7EBC /* ShiftImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -170,6 +173,10 @@
 		37C168B220F0308E003A453A /* SalaryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalaryViewModel.swift; sourceTree = "<group>"; };
 		37C168B520F031BE003A453A /* SalaryViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewEntity.swift; sourceTree = "<group>"; };
 		37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListSettingDetailViewController.swift; sourceTree = "<group>"; };
+		37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewController.swift; sourceTree = "<group>"; };
+		37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewPresenter.swift; sourceTree = "<group>"; };
+		37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewModel.swift; sourceTree = "<group>"; };
+		37DE67A620F4A54200DB7EBC /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -451,6 +458,16 @@
 			path = UserListView;
 			sourceTree = "<group>";
 		};
+		37DE679F20F4794600DB7EBC /* ShiftImport */ = {
+			isa = PBXGroup;
+			children = (
+				37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */,
+				37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */,
+				37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */,
+			);
+			path = ShiftImport;
+			sourceTree = "<group>";
+		};
 		37FF35FA20DD4CFE00FB2C68 = {
 			isa = PBXGroup;
 			children = (
@@ -472,6 +489,7 @@
 		37FF360520DD4CFE00FB2C68 /* Parjob */ = {
 			isa = PBXGroup;
 			children = (
+				37DE679F20F4794600DB7EBC /* ShiftImport */,
 				3765CD5D20F0D8940031D235 /* FileBrowse */,
 				370031A520EDEB4300813685 /* Xib */,
 				37A69B0B20E83027004E8C66 /* User */,
@@ -647,6 +665,7 @@
 				375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */,
 				379032F820F13F7E00C2534F /* FileBrowseDetailViewEntity.swift in Sources */,
 				3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */,
+				37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */,
 				370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */,
 				37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */,
 				3790330620F1EA9100C2534F /* EditCommentViewController.swift in Sources */,
@@ -663,6 +682,7 @@
 				3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */,
 				37326C4620E14B6500A60B00 /* CalendarViewPresenter.swift in Sources */,
 				37C168B620F031BE003A453A /* SalaryViewEntity.swift in Sources */,
+				37DE67A320F4797400DB7EBC /* ShiftImportViewController.swift in Sources */,
 				37C0CCDC20F20B54003D650F /* AddCommentViewPresenter.swift in Sources */,
 				37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */,
 				375519A620E5BADA00EC930B /* CalendarViewEntity.swift in Sources */,
@@ -685,6 +705,7 @@
 				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
 				37C0CCDE20F20B54003D650F /* AddCommentViewController.swift in Sources */,
+				37DE67A520F4797400DB7EBC /* ShiftImportViewModel.swift in Sources */,
 				378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */,
@@ -726,6 +747,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				37FF361220DD4D0200FB2C68 /* Base */,
+				37DE67A620F4A54200DB7EBC /* ja */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -737,6 +759,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -799,6 +822,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

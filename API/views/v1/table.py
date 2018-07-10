@@ -121,6 +121,7 @@ def import_shift():
         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     try:
+        number = int(request.form['number'])
         same_line_threshold = float(request.form['same_line_threshold'])
         username_threshold = float(request.form['username_threshold'])
         join_threshold = float(request.form['join_threshold'])
@@ -177,7 +178,7 @@ def import_shift():
         exec('from analyze.company{} import create_main'.format(company.id))
         user_results = eval('create_main({},{},\'{}\',\'{}\', {}, {}, {}, {}, file, origin_file_path)'.format(
             company.id,
-            request.form['number'],
+            number,
             request.form['start'],
             request.form['end'],
             same_line_threshold,
