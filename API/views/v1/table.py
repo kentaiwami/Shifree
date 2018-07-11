@@ -202,11 +202,16 @@ def import_shift():
         if not session.query(exists().where(Shift.name == shift)).scalar():
             unknown_shift_types.append(shift)
 
+    # swift側で未登録のシフトを扱うために200で返す
     if len(unknown_shift_types) != 0:
         os.remove(origin_file_path)
         session.close()
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': '未登録のシフトがあるため、処理を完了できませんでした。', 'param': unknown_shift_types})
+        return jsonify({
+            'code': frame.f_lineno,
+            'msg': '未登録のシフトがあるため、処理を完了できませんでした。',
+            'param': unknown_shift_types
+        }), 200
 
     shift_table = ShiftTable(
         title=secure_title,
@@ -237,7 +242,9 @@ def import_shift():
                 shift_name = 'unknown'
                 tmp_unknown_dates.append(date.strftime('%Y-%m-%d'))
 
-            shift = session.query(Shift).filter(Shift.name == shift_name).one()
+            shift = session.query(Shift)\
+                .join(ShiftCategory, Shift.shift_category_id == ShiftCategory.id)\
+                .filter(Shift.name == shift_name, user.company_id == ShiftCategory.company_id).one()
             user_shift = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
             user_shift_objects.append(user_shift)
 
@@ -249,7 +256,7 @@ def import_shift():
 
 
         if len(tmp_unknown_dates) != 0:
-            unknown[user.code] = {'name': username, 'date': tmp_unknown_dates}
+            unknown[user.code] = {'name': username, 'date': tmp_unknown_dates, 'order': user.order}
 
         users.remove(user)
 

@@ -43,6 +43,10 @@ extension ShiftImportViewPresenter: ShiftImportViewModelDelegate {
         view?.successImport()
     }
     
+    func successImportButExistUnknown(unknown: [Unknown]) {
+        view?.successImportButExistUnknown(unknown: unknown)
+    }
+    
     func faildSignUp(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
     }

@@ -13,6 +13,7 @@ import KeychainAccess
 protocol ShiftImportViewModelDelegate: class {
     func initializeUI()
     func successImport()
+    func successImportButExistUnknown(unknown: [Unknown])
     func faildSignUp(title: String, msg: String)
 }
 
@@ -51,7 +52,33 @@ class ShiftImportViewModel {
         let dayShift = formValues["dayShift"] as! Float
         
         api.importShift(number: number, start: start, end: end, title: title, sameLine: String(sameLine), username: String(username), join: String(join), dayShift: String(dayShift), file: filePath).done { (json) in
-            self.delegate?.successImport()
+            
+            if json["param"].arrayValue.count == 0 {
+                if json["results"]["unknown"].dictionaryValue == [:] {
+                    self.delegate?.successImport()
+                }else {
+                    // 取り込みには成功したが、unknownとしてシフトを仮登録したユーザがいる場合
+                    var unknownList:[Unknown] = []
+                    let unknownDict = json["results"]["unknown"].dictionaryValue
+                    
+                    for userCode in unknownDict.keys {
+                        let userDict = unknownDict[userCode]?.dictionaryValue
+                        let date = userDict!["date"]?.arrayValue.map({$0.stringValue})
+                        let name = userDict!["name"]?.stringValue
+                        let order = userDict!["order"]?.intValue
+                        
+                        unknownList.append(Unknown(
+                            userCode: userCode,
+                            date: date!,
+                            username: name!,
+                            order: order!
+                        ))
+                    }
+                    self.delegate?.successImportButExistUnknown(unknown: unknownList)
+                }
+            }else {
+                // 未登録のシフトがあって取り込みは成功していない場合
+            }
         }
         .catch { (err) in
             let tmp_err = err as NSError

@@ -15,6 +15,7 @@ protocol ShiftImportViewInterface: class {
     var formValues: [String:Any?] { get }
     
     func successImport()
+    func successImportButExistUnknown(unknown: [Unknown])
     func initializeUI()
     func showErrorAlert(title: String, msg: String)
 }
@@ -190,6 +191,27 @@ extension ShiftImportViewController {
         let popup = PopupDialog(title: "取り込み成功", message: "シフトの取り込みに成功しました")
         popup.transitionStyle = .zoomIn
         popup.addButtons([button])
+        present(popup, animated: true, completion: nil)
+    }
+    
+    func successImportButExistUnknown(unknown: [Unknown]) {
+        let nowEditButton = DefaultButton(title: "編集する", dismissOnTap: true) {
+            let unknownVC = UnknownViewController()
+            unknownVC.setUnknown(unknown: unknown)
+            let nav = UINavigationController()
+            nav.viewControllers = [unknownVC]
+            self.present(nav, animated: true, completion: nil)
+        }
+        let afterButton = DefaultButton(title: "あとで", dismissOnTap: true) {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let topVC = storyboard.instantiateInitialViewController()
+            topVC?.modalTransitionStyle = .flipHorizontal
+            self.present(topVC!, animated: true, completion: nil)
+        }
+        let popup = PopupDialog(title: "取り込み成功", message: "シフトの取り込みに成功しましたが、unknownとしてシフトを仮登録したユーザがいます。\n今すぐに編集しますか？")
+        
+        popup.transitionStyle = .zoomIn
+        popup.addButtons([nowEditButton, afterButton])
         present(popup, animated: true, completion: nil)
     }
     
