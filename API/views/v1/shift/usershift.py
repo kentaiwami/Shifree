@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, UserShift, Shift, ShiftCategory, Company, ColorScheme
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_400
+from views.v1.response import response_msg_404, response_msg_403, response_msg_400, response_msg_200
 from basic_auth import api_basic_auth
 from itertools import groupby
 from datetime import datetime
@@ -151,3 +151,60 @@ def update():
     session.close()
 
     return jsonify({'results': results}), 200
+
+
+@app.route('/api/v1/usershift/unknowns', methods=['PUT'])
+@api_basic_auth.login_required
+def unknown_update():
+    schema = {'type': 'object',
+              'properties':
+                  {'updates': {'type': 'array',
+                               'items': {'type': 'object',
+                                         'properties': {'code': {'type': 'string', 'pattern': '^[0-9]{7}$'},
+                                                        'date': {'type': 'string', 'pattern': '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'},
+                                                        'name': {'type': 'string', 'minLength': 1}
+                                                        }
+                                         }
+                               }
+                   },
+              'required': ['updates']
+              }
+
+    try:
+        validate(request.json, schema)
+    except ValidationError as e:
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
+
+    admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+
+    if admin_user.role.name != 'admin':
+        session.close()
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+
+    for new_shift in request.json['updates']:
+        shift = session.query(Shift).filter(Shift.name == new_shift['name']).one_or_none()
+        user = session.query(User).filter(User.code == new_shift['code']).one_or_none()
+
+        if shift is None or user is None:
+            session.close()
+            frame = inspect.currentframe()
+            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+
+        user_shift_result = session.query(UserShift)\
+            .filter(UserShift.user_id == user.id,
+                    UserShift.date == new_shift['date']
+                    ).one_or_none()
+
+        if user_shift_result is None:
+            session.close()
+            frame = inspect.currentframe()
+            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+
+        user_shift_result.shift_id = shift.id
+
+        session.commit()
+
+    session.close()
+    return jsonify({'msg': response_msg_200()}), 200

@@ -160,6 +160,14 @@ extension API {
         
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
+    
+    func updateUnknownUserShift(updates: [[String:Any]]) -> Promise<JSON> {
+        let endPoint = "usershift/unknowns"
+        let params = [
+            "updates": updates
+        ] as [String: Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
 }
 
 

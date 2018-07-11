@@ -8,14 +8,14 @@
 
 import UIKit
 import Eureka
+import PopupDialog
 
 protocol UnknownViewInterface: class {
     var unknown:[Unknown] { get }
     var formValues:[String:Any?] { get }
     
     func initializeUI()
-    func popViewController()
-    func showErrorAlert(title: String, msg: String)
+    func showAlert(title: String, msg: String)
 }
 
 class UnknownViewController: FormViewController, UnknownViewInterface {
@@ -75,7 +75,10 @@ class UnknownViewController: FormViewController, UnknownViewInterface {
     }
     
     @objc private func tapCloseButton() {
-        popViewController()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let topVC = storyboard.instantiateInitialViewController()
+        topVC?.modalTransitionStyle = .crossDissolve
+        self.present(topVC!, animated: true, completion: nil)
     }
     
     private func initializePresenter() {
@@ -96,11 +99,7 @@ extension UnknownViewController {
         initializeNavigationItem()
     }
     
-    func popViewController() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func showErrorAlert(title: String, msg: String) {
+    func showAlert(title: String, msg: String) {
         ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }

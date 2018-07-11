@@ -11,6 +11,7 @@ import KeychainAccess
 
 
 protocol UnknownViewModelDelegate: class {
+    func successUpdate()
     func initializeUI()
     func faildAPI(title: String, msg: String)
 }
@@ -59,6 +60,13 @@ class UnknownViewModel {
             updates.append(["code": userCodeDate[0], "name": value as! String, "date": userCodeDate[1]])
         }
         
-        print(updates)
+        api.updateUnknownUserShift(updates: updates).done { (json) in
+            self.delegate?.successUpdate()
+        }
+        .catch { (err) in
+            let tmp_err = err as NSError
+            let title = "Error(" + String(tmp_err.code) + ")"
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
     }
 }

@@ -42,11 +42,15 @@ class UnknownViewPresenter {
 }
 
 extension UnknownViewPresenter: UnknownViewModelDelegate {
+    func successUpdate() {
+        view?.showAlert(title: "更新成功", msg: "シフトの更新に成功しました")
+    }
+    
     func initializeUI() {
         view?.initializeUI()
     }
     
     func faildAPI(title: String, msg: String) {
-        view?.showErrorAlert(title: title, msg: msg)
+        view?.showAlert(title: title, msg: msg)
     }
 }
