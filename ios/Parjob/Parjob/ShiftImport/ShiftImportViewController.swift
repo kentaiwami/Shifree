@@ -16,6 +16,7 @@ protocol ShiftImportViewInterface: class {
     
     func successImport()
     func successImportButExistUnknown(unknown: [Unknown])
+    func faildImportBecauseUnRegisteredShift(unRegisteredShift: [String])
     func initializeUI()
     func showErrorAlert(title: String, msg: String)
 }
@@ -167,6 +168,13 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     private func initializePresenter() {
         presenter = ShiftImportViewPresenter(view: self)
     }
+    
+    fileprivate func navigateCalendar() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let topVC = storyboard.instantiateInitialViewController()
+        topVC?.modalTransitionStyle = .crossDissolve
+        self.present(topVC!, animated: true, completion: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -183,10 +191,7 @@ extension ShiftImportViewController {
     
     func successImport() {
         let button = DefaultButton(title: "OK", dismissOnTap: true) {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let topVC = storyboard.instantiateInitialViewController()
-            topVC?.modalTransitionStyle = .flipHorizontal
-            self.present(topVC!, animated: true, completion: nil)
+            self.navigateCalendar()
         }
         let popup = PopupDialog(title: "取り込み成功", message: "シフトの取り込みに成功しました")
         popup.transitionStyle = .zoomIn
@@ -203,12 +208,27 @@ extension ShiftImportViewController {
             self.present(nav, animated: true, completion: nil)
         }
         let afterButton = DefaultButton(title: "あとで", dismissOnTap: true) {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let topVC = storyboard.instantiateInitialViewController()
-            topVC?.modalTransitionStyle = .flipHorizontal
-            self.present(topVC!, animated: true, completion: nil)
+            self.navigateCalendar()
         }
         let popup = PopupDialog(title: "取り込み成功", message: "シフトの取り込みに成功しましたが、unknownとしてシフトを仮登録したユーザがいます。\n今すぐに編集しますか？")
+        
+        popup.transitionStyle = .zoomIn
+        popup.addButtons([nowEditButton, afterButton])
+        present(popup, animated: true, completion: nil)
+    }
+    
+    func faildImportBecauseUnRegisteredShift(unRegisteredShift: [String]) {
+        let nowEditButton = DefaultButton(title: "追加する", dismissOnTap: true) {
+            let addShiftVC = AddShiftViewController()
+            addShiftVC.setUnRegisteredShift(shift: unRegisteredShift)
+            let nav = UINavigationController()
+            nav.viewControllers = [addShiftVC]
+            self.present(nav, animated: true, completion: nil)
+        }
+        let afterButton = DefaultButton(title: "あとで", dismissOnTap: true) {
+            self.navigateCalendar()
+        }
+        let popup = PopupDialog(title: "取り込み失敗", message: "未登録のシフト名が含まれているため、シフトの取り込みに失敗しました。\n今すぐに新しいシフト名を追加しますか？\n(注)ただし、シフトカテゴリの追加が必要な場合は「ユーザ画面」から行ってください。")
         
         popup.transitionStyle = .zoomIn
         popup.addButtons([nowEditButton, afterButton])

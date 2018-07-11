@@ -92,6 +92,9 @@
 		37DE67AC20F589C700DB7EBC /* UnknownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A920F589C700DB7EBC /* UnknownViewModel.swift */; };
 		37DE67AD20F589C700DB7EBC /* UnknownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67AA20F589C700DB7EBC /* UnknownViewController.swift */; };
 		37DE67AF20F58A2900DB7EBC /* UnknownViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67AE20F58A2900DB7EBC /* UnknownViewEntity.swift */; };
+		37DE67B420F6465000DB7EBC /* AddShiftViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */; };
+		37DE67B520F6465000DB7EBC /* AddShiftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */; };
+		37DE67B620F6465000DB7EBC /* AddShiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -185,6 +188,9 @@
 		37DE67A920F589C700DB7EBC /* UnknownViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnknownViewModel.swift; sourceTree = "<group>"; };
 		37DE67AA20F589C700DB7EBC /* UnknownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnknownViewController.swift; sourceTree = "<group>"; };
 		37DE67AE20F58A2900DB7EBC /* UnknownViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownViewEntity.swift; sourceTree = "<group>"; };
+		37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewPresenter.swift; sourceTree = "<group>"; };
+		37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewModel.swift; sourceTree = "<group>"; };
+		37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewController.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -469,6 +475,8 @@
 		37DE679F20F4794600DB7EBC /* ShiftImport */ = {
 			isa = PBXGroup;
 			children = (
+				37DE67B020F645DC00DB7EBC /* AddShift */,
+				37DE67A720F5897C00DB7EBC /* Unknown */,
 				37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */,
 				37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */,
 				37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */,
@@ -485,6 +493,16 @@
 				37DE67AE20F58A2900DB7EBC /* UnknownViewEntity.swift */,
 			);
 			path = Unknown;
+			sourceTree = "<group>";
+		};
+		37DE67B020F645DC00DB7EBC /* AddShift */ = {
+			isa = PBXGroup;
+			children = (
+				37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */,
+				37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */,
+				37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */,
+			);
+			path = AddShift;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
@@ -508,7 +526,6 @@
 		37FF360520DD4CFE00FB2C68 /* Parjob */ = {
 			isa = PBXGroup;
 			children = (
-				37DE67A720F5897C00DB7EBC /* Unknown */,
 				37DE679F20F4794600DB7EBC /* ShiftImport */,
 				3765CD5D20F0D8940031D235 /* FileBrowse */,
 				370031A520EDEB4300813685 /* Xib */,
@@ -684,6 +701,7 @@
 				3765CD6220F0D9140031D235 /* FileBrowseTopViewPresenter.swift in Sources */,
 				375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */,
 				379032F820F13F7E00C2534F /* FileBrowseDetailViewEntity.swift in Sources */,
+				37DE67B420F6465000DB7EBC /* AddShiftViewPresenter.swift in Sources */,
 				3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */,
 				37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */,
 				370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */,
@@ -733,12 +751,14 @@
 				37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpViewModel.swift in Sources */,
 				3765CD6120F0D9140031D235 /* FileBrowseTopViewModel.swift in Sources */,
+				37DE67B620F6465000DB7EBC /* AddShiftViewController.swift in Sources */,
 				37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */,
 				3765CD6E20F0E7880031D235 /* FileBrowseCell.swift in Sources */,
 				3765CD6B20F0D9D10031D235 /* FileBrowseDetailViewModel.swift in Sources */,
 				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
 				37DE67AD20F589C700DB7EBC /* UnknownViewController.swift in Sources */,
 				37DE67AB20F589C700DB7EBC /* UnknownViewPresenter.swift in Sources */,
+				37DE67B520F6465000DB7EBC /* AddShiftViewModel.swift in Sources */,
 				378E382B20E9957F003BB689 /* ShiftCategoryViewModel.swift in Sources */,
 				37C168AC20EE82C7003A453A /* ShiftViewController.swift in Sources */,
 				378E382E20EA02EC003BB689 /* ShiftCategoryViewEntity.swift in Sources */,

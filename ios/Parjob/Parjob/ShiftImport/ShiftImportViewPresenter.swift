@@ -47,7 +47,11 @@ extension ShiftImportViewPresenter: ShiftImportViewModelDelegate {
         view?.successImportButExistUnknown(unknown: unknown)
     }
     
-    func faildSignUp(title: String, msg: String) {
+    func faildImportBecauseUnRegisteredShift(unRegisteredShift: [String]) {
+        view?.faildImportBecauseUnRegisteredShift(unRegisteredShift: unRegisteredShift)
+    }
+    
+    func faildAPI(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
     }
 }

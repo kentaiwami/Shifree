@@ -14,7 +14,8 @@ protocol ShiftImportViewModelDelegate: class {
     func initializeUI()
     func successImport()
     func successImportButExistUnknown(unknown: [Unknown])
-    func faildSignUp(title: String, msg: String)
+    func faildImportBecauseUnRegisteredShift(unRegisteredShift: [String])
+    func faildAPI(title: String, msg: String)
 }
 
 class ShiftImportViewModel {
@@ -37,7 +38,7 @@ class ShiftImportViewModel {
         .catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildSignUp(title: title, msg: tmp_err.domain)
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
     
@@ -78,12 +79,14 @@ class ShiftImportViewModel {
                 }
             }else {
                 // 未登録のシフトがあって取り込みは成功していない場合
+                let unRegisteredShift = json["param"].arrayValue.map({$0.stringValue})
+                self.delegate?.faildImportBecauseUnRegisteredShift(unRegisteredShift: unRegisteredShift)
             }
         }
         .catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildSignUp(title: title, msg: tmp_err.domain)
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
 }
