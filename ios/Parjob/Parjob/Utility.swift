@@ -27,7 +27,6 @@ func IsValidateFormValue(form: Form) -> Bool {
 }
 
 func IsHTTPStatus(statusCode: Int?) -> Bool {
-    // 200系以外ならエラー
     let code = String(statusCode!)
     var results:[String] = []
     
@@ -79,9 +78,7 @@ func GetMatchStrings(targetString: String, pattern: String) -> [String] {
         
         let matches = regex.matches(in: targetString, options: [], range: targetStringRange)
         
-        for match in matches {
-            
-            // rangeAtIndexに0を渡すとマッチ全体が、1以降を渡すと括弧でグループにした部分マッチが返される
+        for match in matches {            
             let range = match.rangeAt(0)
             let result = (targetString as NSString).substring(with: range)
             

@@ -41,7 +41,6 @@ class UnknownViewModel {
     }
     
     func updateUserShift(formValues:[String:Any?]) {
-        // API: usercode, new_shift_name, dateが更新処理に必要
         var updates: [[String:Any]] = []
         
         let removedUnknownShift = formValues.filter { (key, value) -> Bool in
