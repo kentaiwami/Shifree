@@ -86,15 +86,3 @@ class UserListSettingViewModel {
     }
     
 }
-
-
-
-// MARK: - 記述簡略化のため関数化
-extension UserListSettingViewModel  {
-    func getNumber(mixText: String) -> Int {
-        let splitNumbers = (mixText.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
-        let number = splitNumbers.joined()
-        
-        return Int(number)!
-    }
-}

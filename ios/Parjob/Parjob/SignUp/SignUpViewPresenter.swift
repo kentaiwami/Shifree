@@ -33,7 +33,7 @@ extension SignUpViewPresenter: SignUpViewModelDelegate {
         view?.navigateCalendar()
     }
     
-    func faildSignUp(title: String, msg: String) {
+    func faildAPI(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
     }
 }

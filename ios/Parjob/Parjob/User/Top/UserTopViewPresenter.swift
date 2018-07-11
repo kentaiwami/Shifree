@@ -30,7 +30,6 @@ class UserTopViewPresenter {
 
 extension UserTopViewPresenter: UserTopViewModelDelegate {
     func navigateSignUp() {
-        print("OK")
         view?.navigateSignUp()
     }
 }

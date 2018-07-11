@@ -148,6 +148,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
 }
 
 
+// MARK: - Presenterから呼び出される関数
 extension UserTopViewController {
     func navigateSignUp() {
         let signupVC = SignUpViewController()

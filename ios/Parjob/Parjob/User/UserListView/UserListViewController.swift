@@ -8,7 +8,6 @@
 
 import UIKit
 import Eureka
-import PopupDialog
 
 protocol UserListViewInterface: class {
     func showErrorAlert(title: String, msg: String)

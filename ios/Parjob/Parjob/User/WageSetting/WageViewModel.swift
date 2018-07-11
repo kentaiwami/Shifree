@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import KeychainAccess
 
 protocol WageViewModelDelegate: class {
     func initializeUI()

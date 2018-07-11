@@ -8,8 +8,6 @@
 
 import UIKit
 import ScrollableGraphView
-import PopupDialog
-
 
 protocol SalaryViewInterface: class {
     func showErrorAlert(title: String, msg: String)

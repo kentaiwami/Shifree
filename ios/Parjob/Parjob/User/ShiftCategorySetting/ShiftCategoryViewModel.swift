@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import KeychainAccess
 
 protocol ShiftCategoryViewModelDelegate: class {
     func initializeUI()

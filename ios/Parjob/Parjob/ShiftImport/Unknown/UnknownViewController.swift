@@ -8,7 +8,6 @@
 
 import UIKit
 import Eureka
-import PopupDialog
 
 protocol UnknownViewInterface: class {
     var unknown:[Unknown] { get }

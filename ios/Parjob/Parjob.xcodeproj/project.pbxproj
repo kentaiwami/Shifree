@@ -466,8 +466,8 @@
 			isa = PBXGroup;
 			children = (
 				3769F6FA20EC960600BA8920 /* UserListViewController.swift */,
-				3769F6F820EC960600BA8920 /* UserListViewModel.swift */,
 				3769F6F920EC960600BA8920 /* UserListViewPresenter.swift */,
+				3769F6F820EC960600BA8920 /* UserListViewModel.swift */,
 			);
 			path = UserListView;
 			sourceTree = "<group>";

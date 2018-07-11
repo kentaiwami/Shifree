@@ -8,7 +8,6 @@
 
 import UIKit
 import Eureka
-import PopupDialog
 
 protocol AddShiftViewInterface: class {
     var unRegisteredShift:[String] { get }

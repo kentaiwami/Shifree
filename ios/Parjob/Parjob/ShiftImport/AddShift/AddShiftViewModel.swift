@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import KeychainAccess
-
 
 protocol AddShiftViewModelDelegate: class {
     func successAdd()
