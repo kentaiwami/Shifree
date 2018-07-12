@@ -383,3 +383,21 @@ extension API {
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }
 }
+
+
+extension API {
+    func getNotification() -> Promise<JSON> {
+        let endPoint = "setting/notification"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func updateNotification(isShiftImport: Bool, isComment: Bool, isUpdateShift: Bool) -> Promise<JSON> {
+        let endPoint = "setting/notification"
+        let params = [
+            "is_shift_import": isShiftImport,
+            "is_comment": isComment,
+            "is_update_shift": isUpdateShift
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+}

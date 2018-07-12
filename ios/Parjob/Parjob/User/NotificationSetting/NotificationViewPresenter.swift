@@ -18,12 +18,30 @@ class NotificationViewPresenter {
         self.model = NotificationViewModel()
         model.delegate = self
     }
+    
+    func setNotification() {
+        model.setNotification()
+    }
+    
+    func getNotification() -> (isShiftImport: Bool, isComment: Bool, isUpdateShift: Bool) {
+        return (model.isShiftImport, model.isComment, model.isUpdateShift)
+    }
+    
+    func updateNotification() {
+        guard let formValue = view?.formValue else {return}
+        model.updateNotification(formValue: formValue)
+    }
 }
 
 extension NotificationViewPresenter: NotificationViewModelDelegate {
+    func successUpdate() {
+        view?.successUpdate()
+    }
+    
     func initializeUI() {
         view?.initializeUI()
     }
+    
 
     func faildAPI(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
