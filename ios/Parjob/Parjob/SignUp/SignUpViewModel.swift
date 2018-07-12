@@ -12,7 +12,7 @@ import KeychainAccess
 
 protocol SignUpViewModelDelegate: class {
     func successSignUp()
-    func faildSignUp(title: String, msg: String)
+    func faildAPI(title: String, msg: String)
 }
 
 class SignUpViewModel {
@@ -40,7 +40,7 @@ class SignUpViewModel {
         .catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildSignUp(title: title, msg: tmp_err.domain)
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
 }

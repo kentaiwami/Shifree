@@ -7,10 +7,6 @@
 //
 
 import Foundation
-import KeychainAccess
-import PromiseKit
-import SwiftyJSON
-
 
 protocol AddCommentViewModelDelegate: class {
     func success()

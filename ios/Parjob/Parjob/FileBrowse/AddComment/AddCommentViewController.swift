@@ -33,7 +33,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Add Comment"
+        self.navigationItem.title = "コメントの追加"
     }
     
     private func initializePresenter() {

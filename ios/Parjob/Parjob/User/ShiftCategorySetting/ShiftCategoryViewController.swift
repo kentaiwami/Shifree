@@ -31,7 +31,7 @@ class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterfac
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Shift Category Setting"
+        self.navigationItem.title = "シフトカテゴリの設定"
     }
     
     fileprivate func initializeForm() {

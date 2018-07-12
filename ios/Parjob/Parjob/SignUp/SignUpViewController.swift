@@ -48,17 +48,10 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Sign Up"
+        self.navigationItem.title = "サインアップ"
     }
     
     private func initializeUI() {
-//        LabelRow.defaultCellUpdate = { cell, row in
-//            cell.contentView.backgroundColor = .red
-//            cell.textLabel?.textColor = .white
-//            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-//            cell.textLabel?.textAlignment = .right
-//        }
-
         form +++ Section("")
             <<< PhoneRow(){
                 $0.title = "CompanyCode"

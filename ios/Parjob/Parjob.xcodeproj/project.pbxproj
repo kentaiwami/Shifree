@@ -85,6 +85,16 @@
 		37C168B420F0308F003A453A /* SalaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168B220F0308E003A453A /* SalaryViewModel.swift */; };
 		37C168B620F031BE003A453A /* SalaryViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168B520F031BE003A453A /* SalaryViewEntity.swift */; };
 		37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */; };
+		37DE67A320F4797400DB7EBC /* ShiftImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */; };
+		37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */; };
+		37DE67A520F4797400DB7EBC /* ShiftImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */; };
+		37DE67AB20F589C700DB7EBC /* UnknownViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A820F589C600DB7EBC /* UnknownViewPresenter.swift */; };
+		37DE67AC20F589C700DB7EBC /* UnknownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A920F589C700DB7EBC /* UnknownViewModel.swift */; };
+		37DE67AD20F589C700DB7EBC /* UnknownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67AA20F589C700DB7EBC /* UnknownViewController.swift */; };
+		37DE67AF20F58A2900DB7EBC /* UnknownViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67AE20F58A2900DB7EBC /* UnknownViewEntity.swift */; };
+		37DE67B420F6465000DB7EBC /* AddShiftViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */; };
+		37DE67B520F6465000DB7EBC /* AddShiftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */; };
+		37DE67B620F6465000DB7EBC /* AddShiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -170,6 +180,17 @@
 		37C168B220F0308E003A453A /* SalaryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalaryViewModel.swift; sourceTree = "<group>"; };
 		37C168B520F031BE003A453A /* SalaryViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewEntity.swift; sourceTree = "<group>"; };
 		37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListSettingDetailViewController.swift; sourceTree = "<group>"; };
+		37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewController.swift; sourceTree = "<group>"; };
+		37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewPresenter.swift; sourceTree = "<group>"; };
+		37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewModel.swift; sourceTree = "<group>"; };
+		37DE67A620F4A54200DB7EBC /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		37DE67A820F589C600DB7EBC /* UnknownViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnknownViewPresenter.swift; sourceTree = "<group>"; };
+		37DE67A920F589C700DB7EBC /* UnknownViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnknownViewModel.swift; sourceTree = "<group>"; };
+		37DE67AA20F589C700DB7EBC /* UnknownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnknownViewController.swift; sourceTree = "<group>"; };
+		37DE67AE20F58A2900DB7EBC /* UnknownViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownViewEntity.swift; sourceTree = "<group>"; };
+		37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewPresenter.swift; sourceTree = "<group>"; };
+		37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewModel.swift; sourceTree = "<group>"; };
+		37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewController.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -445,10 +466,43 @@
 			isa = PBXGroup;
 			children = (
 				3769F6FA20EC960600BA8920 /* UserListViewController.swift */,
-				3769F6F820EC960600BA8920 /* UserListViewModel.swift */,
 				3769F6F920EC960600BA8920 /* UserListViewPresenter.swift */,
+				3769F6F820EC960600BA8920 /* UserListViewModel.swift */,
 			);
 			path = UserListView;
+			sourceTree = "<group>";
+		};
+		37DE679F20F4794600DB7EBC /* ShiftImport */ = {
+			isa = PBXGroup;
+			children = (
+				37DE67B020F645DC00DB7EBC /* AddShift */,
+				37DE67A720F5897C00DB7EBC /* Unknown */,
+				37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */,
+				37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */,
+				37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */,
+			);
+			path = ShiftImport;
+			sourceTree = "<group>";
+		};
+		37DE67A720F5897C00DB7EBC /* Unknown */ = {
+			isa = PBXGroup;
+			children = (
+				37DE67AA20F589C700DB7EBC /* UnknownViewController.swift */,
+				37DE67A820F589C600DB7EBC /* UnknownViewPresenter.swift */,
+				37DE67A920F589C700DB7EBC /* UnknownViewModel.swift */,
+				37DE67AE20F58A2900DB7EBC /* UnknownViewEntity.swift */,
+			);
+			path = Unknown;
+			sourceTree = "<group>";
+		};
+		37DE67B020F645DC00DB7EBC /* AddShift */ = {
+			isa = PBXGroup;
+			children = (
+				37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */,
+				37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */,
+				37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */,
+			);
+			path = AddShift;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
@@ -472,6 +526,7 @@
 		37FF360520DD4CFE00FB2C68 /* Parjob */ = {
 			isa = PBXGroup;
 			children = (
+				37DE679F20F4794600DB7EBC /* ShiftImport */,
 				3765CD5D20F0D8940031D235 /* FileBrowse */,
 				370031A520EDEB4300813685 /* Xib */,
 				37A69B0B20E83027004E8C66 /* User */,
@@ -646,7 +701,9 @@
 				3765CD6220F0D9140031D235 /* FileBrowseTopViewPresenter.swift in Sources */,
 				375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */,
 				379032F820F13F7E00C2534F /* FileBrowseDetailViewEntity.swift in Sources */,
+				37DE67B420F6465000DB7EBC /* AddShiftViewPresenter.swift in Sources */,
 				3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */,
+				37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */,
 				370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */,
 				37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */,
 				3790330620F1EA9100C2534F /* EditCommentViewController.swift in Sources */,
@@ -663,11 +720,13 @@
 				3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */,
 				37326C4620E14B6500A60B00 /* CalendarViewPresenter.swift in Sources */,
 				37C168B620F031BE003A453A /* SalaryViewEntity.swift in Sources */,
+				37DE67A320F4797400DB7EBC /* ShiftImportViewController.swift in Sources */,
 				37C0CCDC20F20B54003D650F /* AddCommentViewPresenter.swift in Sources */,
 				37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */,
 				375519A620E5BADA00EC930B /* CalendarViewEntity.swift in Sources */,
 				3772662920EA70CE0056D3D0 /* UserListSettingViewPresenter.swift in Sources */,
 				37326C3920DEC79200A60B00 /* Extensions.swift in Sources */,
+				37DE67AC20F589C700DB7EBC /* UnknownViewModel.swift in Sources */,
 				37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */,
 				3765CD6320F0D9140031D235 /* FileBrowseTopViewController.swift in Sources */,
 				37425CBA20DE68AF005A3C93 /* SignUpViewPresenter.swift in Sources */,
@@ -680,20 +739,26 @@
 				37A69B3920E986F6004E8C66 /* PasswordViewPresenter.swift in Sources */,
 				3765CD6920F0D9D10031D235 /* FileBrowseDetailViewPresenter.swift in Sources */,
 				37C168AA20EE82C7003A453A /* ShiftViewPresenter.swift in Sources */,
+				37DE67AF20F58A2900DB7EBC /* UnknownViewEntity.swift in Sources */,
 				37A69B3320E957F2004E8C66 /* WageViewPresenter.swift in Sources */,
 				37C168B020EEB2DA003A453A /* ShiftSettingDetailViewController.swift in Sources */,
 				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
 				37C0CCDE20F20B54003D650F /* AddCommentViewController.swift in Sources */,
+				37DE67A520F4797400DB7EBC /* ShiftImportViewModel.swift in Sources */,
 				378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
 				37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpViewModel.swift in Sources */,
 				3765CD6120F0D9140031D235 /* FileBrowseTopViewModel.swift in Sources */,
+				37DE67B620F6465000DB7EBC /* AddShiftViewController.swift in Sources */,
 				37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */,
 				3765CD6E20F0E7880031D235 /* FileBrowseCell.swift in Sources */,
 				3765CD6B20F0D9D10031D235 /* FileBrowseDetailViewModel.swift in Sources */,
 				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
+				37DE67AD20F589C700DB7EBC /* UnknownViewController.swift in Sources */,
+				37DE67AB20F589C700DB7EBC /* UnknownViewPresenter.swift in Sources */,
+				37DE67B520F6465000DB7EBC /* AddShiftViewModel.swift in Sources */,
 				378E382B20E9957F003BB689 /* ShiftCategoryViewModel.swift in Sources */,
 				37C168AC20EE82C7003A453A /* ShiftViewController.swift in Sources */,
 				378E382E20EA02EC003BB689 /* ShiftCategoryViewEntity.swift in Sources */,
@@ -726,6 +791,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				37FF361220DD4D0200FB2C68 /* Base */,
+				37DE67A620F4A54200DB7EBC /* ja */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -737,6 +803,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -799,6 +866,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

@@ -121,6 +121,7 @@ def import_shift():
         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     try:
+        number = int(request.form['number'])
         same_line_threshold = float(request.form['same_line_threshold'])
         username_threshold = float(request.form['username_threshold'])
         join_threshold = float(request.form['join_threshold'])
@@ -177,7 +178,7 @@ def import_shift():
         exec('from analyze.company{} import create_main'.format(company.id))
         user_results = eval('create_main({},{},\'{}\',\'{}\', {}, {}, {}, {}, file, origin_file_path)'.format(
             company.id,
-            request.form['number'],
+            number,
             request.form['start'],
             request.form['end'],
             same_line_threshold,
@@ -201,11 +202,16 @@ def import_shift():
         if not session.query(exists().where(Shift.name == shift)).scalar():
             unknown_shift_types.append(shift)
 
+    # swift側で未登録のシフトを扱うために200で返す
     if len(unknown_shift_types) != 0:
         os.remove(origin_file_path)
         session.close()
         frame = inspect.currentframe()
-        abort(500, {'code': frame.f_lineno, 'msg': '未登録のシフトがあるため、処理を完了できませんでした。', 'param': unknown_shift_types})
+        return jsonify({
+            'code': frame.f_lineno,
+            'msg': '未登録のシフトがあるため、処理を完了できませんでした。',
+            'param': unknown_shift_types
+        }), 200
 
     shift_table = ShiftTable(
         title=secure_title,
@@ -236,7 +242,9 @@ def import_shift():
                 shift_name = 'unknown'
                 tmp_unknown_dates.append(date.strftime('%Y-%m-%d'))
 
-            shift = session.query(Shift).filter(Shift.name == shift_name).one()
+            shift = session.query(Shift)\
+                .join(ShiftCategory, Shift.shift_category_id == ShiftCategory.id)\
+                .filter(Shift.name == shift_name, user.company_id == ShiftCategory.company_id).one()
             user_shift = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
             user_shift_objects.append(user_shift)
 
@@ -248,7 +256,7 @@ def import_shift():
 
 
         if len(tmp_unknown_dates) != 0:
-            unknown[user.code] = {'name': username, 'date': tmp_unknown_dates}
+            unknown[user.code] = {'name': username, 'date': tmp_unknown_dates, 'order': user.order}
 
         users.remove(user)
 
@@ -329,89 +337,6 @@ def get_detail(table_id):
 
     session.close()
     return jsonify({'results': results}), 200
-
-
-# @app.route('/api/v1/tables/<table_id>', methods=['PUT'])
-# @api_basic_auth.login_required
-# def update(table_id):
-#     from app import app
-#
-#     schema = {'type': 'object',
-#               'properties':
-#                   {'number': {'type': 'string', 'minimum': 1},
-#                    'start': {'type': 'string', 'pattern': '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'},
-#                    'end': {'type': 'string', 'pattern': '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'},
-#                    'title': {'type': 'string', 'minLength': 1},
-#                    },
-#               'required': ['number', 'start', 'end', 'title']
-#               }
-#
-#     try:
-#         validate(request.form, schema)
-#     except ValidationError as e:
-#         session.close()
-#         frame = inspect.currentframe()
-#         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
-#
-#     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-#
-#     if user.role.name != 'admin':
-#         session.close()
-#         frame = inspect.currentframe()
-#         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
-#
-#     if 'file' not in request.files:
-#         session.close()
-#         frame = inspect.currentframe()
-#         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
-#
-#     file = request.files['file']
-#
-#     if not (file and allowed_file(file.filename)):
-#         session.close()
-#         frame = inspect.currentframe()
-#         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
-#
-#     table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one_or_none()
-#
-#     if table is None:
-#         session.close()
-#         frame = inspect.currentframe()
-#         abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
-#
-#     company = session.query(Company).filter(Company.id == user.company_id).one()
-#
-#     # 企業ごとの解析プログラムを実行
-#     try:
-#         exec('from analyze.company' + str(company.id) + ' import update_main')
-#         old_file_path = eval('update_main(' + str(table.id) + ')')
-#     except ValueError:
-#         frame = inspect.currentframe()
-#         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
-#
-#     os.remove(old_file_path['origin'])
-#     os.remove(old_file_path['thumbnail'])
-#
-#     secure_title = format_text(request.form['title'])
-#     new_file_fullname = company.code + '_' + secure_title
-#     _, file_ext = os.path.splitext(file.filename)
-#     new_origin_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'origin', new_file_fullname + file_ext)
-#     new_thumbnail_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'thumbnail', new_file_fullname + '.jpg')
-#
-#     file.save(new_origin_file_path)
-#     params = ['convert', new_origin_file_path + '[0]', new_thumbnail_file_path]
-#     subprocess.check_call(params)
-#
-#     table.title = secure_title
-#     table.origin_path = new_origin_file_path
-#     table.thumbnail_path = new_thumbnail_file_path
-#     session.commit()
-#     session.close()
-#
-#     return jsonify({'results': {
-#         'table_title': table.title,
-#         'table_id': table.id
-#     }}), 200
 
 
 @app.route('/api/v1/tables/<table_id>', methods=['DELETE'])

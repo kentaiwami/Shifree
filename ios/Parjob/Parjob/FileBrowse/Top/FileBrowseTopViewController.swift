@@ -29,7 +29,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "File View"
+        self.tabBarController?.navigationItem.title = "ファイル"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
         
@@ -79,6 +79,8 @@ extension FileBrowseTopViewController {
 }
 
 
+
+// MARK: - UICollectionView関連
 extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FileBrowseCell", for: indexPath) as! FileBrowseCell

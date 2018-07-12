@@ -33,7 +33,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Shift Setting"
+        self.navigationItem.title = "シフトの設定"
     }
     
     fileprivate func initializeForm() {
@@ -164,8 +164,8 @@ extension ShiftViewController {
         
         for section in self.form.allSections {
             var tmpRowValues: [String] = []
-            for hoge in section {
-                if let tmp = hoge.baseValue as? String {
+            for row in section {
+                if let tmp = row.baseValue as? String {
                     tmpRowValues.append(tmp)
                 }
             }

@@ -8,7 +8,6 @@
 
 import UIKit
 import Eureka
-import PopupDialog
 
 protocol UserListViewInterface: class {
     func showErrorAlert(title: String, msg: String)
@@ -28,7 +27,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "User List View"
+        self.navigationItem.title = "ユーザリスト"
     }
     
     fileprivate func initializeForm() {

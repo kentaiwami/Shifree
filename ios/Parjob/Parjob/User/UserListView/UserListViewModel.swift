@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import KeychainAccess
 
 protocol UserListViewModelDelegate: class {
     func initializeUI()
@@ -39,17 +38,5 @@ class UserListViewModel {
             let title = "Error(" + String(tmp_err.code) + ")"
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
-    }
-}
-
-
-
-// MARK: - 記述簡略化のため関数化
-extension UserListViewModel  {
-    func getNumber(mixText: String) -> Int {
-        let splitNumbers = (mixText.components(separatedBy: NSCharacterSet.decimalDigits.inverted))
-        let number = splitNumbers.joined()
-        
-        return Int(number)!
     }
 }

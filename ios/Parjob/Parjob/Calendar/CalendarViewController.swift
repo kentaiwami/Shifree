@@ -43,7 +43,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.navigationItem.title = "Calendar"
+        self.tabBarController?.navigationItem.title = "カレンダー"
         initializeNavigationItem()
         
         // 起動時は実行せず、他画面から戻ってきた時に再取得&表示内容の更新
@@ -288,8 +288,10 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        let selectedShiftCategoryName = presenter.shiftCategories[indexPath.section]
         let detailVC = CalendarDetailViewController()
         detailVC.setIndexPath(at: indexPath)
+        detailVC.setNavigationTitle(title: currentDate + " " + selectedShiftCategoryName)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
 }

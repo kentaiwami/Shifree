@@ -8,8 +8,6 @@
 
 import UIKit
 import ScrollableGraphView
-import PopupDialog
-
 
 protocol SalaryViewInterface: class {
     func showErrorAlert(title: String, msg: String)
@@ -31,6 +29,11 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         
         presenter = SalaryViewPresenter(view: self)
         presenter.setSalary()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "給与"
     }
     
     fileprivate func initializeGraph() {
@@ -102,11 +105,6 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
     
     @objc private func tapReloadButton() {
         presenter.reloadSalary()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationItem.title = "Salary View"
     }
     
     override func didReceiveMemoryWarning() {
