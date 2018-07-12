@@ -144,7 +144,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     }
     
     fileprivate func initializeNavigationItem() {
-        let check = UIBarButtonItem(image: UIImage(named: "first"), style: .plain, target: self, action: #selector(tapImportButton))
+        let check = UIBarButtonItem(image: UIImage(named: "upload"), style: .plain, target: self, action: #selector(tapImportButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
         self.navigationItem.setLeftBarButton(close, animated: true)
