@@ -22,6 +22,8 @@ protocol CalendarDetailViewInterface: class {
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
     var indexPath: IndexPath = []
     var formValues: [String : Any?] = [:]
+    var navigationTitle: String = ""
+    
     fileprivate var presenter: CalendarDetailViewPresenter!
     
     override func viewDidLoad() {
@@ -33,8 +35,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //TODO: 日付をタイトルにする
-        self.navigationItem.title = "詳細"
+        self.navigationItem.title = navigationTitle
     }
     
     private func initializePresenter() {
@@ -98,13 +99,6 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         }
         UIView.setAnimationsEnabled(true)
     }
-        
-    /// どのセクションをタップしてインスタンス化したかを記録
-    ///
-    /// - Parameter at: タップされたIndexPath
-    func setIndexPath(at: IndexPath) {
-        self.indexPath = at
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -123,5 +117,20 @@ extension CalendarDetailViewController {
     
     func popViewController() {
         self.navigationController?.popViewController(animated: true)
+    }
+}
+
+
+// MARK: - インスタンス化される際に、呼ぶべき関数
+extension CalendarDetailViewController {
+    func setNavigationTitle(title: String) {
+        navigationTitle = title
+    }
+    
+    /// どのセクションをタップしてインスタンス化したかを記録
+    ///
+    /// - Parameter at: タップされたIndexPath
+    func setIndexPath(at: IndexPath) {
+        self.indexPath = at
     }
 }
