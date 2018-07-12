@@ -42,7 +42,7 @@ class WageViewController: FormViewController, WageViewInterface {
     fileprivate func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
-        let wageTime = GetWageTime()
+        let wageTime = GetTime()
         
         form +++ Section("日中")
             <<< PickerInputRow<String>(""){

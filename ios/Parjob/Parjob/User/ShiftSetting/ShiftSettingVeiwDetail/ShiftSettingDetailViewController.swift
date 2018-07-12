@@ -54,7 +54,7 @@ class ShiftSettingDetailViewController: FormViewController {
             
             <<< PickerInputRow<String>(""){
                 $0.title = "開始時間"
-                $0.options = [""] + GetWageTime()
+                $0.options = [""] + GetTime()
                 $0.value = start
                 $0.tag = "start"
             }
@@ -67,7 +67,7 @@ class ShiftSettingDetailViewController: FormViewController {
         
             <<< PickerInputRow<String>(""){
                 $0.title = "終了時間"
-                $0.options = [""] + GetWageTime()
+                $0.options = [""] + GetTime()
                 $0.value = end
                 $0.tag = "end"
             }

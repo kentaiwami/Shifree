@@ -56,7 +56,7 @@ func GetFormatterDateString(format: String, date: Date) -> String {
     return formatter.string(from: date)
 }
 
-func GetWageTime() -> [String] {
+func GetTime() -> [String] {
     var wageTime: [String] = []
     
     for hour in 0...23 {

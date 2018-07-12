@@ -72,13 +72,13 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
             
             let startRow = PickerInputRow<String>()
             startRow.title = "開始時間"
-            startRow.options = [""] + GetWageTime()
+            startRow.options = [""] + GetTime()
             startRow.value = ""
             startRow.tag = "start," + String(i)
             
             let endRow = PickerInputRow<String>()
             endRow.title = "終了時間"
-            endRow.options = [""] + GetWageTime()
+            endRow.options = [""] + GetTime()
             endRow.value = ""
             endRow.tag = "end," + String(i)
 
