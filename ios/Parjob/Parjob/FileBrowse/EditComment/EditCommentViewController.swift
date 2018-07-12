@@ -32,7 +32,7 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Edit Comment"
+        self.navigationItem.title = "コメントの編集"
     }
     
     private func initializePresenter() {

@@ -36,7 +36,7 @@ class WageViewController: FormViewController, WageViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Wage Setting"
+        self.navigationItem.title = "時給の設定"
     }
     
     fileprivate func initializeForm() {

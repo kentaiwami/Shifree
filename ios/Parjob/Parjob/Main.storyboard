@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--FileBrowse-->
+        <!--ファイル-->
         <scene sceneID="r4X-aa-MmU">
             <objects>
                 <viewController storyboardIdentifier="FileBrowse" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RAd-2b-9V8" customClass="FileBrowseTopViewController" customModule="Parjob" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,14 +20,14 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="FZS-X4-dvq"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="FileBrowse" image="file" id="0ag-ul-tWI"/>
+                    <tabBarItem key="tabBarItem" title="ファイル" image="file" id="0ag-ul-tWI"/>
                     <navigationItem key="navigationItem" id="GJq-Xo-Btp"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KaC-AV-WCU" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="830" y="719"/>
         </scene>
-        <!--Calendar-->
+        <!--カレンダー-->
         <scene sceneID="LXQ-Sh-bfw">
             <objects>
                 <viewController storyboardIdentifier="Calendar" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Sya-C7-WdG" customClass="CalendarViewController" customModule="Parjob" customModuleProvider="target" sceneMemberID="viewController">
@@ -37,13 +37,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="vi5-Wn-kGl"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Calendar" image="tab_calendar" id="0VS-0e-k6v"/>
+                    <tabBarItem key="tabBarItem" title="カレンダー" image="tab_calendar" id="0VS-0e-k6v"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvC-LE-rmh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="830" y="-798"/>
         </scene>
-        <!--User-->
+        <!--ユーザ-->
         <scene sceneID="Jdo-Aa-bJl">
             <objects>
                 <viewController storyboardIdentifier="User" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3TD-Sm-VO1" customClass="UserTopViewController" customModule="Parjob" customModuleProvider="target" sceneMemberID="viewController">
@@ -53,7 +53,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="HA9-2k-T9D"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="User" image="user" id="m8l-Xv-Urp">
+                    <tabBarItem key="tabBarItem" title="ユーザ" image="user" id="m8l-Xv-Urp">
                         <inset key="largeContentSizeImageInsets" minX="1" minY="1" maxX="0.0" maxY="1"/>
                     </tabBarItem>
                 </viewController>

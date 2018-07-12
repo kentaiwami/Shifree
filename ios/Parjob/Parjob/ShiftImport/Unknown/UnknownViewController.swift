@@ -36,7 +36,7 @@ class UnknownViewController: FormViewController, UnknownViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Edit Unknown Shift"
+        self.navigationItem.title = "Unknownの編集"
     }
     
     fileprivate func initializeForm() {

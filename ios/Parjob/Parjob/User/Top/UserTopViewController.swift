@@ -26,7 +26,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.navigationItem.title = "User"
+        self.tabBarController?.navigationItem.title = "ユーザ"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
         

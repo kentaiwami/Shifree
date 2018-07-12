@@ -33,7 +33,8 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Calendar Detail"
+        //TODO: 日付をタイトルにする
+        self.navigationItem.title = "詳細"
     }
     
     private func initializePresenter() {

@@ -31,7 +31,7 @@ class PasswordViewController: FormViewController, PasswordViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Password Setting"
+        self.navigationItem.title = "パスワードの設定"
     }
     
     private func initializeForm() {

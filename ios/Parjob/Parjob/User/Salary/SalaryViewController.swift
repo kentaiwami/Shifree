@@ -31,6 +31,11 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         presenter.setSalary()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "給与"
+    }
+    
     fileprivate func initializeGraph() {
         let frame = CGRect.zero
         let graphView = ScrollableGraphView(frame: frame, dataSource: self)
@@ -100,11 +105,6 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
     
     @objc private func tapReloadButton() {
         presenter.reloadSalary()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationItem.title = "Salary View"
     }
     
     override func didReceiveMemoryWarning() {

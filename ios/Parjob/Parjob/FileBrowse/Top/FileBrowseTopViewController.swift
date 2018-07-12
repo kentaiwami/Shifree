@@ -29,7 +29,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "File View"
+        self.tabBarController?.navigationItem.title = "ファイル"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
         

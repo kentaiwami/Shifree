@@ -31,7 +31,7 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "User List Setting"
+        self.navigationItem.title = "ユーザリストの設定"
     }
     
     fileprivate func initializeForm() {

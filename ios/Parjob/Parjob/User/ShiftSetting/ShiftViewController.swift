@@ -33,7 +33,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Shift Setting"
+        self.navigationItem.title = "シフトの設定"
     }
     
     fileprivate func initializeForm() {

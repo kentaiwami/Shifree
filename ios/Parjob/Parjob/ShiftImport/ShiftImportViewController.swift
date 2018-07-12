@@ -37,7 +37,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Shift Import"
+        self.navigationItem.title = "シフトの取り込み"
     }
     
     fileprivate func initializeForm() {

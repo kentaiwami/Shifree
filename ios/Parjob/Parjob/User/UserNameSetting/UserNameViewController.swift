@@ -29,7 +29,7 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "User Name Setting"
+        self.navigationItem.title = "ユーザ名の設定"
     }
     
     var username: String {
