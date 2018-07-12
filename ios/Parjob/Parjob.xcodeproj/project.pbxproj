@@ -95,6 +95,9 @@
 		37DE67B420F6465000DB7EBC /* AddShiftViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */; };
 		37DE67B520F6465000DB7EBC /* AddShiftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */; };
 		37DE67B620F6465000DB7EBC /* AddShiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */; };
+		37DE67BB20F7A44700DB7EBC /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B820F7A44600DB7EBC /* NotificationViewController.swift */; };
+		37DE67BC20F7A44700DB7EBC /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B920F7A44600DB7EBC /* NotificationViewModel.swift */; };
+		37DE67BD20F7A44700DB7EBC /* NotificationViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67BA20F7A44600DB7EBC /* NotificationViewPresenter.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -191,6 +194,9 @@
 		37DE67B120F6465000DB7EBC /* AddShiftViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewPresenter.swift; sourceTree = "<group>"; };
 		37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewModel.swift; sourceTree = "<group>"; };
 		37DE67B320F6465000DB7EBC /* AddShiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddShiftViewController.swift; sourceTree = "<group>"; };
+		37DE67B820F7A44600DB7EBC /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		37DE67B920F7A44600DB7EBC /* NotificationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
+		37DE67BA20F7A44600DB7EBC /* NotificationViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewPresenter.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Parjob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parjob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -325,6 +331,7 @@
 		37A69B0B20E83027004E8C66 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				37DE67B720F7A3CE00DB7EBC /* NotificationSetting */,
 				37C168A520EE824D003A453A /* ShiftSetting */,
 				37A69B2720E8A155004E8C66 /* Salary */,
 				37A69B2420E8A0CC004E8C66 /* ColorSchemeSetting */,
@@ -503,6 +510,16 @@
 				37DE67B220F6465000DB7EBC /* AddShiftViewModel.swift */,
 			);
 			path = AddShift;
+			sourceTree = "<group>";
+		};
+		37DE67B720F7A3CE00DB7EBC /* NotificationSetting */ = {
+			isa = PBXGroup;
+			children = (
+				37DE67B820F7A44600DB7EBC /* NotificationViewController.swift */,
+				37DE67BA20F7A44600DB7EBC /* NotificationViewPresenter.swift */,
+				37DE67B920F7A44600DB7EBC /* NotificationViewModel.swift */,
+			);
+			path = NotificationSetting;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
@@ -732,6 +749,7 @@
 				37425CBA20DE68AF005A3C93 /* SignUpViewPresenter.swift in Sources */,
 				37C168AD20EE82C7003A453A /* ShiftViewEntity.swift in Sources */,
 				37A69B3620E97F80004E8C66 /* WageViewEntity.swift in Sources */,
+				37DE67BD20F7A44700DB7EBC /* NotificationViewPresenter.swift in Sources */,
 				37326C3B20DEC85E00A60B00 /* Enum.swift in Sources */,
 				375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */,
 				37425CB620DE568C005A3C93 /* SignUpViewController.swift in Sources */,
@@ -744,6 +762,7 @@
 				37C168B020EEB2DA003A453A /* ShiftSettingDetailViewController.swift in Sources */,
 				3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */,
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
+				37DE67BB20F7A44700DB7EBC /* NotificationViewController.swift in Sources */,
 				37C0CCDE20F20B54003D650F /* AddCommentViewController.swift in Sources */,
 				37DE67A520F4797400DB7EBC /* ShiftImportViewModel.swift in Sources */,
 				378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */,
@@ -781,6 +800,7 @@
 				37A69B2020E8A0B0004E8C66 /* UserNameViewController.swift in Sources */,
 				3790330420F1EA9100C2534F /* EditCommentViewModel.swift in Sources */,
 				37425CBE20DE70AE005A3C93 /* API.swift in Sources */,
+				37DE67BC20F7A44700DB7EBC /* NotificationViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
