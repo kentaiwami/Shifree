@@ -8,7 +8,7 @@
 
 import UIKit
 import KeychainAccess
-
+import PopupDialog
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,12 +20,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(url)
         print("+++++++++++++++++++++++++++++++++++")
         
-        let shiftImportVC = ShiftImportViewController()
-        shiftImportVC.setFilePath(path: url)
-        let nav = UINavigationController()
-        nav.viewControllers = [shiftImportVC]
-        self.window!.rootViewController = nav
-        self.window?.makeKeyAndVisible()
+        let keychain = Keychain()
+        if let tmp = try! keychain.getString("role") {
+            if tmp == "admin" {
+                let shiftImportVC = ShiftImportViewController()
+                shiftImportVC.setFilePath(path: url)
+                let nav = UINavigationController()
+                nav.viewControllers = [shiftImportVC]
+                self.window!.rootViewController = nav
+                self.window?.makeKeyAndVisible()
+            }else {
+                if let topController = UIApplication.topViewController() {
+                    let button = DefaultButton(title: "OK", action: nil)
+                    let popup = PopupDialog(title: "権限エラー", message: "シフトを取り込むことができません。")
+                    popup.addButton(button)
+                    topController.present(popup, animated: true, completion: nil)
+                }
+            }
+        }
         
         return true
     }
