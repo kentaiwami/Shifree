@@ -21,7 +21,7 @@ class PasswordViewModel {
     func updatePassword(now: String, new: String) {
         let keychain = Keychain()
         if try! keychain.get("password")! != now {
-            self.delegate?.faildAPI(title: "Error", msg: "パスワードが違います")
+            self.delegate?.faildAPI(title: "エラー", msg: "パスワードが違います")
         }else {
             api.updatePassword(new: new).done { (json) in
                 try! keychain.set(new, key: "password")

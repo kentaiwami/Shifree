@@ -108,7 +108,7 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
                 row.value = String(format: "%@,%@,%@", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String, code])
                 row.updateCell()
             }else {
-                ShowStandardAlert(title: "Error", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
+                ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
             }
         }
         let buttonCancel = CancelButton(title: "Cancel"){}
@@ -175,7 +175,7 @@ extension UserListSettingViewController {
     }
 
     func success() {
-        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
+        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }

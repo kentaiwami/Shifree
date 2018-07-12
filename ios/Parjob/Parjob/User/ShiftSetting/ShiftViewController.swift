@@ -132,7 +132,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                 row.value = String(format: "%@,%@,%@,%@", arguments: [String(id), detaiVCValues["name"] as! String, detaiVCValues["start"] as! String, detaiVCValues["end"] as! String])
                 row.updateCell()
             }else {
-                ShowStandardAlert(title: "Error", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
+                ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
             }
         }
         
@@ -185,7 +185,7 @@ extension ShiftViewController {
     }
     
     func success() {
-        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
+        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }

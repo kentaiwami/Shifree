@@ -43,7 +43,7 @@ class AddShiftViewPresenter {
 
 extension AddShiftViewPresenter: AddShiftViewModelDelegate {
     func successAdd() {
-        view?.showAlert(title: "更新成功", msg: "シフトの更新に成功しました")
+        view?.showAlert(title: "更新完了", msg: "シフトを更新しました")
     }
     
     func initializeUI() {

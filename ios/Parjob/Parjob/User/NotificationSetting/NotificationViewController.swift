@@ -83,7 +83,7 @@ extension NotificationViewController {
     }
     
     func successUpdate() {
-        ShowStandardAlert(title: "成功", msg: "情報を更新しました", vc: self) {
+        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
