@@ -385,6 +385,8 @@ extension API {
 }
 
 
+
+// MARK: - Notification API
 extension API {
     func getNotification() -> Promise<JSON> {
         let endPoint = "setting/notification"
@@ -397,6 +399,18 @@ extension API {
             "is_shift_import": isShiftImport,
             "is_comment": isComment,
             "is_update_shift": isUpdateShift
+            ] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+}
+
+
+// MARK: - Notification API
+extension API {
+    func updateToken(token: String) -> Promise<JSON> {
+        let endPoint = "token"
+        let params = [
+            "token": token
             ] as [String:Any]
         return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
     }

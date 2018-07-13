@@ -129,13 +129,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         deviceToken = deviceToken.trimmingCharacters(in: characterSet)
         deviceToken = deviceToken.replacingOccurrences(of: " ", with: "")
         
-        SendToken(token: deviceToken)
-        
-        print("deviceToken = \(deviceToken)")
-    }
-    
-    func SendToken(token: String){
-        print("SendToken = \(token)")
+        let api = API()
+        api.updateToken(token: deviceToken).done { (json) in
+            print("SendToken = \(deviceToken)")
+        }
+        .catch { (err) in
+            print(err)
+        }
     }
 }
 
