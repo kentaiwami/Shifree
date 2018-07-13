@@ -247,11 +247,11 @@ def import_shift():
                 .join(ShiftCategory, Shift.shift_category_id == ShiftCategory.id)\
                 .filter(Shift.name == shift_name, user.company_id == ShiftCategory.company_id).one()
 
-            same_user_shift = session.query(UserShift)\
-                    .filter(UserShift.date == date,
-                           UserShift.shift_id == shift.id,
-                           UserShift.user_id == user.id).one_or_none()
+            same_user_shift = session.query(UserShift).filter(UserShift.date == date, UserShift.user_id == user.id).one_or_none()
+
             if same_user_shift is not None:
+                session.delete(shift_table)
+                session.commit()
                 session.close()
                 frame = inspect.currentframe()
                 abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
