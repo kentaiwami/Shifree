@@ -53,6 +53,7 @@ class User(db.Model):
     is_shift_import_notification = db.Column(db.Boolean, default=True)
     is_comment_notification = db.Column(db.Boolean, default=True)
     is_update_shift_notification = db.Column(db.Boolean, default=True)
+    token =  db.Column(db.String(255), nullable=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)

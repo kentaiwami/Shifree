@@ -9,6 +9,7 @@
 import UIKit
 import KeychainAccess
 import PopupDialog
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -43,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
@@ -87,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -111,6 +115,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(filename)
             }
         }
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print(error)
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        var deviceToken = String(format: "%@", deviceToken as CVarArg) as String
+        print("deviceToken = \(deviceToken)")
+        
+        let characterSet: CharacterSet = CharacterSet.init(charactersIn: "<>")
+        deviceToken = deviceToken.trimmingCharacters(in: characterSet)
+        deviceToken = deviceToken.replacingOccurrences(of: " ", with: "")
+        
+        SendToken(token: deviceToken)
+        
+        print("deviceToken = \(deviceToken)")
+    }
+    
+    func SendToken(token: String){
+        print("SendToken = \(token)")
     }
 }
 
