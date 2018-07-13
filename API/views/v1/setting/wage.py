@@ -40,7 +40,7 @@ def update():
 
     session.commit()
     session.close()
-    return jsonify({'results':{
+    return jsonify({'results': {
         'daytime_start': str(user.daytime_start),
         'daytime_end': str(user.daytime_end),
         'daytime_wage': user.daytime_wage,
