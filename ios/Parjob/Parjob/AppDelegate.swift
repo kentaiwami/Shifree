@@ -15,6 +15,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+//    let center = UNUserNotificationCenter.current()
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         print("+++++++++++++++++++++++++++++++++++")
@@ -45,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         
         UINavigationBar.appearance().isTranslucent = false
@@ -136,6 +138,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         .catch { (err) in
             print(err)
         }
+    }
+}
+
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            completionHandler([.sound, .alert])
     }
 }
 

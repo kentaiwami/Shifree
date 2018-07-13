@@ -41,7 +41,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         presenter.login()
     }
     
-    fileprivate func HOGE() {
+    fileprivate func initializeUserNotificationCenter() {
         UNUserNotificationCenter.current().requestAuthorization(
         options: [.badge, .alert, .sound]) {(accepted, error) in
             if accepted {
@@ -166,7 +166,7 @@ extension CalendarViewController {
     func initializeUI() {
         initializeCalendarView()
         initializeTableView()
-        HOGE()
+        initializeUserNotificationCenter()
     }
     
     func updateTableViewData() {
