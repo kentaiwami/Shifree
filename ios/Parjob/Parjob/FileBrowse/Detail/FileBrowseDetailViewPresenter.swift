@@ -40,6 +40,10 @@ class FileBrowseDetailViewPresenter {
         guard let tableID = view?.tableID else {return}
         model.deleteTable(tableID: tableID)
     }
+    
+    func isAdmin() -> Bool {
+        return model.isAdmin()
+    }
 }
 
 extension FileBrowseDetailViewPresenter: FileBrowseDetailViewModelDelegate {
