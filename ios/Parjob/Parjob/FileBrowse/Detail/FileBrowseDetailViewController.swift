@@ -53,6 +53,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     fileprivate func initializePDFView() {
         pdfView = UIWebView()
         pdfView.delegate = self
+        pdfView.scalesPageToFit = true
         self.view.addSubview(pdfView)
         
         pdfView.top(to: self.view)
