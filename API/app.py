@@ -9,12 +9,9 @@ from views.v1.shift import usershift, memo, shift
 from views.v1.setting import wage, username, password, user, shiftcategory, color, notification
 from admin import AuthException, init_admin
 from flask_pushjack import FlaskAPNS
-import locale
 
 
 def init_app():
-    locale.setlocale(locale.LC_ALL, str('ja_JP.UTF-8'))
-
     app_obj = Flask(__name__, static_folder='uploads')
     app_obj.config.from_object('config.BaseConfig')
     app_obj.secret_key = secret_key
