@@ -44,7 +44,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section("")
-            <<< TextRow(){
+            <<< PhoneRow(){
                 $0.title = "ユーザ数"
                 $0.tag = "number"
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
