@@ -5,7 +5,7 @@ from model import User, ShiftCategory, ColorScheme
 from database import session
 from views.v1.response import response_msg_404, response_msg_403, response_msg_200
 from basic_auth import api_basic_auth
-from sqlalchemy import or_
+
 
 app = Blueprint('setting_color_bp', __name__)
 
@@ -68,20 +68,23 @@ def create_or_update():
 @api_basic_auth.login_required
 def get():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    category_scheme_results = session.query(ShiftCategory, ColorScheme)\
-        .outerjoin(ColorScheme, ShiftCategory.id == ColorScheme.shift_category_id)\
-        .filter(ShiftCategory.company_id == user.company_id, or_(ColorScheme.user_id == user.id, ColorScheme.id == None))\
-        .all()
-    session.close()
+    category_results = session.query(ShiftCategory).filter(ShiftCategory.company_id == user.company_id).all()
+    scheme_results = session.query(ColorScheme).filter(ColorScheme.user_id == user.id).all()
 
     results = []
 
-    for category, scheme in category_scheme_results:
-        results.append({
-            'category_id': category.id,
-            'category_name': category.name,
-            'hex': None if scheme is None else scheme.hex,
-            'color_scheme_id': None if scheme is None else scheme.id
-        })
+    for category in category_results:
+        scheme_category_match_result = [x for x in scheme_results if x.shift_category_id == category.id]
+        tmp = {'category_id': category.id, 'category_name': category.name}
 
+        if len(scheme_category_match_result) == 0:
+            tmp['hex'] = None
+            tmp['color_scheme_id'] = None
+        else:
+            tmp['hex'] = scheme_category_match_result[0].hex
+            tmp['color_scheme_id'] = scheme_category_match_result[0].id
+
+        results.append(tmp)
+
+    session.close()
     return jsonify({'results': results}), 200
