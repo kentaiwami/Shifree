@@ -15,7 +15,6 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-//    let center = UNUserNotificationCenter.current()
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         print("+++++++++++++++++++++++++++++++++++")
@@ -47,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        resetNotification()
         
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
@@ -92,10 +91,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        resetNotification()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        resetNotification()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -139,12 +139,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(err)
         }
     }
+    
+    func resetNotification() {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
 }
 
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-            completionHandler([.sound, .alert])
+            completionHandler([.sound, .alert, .badge])
     }
 }
 
