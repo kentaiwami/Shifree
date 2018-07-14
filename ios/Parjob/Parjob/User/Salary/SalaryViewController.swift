@@ -56,13 +56,18 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         dotPlot.dataPointFillColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         dotPlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
         
+        var relativePositions: [Double] = []
+        if presenter.getSalaryMax() != 0.0 {
+            relativePositions = [0, 0.25, 0.5, 0.75, 1]
+        }
+        
         let referenceLines = ReferenceLines()
         referenceLines.referenceLineLabelFont = UIFont.boldSystemFont(ofSize: 13)
         referenceLines.referenceLineColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         referenceLines.referenceLineLabelColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         referenceLines.shouldShowLabels = true
         referenceLines.positionType = .relative
-        referenceLines.relativePositions = [0, 0.25, 0.5, 0.75, 1]
+        referenceLines.relativePositions = relativePositions
         referenceLines.includeMinMax = true
         referenceLines.dataPointLabelColor = UIColor.white
         referenceLines.dataPointLabelFont = UIFont.boldSystemFont(ofSize: 12)

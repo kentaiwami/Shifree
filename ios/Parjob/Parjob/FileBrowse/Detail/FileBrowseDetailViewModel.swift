@@ -69,5 +69,16 @@ class FileBrowseDetailViewModel {
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
+    
+    func isAdmin() -> Bool {
+        let keychain = Keychain()
+        let role = try! keychain.get("role")!
+        
+        if role == "admin" {
+            return true
+        }
+        
+        return false
+    }
 
 }

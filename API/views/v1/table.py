@@ -89,6 +89,7 @@ def get_salary(user, shift):
 @api_basic_auth.login_required
 def import_shift():
     from app import app
+    from app import client
 
     schema = {'type': 'object',
               'properties':
@@ -139,9 +140,9 @@ def import_shift():
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': '開始日付は終了日付よりも前にする必要があります', 'param': None})
 
-    user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+    admin_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
-    if user.role.name != 'admin':
+    if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
@@ -158,7 +159,7 @@ def import_shift():
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
-    company = session.query(Company).filter(Company.id == user.company_id).one()
+    company = session.query(Company).filter(Company.id == admin_user.company_id).one()
 
     secure_title = format_text(request.form['title'])
 
@@ -187,6 +188,7 @@ def import_shift():
             day_shift_threshold
         ))
     except ValueError:
+        session.close()
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
 
@@ -245,6 +247,16 @@ def import_shift():
             shift = session.query(Shift)\
                 .join(ShiftCategory, Shift.shift_category_id == ShiftCategory.id)\
                 .filter(Shift.name == shift_name, user.company_id == ShiftCategory.company_id).one()
+
+            same_user_shift = session.query(UserShift).filter(UserShift.date == date, UserShift.user_id == user.id).one_or_none()
+
+            if same_user_shift is not None:
+                session.delete(shift_table)
+                session.commit()
+                session.close()
+                frame = inspect.currentframe()
+                abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+
             user_shift = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
             user_shift_objects.append(user_shift)
 
@@ -267,6 +279,24 @@ def import_shift():
 
     params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
     subprocess.check_call(params)
+
+
+    company_users = session.query(User) \
+        .filter(User.company_id == admin_user.company_id,
+                User.token is not None,
+                User.id != admin_user.id,
+                User.is_shift_import_notification == True
+                ) \
+        .all()
+
+    if len(company_users) != 0:
+        tokens = [user.token for user in company_users]
+        alert = '「{}」が「{}」を取り込みました'.format(admin_user.name, shift_table.title)
+        res = client.send(tokens, alert, sound='default', badge=1)
+        print('***************Add Comment*****************')
+        print(res.errors)
+        print(res.token_errors)
+        print('***************Add Comment*****************')
 
     return jsonify({'results': {
         'table_title': shift_table.title,

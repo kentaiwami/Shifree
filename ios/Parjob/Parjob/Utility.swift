@@ -57,14 +57,14 @@ func GetFormatterDateString(format: String, date: Date) -> String {
 }
 
 func GetTime() -> [String] {
-    var wageTime: [String] = []
+    var time: [String] = []
     
     for hour in 0...23 {
         for minute in [0, 30] {
-            wageTime.append(String(format: "%02d", hour) + ":" + String(format: "%02d", minute))
+            time.append(String(format: "%02d", hour) + ":" + String(format: "%02d", minute))
         }
     }
-    return wageTime
+    return time
 }
 
 func GetMatchStrings(targetString: String, pattern: String) -> [String] {

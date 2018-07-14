@@ -93,6 +93,8 @@ def get():
 @app.route('/api/v1/usershift', methods=['PUT'])
 @api_basic_auth.login_required
 def update():
+    from app import client
+
     schema = {'type': 'object',
               'properties':
                   {'shifts': {'type': 'array', 'minItems': 1, 'items': [{'type': 'object'}]}},
@@ -114,6 +116,7 @@ def update():
 
 
     results = []
+    alert_tokens = []
 
     for shift in request.json['shifts']:
         user_shift = session.query(UserShift).filter(UserShift.id == shift['id']).one_or_none()
@@ -148,7 +151,18 @@ def update():
             'shift_table_id': user_shift.shift_table_id
         })
 
+        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
+            alert = '「{}」が「{}」のシフトを更新しました'.format(admin_user.name, str(user_shift.date))
+            alert_tokens.append({'alert': alert, 'token': user.token})
+
     session.close()
+
+    for alert_token in alert_tokens:
+        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1)
+        print('***************Update UserShift*****************')
+        print(res.errors)
+        print(res.token_errors)
+        print('***************Update UserShift*****************')
 
     return jsonify({'results': results}), 200
 
@@ -156,6 +170,8 @@ def update():
 @app.route('/api/v1/usershift/unknowns', methods=['PUT'])
 @api_basic_auth.login_required
 def unknown_update():
+    from app import client
+
     schema = {'type': 'object',
               'properties':
                   {'updates': {'type': 'array',
@@ -183,6 +199,8 @@ def unknown_update():
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
+    alert_tokens = []
+
     for new_shift in request.json['updates']:
         shift = session.query(Shift).filter(Shift.name == new_shift['name']).one_or_none()
         user = session.query(User).filter(User.code == new_shift['code']).one_or_none()
@@ -206,5 +224,17 @@ def unknown_update():
 
         session.commit()
 
+        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
+            alert = '「{}」が「{}」のシフトを更新しました'.format(admin_user.name, str(user_shift_result.date))
+            alert_tokens.append({'alert': alert, 'token': user.token})
+
     session.close()
+
+    for alert_token in alert_tokens:
+        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1)
+        print('***************Update UserShift*****************')
+        print(res.errors)
+        print(res.token_errors)
+        print('***************Update UserShift*****************')
+
     return jsonify({'msg': response_msg_200()}), 200

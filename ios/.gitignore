@@ -3,5 +3,5 @@ xcuserdata/
 
 # CocoaPods
 Pods/
-
+*.entitlements
 Parjob/Parjob/Setting.swift

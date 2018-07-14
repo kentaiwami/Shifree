@@ -69,6 +69,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     }
     
     private func initializeAnotherForm() {
+        let notificationVC = NotificationViewController()
         let wageVC = WageViewController()
         let userNameVC = UserNameViewController()
         let passwordVC = PasswordViewController()
@@ -76,6 +77,12 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let salaryVC = SalaryViewController()
         
         form +++ Section("")
+            <<< ButtonRow() {
+                $0.title = "通知"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return notificationVC}, onDismiss: {notificationVC in notificationVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+            
             <<< ButtonRow() {
                 $0.title = "時給"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return wageVC}, onDismiss: {wageVC in wageVC.navigationController?.popViewController(animated: true)})

@@ -52,7 +52,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
             self.formValues = self.form.values()
             presenter.tapEditDoneButton()
         }else {
-            ShowStandardAlert(title: "Error", msg: "入力されていない項目があります", vc: self, completion: nil)
+            ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self, completion: nil)
         }
     }
     

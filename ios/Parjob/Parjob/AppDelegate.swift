@@ -9,6 +9,7 @@
 import UIKit
 import KeychainAccess
 import PopupDialog
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -43,6 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        UNUserNotificationCenter.current().delegate = self
+        resetNotification()
         
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
@@ -87,9 +91,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        resetNotification()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        resetNotification()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -111,6 +117,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(filename)
             }
         }
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print(error)
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        var deviceToken = String(format: "%@", deviceToken as CVarArg) as String
+        print("deviceToken = \(deviceToken)")
+        
+        let characterSet: CharacterSet = CharacterSet.init(charactersIn: "<>")
+        deviceToken = deviceToken.trimmingCharacters(in: characterSet)
+        deviceToken = deviceToken.replacingOccurrences(of: " ", with: "")
+        
+        let api = API()
+        api.updateToken(token: deviceToken).done { (json) in
+            print("SendToken = \(deviceToken)")
+        }
+        .catch { (err) in
+            print(err)
+        }
+    }
+    
+    func resetNotification() {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+}
+
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            completionHandler([.sound, .alert, .badge])
     }
 }
 

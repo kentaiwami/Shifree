@@ -53,6 +53,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     fileprivate func initializePDFView() {
         pdfView = UIWebView()
         pdfView.delegate = self
+        pdfView.scalesPageToFit = true
         self.view.addSubview(pdfView)
         
         pdfView.top(to: self.view)
@@ -128,7 +129,13 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         action3.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         action3.tintColor = UIColor.white
         
-        let group1 = FloatingActionGroup(action: action1, action2)
+        let group1 = FloatingActionGroup()
+        if presenter.isAdmin() {
+            group1.add(actions: [action1, action2])
+        }else {
+            group1.add(actions: [action1])
+        }
+        
         let group2 = FloatingActionGroup(action: action3)
         FloatingActionSheetController(actionGroup: group1, group2)
             .present(in: self)

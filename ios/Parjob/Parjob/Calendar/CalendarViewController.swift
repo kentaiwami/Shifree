@@ -10,6 +10,7 @@ import UIKit
 import FSCalendar
 import TinyConstraints
 import PopupDialog
+import UserNotifications
 
 
 protocol CalendarViewInterface: class {
@@ -38,6 +39,21 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         super.viewDidLoad()
         initializePresenter()
         presenter.login()
+    }
+    
+    fileprivate func initializeUserNotificationCenter() {
+        UNUserNotificationCenter.current().requestAuthorization(
+        options: [.badge, .alert, .sound]) {(accepted, error) in
+            if accepted {
+                print("Notification access accepted !")
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            }
+            else{
+                print("Notification access denied.")
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -150,6 +166,7 @@ extension CalendarViewController {
     func initializeUI() {
         initializeCalendarView()
         initializeTableView()
+        initializeUserNotificationCenter()
     }
     
     func updateTableViewData() {

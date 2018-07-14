@@ -21,8 +21,15 @@ def create_main(company_id, number, start, end, same_line_threshold, username_th
     file.save(tmp_file_path)
 
     try:
-        results = subprocess.check_output(['pdf2txt.py', tmp_file_path, '-t', 'xml'])
-    except ValueError:
+        command = '~/.virtualenvs/parjob/bin/python ~/.virtualenvs/parjob/bin/pdf2txt.py {} -t xml'.format(tmp_file_path)
+        results = subprocess.check_output(command, shell=True)
+    except subprocess.CalledProcessError as e:
+        print("*******************************")
+        print(e.returncode)
+        print(e.cmd)
+        print(e.output)
+        print("*******************************")
+
         os.remove(tmp_file_path)
         frame = inspect.currentframe()
         abort(500, {'code': frame.f_lineno, 'msg': '解析コマンドの実行中にエラーが発生しました', 'param': None})

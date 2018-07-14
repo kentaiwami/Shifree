@@ -103,7 +103,7 @@ extension ShiftCategoryViewController {
     }
     
     func success() {
-        ShowStandardAlert(title: "Success", msg: "情報を更新しました", vc: self) {
+        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
