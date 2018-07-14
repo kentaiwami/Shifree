@@ -283,7 +283,7 @@ def import_shift():
 
     company_users = session.query(User) \
         .filter(User.company_id == admin_user.company_id,
-                User.token is not None,
+                User.token != None,
                 User.id != admin_user.id,
                 User.is_shift_import_notification == True
                 ) \

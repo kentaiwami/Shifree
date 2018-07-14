@@ -48,7 +48,7 @@ def add():
 
     company_users = session.query(User)\
         .filter(User.company_id == user.company_id,
-                User.token is not None,
+                User.token != None,
                 User.id != user.id,
                 User.is_comment_notification == True
                 )\
