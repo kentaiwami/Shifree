@@ -12,6 +12,8 @@ app = Blueprint('comment_bp', __name__)
 @app.route('/api/v1/comment', methods=['POST'])
 @api_basic_auth.login_required
 def add():
+    from app import client
+
     schema = {'type': 'object',
               'properties':
                   {'table_id': {'type': 'integer', 'minimum': 0},
@@ -42,6 +44,25 @@ def add():
     comment = Comment(text=request.json['text'], user_id=user.id, shifttable_id=table.id)
     session.add(comment)
     session.commit()
+
+
+    company_users = session.query(User)\
+        .filter(User.company_id == user.company_id,
+                User.token is not None,
+                User.id != user.id,
+                User.is_comment_notification == True
+                )\
+        .all()
+
+    if len(company_users) != 0:
+        tokens = [user.token for user in company_users]
+        alert = '「{}」が「{}」にコメントを追加しました'.format(user.name, table.title)
+        res = client.send(tokens, alert, sound='default', badge=1)
+        print('***************Add Comment*****************')
+        print(res.errors)
+        print(res.token_errors)
+        print('***************Add Comment*****************')
+
     session.close()
 
     return jsonify({'results': {'text': request.json['text'], 'id': comment.id}}), 200
