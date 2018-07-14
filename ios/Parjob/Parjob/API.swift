@@ -23,19 +23,24 @@ class API {
         indicator.start()
         
         let promise = Promise<JSON> { seal in
-            Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding(options: [])).responseJSON { (response) in
+            Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding(options: [])).validate(statusCode: 200..<600).responseJSON { (response) in
                 self.indicator.stop()
                 
-                guard let obj = response.result.value else { return seal.reject(response.error!)}
-                let json = JSON(obj)
-
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    print("***** POST No Auth API Results *****")
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    print("***** GET Auth API Results *****")
                     print(json)
-                    print("***** POST No Auth API Results *****")
-                    seal.fulfill(json)
-                }else {
-                    let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                    print("***** GET Auth API Results *****")
+                    
+                    if IsHTTPStatus(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                        seal.fulfill(json)
+                    }else {
+                        let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                        seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
+                    }
+                case .failure(_):
+                    let err_msg = "エラーが発生しました[-1]"
                     seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
                 }
             }
@@ -50,19 +55,24 @@ class API {
         let password = try! keychain.get("password")
         
         let promise = Promise<JSON> { seal in
-            Alamofire.request(url, method: .get).authenticate(user: user!, password: password!).responseJSON { (response) in
+            Alamofire.request(url, method: .get).authenticate(user: user!, password: password!).validate(statusCode: 200..<600).responseJSON { (response) in
                 self.indicator.stop()
                 
-                guard let obj = response.result.value else { return seal.reject(response.error!)}
-                let json = JSON(obj)
-                
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
                     print("***** GET Auth API Results *****")
                     print(json)
                     print("***** GET Auth API Results *****")
-                    seal.fulfill(json)
-                }else {
-                    let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                    
+                    if IsHTTPStatus(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                        seal.fulfill(json)
+                    }else {
+                        let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                        seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
+                    }
+                case .failure(_):
+                    let err_msg = "エラーが発生しました[-1]"
                     seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
                 }
             }
@@ -77,19 +87,24 @@ class API {
         let password = try! keychain.get("password")
         
         let promise = Promise<JSON> { seal in
-            Alamofire.request(url, method: httpMethod, parameters: params, encoding: JSONEncoding(options: [])).authenticate(user: user!, password: password!).responseJSON { (response) in
+            Alamofire.request(url, method: httpMethod, parameters: params, encoding: JSONEncoding(options: [])).authenticate(user: user!, password: password!).validate(statusCode: 200..<600).responseJSON { (response) in
                 self.indicator.stop()
                 
-                guard let obj = response.result.value else { return seal.reject(response.error!)}
-                let json = JSON(obj)
-                
-                if IsHTTPStatus(statusCode: response.response?.statusCode) {
-                    print("***** " + httpMethod.rawValue + " Auth API Results *****")
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    print("***** GET Auth API Results *****")
                     print(json)
-                    print("***** " + httpMethod.rawValue + " Auth API Results *****")
-                    seal.fulfill(json)
-                }else {
-                    let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                    print("***** GET Auth API Results *****")
+                    
+                    if IsHTTPStatus(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                        seal.fulfill(json)
+                    }else {
+                        let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                        seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
+                    }
+                case .failure(_):
+                    let err_msg = "エラーが発生しました[-1]"
                     seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
                 }
             }
@@ -215,19 +230,26 @@ extension API {
                     case .success(let upload, _, _):
                         upload
                         .authenticate(user: user!, password: password!)
+                        .validate(statusCode: 200..<600)
                         .responseJSON { response in
                             self.indicator.stop()
-                            guard let obj = response.result.value else { return seal.reject(response.error!)}
-                            let json = JSON(obj)
-                            if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                            
+                            switch response.result {
+                            case .success(let value):
+                                let json = JSON(value)
                                 print("***** GET Auth API Results *****")
                                 print(json)
                                 print("***** GET Auth API Results *****")
-                                seal.fulfill(json)
-                            }else {
-                                let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                                    seal.fulfill(json)
+                                }else {
+                                    let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
+                                    seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
+                                }
+                            case .failure(_):
+                                let err_msg = "エラーが発生しました[-1]"
                                 seal.reject(NSError(domain: err_msg, code: (response.response?.statusCode)!))
-                            }
+                            }                            
                         }
                     case .failure(let encodingError):
                         self.indicator.stop()
