@@ -12,6 +12,7 @@
 		370031A120EDE2B600813685 /* ColorSchemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3700319F20EDE2B600813685 /* ColorSchemeViewModel.swift */; };
 		370031A220EDE2B600813685 /* ColorSchemeViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370031A020EDE2B600813685 /* ColorSchemeViewPresenter.swift */; };
 		370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370031A320EDE31500813685 /* PopUpColorViewEntity.swift */; };
+		370C110120FB6CA30048900D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370C110020FB6CA30048900D /* Images.xcassets */; };
 		3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */; };
 		3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */; };
 		37326C3720DE955D00A60B00 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3620DE955D00A60B00 /* Utility.swift */; };
@@ -110,6 +111,7 @@
 		3700319F20EDE2B600813685 /* ColorSchemeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModel.swift; sourceTree = "<group>"; };
 		370031A020EDE2B600813685 /* ColorSchemeViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewPresenter.swift; sourceTree = "<group>"; };
 		370031A320EDE31500813685 /* PopUpColorViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewEntity.swift; sourceTree = "<group>"; };
+		370C110020FB6CA30048900D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewPresenter.swift; sourceTree = "<group>"; };
 		3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewModel.swift; sourceTree = "<group>"; };
 		37326C3620DE955D00A60B00 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 				37326C3820DEC79200A60B00 /* Extensions.swift */,
 				37326C3A20DEC85E00A60B00 /* Enum.swift */,
 				37326C3E20DFD98500A60B00 /* Setting.swift */,
+				370C110020FB6CA30048900D /* Images.xcassets */,
 			);
 			path = Parjob;
 			sourceTree = "<group>";
@@ -641,6 +644,7 @@
 			files = (
 				37425CB820DE6064005A3C93 /* Main.storyboard in Resources */,
 				37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */,
+				370C110120FB6CA30048900D /* Images.xcassets in Resources */,
 				3700319E20EDDC2800813685 /* ColorCell.xib in Resources */,
 				379032FC20F1A3F200C2534F /* CommentCell.xib in Resources */,
 				37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */,
@@ -951,6 +955,7 @@
 			baseConfigurationReference = 4573FE51F909B9ABAEAF2984 /* Pods-Parjob.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Parjob/Parjob.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -975,6 +980,7 @@
 			baseConfigurationReference = D39A03DDC2854E31F625E483 /* Pods-Parjob.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Parjob/Parjob.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
