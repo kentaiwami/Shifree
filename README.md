@@ -1,4 +1,4 @@
-<img src="" align="right" />
+<img src="icon.png" align="right" />
 
 ParJob（パルジョブ）
 ====
