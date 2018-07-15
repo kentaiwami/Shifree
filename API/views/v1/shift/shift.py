@@ -87,6 +87,7 @@ def add_update_delete():
     try:
         validate(request.json, schema)
     except ValidationError as e:
+        session.close()
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
@@ -106,6 +107,7 @@ def add_update_delete():
             abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
         if admin_user.company_id != shift_company[1].id:
+            session.close()
             frame = inspect.currentframe()
             abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
@@ -121,6 +123,7 @@ def add_update_delete():
             abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
         if admin_user.company_id != shift_company[1].id:
+            session.close()
             frame = inspect.currentframe()
             abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
@@ -143,6 +146,7 @@ def add_update_delete():
         shift_category = session.query(ShiftCategory).filter(ShiftCategory.id == shift_obj['category_id']).one_or_none()
 
         if shift_category.company_id != admin_user.company_id:
+            session.close()
             frame = inspect.currentframe()
             abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
@@ -150,6 +154,7 @@ def add_update_delete():
         shift = session.query(Shift).join(ShiftCategory, Company).filter(Shift.name == shift_obj['name'], Company.id == admin_user.company_id).one_or_none()
 
         if shift is not None:
+            session.close()
             frame = inspect.currentframe()
             abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
 

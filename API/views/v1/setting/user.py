@@ -33,6 +33,7 @@ def add_update_delete():
     try:
         validate(request.json, schema)
     except ValidationError as e:
+        session.close()
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
@@ -53,6 +54,7 @@ def add_update_delete():
             abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
         if admin_user.company_id != user.company_id:
+            session.close()
             frame = inspect.currentframe()
             abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 

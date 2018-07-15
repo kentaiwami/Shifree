@@ -31,6 +31,7 @@ def create_or_update():
     try:
         validate(request.json, schema)
     except ValidationError as e:
+        session.close()
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
