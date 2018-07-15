@@ -20,6 +20,8 @@ def get():
 
     company = session.query(Company).filter(Company.id == user.company_id).one()
 
+    session.close()
+
     return jsonify({
         'same_line_threshold': company.default_same_line_threshold,
         'username_threshold': company.default_username_threshold,

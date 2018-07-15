@@ -275,7 +275,6 @@ def import_shift():
     session.bulk_save_objects(user_shift_objects)
     session.bulk_save_objects(salary_objects)
     session.commit()
-    session.close()
 
     params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
     subprocess.check_call(params)
@@ -297,6 +296,8 @@ def import_shift():
         print(res.errors)
         print(res.token_errors)
         print('***************Add Comment*****************')
+
+    session.close()
 
     return jsonify({'results': {
         'table_title': shift_table.title,
@@ -322,6 +323,7 @@ def get_all():
             'thumbnail': table.thumbnail_path
         })
 
+    session.close()
     return jsonify({'results': results}), 200
 
 

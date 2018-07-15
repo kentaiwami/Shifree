@@ -3,5 +3,4 @@ config.py
 *.db
 uploads/
 fixtures/*.yaml
-views/v1/test.py
 *.pem

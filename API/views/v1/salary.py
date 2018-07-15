@@ -29,6 +29,7 @@ def get():
     for salary, table in salary_tables_results:
         results.append({'pay': salary.pay, 'title': table.title})
 
+    session.close()
     return jsonify({'results': results}), 200
 
 
