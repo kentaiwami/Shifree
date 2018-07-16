@@ -67,9 +67,9 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         UIView.setAnimationsEnabled(false)
         
         if presenter.isTargetInclude() {
-            form +++ Section("Memo")
+            form +++ Section("メモ")
                 <<< TextAreaRow(){
-                    $0.title = "Memo"
+                    $0.title = ""
                     $0.tag = "memo"
                     $0.value = presenter.getMemo()
                     $0.placeholder = "このシフトに関するメモを残すことができます。"
