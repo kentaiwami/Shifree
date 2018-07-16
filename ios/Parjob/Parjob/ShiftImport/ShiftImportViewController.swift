@@ -38,6 +38,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "シフトの取り込み"
+        tableView.reloadData()
     }
     
     fileprivate func initializeForm() {
@@ -108,32 +109,36 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
                 }
             }
         
+    form +++ Section(footer: "値が大きいほど、元々3行だったものが1行として扱われます。")
         <<< SliderRow() {
-            $0.title = "行間"
+            $0.title = "行間の値"
             $0.value = presenter.getThreshold().sameLineTH
             $0.tag = "sameLine"
             $0.maximumValue = 10.0
             $0.minimumValue = 0.0
         }
         
+    form +++ Section(footer: "値が大きいほど、より多くの文字列内にユーザ名が含まれているものとして扱います。")
         <<< SliderRow() {
-            $0.title = "ユーザ名"
+            $0.title = "ユーザ名の距離"
             $0.value = presenter.getThreshold().usernameTH
             $0.tag = "username"
             $0.maximumValue = 10.0
             $0.minimumValue = 0.0
         }
         
+    form +++ Section(footer: "値が大きいほど、より多くのセルを結合します。")
         <<< SliderRow() {
-            $0.title = "シフト結合"
+            $0.title = "セル結合"
             $0.value = presenter.getThreshold().joinTH
             $0.tag = "join"
             $0.maximumValue = 10.0
             $0.minimumValue = 0.0
         }
         
+    form +++ Section(footer: "値が大きいほど、その日のシフトとして認識する距離が広がります。")
         <<< SliderRow() {
-            $0.title = "1日ごとのシフト"
+            $0.title = "シフト"
             $0.value = presenter.getThreshold().dayShiftTH
             $0.tag = "dayShift"
             $0.maximumValue = 10.0

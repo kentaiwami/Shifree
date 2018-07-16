@@ -102,7 +102,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         }
         
             <<< ButtonRow() {
-                $0.title = "カラースキーム"
+                $0.title = "カラー"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return colorSchemeVC}, onDismiss: {colorSchemeVC in colorSchemeVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
