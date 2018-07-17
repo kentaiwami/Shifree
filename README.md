@@ -15,5 +15,8 @@ ParJob（パルジョブ）
 ## 注意事項
 - 事前に登録されている企業(店舗)のみ利用することができます。新規に利用する場合は、ご連絡をいただく必要があります。
 
+## 利用フロー
+<img src="activity.png" align="center" />
+
 ## デモ
 ![demo](https://github.com/kentaiwami/parjob/blob/master/demo.gif)
