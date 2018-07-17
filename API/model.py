@@ -166,7 +166,9 @@ class Shift(db.Model):
 
     def __repr__(self):
         shiftcategory = session.query(ShiftCategory).filter(ShiftCategory.id == self.shift_category_id).one_or_none()
-        return '{}({})'.format(self.name, shiftcategory.name)
+        company = session.query(Company).filter(Company.id == shiftcategory.company_id).one_or_none()
+
+        return '{}({})({})'.format(self.name, shiftcategory.name, company.code)
 
 
 class UserShift(db.Model):

@@ -276,7 +276,7 @@ def import_shift():
     session.bulk_save_objects(salary_objects)
     session.commit()
 
-    params = ['convert', '-density', '600', origin_file_path + '[0]', thumbnail_file_path]
+    params = ['convert', '-resize', '50%', '-density', '100', '-alpha', 'remove', origin_file_path+'[0]', thumbnail_file_path]
     subprocess.check_call(params)
 
 
