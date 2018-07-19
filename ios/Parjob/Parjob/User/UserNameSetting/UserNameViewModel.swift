@@ -26,7 +26,7 @@ class UserNameViewModel {
     func updateUserName(newUserName: String) {
         api.updateUserName(newUserName: newUserName).done { (json) in
             let keychain = Keychain()
-            try! keychain.set(newUserName, key: "userName")
+            try! keychain.set(json["name"].stringValue, key: "userName")
             self.delegate?.success()
         }
         .catch { (err) in

@@ -5,6 +5,7 @@ from model import User, Role, Company
 from database import session
 from views.v1.response import response_msg_404, response_msg_403, response_msg_200
 from basic_auth import api_basic_auth
+from config import demo_admin_user
 
 app = Blueprint('setting_user_bp', __name__)
 
@@ -44,6 +45,12 @@ def add_update_delete():
         session.close()
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+
+
+    if admin_user.code == demo_admin_user['code']:
+        session.close()
+        return jsonify({'msg': response_msg_200()}), 200
+
 
     for user_code in request.json['deletes']:
         user = session.query(User).filter(User.code == user_code).one_or_none()

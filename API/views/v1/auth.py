@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from model import User, Company
 from database import session
 from views.v1.response import response_msg_404
+from config import demo_admin_user, demo_general_user
 
 app = Blueprint('auth_bp', __name__)
 
@@ -37,6 +38,12 @@ def auth():
         session.close()
         frame = inspect.currentframe()
         abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+
+
+    if user.code == demo_admin_user['code'] or user.code == demo_general_user['code']:
+        session.close()
+        return jsonify({'user_id': user.id}), 200
+
 
     if user.is_authed:
         user = session.query(User).join(Company.users)\
