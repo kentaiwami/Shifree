@@ -99,30 +99,30 @@ def add_update_delete():
         abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
     for shift_id in request.json['deletes']:
-        shift_company = session.query(Shift, Company).join(ShiftCategory, Company).filter(Shift.id == shift_id).one_or_none()
+        shift_company_results = session.query(Shift, Company).join(ShiftCategory, Company).filter(Shift.id == shift_id).one_or_none()
 
-        if shift_company is None:
+        if shift_company_results is None:
             session.close()
             frame = inspect.currentframe()
             abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
-        if admin_user.company_id != shift_company[1].id:
+        if admin_user.company_id != shift_company_results[1].id:
             session.close()
             frame = inspect.currentframe()
             abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
 
-        session.delete(shift_company[0])
+        session.delete(shift_company_results[0])
 
 
     for shift_obj in request.json['updates']:
-        shift_company = session.query(Shift, Company).join(ShiftCategory, Company).filter(Shift.id == shift_obj['id']).one_or_none()
+        shift_company_results = session.query(Shift, Company).join(ShiftCategory, Company).filter(Shift.id == shift_obj['id']).one_or_none()
 
-        if shift_company is None:
+        if shift_company_results is None:
             session.close()
             frame = inspect.currentframe()
             abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
-        if admin_user.company_id != shift_company[1].id:
+        if admin_user.company_id != shift_company_results[1].id:
             session.close()
             frame = inspect.currentframe()
             abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
@@ -134,10 +134,10 @@ def add_update_delete():
             frame = inspect.currentframe()
             abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
 
-        shift_company[0].name = shift_obj['name']
-        shift_company[0].shift_category_id = shift_category.id
-        shift_company[0].start = None if shift_obj['start'] == '' else shift_obj['start']
-        shift_company[0].end = None if shift_obj['end'] == '' else shift_obj['end']
+        shift_company_results[0].name = shift_obj['name']
+        shift_company_results[0].shift_category_id = shift_category.id
+        shift_company_results[0].start = None if shift_obj['start'] == '' else shift_obj['start']
+        shift_company_results[0].end = None if shift_obj['end'] == '' else shift_obj['end']
 
         session.commit()
 
