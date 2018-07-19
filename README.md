@@ -15,6 +15,24 @@ ParJob（パルジョブ）
 ## 注意事項
 - 事前に登録されている企業(店舗)のみ利用することができます。新規に利用する場合は、ご連絡をいただく必要があります。
 
+## デモユーザ
+```
+role:               admin
+company_code:       3868898
+user_code:          9147688
+username:           aさんM
+password:           1234567
+```
+
+```
+role:               general
+company_code:       3868898
+user_code:          7749812
+username:           dさん
+password:           1234567
+```
+
+
 ## 利用フロー
 <img src="activity.png" align="center" />
 
