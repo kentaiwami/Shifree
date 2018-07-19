@@ -32,6 +32,14 @@ username:           dさん
 password:           1234567
 ```
 
+#### 変更可能な項目（Admin権限のユーザのみ）
+- シフトカテゴリ
+- シフト
+- 通知
+- 時給
+- カラー
+
+
 
 ## 利用フロー
 <img src="activity.png" align="center" />
