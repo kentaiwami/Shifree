@@ -4,7 +4,7 @@ from model import User, Salary, ShiftTable, Shift, UserShift
 from database import session
 from views.v1.response import response_msg_404
 from basic_auth import api_basic_auth
-from .table import get_salary
+from utility import get_salary
 
 app = Blueprint('salary_bp', __name__)
 

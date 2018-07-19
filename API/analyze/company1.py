@@ -391,11 +391,3 @@ def get_search_results_shift_name(current_day_shift, join_shift, after_current_d
         results.append(shift_name)
 
     return results
-
-
-def update_main(table_id):
-    print('update', table_id)
-
-    table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one()
-
-    return {'origin': table.origin_path, 'thumbnail': table.thumbnail_path}

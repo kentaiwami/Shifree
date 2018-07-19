@@ -30,11 +30,11 @@ def update():
 
     if user.code == demo_admin_user['code'] or user.code == demo_general_user['code']:
         session.close()
-        return jsonify({'results': {'name': user.name}}), 200
+        return jsonify({'name': user.name}), 200
 
 
     user.name = request.json['username']
 
     session.commit()
     session.close()
-    return jsonify({'results': {'name': request.json['username']}}), 200
+    return jsonify({'name': request.json['username']}), 200
