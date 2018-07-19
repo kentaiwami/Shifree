@@ -4,6 +4,7 @@ from jsonschema import validate, ValidationError
 from model import User
 from database import session
 from basic_auth import api_basic_auth
+from config import demo_general_user, demo_admin_user
 
 app = Blueprint('setting_username_bp', __name__)
 
@@ -25,6 +26,13 @@ def update():
         abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+
+
+    if user.code == demo_admin_user['code'] or user.code == demo_general_user['code']:
+        session.close()
+        return jsonify({'results': {'name': user.name}}), 200
+
+
     user.name = request.json['username']
 
     session.commit()
