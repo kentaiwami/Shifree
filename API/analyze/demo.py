@@ -4,7 +4,6 @@ from model import *
 from datetime import datetime as DT
 import calendar
 from config import demo_company
-from views.v1.response import response_msg_409
 import random
 from utility import get_salary
 
@@ -15,7 +14,7 @@ def create_main():
     if table is not None:
         session.close()
         frame = inspect.currentframe()
-        abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+        abort(409, {'code': frame.f_lineno, 'msg': '既に同じシフトを取り込んでいるため、新規取り込みはできません。', 'param': None})
 
     now = DT.now()
     title = 'Demo_{}月'.format(now.month)

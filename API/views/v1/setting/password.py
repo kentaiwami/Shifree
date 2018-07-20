@@ -4,7 +4,6 @@ from jsonschema import validate, ValidationError
 from werkzeug.security import generate_password_hash
 from model import User
 from database import session
-from views.v1.response import response_msg_200
 from basic_auth import api_basic_auth
 
 app = Blueprint('setting_password_bp', __name__)
@@ -31,4 +30,4 @@ def update():
 
     session.commit()
     session.close()
-    return jsonify({'msg': response_msg_200()}), 200
+    return jsonify({'msg': 'OK'}), 200

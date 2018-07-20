@@ -3,7 +3,6 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, ShiftCategory, ColorScheme
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_200
 from basic_auth import api_basic_auth
 
 
@@ -44,12 +43,12 @@ def create_or_update():
         if not category:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '対応するシフトカテゴリがありません', 'param': None})
 
         if category.company_id != user.company_id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         color = session.query(ColorScheme).filter(ColorScheme.user_id == user.id, ColorScheme.shift_category_id == category.id).one_or_none()
 
@@ -62,7 +61,7 @@ def create_or_update():
         session.commit()
 
     session.close()
-    return jsonify({'results': response_msg_200()}), 200
+    return jsonify({'results': 'OK'}), 200
 
 
 @app.route('/api/v1/setting/color', methods=['GET'])

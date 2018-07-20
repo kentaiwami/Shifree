@@ -3,7 +3,6 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, UserShift
 from database import session
-from views.v1.response import response_msg_404, response_msg_403
 from basic_auth import api_basic_auth
 
 app = Blueprint('user_shift_memo_bp', __name__)
@@ -31,12 +30,12 @@ def update(usershift_id):
     if user_shift is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '対象となるシフトが見つかりませんでした', 'param': None})
 
     if user_shift.user_id != user.id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     user_shift.memo = request.json['text']
     session.commit()

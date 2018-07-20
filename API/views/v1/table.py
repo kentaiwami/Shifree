@@ -4,7 +4,6 @@ from model import *
 from database import session
 from basic_auth import api_basic_auth
 from jsonschema import validate, ValidationError
-from views.v1.response import response_msg_400, response_msg_403, response_msg_404, response_msg_200, response_msg_409
 import subprocess
 import os
 import unicodedata
@@ -91,19 +90,19 @@ def import_shift():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     if 'file' not in request.files:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
+        abort(400, {'code': frame.f_lineno, 'msg': 'ファイルが添付されていません', 'param': None})
 
     file = request.files['file']
 
     if not (file and allowed_file(file.filename)):
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
+        abort(400, {'code': frame.f_lineno, 'msg': 'PDF以外のファイルは対象外です', 'param': None})
 
     company = session.query(Company).filter(Company.id == admin_user.company_id).one()
 
@@ -118,7 +117,7 @@ def import_shift():
     if os.path.exists(origin_file_path):
         session.close()
         frame = inspect.currentframe()
-        abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+        abort(409, {'code': frame.f_lineno, 'msg': '既に同じタイトルでシフトを取り込んでいます', 'param': None})
 
     # Demo
     if admin_user.code == demo_admin_user['code']:
@@ -147,7 +146,7 @@ def import_shift():
     except ValueError:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
+        abort(400, {'code': frame.f_lineno, 'msg': 'シフトの解析に失敗しました', 'param': None})
 
     flatten_user_shifts = [item for sublist in user_results.shifts for item in sublist]
     shift_types = list(set(flatten_user_shifts))
@@ -212,7 +211,7 @@ def import_shift():
                 session.commit()
                 session.close()
                 frame = inspect.currentframe()
-                abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+                abort(409, {'code': frame.f_lineno, 'msg': '既に同じ日付でシフトが取り込まれています', 'param': None})
 
             user_shift = UserShift(date=date, shift_id=shift.id, user_id=user.id, shift_table_id=shift_table.id)
             user_shift_objects.append(user_shift)
@@ -292,14 +291,14 @@ def get_detail(table_id):
     if table is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '指定された取り込み済みのシフトはありません', 'param': None})
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.company_id != table.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     comment_user = session.query(Comment, User)\
         .join(User).\
@@ -336,23 +335,23 @@ def delete(table_id):
     if user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one_or_none()
 
     if table is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '指定された取り込み済みのシフトはありません', 'param': None})
 
     if table.company_id != user.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     os.remove(table.origin_path)
     os.remove(table.thumbnail_path)
     session.delete(table)
     session.commit()
     session.close()
-    return jsonify({'msg': response_msg_200()}), 200
+    return jsonify({'msg': 'OK'}), 200
