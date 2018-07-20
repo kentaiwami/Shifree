@@ -2,7 +2,6 @@ import inspect
 from flask import Blueprint, jsonify, abort
 from model import User, Salary, ShiftTable, Shift, UserShift
 from database import session
-from views.v1.response import response_msg_404
 from basic_auth import api_basic_auth
 from utility import get_salary
 
@@ -17,7 +16,7 @@ def get():
     if user is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '指定されたユーザは存在しません', 'param': None})
 
     salary_tables_results = session.query(Salary, ShiftTable)\
         .join(ShiftTable)\
@@ -41,7 +40,7 @@ def update():
     if user is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '指定されたユーザは存在しません', 'param': None})
 
     table_usershift_results = session.query(ShiftTable, UserShift, Shift)\
         .join(UserShift, ShiftTable.id == UserShift.shift_table_id)\
@@ -52,7 +51,7 @@ def update():
     if len(table_usershift_results) == 0:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '取り込んだシフト情報がありません', 'param': None})
 
     current_table_id = table_usershift_results[0][0].id
     tmp_salary = 0

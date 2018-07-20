@@ -3,7 +3,6 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, UserShift, Shift, ShiftCategory, Company, ColorScheme
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_400, response_msg_200
 from basic_auth import api_basic_auth
 from itertools import groupby
 from datetime import datetime
@@ -26,7 +25,7 @@ def get():
     except ValidationError:
         session.close()
         frame = inspect.currentframe()
-        abort(400, {'code': frame.f_lineno, 'msg': response_msg_400(), 'param': None})
+        abort(400, {'code': frame.f_lineno, 'msg': '開始日と終了日の指定方法が間違っています', 'param': None})
 
     start.isoformat()
     start.isoformat()
@@ -113,7 +112,7 @@ def update():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
 
     results = []
@@ -125,21 +124,21 @@ def update():
         if user_shift is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
         user = session.query(User).filter(User.id == user_shift.user_id).one()
 
         if user.company_id != admin_user.company_id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         shift = session.query(Shift).join(ShiftCategory).filter(Shift.name == shift['name'], ShiftCategory.company_id == admin_user.company_id).one_or_none()
 
         if shift is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
         user_shift.shift_id = shift.id
         session.commit()
@@ -199,7 +198,7 @@ def unknown_update():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     alert_tokens = []
 
@@ -210,7 +209,7 @@ def unknown_update():
         if shift is None or user is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
         user_shift_result = session.query(UserShift)\
             .filter(UserShift.user_id == user.id,
@@ -220,7 +219,7 @@ def unknown_update():
         if user_shift_result is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
         user_shift_result.shift_id = shift.id
 
@@ -239,4 +238,4 @@ def unknown_update():
         print(res.token_errors)
         print('***************Update UserShift*****************')
 
-    return jsonify({'msg': response_msg_200()}), 200
+    return jsonify({'msg': 'OK'}), 200

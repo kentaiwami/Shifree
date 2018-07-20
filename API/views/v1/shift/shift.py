@@ -3,7 +3,6 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, Company, Shift, ShiftCategory
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_200, response_msg_409
 from basic_auth import api_basic_auth
 
 
@@ -96,7 +95,7 @@ def add_update_delete():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     for shift_id in request.json['deletes']:
         shift_company_results = session.query(Shift, Company).join(ShiftCategory, Company).filter(Shift.id == shift_id).one_or_none()
@@ -104,12 +103,12 @@ def add_update_delete():
         if shift_company_results is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
         if admin_user.company_id != shift_company_results[1].id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         session.delete(shift_company_results[0])
 
@@ -120,19 +119,19 @@ def add_update_delete():
         if shift_company_results is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
         if admin_user.company_id != shift_company_results[1].id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         shift_category = session.query(ShiftCategory).filter(ShiftCategory.id == shift_obj['category_id']).one_or_none()
 
         if shift_category is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '関連するシフトカテゴリが見つかりませんでした', 'param': None})
 
         shift_company_results[0].name = shift_obj['name']
         shift_company_results[0].shift_category_id = shift_category.id
@@ -148,7 +147,7 @@ def add_update_delete():
         if shift_category.company_id != admin_user.company_id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
 
         shift = session.query(Shift).join(ShiftCategory, Company).filter(Shift.name == shift_obj['name'], Company.id == admin_user.company_id).one_or_none()
@@ -156,7 +155,7 @@ def add_update_delete():
         if shift is not None:
             session.close()
             frame = inspect.currentframe()
-            abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+            abort(409, {'code': frame.f_lineno, 'msg': '既に同じシフトが存在しているため、新しいシフトを追加できませんでした。', 'param': None})
 
         new_shift = Shift(
             name=shift_obj['name'],
@@ -169,4 +168,4 @@ def add_update_delete():
 
     session.commit()
     session.close()
-    return jsonify({'msg': response_msg_200()}), 200
+    return jsonify({'msg': 'OK'}), 200

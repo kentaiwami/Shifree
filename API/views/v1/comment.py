@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, request, abort
 from jsonschema import validate, ValidationError
 from model import User, Comment, ShiftTable
 from database import session
-from views.v1.response import response_msg_404, response_msg_403
 from basic_auth import api_basic_auth
 
 app = Blueprint('comment_bp', __name__)
@@ -35,12 +34,12 @@ def add():
     if table is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '取り込んだシフトが見つかりませんでした', 'param': None})
 
     if table.company_id != user.company_id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     comment = Comment(text=request.json['text'], user_id=user.id, shifttable_id=table.id)
     session.add(comment)
@@ -91,12 +90,12 @@ def update_or_delete(comment_id):
     if comment is None:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '変更対象のコメントが見つかりませんでした', 'param': None})
 
     if comment.user_id != user.id:
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     if len(request.json['text']) == 0:
         session.delete(comment)

@@ -3,7 +3,6 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, Role, Company
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_200
 from basic_auth import api_basic_auth
 from config import demo_admin_user
 
@@ -44,12 +43,12 @@ def add_update_delete():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
 
     if admin_user.code == demo_admin_user['code']:
         session.close()
-        return jsonify({'msg': response_msg_200()}), 200
+        return jsonify({'msg': 'OK'}), 200
 
 
     for user_code in request.json['deletes']:
@@ -58,12 +57,12 @@ def add_update_delete():
         if user is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のユーザが見つかりませんでした', 'param': None})
 
         if admin_user.company_id != user.company_id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         session.delete(user)
 
@@ -74,12 +73,12 @@ def add_update_delete():
         if user is None:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のユーザが見つかりませんでした', 'param': None})
 
         if admin_user.company_id != user.company_id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         role = session.query(Role).filter(Role.name == request_user_obj['role']).one()
         user.order = request_user_obj['order']
@@ -101,7 +100,7 @@ def add_update_delete():
 
     session.commit()
     session.close()
-    return jsonify({'msg': response_msg_200()}), 200
+    return jsonify({'msg': 'OK'}), 200
 
 
 @app.route('/api/v1/setting/users', methods=['GET'])
@@ -112,7 +111,7 @@ def get():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
     users_role = session.query(User, Role).join(Role).filter(User.company_id == admin_user.company_id).order_by(User.order.asc()).all()
     company = session.query(Company).filter(Company.id == admin_user.company_id).one()

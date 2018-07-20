@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, request, abort
 from jsonschema import validate, ValidationError
 from model import User
 from database import session
-from views.v1.response import response_msg_200
 from basic_auth import api_basic_auth
 
 app = Blueprint('token_bp', __name__)
@@ -32,4 +31,4 @@ def update_token():
     session.commit()
     session.close()
 
-    return jsonify({'msg': response_msg_200()}), 200
+    return jsonify({'msg': 'OK'}), 200

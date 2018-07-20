@@ -3,7 +3,6 @@ from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
 from model import User, ShiftCategory, Company
 from database import session
-from views.v1.response import response_msg_404, response_msg_403, response_msg_409, response_msg_200
 from basic_auth import api_basic_auth
 
 app = Blueprint('setting_shitcategory_bp', __name__)
@@ -52,7 +51,7 @@ def add_update_delete():
     if admin_user.role.name != 'admin':
         session.close()
         frame = inspect.currentframe()
-        abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
 
     for delete_id in request.json['deletes']:
@@ -61,12 +60,12 @@ def add_update_delete():
         if not category:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトカテゴリが見つかりませんでした', 'param': None})
 
         if admin_user.company_id != category.company_id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         session.delete(category)
 
@@ -78,7 +77,7 @@ def add_update_delete():
         if category:
             session.close()
             frame = inspect.currentframe()
-            abort(409, {'code': frame.f_lineno, 'msg': response_msg_409(), 'param': None})
+            abort(409, {'code': frame.f_lineno, 'msg': '既に同じカテゴリが存在しているため、新しいシフトカテゴリを追加できませんでした。', 'param': None})
         else:
             new_category = ShiftCategory(name=new_name, company_id=admin_user.company_id)
             session.add(new_category)
@@ -90,12 +89,12 @@ def add_update_delete():
         if not category:
             session.close()
             frame = inspect.currentframe()
-            abort(404, {'code': frame.f_lineno, 'msg': response_msg_404(), 'param': None})
+            abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトカテゴリが見つかりませんでした', 'param': None})
 
         if admin_user.company_id != category.company_id:
             session.close()
             frame = inspect.currentframe()
-            abort(403, {'code': frame.f_lineno, 'msg': response_msg_403(), 'param': None})
+            abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
         category.name = update_shift_category['name']
 
@@ -104,4 +103,4 @@ def add_update_delete():
     session.commit()
     session.close()
 
-    return jsonify({'results': response_msg_200()}), 200
+    return jsonify({'results': 'OK'}), 200
