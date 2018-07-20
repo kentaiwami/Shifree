@@ -4,6 +4,7 @@ import os
 from database import db, session
 from datetime import datetime
 from sqlalchemy import event
+from config import demo_company
 
 
 def code_generator():
@@ -220,7 +221,8 @@ def receive_after_insert(_mapper, connection, company):
 @event.listens_for(ShiftTable, 'after_delete')
 def receive_after_insert(_mapper, _connection, shift_table):
     try:
-        os.remove(shift_table.origin_path)
-        os.remove(shift_table.thumbnail_path)
+        if shift_table.company_id != demo_company['id']:
+            os.remove(shift_table.origin_path)
+            os.remove(shift_table.thumbnail_path)
     except FileNotFoundError:
         pass
