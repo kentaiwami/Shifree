@@ -190,7 +190,7 @@ extension SignUpViewController {
     func navigateCalendar() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let topVC = storyboard.instantiateInitialViewController()
-        topVC?.modalTransitionStyle = .flipHorizontal
+        topVC?.modalTransitionStyle = .crossDissolve
         self.present(topVC!, animated: true, completion: nil)
     }
     

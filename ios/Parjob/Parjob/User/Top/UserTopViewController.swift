@@ -159,7 +159,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
 extension UserTopViewController {
     func navigateSignUp() {
         let signupVC = SignUpViewController()
-        signupVC.modalTransitionStyle = .flipHorizontal
+        signupVC.modalTransitionStyle = .crossDissolve
         let nav = UINavigationController()
         nav.viewControllers = [signupVC]
         self.present(nav, animated: true, completion: nil)

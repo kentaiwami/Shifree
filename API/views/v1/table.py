@@ -349,8 +349,10 @@ def delete(table_id):
         frame = inspect.currentframe()
         abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
 
-    os.remove(table.origin_path)
-    os.remove(table.thumbnail_path)
+    if user.code != demo_admin_user['code']:
+        os.remove(table.origin_path)
+        os.remove(table.thumbnail_path)
+
     session.delete(table)
     session.commit()
     session.close()
