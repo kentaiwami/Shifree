@@ -76,12 +76,18 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
                 $0.tag = "start"
                 $0.value = Date()
             }
+            .cellSetup({ (cell, row) in
+                cell.detailTextLabel?.textColor = UIColor.black
+            })
 
             <<< DateRow(){
                 $0.title = "終了日"
                 $0.tag = "end"
                 $0.value = Date()
             }
+            .cellSetup({ (cell, row) in
+                cell.detailTextLabel?.textColor = UIColor.black
+            })
             
             <<< TextRow(){ row in
                 row.title = "タイトル"
@@ -117,6 +123,9 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.maximumValue = 10.0
             $0.minimumValue = 0.0
         }
+        .cellSetup({ (cell, row) in
+            cell.detailTextLabel?.textColor = UIColor.black
+        })
         
     form +++ Section(footer: "値が大きいほど、より多くの文字列内にユーザ名が含まれているものとして扱います。")
         <<< SliderRow() {
@@ -126,6 +135,9 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.maximumValue = 10.0
             $0.minimumValue = 0.0
         }
+        .cellSetup({ (cell, row) in
+            cell.detailTextLabel?.textColor = UIColor.black
+        })
         
     form +++ Section(footer: "値が大きいほど、より多くのセルを結合します。")
         <<< SliderRow() {
@@ -135,6 +147,9 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.maximumValue = 10.0
             $0.minimumValue = 0.0
         }
+        .cellSetup({ (cell, row) in
+            cell.detailTextLabel?.textColor = UIColor.black
+        })
         
     form +++ Section(footer: "値が大きいほど、その日のシフトとして認識する距離が広がります。")
         <<< SliderRow() {
@@ -144,6 +159,9 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.maximumValue = 10.0
             $0.minimumValue = 0.0
         }
+        .cellSetup({ (cell, row) in
+            cell.detailTextLabel?.textColor = UIColor.black
+        })
         
         UIView.setAnimationsEnabled(true)
     }

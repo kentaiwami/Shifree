@@ -69,18 +69,21 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
             shiftCategoryRow.options = [""] + presenter.getShiftCategory().map({$0.name})
             shiftCategoryRow.value = ""
             shiftCategoryRow.tag = "category," + String(i)
+            shiftCategoryRow.cell.detailTextLabel?.textColor = UIColor.black
             
             let startRow = PickerInputRow<String>()
             startRow.title = "開始時間"
             startRow.options = [""] + GetTime()
             startRow.value = ""
             startRow.tag = "start," + String(i)
+            startRow.cell.detailTextLabel?.textColor = UIColor.black
             
             let endRow = PickerInputRow<String>()
             endRow.title = "終了時間"
             endRow.options = [""] + GetTime()
             endRow.value = ""
             endRow.tag = "end," + String(i)
+            endRow.cell.detailTextLabel?.textColor = UIColor.black
 
             section.append(labelRow)
             section.append(shiftCategoryRow)

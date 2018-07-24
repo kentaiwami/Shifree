@@ -92,8 +92,10 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
 
                     if presenter.isAdmin() {
                         $0.disabled = false
+                        $0.cell.detailTextLabel?.textColor = UIColor.black
                     }else {
                         $0.disabled = true
+                        $0.cell.detailTextLabel?.textColor = UIColor.gray
                     }
             }
         }

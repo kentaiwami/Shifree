@@ -65,6 +65,7 @@ class UserListSettingDetailViewController: FormViewController {
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
                 $0.tag = "role"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
             .onRowValidationChanged { cell, row in
                 let rowIndex = row.indexPath!.row

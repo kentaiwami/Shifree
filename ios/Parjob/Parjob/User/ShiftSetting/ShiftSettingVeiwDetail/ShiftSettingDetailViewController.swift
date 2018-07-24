@@ -57,6 +57,7 @@ class ShiftSettingDetailViewController: FormViewController {
                 $0.options = [""] + GetTime()
                 $0.value = start
                 $0.tag = "start"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
             .cellUpdate({ (cell, row) in
                 if let tmpRowValue = row.value {
@@ -70,6 +71,7 @@ class ShiftSettingDetailViewController: FormViewController {
                 $0.options = [""] + GetTime()
                 $0.value = end
                 $0.tag = "end"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
             .cellUpdate({ (cell, row) in
                 if let tmpRowValue = row.value {

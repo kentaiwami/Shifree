@@ -53,6 +53,7 @@ class UnknownViewController: FormViewController, UnknownViewInterface {
                 picker.options = presenter.getUserCompanyShiftNames()
                 picker.value = "unknown"
                 picker.tag = tag
+                picker.cell.detailTextLabel?.textColor = UIColor.black
                 
                 section.append(picker)
             }

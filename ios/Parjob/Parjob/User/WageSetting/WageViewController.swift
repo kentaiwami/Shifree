@@ -52,6 +52,7 @@ class WageViewController: FormViewController, WageViewInterface {
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
                 $0.tag = "daytimeStart"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
             .onRowValidationChanged { cell, row in
                 let rowIndex = row.indexPath!.row
@@ -80,6 +81,7 @@ class WageViewController: FormViewController, WageViewInterface {
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
                 $0.tag = "daytimeEnd"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
             .onRowValidationChanged { cell, row in
                 let rowIndex = row.indexPath!.row
@@ -136,6 +138,7 @@ class WageViewController: FormViewController, WageViewInterface {
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
                 $0.tag = "nightStart"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
             .onRowValidationChanged { cell, row in
                 let rowIndex = row.indexPath!.row
@@ -164,6 +167,7 @@ class WageViewController: FormViewController, WageViewInterface {
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
                 $0.tag = "nightEnd"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
             .onRowValidationChanged { cell, row in
                 let rowIndex = row.indexPath!.row
