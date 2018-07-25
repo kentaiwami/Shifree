@@ -17,7 +17,7 @@ def create_main():
         abort(409, {'code': frame.f_lineno, 'msg': '既に同じシフトを取り込んでいるため、新規取り込みはできません。', 'param': None})
 
     now = DT.now()
-    title = 'Demo_{}月'.format(now.month)
+    title = '{}月シフト'.format(now.month)
     new_table = ShiftTable(
         title=title,
         origin_path=demo_company['origin_path'],
