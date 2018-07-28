@@ -39,7 +39,7 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
     private func initializeForm() {
         form +++ Section("")
             <<< TextRow(){ row in
-                row.title = "UserName"
+                row.title = "ユーザ名"
                 row.tag = "username"
                 row.value = presenter.username
                 row.add(rule: RuleRequired(msg: "必須項目です"))
