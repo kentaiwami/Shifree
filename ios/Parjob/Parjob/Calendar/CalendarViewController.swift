@@ -108,10 +108,10 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     private func initializeNavigationItem() {
-        let check = UIBarButtonItem(image: UIImage(named: "switch_calendar"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
+        let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let info = UIBarButtonItem(image: UIImage(named: "information"), style: .plain, target: self, action: #selector(TapColorInformationButton))
 
-        self.tabBarController?.navigationItem.setRightBarButton(check, animated: true)
+        self.tabBarController?.navigationItem.setRightBarButton(month, animated: true)
         self.tabBarController?.navigationItem.setLeftBarButton(info, animated: true)
     }
     
@@ -126,10 +126,15 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     @objc private func TapChangeCalendarButton(sendor: UIButton) {
+        let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
+        let week = UIBarButtonItem(image: UIImage(named: "week"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
+        
         if self.calendar.scope == .month {
             self.calendar.setScope(.week, animated: true)
+            self.tabBarController?.navigationItem.setRightBarButton(month, animated: true)
         }else {
             self.calendar.setScope(.month, animated: true)
+            self.tabBarController?.navigationItem.setRightBarButton(week, animated: true)
         }
     }
     
