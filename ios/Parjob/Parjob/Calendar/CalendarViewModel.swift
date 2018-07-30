@@ -83,7 +83,7 @@ class CalendarViewModel {
                     tmp.shifts.append(userShift)
                 })
                 
-                tmp.generateJoinedString()
+                tmp.generateJoinedString(tartgetUserShift: getTargetUserShift(date: currentDate), memo: currentDateOneDayShifts[0].memo)
                 tmpTableViewShift.append(tmp)
             }
             
