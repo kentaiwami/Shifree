@@ -12,13 +12,31 @@ struct TableViewShift {
     var joined: String = ""
     var shifts: [UserShift] = []
     
-    mutating func generateJoinedString() {
+    mutating func generateJoinedString(tartgetUserShift: TargetUserShift, memo: String) {
+        let targetUserShift = self.shifts.filter({$0.id == tartgetUserShift.id})
         var tmp = ""
-        self.shifts.forEach { (userShift) in
-            tmp += userShift.user + " "
-        }
         
-        joined = String(tmp[tmp.startIndex..<tmp.index(before: tmp.endIndex)])
+        // ユーザのシフト情報がある箇所だけ、ユーザ名とコメントを分けるように文字列を操作
+        if targetUserShift.count == 0 {
+            self.shifts.forEach { (userShift) in
+                tmp += userShift.user + "(" + userShift.name + ")　"
+            }
+            joined = String(tmp[tmp.startIndex..<tmp.index(before: tmp.endIndex)])
+        }else {
+            for userShift in self.shifts {
+                if userShift.id != targetUserShift[0].id {
+                    tmp += userShift.user + "(" + userShift.name + ")　"
+                }
+            }
+            
+            var newLine = "\n"
+            if memo.count != 0 {
+                newLine += "\n"
+            }
+            
+            joined = String(tmp[tmp.startIndex..<tmp.index(before: tmp.endIndex)])
+            joined = targetUserShift[0].user + "(" + targetUserShift[0].name + ")" + "\n" + memo + newLine + joined
+        }
     }
 }
 
