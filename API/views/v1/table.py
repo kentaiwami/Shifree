@@ -132,7 +132,8 @@ def import_shift():
 
     # 企業ごとの解析プログラムを実行
     try:
-        exec('from analyze.company{} import create_main'.format(company.id))
+        exec('from analyze.company{} import create_main'.format(company.id), globals())
+
         user_results = eval('create_main({},{},\'{}\',\'{}\', {}, {}, {}, {}, file, origin_file_path)'.format(
             company.id,
             number,
