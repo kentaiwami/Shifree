@@ -80,7 +80,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         commentTableView.delegate = self
         commentTableView.dataSource = self
         commentTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
-        commentTableView.rowHeight = 60
+        commentTableView.estimatedRowHeight = 100
         commentTableView.backgroundView = GetEmptyView(msg: EmptyMessage.noComment.rawValue)
         self.view.addSubview(commentTableView)
         
@@ -179,6 +179,10 @@ extension FileBrowseDetailViewController {
 }
 
 extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.getComments().count
     }
@@ -190,7 +194,10 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
         let comment = presenter.getComments()[indexPath.row]
-        cell.setAll(username: comment.user, created: comment.created, text: comment.text)
+        cell.setAll(username: comment.user, created: comment.created)
+        
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.text = "\n" + comment.text
         
         if presenter.isMyComment(row: indexPath.row) {
             cell.selectionStyle = .blue
