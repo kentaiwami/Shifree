@@ -197,7 +197,7 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
         cell.setAll(username: comment.user, created: comment.created)
         
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "\n" + comment.text
+        cell.textLabel?.text = "\n" + comment.text + "\n"
         
         if presenter.isMyComment(row: indexPath.row) {
             cell.selectionStyle = .blue

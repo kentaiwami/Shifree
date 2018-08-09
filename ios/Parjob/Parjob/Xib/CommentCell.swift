@@ -21,7 +21,7 @@ class CommentCell: UITableViewCell {
         usernameLabel.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         usernameLabel.sizeToFit()
         
-        createdLabel.bottom(to: self)
+        createdLabel.bottom(to: self, offset: -10)
         createdLabel.right(to: self, offset: -30)
         createdLabel.font = UIFont.systemFont(ofSize: 15)
         createdLabel.textColor = UIColor.gray
