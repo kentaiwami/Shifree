@@ -12,6 +12,9 @@
 		370031A120EDE2B600813685 /* ColorSchemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3700319F20EDE2B600813685 /* ColorSchemeViewModel.swift */; };
 		370031A220EDE2B600813685 /* ColorSchemeViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370031A020EDE2B600813685 /* ColorSchemeViewPresenter.swift */; };
 		370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370031A320EDE31500813685 /* PopUpColorViewEntity.swift */; };
+		370A2FFA212DB82600B8082F /* UpdateTitleViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF7212DB82600B8082F /* UpdateTitleViewPresenter.swift */; };
+		370A2FFB212DB82600B8082F /* UpdateTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF8212DB82600B8082F /* UpdateTitleViewModel.swift */; };
+		370A2FFC212DB82600B8082F /* UpdateTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF9212DB82600B8082F /* UpdateTitleViewController.swift */; };
 		370C110120FB6CA30048900D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370C110020FB6CA30048900D /* Images.xcassets */; };
 		3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */; };
 		3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */; };
@@ -111,6 +114,9 @@
 		3700319F20EDE2B600813685 /* ColorSchemeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModel.swift; sourceTree = "<group>"; };
 		370031A020EDE2B600813685 /* ColorSchemeViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewPresenter.swift; sourceTree = "<group>"; };
 		370031A320EDE31500813685 /* PopUpColorViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewEntity.swift; sourceTree = "<group>"; };
+		370A2FF7212DB82600B8082F /* UpdateTitleViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewPresenter.swift; sourceTree = "<group>"; };
+		370A2FF8212DB82600B8082F /* UpdateTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewModel.swift; sourceTree = "<group>"; };
+		370A2FF9212DB82600B8082F /* UpdateTitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewController.swift; sourceTree = "<group>"; };
 		370C110020FB6CA30048900D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewPresenter.swift; sourceTree = "<group>"; };
 		3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewModel.swift; sourceTree = "<group>"; };
@@ -244,6 +250,16 @@
 			path = Xib;
 			sourceTree = "<group>";
 		};
+		370A2FF6212DB7F500B8082F /* UpdateTitle */ = {
+			isa = PBXGroup;
+			children = (
+				370A2FF9212DB82600B8082F /* UpdateTitleViewController.swift */,
+				370A2FF7212DB82600B8082F /* UpdateTitleViewPresenter.swift */,
+				370A2FF8212DB82600B8082F /* UpdateTitleViewModel.swift */,
+			);
+			path = UpdateTitle;
+			sourceTree = "<group>";
+		};
 		37326C4020DFE32B00A60B00 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +307,7 @@
 		3765CD5D20F0D8940031D235 /* FileBrowse */ = {
 			isa = PBXGroup;
 			children = (
+				370A2FF6212DB7F500B8082F /* UpdateTitle */,
 				37C0CCD820F20B33003D650F /* AddComment */,
 				3790330020F1EA3600C2534F /* EditComment */,
 				3765CD6520F0D99D0031D235 /* Detail */,
@@ -726,17 +743,20 @@
 			files = (
 				37C168B420F0308F003A453A /* SalaryViewModel.swift in Sources */,
 				37326C4820E14B7500A60B00 /* CalendarViewModel.swift in Sources */,
+				370A2FFB212DB82600B8082F /* UpdateTitleViewModel.swift in Sources */,
 				3765CD6220F0D9140031D235 /* FileBrowseTopViewPresenter.swift in Sources */,
 				375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */,
 				379032F820F13F7E00C2534F /* FileBrowseDetailViewEntity.swift in Sources */,
 				37DE67B420F6465000DB7EBC /* AddShiftViewPresenter.swift in Sources */,
 				3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */,
+				370A2FFC212DB82600B8082F /* UpdateTitleViewController.swift in Sources */,
 				37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */,
 				370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */,
 				37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */,
 				3790330620F1EA9100C2534F /* EditCommentViewController.swift in Sources */,
 				37A69B1A20E89D28004E8C66 /* ShiftCategoryViewController.swift in Sources */,
 				37A69B2620E8A0EC004E8C66 /* ColorSchemeViewController.swift in Sources */,
+				370A2FFA212DB82600B8082F /* UpdateTitleViewPresenter.swift in Sources */,
 				37326C3F20DFD98500A60B00 /* Setting.swift in Sources */,
 				37326C3720DE955D00A60B00 /* Utility.swift in Sources */,
 				37A69B1820E89D19004E8C66 /* UserListSettingViewController.swift in Sources */,

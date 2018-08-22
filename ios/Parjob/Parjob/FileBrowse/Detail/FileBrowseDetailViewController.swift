@@ -27,7 +27,6 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     fileprivate var commentTableView: UITableView!
     fileprivate var myIndicator = UIActivityIndicatorView()
 
-    var navigationTitle: String = ""
     var tableID: Int = 0
     
     override func viewDidLoad() {
@@ -40,8 +39,6 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = navigationTitle
-        
         presenter.setFileTableDetail()
         
         if pdfView != nil {
@@ -102,7 +99,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     }
     
     @objc private func TapActionButton(sendor: UIButton) {
-        let action1 = FloatingAction(title: "コメントの追加") { action in
+        let addCommentAction = FloatingAction(title: "コメントの追加") { action in
             let addCommentVC = AddCommentViewController()
             addCommentVC.setTableID(id: self.tableID)
             let nav = UINavigationController()
@@ -110,33 +107,45 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
             nav.modalTransitionStyle = .coverVertical
             self.present(nav, animated: true, completion: nil)
         }
-        action1.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-        action1.tintColor = UIColor.white
+        addCommentAction.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        addCommentAction.tintColor = UIColor.white
         
-        let action2 = FloatingAction(title: "シフトの削除") { action in
+        let updateShiftTitleAction = FloatingAction(title: "タイトルの変更") { action in
+            let updateTitleVC = UpdateTitleViewController()
+            updateTitleVC.setAll(tableTitle: self.presenter.getFileTable().title, tableID: self.tableID)
+            let nav = UINavigationController()
+            nav.viewControllers = [updateTitleVC]
+            nav.modalTransitionStyle = .coverVertical
+            self.present(nav, animated: true, completion: nil)
+        }
+        updateShiftTitleAction.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        updateShiftTitleAction.tintColor = UIColor.white
+        
+        let deleteShiftAction = FloatingAction(title: "シフトの削除") { action in
             let popup = PopupDialog(title: "再確認", message: "取り込んだシフトを削除しますか？")
-            let cancelBtn = CancelButton(title: "Cancel") {}
+            let cancelBtn = CancelButton(title: "キャンセル") {}
             let deleteBtn = DestructiveButton(title: "削除", action: {
                 self.presenter.deleteFileTable()
             })
             popup.addButtons([deleteBtn, cancelBtn])
             self.present(popup, animated: true, completion: nil)
         }
-        action2.textColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
-        action2.tintColor = UIColor.white
+        deleteShiftAction.textColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
+        deleteShiftAction.tintColor = UIColor.white
         
-        let action3 = FloatingAction(title: "Cancel") { action in}
-        action3.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-        action3.tintColor = UIColor.white
+        
+        let cancelAction = FloatingAction(title: "キャンセル") { action in}
+        cancelAction.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        cancelAction.tintColor = UIColor.white
         
         let group1 = FloatingActionGroup()
         if presenter.isAdmin() {
-            group1.add(actions: [action1, action2])
+            group1.add(actions: [addCommentAction, updateShiftTitleAction, deleteShiftAction])
         }else {
-            group1.add(actions: [action1])
+            group1.add(actions: [addCommentAction])
         }
         
-        let group2 = FloatingActionGroup(action: action3)
+        let group2 = FloatingActionGroup(action: cancelAction)
         FloatingActionSheetController(actionGroup: group1, group2)
             .present(in: self)
     }
@@ -150,6 +159,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
 // MARK: - Presenterから呼び出される関数
 extension FileBrowseDetailViewController {
     func initializeUI() {
+        self.navigationItem.title = presenter.getFileTable().title
         initializeNavigationItem()
         initializePDFView()
         initializeIndicator()
@@ -169,10 +179,6 @@ extension FileBrowseDetailViewController {
 
 // MARK: - インスタンス化される前に呼ばれるべき関数
 extension FileBrowseDetailViewController {
-    func setTitle(title: String) {
-        self.navigationTitle = title
-    }
-    
     func setTableID(id: Int) {
         self.tableID = id
     }

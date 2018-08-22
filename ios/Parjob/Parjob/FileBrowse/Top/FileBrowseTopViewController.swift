@@ -94,7 +94,6 @@ extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = FileBrowseDetailViewController()
-        detailVC.setTitle(title: presenter.getTable()[indexPath.row].title)
         detailVC.setTableID(id: presenter.getTable()[indexPath.row].id)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }

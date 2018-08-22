@@ -198,6 +198,11 @@ extension API {
         return getAuth(url: base + version + endPoint)
     }
     
+    func updateTableTitle(id: Int, params: [String:String]) -> Promise<JSON> {
+        let endPoint = "tables/" + String(id)
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+    
     func deleteTable(id: Int) -> Promise<JSON> {
         let endPoint = "tables/" + String(id)
         return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .delete)
