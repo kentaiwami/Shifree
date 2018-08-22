@@ -54,7 +54,7 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
     private func initializeUI() {
         form +++ Section("")
             <<< PhoneRow(){
-                $0.title = "CompanyCode"
+                $0.title = "企業コード"
                 $0.tag = "companyCode"
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
@@ -80,7 +80,7 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
                 }
             
             <<< PhoneRow(){
-                $0.title = "UserCode"
+                $0.title = "ユーザコード"
                 $0.tag = "userCode"
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
@@ -105,7 +105,7 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
                     }
                 }
             <<< TextRow(){ row in
-                row.title = "UserName"
+                row.title = "ユーザ名"
                 row.tag = "userName"
                 row.add(rule: RuleRequired(msg: "必須項目です"))
                 row.validationOptions = .validatesOnChange
@@ -131,7 +131,7 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
             }
             
             <<< PasswordRow(){
-                $0.title = "PassWord"
+                $0.title = "パスワード"
                 $0.tag = "password"
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
@@ -158,7 +158,7 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
         
         form +++ Section()
             <<< ButtonRow(){
-                $0.title = "Sign Up"
+                $0.title = "サインアップ"
                 $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
                 $0.baseCell.tintColor = UIColor.white
                 }
