@@ -29,13 +29,20 @@ struct TableViewShift {
                 }
             }
             
-            var newLine = "\n"
-            if memo.count != 0 {
-                newLine += "\n"
+            if tmp.count == 0 {
+                joined = targetUserShift[0].user + "(" + targetUserShift[0].name + ")"
+                
+                if memo.count != 0 {
+                    joined += "\n" + memo
+                }
+            }else {
+                var newLine = "\n"
+                if memo.count != 0 {
+                    newLine += "\n"
+                }
+                
+                joined = targetUserShift[0].user + "(" + targetUserShift[0].name + ")" + "\n" + memo + newLine + tmp
             }
-            
-            joined = String(tmp[tmp.startIndex..<tmp.index(before: tmp.endIndex)])
-            joined = targetUserShift[0].user + "(" + targetUserShift[0].name + ")" + "\n" + memo + newLine + joined
         }
     }
 }
