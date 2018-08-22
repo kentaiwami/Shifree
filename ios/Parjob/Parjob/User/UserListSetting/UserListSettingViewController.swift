@@ -111,7 +111,7 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
                 ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
             }
         }
-        let buttonCancel = CancelButton(title: "Cancel"){}
+        let buttonCancel = CancelButton(title: "キャンセル"){}
         
         popUp.addButton(buttonOK)
         popUp.addButton(buttonCancel)

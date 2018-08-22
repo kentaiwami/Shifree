@@ -57,7 +57,7 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
         
         form +++ Section(footer: "何も入力しない状態で保存した場合、コメントは削除されます。")
             <<< TextAreaRow(){
-                $0.title = "Comment"
+                $0.title = "コメント"
                 $0.tag = "Comment"
                 $0.value = presenter.getComment().text
                 $0.placeholder = "タップしてコメントを入力…"

@@ -65,7 +65,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
         
         form +++ Section("")
             <<< TextAreaRow(){
-                $0.title = "Comment"
+                $0.title = "コメント"
                 $0.tag = "Comment"
                 $0.value = ""
                 $0.placeholder = "タップしてコメントを入力…"
