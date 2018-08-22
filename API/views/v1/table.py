@@ -239,7 +239,7 @@ def import_shift():
 
     company_users = session.query(User) \
         .filter(User.company_id == admin_user.company_id,
-                User.token != None,
+                User.token != None,                     # is not Noneとかでは正しく比較されない
                 User.id != admin_user.id,
                 User.is_shift_import_notification == True
                 ) \
@@ -269,7 +269,10 @@ def get_all():
     offset = request.args.get('offset', default=0, type=int)
 
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    tables = session.query(ShiftTable).filter(ShiftTable.company_id == user.company_id).limit(10).offset(offset).all()
+    tables = session.query(ShiftTable)\
+        .filter(ShiftTable.company_id == user.company_id)\
+        .order_by(ShiftTable.created_at.desc())\
+        .limit(10).offset(offset).all()
 
     results = []
     for table in tables:
@@ -325,6 +328,67 @@ def get_detail(table_id):
     }
 
     session.close()
+    return jsonify({'results': results}), 200
+
+
+@app.route('/api/v1/tables/<table_id>', methods=['PUT'])
+@api_basic_auth.login_required
+def update_table_title(table_id):
+    schema = {'type': 'object',
+              'properties':
+                  {'title': {'type': 'string', 'minLength': 1}
+                   },
+              'required': ['title']
+              }
+
+    try:
+        validate(request.json, schema)
+    except ValidationError as e:
+        session.close()
+        frame = inspect.currentframe()
+        abort(400, {'code': frame.f_lineno, 'msg': e.message, 'param': None})
+
+
+    user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+
+    if user.role.name != 'admin':
+        session.close()
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
+
+
+    table = session.query(ShiftTable).filter(ShiftTable.id == table_id).one_or_none()
+
+    if table is None:
+        session.close()
+        frame = inspect.currentframe()
+        abort(404, {'code': frame.f_lineno, 'msg': '指定された取り込み済みのシフトはありません', 'param': None})
+
+    if table.company_id != user.company_id:
+        session.close()
+        frame = inspect.currentframe()
+        abort(403, {'code': frame.f_lineno, 'msg': '権限がありません', 'param': None})
+
+    secure_title = format_text(request.json['title'])
+    new_origin_path = 'uploads/origin/{}_{}.pdf'.format(user.company.code, secure_title)
+    new_thumbnail_path = 'uploads/thumbnail/{}_{}.jpg'.format(user.company.code, secure_title)
+
+    os.rename(table.origin_path, new_origin_path)
+    os.rename(table.thumbnail_path, new_thumbnail_path)
+
+    table.title = secure_title
+    table.origin_path = new_origin_path
+    table.thumbnail_path = new_thumbnail_path
+
+    session.commit()
+    session.close()
+
+    results = {
+        'table_id': table.id,
+        'title': table.title,
+        'origin': table.origin_path,
+    }
+
     return jsonify({'results': results}), 200
 
 
