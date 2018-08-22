@@ -373,14 +373,16 @@ def update_table_title(table_id):
     new_origin_path = 'uploads/origin/{}_{}.pdf'.format(user.company.code, secure_title)
     new_thumbnail_path = 'uploads/thumbnail/{}_{}.jpg'.format(user.company.code, secure_title)
 
-    os.rename(table.origin_path, new_origin_path)
-    os.rename(table.thumbnail_path, new_thumbnail_path)
+    if user.code != demo_admin_user['code']:
+        os.rename(table.origin_path, new_origin_path)
+        os.rename(table.thumbnail_path, new_thumbnail_path)
 
-    table.title = secure_title
-    table.origin_path = new_origin_path
-    table.thumbnail_path = new_thumbnail_path
+        table.title = secure_title
+        table.origin_path = new_origin_path
+        table.thumbnail_path = new_thumbnail_path
 
-    session.commit()
+        session.commit()
+
     session.close()
 
     results = {
