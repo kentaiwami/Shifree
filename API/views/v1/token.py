@@ -13,7 +13,8 @@ app = Blueprint('token_bp', __name__)
 def update_token():
     schema = {'type': 'object',
               'properties':
-                  {'token': {'type': 'string', 'minLength': 64, 'maxLength': 64}
+                  {'token': {'type': 'string',
+                             'pattern': '^[0-9a-f]{64}$'}
                    },
               'required': ['token']
               }
