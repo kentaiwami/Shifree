@@ -57,7 +57,7 @@ def add():
     if len(company_users) != 0:
         tokens = [user.token for user in company_users]
         alert = '「{}」が「{}」にコメントを追加しました'.format(user.name, table.title)
-        res = client.send(tokens, alert, sound='default', badge=1)
+        res = client.send(tokens, alert, sound='default', badge=1, category='comment')
         print('***************Add Comment*****************')
         print(res.errors)
         print(res.token_errors)
