@@ -20,9 +20,14 @@ protocol CalendarDetailViewInterface: class {
 }
 
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
-    var indexPath: IndexPath = []
     var formValues: [String : Any?] = [:]
+    
+    // CalendarViewControllerで選択されたデータ
+    var indexPath: IndexPath = []
     var navigationTitle: String = ""
+    var memo: String = ""
+    var tableViewShifts: [TableViewShift] = []
+    var targetUserShift: TargetUserShift!
     
     fileprivate var presenter: CalendarDetailViewPresenter!
     
@@ -39,14 +44,8 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     }
     
     private func initializePresenter() {
-        let tabBarController = self.navigationController?.viewControllers[0] as! UITabBarController
-        let calendarVC = tabBarController.viewControllers![0] as! CalendarViewController
-        let tableViewShift = calendarVC.getTableViewShift()[indexPath.section]
-        let memo = calendarVC.getMemo()
-        let targetUserShift = calendarVC.getTargetUserShift()
-        
         presenter = CalendarDetailViewPresenter(view: self)
-        presenter.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
+        presenter.setSelectedData(tableViewShift: tableViewShifts[indexPath.section], memo: memo, targetUserShift: targetUserShift)
     }
     
     private func setCompanyShiftNames() {
@@ -125,14 +124,11 @@ extension CalendarDetailViewController {
 
 // MARK: - インスタンス化される際に、呼ぶべき関数
 extension CalendarDetailViewController {
-    func setNavigationTitle(title: String) {
+    func setSelectedData(memo: String, title: String, indexPath: IndexPath, tableViewShifts: [TableViewShift], targetUserShift: TargetUserShift) {
         navigationTitle = title
-    }
-    
-    /// どのセクションをタップしてインスタンス化したかを記録
-    ///
-    /// - Parameter at: タップされたIndexPath
-    func setIndexPath(at: IndexPath) {
-        self.indexPath = at
+        self.memo = memo
+        self.indexPath = indexPath
+        self.tableViewShifts = tableViewShifts
+        self.targetUserShift = targetUserShift
     }
 }

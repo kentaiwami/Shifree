@@ -198,22 +198,6 @@ extension CalendarViewController {
     }
 }
 
-// MARK: - CalendarDetailViewからアクセスして、変数を取り出すための関数一覧
-extension CalendarViewController {
-    func getTableViewShift() -> [TableViewShift] {
-        return presenter.getTableViewShift()
-    }
-    
-    func getMemo() -> String {
-        return presenter.getMemo()
-    }
-    
-    func getTargetUserShift() -> TargetUserShift {
-        return presenter.getTargetUserShift()
-    }
-}
-
-
 
 // MARK: - FSCalendar関連のデリゲート関数まとめ
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
@@ -350,8 +334,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         let selectedShiftCategoryName = presenter.shiftCategories[indexPath.section]
         let detailVC = CalendarDetailViewController()
-        detailVC.setIndexPath(at: indexPath)
-        detailVC.setNavigationTitle(title: currentDate + " " + selectedShiftCategoryName)
+        detailVC.setSelectedData(memo: presenter.getMemo(), title: currentDate + " " + selectedShiftCategoryName, indexPath: indexPath, tableViewShifts: presenter.getTableViewShift(), targetUserShift: presenter.getTargetUserShift())
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
 }
