@@ -23,6 +23,8 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
     var formValues: [String : Any?] = [:]
     fileprivate var presenter: EditCommentViewPresenter!
     
+    fileprivate(set) var comment = Comment()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,8 +38,6 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
     }
     
     private func initializePresenter() {
-        let fileBrowseDetailVC = self.navigationController?.viewControllers[1] as! FileBrowseDetailViewController
-        let comment = fileBrowseDetailVC.getComment()[indexPath.row]
         presenter = EditCommentViewPresenter(view: self)
         presenter.setSelectedCommentData(comment: comment)
     }
@@ -65,13 +65,6 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
         
         UIView.setAnimationsEnabled(true)
     }
-        
-    /// どのセクションをタップしてインスタンス化したかを記録
-    ///
-    /// - Parameter at: タップされたIndexPath
-    func setIndexPath(at: IndexPath) {
-        self.indexPath = at
-    }
     
     private func initializeUI() {
         initializeNavigationItem()
@@ -83,6 +76,18 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
     }
 }
 
+
+
+// MARK: - インスタンス化される前に呼ばれるべき関数
+extension EditCommentViewController {
+    func setSelectedData(indexPath: IndexPath, comment: Comment) {
+        self.indexPath = indexPath
+        self.comment = comment
+    }
+}
+
+
+// MARK: - Presenterから呼び出される関数
 extension EditCommentViewController {
     func showErrorAlert(title: String, msg: String) {
         ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)

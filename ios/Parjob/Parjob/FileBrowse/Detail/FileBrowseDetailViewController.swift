@@ -27,7 +27,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     fileprivate var commentTableView: UITableView!
     fileprivate var myIndicator = UIActivityIndicatorView()
 
-    var tableID: Int = 0
+    fileprivate(set) var tableID: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -221,7 +221,7 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
         
         if presenter.isMyComment(row: indexPath.row) {
             let editCommentVC = EditCommentViewController()
-            editCommentVC.setIndexPath(at: indexPath)
+            editCommentVC.setSelectedData(indexPath: indexPath, comment: presenter.getComments()[indexPath.row])
             self.navigationController!.pushViewController(editCommentVC, animated: true)
         }
     }
@@ -244,15 +244,6 @@ extension FileBrowseDetailViewController: UIWebViewDelegate {
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         myIndicator.stopAnimating()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
-    }
-}
-
-
-
-// MARK: - EditCommentViewControllerへコメントデータを渡すための関数
-extension FileBrowseDetailViewController {
-    func getComment() -> [Comment] {
-        return presenter.getComments()
     }
 }
 

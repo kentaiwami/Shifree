@@ -112,11 +112,6 @@ extension UpdateTitleViewController {
     }
     
     func popupViewController() {
-        print("++++++++++++++++++++++++++++++++")
-        print(self.navigationController?.viewControllers)
-        print(self.navigationController?.viewControllers[0].navigationController?.viewControllers)
-        print("++++++++++++++++++++++++++++++++")
-        
         self.dismiss(animated: true, completion: nil)
     }
 }
