@@ -151,5 +151,30 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
             completionHandler([.sound, .alert, .badge])
     }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let categoryIdentifier = response.notification.request.content.categoryIdentifier
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let topController = storyboard.instantiateInitialViewController() as! UINavigationController
+        let tabController = topController.viewControllers[0] as! UITabBarController
+        var selectedIndex = 0
+        
+        switch categoryIdentifier {
+        case "comment", "table":
+            selectedIndex = 2
+        case "usershift":
+            selectedIndex = 0
+        default:
+            selectedIndex = 0
+        }
+        
+        tabController.selectedIndex = selectedIndex
+        
+        self.window!.rootViewController = topController
+        self.window?.makeKeyAndVisible()
+        
+        resetNotification()
+        completionHandler()
+    }
 }
 

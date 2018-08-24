@@ -248,7 +248,7 @@ def import_shift():
     if len(company_users) != 0:
         tokens = [user.token for user in company_users]
         alert = '「{}」が「{}」を取り込みました'.format(admin_user.name, shift_table.title)
-        res = client.send(tokens, alert, sound='default', badge=1)
+        res = client.send(tokens, alert, sound='default', badge=1, category='table')
         print('***************Add Comment*****************')
         print(res.errors)
         print(res.token_errors)

@@ -160,7 +160,7 @@ def update():
     session.close()
 
     for alert_token in alert_tokens:
-        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1)
+        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1, category='usershift')
         print('***************Update UserShift*****************')
         print(res.errors)
         print(res.token_errors)
@@ -235,7 +235,7 @@ def unknown_update():
     session.close()
 
     for alert_token in alert_tokens:
-        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1)
+        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1, category='usershift')
         print('***************Update UserShift*****************')
         print(res.errors)
         print(res.token_errors)
