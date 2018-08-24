@@ -184,7 +184,6 @@ class CalendarViewModel {
             value = -7
         }
         
-        
         return calendarCurrent.date(byAdding: .day, value: value, to: selectingDate)!
     }
 }
