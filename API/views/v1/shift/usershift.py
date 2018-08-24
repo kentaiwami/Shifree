@@ -126,6 +126,8 @@ def update():
             frame = inspect.currentframe()
             abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
+        old_shift_name = user_shift.shift.name
+
         user = session.query(User).filter(User.id == user_shift.user_id).one()
 
         if user.company_id != admin_user.company_id:
@@ -152,7 +154,7 @@ def update():
         })
 
         if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
-            alert = '「{}」が「{}」のシフトを更新しました'.format(admin_user.name, str(user_shift.date))
+            alert = '{}が{}のシフトを{}から{}へ変更しました'.format(admin_user.name, str(user_shift.date), old_shift_name, shift.name)
             alert_tokens.append({'alert': alert, 'token': user.token})
 
     session.close()
@@ -221,12 +223,13 @@ def unknown_update():
             frame = inspect.currentframe()
             abort(404, {'code': frame.f_lineno, 'msg': '変更対象のシフトが見つかりませんでした', 'param': None})
 
+        old_shift_name = user_shift_result.shift.name
         user_shift_result.shift_id = shift.id
 
         session.commit()
 
         if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
-            alert = '「{}」が「{}」のシフトを更新しました'.format(admin_user.name, str(user_shift_result.date))
+            alert = '{}が{}のシフトを{}から{}へ変更しました'.format(admin_user.name, str(user_shift_result.date), old_shift_name, shift.name)
             alert_tokens.append({'alert': alert, 'token': user.token})
 
     session.close()
