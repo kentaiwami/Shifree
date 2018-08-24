@@ -34,6 +34,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate weak var calendar: FSCalendar!
     fileprivate var tableView: UITableView!
     fileprivate var heightConst: Constraint!
+    fileprivate var todayColor: UIColor!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +81,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         calendar.appearance.weekdayTextColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         calendar.appearance.headerTitleColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         calendar.appearance.headerDateFormat = "yyyy年MM月"
+        todayColor = calendar.appearance.todayColor
+        
         view.addSubview(calendar)
         self.calendar = calendar
         
@@ -228,6 +231,16 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        let calendarCurrent = Calendar.current
+        
+        if calendarCurrent.isDate(date, inSameDayAs: Date()) {
+            calendar.appearance.todayColor = todayColor
+            calendar.appearance.titleTodayColor = UIColor.clear
+        }else {
+            calendar.appearance.todayColor = UIColor.clear
+            calendar.appearance.titleTodayColor = todayColor
+        }
+        
         currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
         updateTableViewData()
     }
@@ -252,15 +265,18 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
-        return UIColor.clear
-    }
-    
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
-        return UIColor.black
+        
+        let calendarCurrent = Calendar.current
+        
+        if calendarCurrent.isDate(date, inSameDayAs: Date()) {
+            return todayColor
+        }else {
+            return UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        }
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderSelectionColorFor date: Date) -> UIColor? {
-        return UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        return UIColor.clear
     }
 }
 
