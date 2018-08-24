@@ -23,11 +23,11 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     var formValues: [String : Any?] = [:]
     
     // CalendarViewControllerで選択されたデータ
-    var indexPath: IndexPath = []
-    var navigationTitle: String = ""
-    var memo: String = ""
-    var tableViewShifts: [TableViewShift] = []
-    var targetUserShift: TargetUserShift!
+    fileprivate(set) var indexPath: IndexPath = []
+    fileprivate(set) var navigationTitle: String = ""
+    fileprivate(set) var memo: String = ""
+    fileprivate(set) var tableViewShifts: [TableViewShift] = []
+    fileprivate(set) var targetUserShift: TargetUserShift!
     
     fileprivate var presenter: CalendarDetailViewPresenter!
     
