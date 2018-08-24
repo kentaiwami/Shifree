@@ -12,9 +12,9 @@ import TinyConstraints
 
 class ShiftSettingDetailViewController: FormViewController {
 
-    var name: String = ""
-    var start: String = ""
-    var end: String = ""
+    fileprivate(set) var name: String = ""
+    fileprivate(set) var start: String = ""
+    fileprivate(set) var end: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +85,12 @@ class ShiftSettingDetailViewController: FormViewController {
         tableView.left(to: self.view)
         tableView.right(to: self.view)
         tableView.bottom(to: self.view)
+    }
+    
+    func setAllData(name: String, start: String, end: String) {
+        self.name = name
+        self.start = start
+        self.end = end
     }
 
     override func didReceiveMemoryWarning() {

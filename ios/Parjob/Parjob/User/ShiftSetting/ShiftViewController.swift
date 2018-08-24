@@ -113,9 +113,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
     
     private func TapUserCell(id: Int, name: String, start: String, end: String, row: ButtonRow) {
         let vc = ShiftSettingDetailViewController()
-        vc.name = name
-        vc.start = start
-        vc.end = end
+        vc.setAllData(name: name, start: start, end: end)
         
         let popUp = PopupDialog(viewController: vc)
         let buttonOK = DefaultButton(title: "OK"){

@@ -96,9 +96,7 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
     
     private func TapUserCell(username: String, role: String, isNew: Bool, row: ButtonRow, code: String) {
         let vc = UserListSettingDetailViewController()
-        vc.username = username
-        vc.role = role
-        vc.isNew = isNew
+        vc.setAllData(username: username, role: role, isNew: isNew)
         
         let popUp = PopupDialog(viewController: vc)
         let buttonOK = DefaultButton(title: "OK"){

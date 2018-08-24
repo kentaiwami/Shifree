@@ -12,9 +12,9 @@ import TinyConstraints
 
 class UserListSettingDetailViewController: FormViewController {
 
-    var username: String = ""
-    var role: String = ""
-    var isNew: Bool = true
+    fileprivate(set) var username: String = ""
+    fileprivate(set) var role: String = ""
+    fileprivate(set) var isNew: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,6 +97,12 @@ class UserListSettingDetailViewController: FormViewController {
         tableView.left(to: self.view)
         tableView.right(to: self.view)
         tableView.bottom(to: self.view)
+    }
+    
+    func setAllData(username: String, role: String, isNew: Bool) {
+        self.username = username
+        self.role = role
+        self.isNew = isNew
     }
 
     override func didReceiveMemoryWarning() {
