@@ -82,7 +82,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         calendar.appearance.headerTitleColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         calendar.appearance.headerDateFormat = "yyyy年MM月"
         todayColor = calendar.appearance.todayColor
+        calendar.select(Date())
         
+        // どちらにスワイプしたかを把握するため、表示ページを更新
         presenter.setCurrentPage(currentPage: calendar.currentPage)
         
         view.addSubview(calendar)
@@ -265,12 +267,22 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         getUserShift()
         
+        /*
+         表示モードがWeekなら翌・先週を選択状態に
+         Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
+         */
         let currentDate = GetFormatterDateFromString(format: "yyyy-MM-dd", dateString: self.currentDate)
-        let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, selectingDate: currentDate)
+        var isWeek = true
+        if calendar.scope == .month {
+            isWeek = false
+        }
         
-        presenter.setCurrentPage(currentPage: calendar.currentPage)
+        let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, selectingDate: currentDate, isWeek: isWeek)
+        
+        // カレンダーの選択状態を更新
         calendar.select(newSelectDate)
         self.currentDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: newSelectDate)
+        presenter.setCurrentPage(currentPage: calendar.currentPage)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {

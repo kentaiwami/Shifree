@@ -174,17 +174,44 @@ class CalendarViewModel {
         self.currentPage = currentPage
     }
     
-    func getShouldSelectDate(currentPage: Date, selectingDate: Date) -> Date {
-        var value = 0
+    func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
+        var dayValue = 0
+        var monthValue = 0
         let calendarCurrent = Calendar.current
         
         if self.currentPage < currentPage {
-            value = 7
+            dayValue = 7
+            monthValue = 1
         }else {
-            value = -7
+            dayValue = -7
+            monthValue = -1
         }
         
-        return calendarCurrent.date(byAdding: .day, value: value, to: selectingDate)!
+        if isWeek {
+            return calendarCurrent.date(byAdding: .day, value: dayValue, to: selectingDate)!
+        }else {
+            // 月を増減させたコンポーネントを作成
+            var components = calendarCurrent.dateComponents([.year, .month, .day], from: selectingDate)
+            components.setValue(0, for: Calendar.Component.year)
+            components.setValue(monthValue, for: Calendar.Component.month)
+            components.setValue(0, for: Calendar.Component.day)
+            
+            /*
+             選択している日から1ヶ月だけ増減させた日付を生成。
+             日にちを1日（月初め）に変更。
+             */
+            let newDate = calendarCurrent.date(byAdding: components, to: selectingDate)!
+            components = calendarCurrent.dateComponents([.year, .month, .day], from: newDate)
+            components.day = 1
+            components.calendar = calendarCurrent
+            
+            if calendarCurrent.compare(Date(), to: components.date!, toGranularity: .year) == .orderedSame && calendarCurrent.compare(Date(), to: components.date!, toGranularity: .month) == .orderedSame {
+                // スワイプ先が今月
+                return Date()
+            }else {
+                return components.date!
+            }
+        }
     }
 }
 
