@@ -22,6 +22,7 @@ class CalendarViewModel {
     private(set) var oneDayShifts: [OneDayShift] = []
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     private(set) var tableViewShifts: [TableViewShift] = []
+    private(set) var currentPage: Date = Date()
     
     func login() {
         api.login().done { (json) in
@@ -167,6 +168,24 @@ class CalendarViewModel {
         }
         
         return currentDateOneDayShifts[0].user
+    }
+    
+    func setCurrentPage(currentPage: Date) {
+        self.currentPage = currentPage
+    }
+    
+    func getShouldSelectDate(currentPage: Date, selectingDate: Date) -> Date {
+        var value = 0
+        let calendarCurrent = Calendar.current
+        
+        if self.currentPage < currentPage {
+            value = 7
+        }else {
+            value = -7
+        }
+        
+        
+        return calendarCurrent.date(byAdding: .day, value: value, to: selectingDate)!
     }
 }
 

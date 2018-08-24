@@ -61,6 +61,14 @@ class CalendarViewPresenter {
         model.setTableViewShift(currentDate: currentDate)
     }
     
+    func setCurrentPage(currentPage: Date) {
+        model.setCurrentPage(currentPage: currentPage)
+    }
+    
+    func getShouldSelectDate(currentPage: Date, selectingDate: Date) -> Date {
+        return model.getShouldSelectDate(currentPage: currentPage, selectingDate: selectingDate)
+    }
+    
     
     /// TableViewで描画、CalendarDetailViewからのアクセスで使用
     ///

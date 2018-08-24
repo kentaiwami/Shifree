@@ -41,8 +41,8 @@ class ShiftImportViewModel {
     }
     
     func importShift(formValues: [String:Any?], filePath: URL) {
-        let start = GetFormatterDateString(format: "yyyy-MM-dd", date: formValues["start"] as! Date)
-        let end = GetFormatterDateString(format: "yyyy-MM-dd", date: formValues["end"] as! Date)
+        let start = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: formValues["start"] as! Date)
+        let end = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: formValues["end"] as! Date)
         let number = formValues["number"] as! String
         let title = formValues["title"] as! String
         let sameLine = formValues["sameLine"] as! Float

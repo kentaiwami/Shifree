@@ -83,6 +83,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         calendar.appearance.headerDateFormat = "yyyy年MM月"
         todayColor = calendar.appearance.todayColor
         
+        presenter.setCurrentPage(currentPage: calendar.currentPage)
+        
         view.addSubview(calendar)
         self.calendar = calendar
         
@@ -91,7 +93,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         self.calendar.right(to: self.view)
         heightConst = self.calendar.height(self.view.frame.height/2)
         
-        currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: self.calendar.today!)
+        currentDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: self.calendar.today!)
         presenter.setTableViewShift()
     }
     
@@ -159,8 +161,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
             endDate = self.calendar.gregorian.date(byAdding: .day, value: 41, to: startDate)!
         }
         
-        start = GetFormatterDateString(format: "yyyyMMdd", date: startDate)
-        end = GetFormatterDateString(format: "yyyyMMdd", date: endDate)
+        start = GetFormatterStringFromDate(format: "yyyyMMdd", date: startDate)
+        end = GetFormatterStringFromDate(format: "yyyyMMdd", date: endDate)
     }
     
     override func didReceiveMemoryWarning() {
@@ -221,7 +223,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        targetDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        targetDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -241,12 +243,12 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
             calendar.appearance.titleTodayColor = todayColor
         }
         
-        currentDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        currentDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         updateTableViewData()
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
-        targetDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        targetDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -256,12 +258,19 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        targetDate = GetFormatterDateString(format: "yyyy-MM-dd", date: date)
+        targetDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         return presenter.eventNumber
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         getUserShift()
+        
+        let currentDate = GetFormatterDateFromString(format: "yyyy-MM-dd", dateString: self.currentDate)
+        let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, selectingDate: currentDate)
+        
+        presenter.setCurrentPage(currentPage: calendar.currentPage)
+        calendar.select(newSelectDate)
+        self.currentDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: newSelectDate)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
