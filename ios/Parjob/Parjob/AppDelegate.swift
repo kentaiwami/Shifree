@@ -154,24 +154,25 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let categoryIdentifier = response.notification.request.content.categoryIdentifier
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let topController = storyboard.instantiateInitialViewController() as! UINavigationController
-        let tabController = topController.viewControllers[0] as! UITabBarController
-        var selectedIndex = 0
+        let notificationCenter = NotificationCenter.default
         
         switch categoryIdentifier {
-        case "comment", "table":
-            selectedIndex = 2
+        case "comment":
+            notificationCenter.post(name: .comment, object: nil)
+        case "table":
+            notificationCenter.post(name: .table, object: nil)
         case "usershift":
-            selectedIndex = 0
+            guard let sunday = response.notification.request.content.userInfo["sunday"] as? String else {return}
+            guard let updated = response.notification.request.content.userInfo["updated"] as? String else {return}
+            let object = [
+                "sunday": GetFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday),
+                "updated": GetFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated),
+            ]
+            
+            notificationCenter.post(name: .usershift, object: object)
         default:
-            selectedIndex = 0
+            break
         }
-        
-        tabController.selectedIndex = selectedIndex
-        
-        self.window!.rootViewController = topController
-        self.window?.makeKeyAndVisible()
         
         resetNotification()
         completionHandler()

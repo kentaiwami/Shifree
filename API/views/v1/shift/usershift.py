@@ -5,9 +5,18 @@ from model import User, UserShift, Shift, ShiftCategory, Company, ColorScheme
 from database import session
 from basic_auth import api_basic_auth
 from itertools import groupby
-from datetime import datetime
+from datetime import datetime as DT
+import datetime
 
 app = Blueprint('user_shift_bp', __name__)
+
+
+def get_sunday(shift_update_date):
+    if shift_update_date.weekday() == 6:
+        return shift_update_date
+    else:
+        timedelta = abs((shift_update_date.weekday() * -1) - 1)
+        return shift_update_date - datetime.timedelta(days=timedelta)
 
 
 @app.route('/api/v1/usershift', methods=['GET'])
@@ -20,8 +29,8 @@ def get():
     end = request.args.get('end', default='', type=str)
 
     try:
-        start = datetime.strptime(start, '%Y%m%d')
-        end = datetime.strptime(end, '%Y%m%d')
+        start = DT.strptime(start, '%Y%m%d')
+        end = DT.strptime(end, '%Y%m%d')
     except ValidationError:
         session.close()
         frame = inspect.currentframe()
@@ -159,8 +168,19 @@ def update():
 
     session.close()
 
+    # クライアントのカレンダーを再描画するために、シフト変更をした週の日曜日を求める
+    # クライアント側のカレンダーが日曜日が週の開始日のため日曜日
+
+    sunday = get_sunday(user_shift.date)
+
     for alert_token in alert_tokens:
-        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1, category='usershift')
+        res = client.send(alert_token['token'],
+                          alert_token['alert'],
+                          sound='default',
+                          badge=1,
+                          category='usershift',
+                          extra={'sunday': str(sunday), 'updated': str(user_shift.date)}
+                          )
         print('***************Update UserShift*****************')
         print(res.errors)
         print(res.token_errors)
