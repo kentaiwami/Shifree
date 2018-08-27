@@ -40,7 +40,7 @@ class NotificationViewController: FormViewController, NotificationViewInterface 
         UIView.setAnimationsEnabled(false)
             form +++ Section()
                 <<< SwitchRow(){
-                    $0.title = "シフトの取り込み"
+                    $0.title = "シフトの取り込み&削除"
                     $0.tag = "isShiftImport"
                     $0.value = presenter.getNotification().isShiftImport
                 }
