@@ -11,7 +11,7 @@ from datetime import datetime as DT
 from sqlalchemy.sql import exists
 import datetime
 from config import demo_admin_user
-from utility import get_salary
+from utility import get_salary, get_sunday
 
 app = Blueprint('table_bp', __name__)
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -248,7 +248,15 @@ def import_shift():
     if len(company_users) != 0:
         tokens = [user.token for user in company_users]
         alert = '「{}」が「{}」を取り込みました'.format(admin_user.name, shift_table.title)
-        res = client.send(tokens, alert, sound='default', badge=1, category='table')
+        res = client.send(tokens,
+                          alert,
+                          sound='default',
+                          badge=1,
+                          category='usershift',
+                          extra={'sunday': DT.strftime(get_sunday(start_date), '%Y-%m-%d'),
+                                 'updated': DT.strftime(start_date, '%Y-%m-%d')
+                                 }
+                          )
         print('***************Add Comment*****************')
         print(res.errors)
         print(res.token_errors)

@@ -6,17 +6,9 @@ from database import session
 from basic_auth import api_basic_auth
 from itertools import groupby
 from datetime import datetime as DT
-import datetime
+from utility import get_sunday
 
 app = Blueprint('user_shift_bp', __name__)
-
-
-def get_sunday(shift_update_date):
-    if shift_update_date.weekday() == 6:
-        return shift_update_date
-    else:
-        timedelta = abs((shift_update_date.weekday() * -1) - 1)
-        return shift_update_date - datetime.timedelta(days=timedelta)
 
 
 @app.route('/api/v1/usershift', methods=['GET'])

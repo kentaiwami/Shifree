@@ -55,3 +55,11 @@ def get_salary(user, shift):
         shift_now += datetime.timedelta(minutes=30)
 
     return user.daytime_wage * daytime_count + user.night_wage * night_count
+
+
+def get_sunday(shift_update_date):
+    if shift_update_date.weekday() == 6:
+        return shift_update_date
+    else:
+        timedelta = abs((shift_update_date.weekday() * -1) - 1)
+        return shift_update_date - datetime.timedelta(days=timedelta)

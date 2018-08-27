@@ -160,8 +160,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         case "comment":
             guard let tableID = response.notification.request.content.userInfo["id"] as? Int else {return}
             notificationCenter.post(name: .comment, object: ["id": tableID])
-        case "table":
-            notificationCenter.post(name: .table, object: nil)
         case "usershift":
             guard let sunday = response.notification.request.content.userInfo["sunday"] as? String else {return}
             guard let updated = response.notification.request.content.userInfo["updated"] as? String else {return}
