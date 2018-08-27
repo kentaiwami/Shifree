@@ -225,7 +225,7 @@ def unknown_update():
     alert_tokens = []
 
     for new_shift in request.json['updates']:
-        shift = session.query(Shift).filter(Shift.name == new_shift['name']).one_or_none()
+        shift = session.query(Shift).join(ShiftCategory).filter(Shift.name == new_shift['name'], ShiftCategory.company_id == admin_user.company_id).one_or_none()
         user = session.query(User).filter(User.code == new_shift['code']).one_or_none()
 
         if shift is None or user is None:
@@ -250,12 +250,18 @@ def unknown_update():
 
         if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
             alert = '{}が{}のシフトを{}から{}へ変更しました'.format(admin_user.name, str(user_shift_result.date), old_shift_name, shift.name)
-            alert_tokens.append({'alert': alert, 'token': user.token})
+            alert_tokens.append({'alert': alert, 'token': user.token, 'sunday': str(get_sunday(user_shift_result.date)), 'updated': str(user_shift_result.date)})
 
     session.close()
 
     for alert_token in alert_tokens:
-        res = client.send(alert_token['token'], alert_token['alert'], sound='default', badge=1, category='usershift')
+        res = client.send(alert_token['token'],
+                          alert_token['alert'],
+                          sound='default',
+                          badge=1,
+                          category='usershift',
+                          extra={'sunday': alert_token['sunday'], 'updated': alert_token['updated']}
+                          )
         print('***************Update UserShift*****************')
         print(res.errors)
         print(res.token_errors)
