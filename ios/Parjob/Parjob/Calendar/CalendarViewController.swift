@@ -44,7 +44,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         super.viewDidLoad()
         initializePresenter()
         presenter.login()
-        addObserver()
+        addObservers()
     }
     
     fileprivate func initializeUserNotificationCenter() {
@@ -357,8 +357,15 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension CalendarViewController {
-    fileprivate func addObserver() {
+    fileprivate func addObservers() {
         notificationCenter.addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
+        
+        let navigationController = self.navigationController
+        let tabBarController = navigationController?.viewControllers.first as! UITabBarController
+        let fileBrowseTopViewController = tabBarController.viewControllers![2] as! FileBrowseTopViewController
+        
+        // FileBrowseTopViewControllerのviewDidLoad内にあるaddObserverを実行
+        fileBrowseTopViewController.loadViewIfNeeded()
     }
     
     @objc private func updateView(notification: Notification) {
@@ -369,18 +376,7 @@ extension CalendarViewController {
         setUpTodayColor(didSelectedDate: dateDict["updated"]!)
         getUserShift()
         
-        let navigationController = self.navigationController
-        let tabBarController = navigationController?.viewControllers.first as! UITabBarController
-        tabBarController.selectedIndex = 0
-        
-        // 表示しているモーダルがある場合は、それを閉じてからナビゲーションのトップへ
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: {
-            UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
-        })
-        
-        // モーダルが特にない場合はそのままナビゲーションのトップへ
-        UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
-        UIApplication.shared.keyWindow?.rootViewController = navigationController
+        DismissViews(targetViewController: self, selectedIndex: 0)
         
         isReceiveNotificationSetCurrentPage = false
     }

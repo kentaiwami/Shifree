@@ -158,7 +158,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         switch categoryIdentifier {
         case "comment":
-            notificationCenter.post(name: .comment, object: nil)
+            guard let tableID = response.notification.request.content.userInfo["id"] as? Int else {return}
+            notificationCenter.post(name: .comment, object: ["id": tableID])
         case "table":
             notificationCenter.post(name: .table, object: nil)
         case "usershift":

@@ -142,3 +142,18 @@ func GetEmptyView(msg: String) -> UIView {
     return view
 }
 
+func DismissViews(targetViewController: UIViewController, selectedIndex: Int) {
+    let navigationController = targetViewController.navigationController
+    let tabBarController = navigationController?.viewControllers.first as! UITabBarController
+    tabBarController.selectedIndex = selectedIndex
+    
+    // 表示しているモーダルがある場合は、それを閉じてからナビゲーションのトップへ
+    UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: {
+        UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
+    })
+    
+    // モーダルが特にない場合はそのままナビゲーションのトップへ
+    UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
+    UIApplication.shared.keyWindow?.rootViewController = navigationController
+}
+

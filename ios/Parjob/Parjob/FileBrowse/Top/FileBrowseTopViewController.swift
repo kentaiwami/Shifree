@@ -21,10 +21,13 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     let cellId = "itemCell"
     
+    fileprivate let notificationCenter = NotificationCenter.default
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = FileBrowseTopViewPresenter(view: self)
+        addObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +61,12 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         }else {
             collectionView.backgroundView?.isHidden = true
         }
+    }
+    
+    fileprivate func presentDetailView(tableID: Int) {
+        let detailVC = FileBrowseDetailViewController()
+        detailVC.setTableID(id: tableID)
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,9 +102,20 @@ extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailVC = FileBrowseDetailViewController()
-        detailVC.setTableID(id: presenter.getTable()[indexPath.row].id)
-        self.navigationController!.pushViewController(detailVC, animated: true)
+        presentDetailView(tableID: presenter.getTable()[indexPath.row].id)        
+    }
+}
+
+
+extension FileBrowseTopViewController {
+    func addObserver() {
+        notificationCenter.addObserver(self, selector: #selector(updateView(notification:)), name: .comment, object: nil)
     }
     
+    @objc func updateView(notification: Notification) {
+        guard let idDict = notification.object as? [String:Int] else {return}
+        
+        DismissViews(targetViewController: self, selectedIndex: 2)
+        presentDetailView(tableID: idDict["id"]!)
+    }
 }
