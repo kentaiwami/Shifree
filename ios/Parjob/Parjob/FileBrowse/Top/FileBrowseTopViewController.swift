@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import PopupDialog
 
 protocol FileBrowseTopViewInterface: class {
     func initializeUI()
