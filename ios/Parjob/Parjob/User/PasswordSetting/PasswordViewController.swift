@@ -99,10 +99,10 @@ class PasswordViewController: FormViewController, PasswordViewInterface {
     }
     
     @objc private func tapEditDoneButton() {
-        if IsValidateFormValue(form: self.form) {
+        if isValidateFormValue(form: self.form) {
             presenter.updatePassword()
         }else {
-            ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self, completion: nil)
+            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self, completion: nil)
         }
     }
     
@@ -131,12 +131,12 @@ extension PasswordViewController {
 // MARK: - Presenterから呼び出される関数
 extension PasswordViewController {
     func success() {
-        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }

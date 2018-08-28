@@ -52,7 +52,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
-        collectionView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
+        collectionView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
         self.view.addSubview(collectionView)
         
         if presenter.getTable().count == 0 {
@@ -82,7 +82,7 @@ extension FileBrowseTopViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 
@@ -114,7 +114,7 @@ extension FileBrowseTopViewController {
     @objc func updateView(notification: Notification) {
         guard let idDict = notification.object as? [String:Int] else {return}
         
-        DismissViews(targetViewController: self, selectedIndex: 2)
+        dismissViews(targetViewController: self, selectedIndex: 2)
         presentDetailView(tableID: idDict["id"]!)
     }
 }

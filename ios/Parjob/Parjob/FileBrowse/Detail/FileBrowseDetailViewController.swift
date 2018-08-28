@@ -78,7 +78,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         commentTableView.dataSource = self
         commentTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
         commentTableView.estimatedRowHeight = 100
-        commentTableView.backgroundView = GetEmptyView(msg: EmptyMessage.noComment.rawValue)
+        commentTableView.backgroundView = getEmptyView(msg: EmptyMessage.noComment.rawValue)
         self.view.addSubview(commentTableView)
         
         commentTableView.topToBottom(of: pdfView)
@@ -168,7 +168,7 @@ extension FileBrowseDetailViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
     
     func popView() {

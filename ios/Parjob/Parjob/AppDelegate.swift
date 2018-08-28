@@ -164,8 +164,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             guard let sunday = response.notification.request.content.userInfo["sunday"] as? String else {return}
             guard let updated = response.notification.request.content.userInfo["updated"] as? String else {return}
             let object = [
-                "sunday": GetFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday),
-                "updated": GetFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated),
+                "sunday": getFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday),
+                "updated": getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated),
             ]
             
             notificationCenter.post(name: .usershift, object: object)

@@ -100,13 +100,13 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
         
         let popUp = PopupDialog(viewController: vc)
         let buttonOK = DefaultButton(title: "OK"){
-            if IsValidateFormValue(form: vc.form) {
+            if isValidateFormValue(form: vc.form) {
                 let detaiVCValues = vc.form.values()
                 row.title = String(format: "%@ (%@)", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String])
                 row.value = String(format: "%@,%@,%@", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String, code])
                 row.updateCell()
             }else {
-                ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
+                showStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
             }
         }
         let buttonCancel = CancelButton(title: "キャンセル"){}
@@ -135,8 +135,8 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
 // MARK: - 可読性のために関数化
 extension UserListSettingViewController {
     fileprivate func getUsernameRoleFromCellTitle(title: String) -> (username: String, role: String) {
-        let usernameMatch = GetMatchStrings(targetString: title, pattern: ".* ")
-        let roleMatch = GetMatchStrings(targetString: title, pattern: "\\(.*\\)")
+        let usernameMatch = getMatchStrings(targetString: title, pattern: ".* ")
+        let roleMatch = getMatchStrings(targetString: title, pattern: "\\(.*\\)")
         
         if usernameMatch.count == 0 {
             return ("", "")
@@ -173,12 +173,12 @@ extension UserListSettingViewController {
     }
 
     func success() {
-        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
 
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }

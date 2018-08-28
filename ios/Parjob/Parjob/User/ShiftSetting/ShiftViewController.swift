@@ -100,7 +100,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                 }
         }
         
-        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
+        tableView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         
         if presenter.getShiftCategory().count == 0 {
             tableView.backgroundView?.isHidden = false
@@ -117,7 +117,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         
         let popUp = PopupDialog(viewController: vc)
         let buttonOK = DefaultButton(title: "OK"){
-            if IsValidateFormValue(form: vc.form) {
+            if isValidateFormValue(form: vc.form) {
                 let detaiVCValues = vc.form.values()
                 var format = "%@ %@ 〜 %@"
                 var arguments = [detaiVCValues["name"] as! String, detaiVCValues["start"] as! String, detaiVCValues["end"] as! String]
@@ -130,7 +130,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
                 row.value = String(format: "%@,%@,%@,%@", arguments: [String(id), detaiVCValues["name"] as! String, detaiVCValues["start"] as! String, detaiVCValues["end"] as! String])
                 row.updateCell()
             }else {
-                ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
+                showStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self, completion: nil)
             }
         }
         
@@ -183,13 +183,13 @@ extension ShiftViewController {
     }
     
     func success() {
-        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 
@@ -197,9 +197,9 @@ extension ShiftViewController {
 // MARK: - 可読性のために関数化
 extension ShiftViewController {
     fileprivate func getShiftnameStartEndFromCellTitle(title: String) -> (name: String, start: String, end: String) {
-        let shiftNameMatch = GetMatchStrings(targetString: title, pattern: ".*? ")
-        let startMatch = GetMatchStrings(targetString: title, pattern: "[0-9]{2}:[0-9]{2} 〜")
-        let endMatch = GetMatchStrings(targetString: title, pattern: "〜 [0-9]{2}:[0-9]{2}")
+        let shiftNameMatch = getMatchStrings(targetString: title, pattern: ".*? ")
+        let startMatch = getMatchStrings(targetString: title, pattern: "[0-9]{2}:[0-9]{2} 〜")
+        let endMatch = getMatchStrings(targetString: title, pattern: "〜 [0-9]{2}:[0-9]{2}")
         
         if title == defaultTitle {
             return ("", "", "")

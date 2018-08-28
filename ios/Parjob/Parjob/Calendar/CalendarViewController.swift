@@ -100,7 +100,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         self.calendar.right(to: self.view)
         heightConst = self.calendar.height(self.view.frame.height/2)
         
-        currentDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: self.calendar.today!)
+        currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: self.calendar.today!)
         presenter.setTableViewShift()
     }
     
@@ -116,7 +116,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         tableView.right(to: self.view)
         tableView.bottom(to: self.view)
         
-        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
+        tableView.backgroundView = getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
     }
     
     private func initializeNavigationItem() {
@@ -168,13 +168,13 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
             endDate = self.calendar.gregorian.date(byAdding: .day, value: 41, to: startDate)!
         }
         
-        start = GetFormatterStringFromDate(format: "yyyyMMdd", date: startDate)
-        end = GetFormatterStringFromDate(format: "yyyyMMdd", date: endDate)
+        start = getFormatterStringFromDate(format: "yyyyMMdd", date: startDate)
+        end = getFormatterStringFromDate(format: "yyyyMMdd", date: endDate)
     }
     
     fileprivate func updateCalendarSelectedDate(newSelectDate: Date) {
         calendar.select(newSelectDate)
-        self.currentDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: newSelectDate)
+        self.currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: newSelectDate)
         presenter.setCurrentPage(currentPage: calendar.currentPage)
     }
     
@@ -217,7 +217,7 @@ extension CalendarViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 
@@ -232,7 +232,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        targetDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        targetDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -245,12 +245,12 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         
         setUpTodayColor(didSelectedDate: date)
         
-        currentDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         updateTableViewData()
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
-        targetDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        targetDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -260,7 +260,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        targetDate = GetFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        targetDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         return presenter.eventNumber
     }
     
@@ -272,7 +272,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         if !isReceiveNotificationSetCurrentPage {
             getUserShift()
             
-            let currentDate = GetFormatterDateFromString(format: "yyyy-MM-dd", dateString: self.currentDate)
+            let currentDate = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: self.currentDate)
             var isWeek = true
             if calendar.scope == .month {
                 isWeek = false
@@ -376,7 +376,7 @@ extension CalendarViewController {
         setUpTodayColor(didSelectedDate: dateDict["updated"]!)
         getUserShift()
         
-        DismissViews(targetViewController: self, selectedIndex: 0)
+        dismissViews(targetViewController: self, selectedIndex: 0)
         
         isReceiveNotificationSetCurrentPage = false
     }

@@ -33,7 +33,7 @@ class API {
                     print(json)
                     print("***** GET Auth API Results *****")
                     
-                    if IsHTTPStatus(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                    if isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
                         seal.fulfill(json)
                     }else {
                         let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
@@ -65,7 +65,7 @@ class API {
                     print(json)
                     print("***** GET Auth API Results *****")
                     
-                    if IsHTTPStatus(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                    if isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
                         seal.fulfill(json)
                     }else {
                         let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
@@ -97,7 +97,7 @@ class API {
                     print(json)
                     print("***** GET Auth API Results *****")
                     
-                    if IsHTTPStatus(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                    if isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
                         seal.fulfill(json)
                     }else {
                         let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
@@ -245,7 +245,7 @@ extension API {
                                 print("***** GET Auth API Results *****")
                                 print(json)
                                 print("***** GET Auth API Results *****")
-                                if IsHTTPStatus(statusCode: response.response?.statusCode) {
+                                if isHTTPStatus2XX(statusCode: response.response?.statusCode) {
                                     seal.fulfill(json)
                                 }else {
                                     let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
