@@ -156,4 +156,3 @@ func dismissViews(targetViewController: UIViewController, selectedIndex: Int) {
     UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
     UIApplication.shared.keyWindow?.rootViewController = navigationController
 }
-

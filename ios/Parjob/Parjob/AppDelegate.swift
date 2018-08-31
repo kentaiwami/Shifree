@@ -80,15 +80,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window!.rootViewController = nav
             self.window?.makeKeyAndVisible()
         }
+        
+        if let userInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] {
+            let userInfoDict = userInfo as! [AnyHashable:Any]
+            
+            if let tableID = userInfoDict["id"] as? Int {
+                MyApplication.shared.tableID = tableID
+            }else if let sunday = userInfoDict["sunday"] as? String {
+                MyApplication.shared.sunday = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday)
+                MyApplication.shared.updated = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: userInfoDict["updated"] as! String)
+            }
+        }
 
         return true
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
-    }
+    func applicationWillResignActive(_ application: UIApplication) {}
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-    }
+    func applicationDidEnterBackground(_ application: UIApplication) {}
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         resetNotification()
