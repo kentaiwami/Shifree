@@ -87,7 +87,15 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         calendar.appearance.headerTitleColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         calendar.appearance.headerDateFormat = "yyyy年MM月"
         todayColor = calendar.appearance.todayColor
-        calendar.select(Date())
+        
+        let currentAndPage = presenter.getCurrentAndPageDate()
+        calendar.select(currentAndPage.currentDate)
+        
+        // 通知をタップして起動した場合はその値をカレンダーに設定する。
+        // それ以外はcurrentDateのみDate()を設定し、currentPageはデフォルトのまま。
+        if let page = currentAndPage.currentPage {
+            calendar.currentPage = page
+        }
         
         // どちらにスワイプしたかを把握するため、表示ページを更新
         presenter.setCurrentPage(currentPage: calendar.currentPage)
@@ -100,7 +108,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         self.calendar.right(to: self.view)
         heightConst = self.calendar.height(self.view.frame.height/2)
         
-        currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: self.calendar.today!)
+        currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentAndPage.currentDate)
         presenter.setTableViewShift()
     }
     

@@ -67,6 +67,14 @@ class CalendarViewModel {
         return shiftCategories
     }
     
+    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
+        if let sunday = MyApplication.shared.sunday {
+            return (sunday, MyApplication.shared.updated!)
+        }else {
+            return (nil, Date())
+        }
+    }
+    
     func setTableViewShift(currentDate: String) {
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDate
