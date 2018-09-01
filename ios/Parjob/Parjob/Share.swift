@@ -13,5 +13,4 @@ class MyApplication {
     private init() {}
     var sunday: Date?
     var updated: Date?
-    var tableID: Int?
 }

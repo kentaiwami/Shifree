@@ -84,8 +84,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let userInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] {
             let userInfoDict = userInfo as! [AnyHashable:Any]
             
-            if let tableID = userInfoDict["id"] as? Int {
-                MyApplication.shared.tableID = tableID
+            if let _ = userInfoDict["id"] as? Int {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                let tabBarController = navigationController.viewControllers.first as! UITabBarController
+                tabBarController.selectedIndex = 2
+                self.window!.rootViewController = navigationController
+                self.window?.makeKeyAndVisible()
             }else if let sunday = userInfoDict["sunday"] as? String {
                 MyApplication.shared.sunday = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday)
                 MyApplication.shared.updated = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: userInfoDict["updated"] as! String)
