@@ -32,10 +32,12 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
-    fileprivate var tableView: UITableView!
+//    fileprivate var tableView: UITableView!
     fileprivate var heightConst: Constraint!
     fileprivate var todayColor: UIColor!
     fileprivate let notificationCenter = NotificationCenter.default
+    fileprivate var tableViews: [UITableView] = []
+    fileprivate var scrollView: UIScrollView!
     
     // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用
     fileprivate var isReceiveNotificationSetCurrentPage = false
@@ -69,9 +71,12 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         initializeNavigationItem()
         
         // 起動時は実行せず、他画面から戻ってきた時に再取得&表示内容の更新
-        if calendar != nil && tableView != nil {
+        if calendar != nil {
             getUserShift()
         }
+//        if calendar != nil && tableView != nil {
+//            getUserShift()
+//        }
     }
     
     private func initializePresenter() {
@@ -113,18 +118,43 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     fileprivate func initializeTableView() {
-        tableView = UITableView()
+        let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        self.view.addSubview(tableView)
+        tableView.frame = CGRect(x: 0, y: calendar.frame.height, width: self.view.frame.width, height: self.view.frame.height - calendar.frame.height)
+//        tableView.backgroundColor = UIColor.brown
+        scrollView.addSubview(tableView)
+////            if i == 0 {
+////                tableView.left(to: scrollView)
+////            }else {
+////                tableView.leftToRight(of: tableViews.last!)
+////            }
+//            tableView.left(to: self.view)
+//            tableView.topToBottom(of: self.calendar)
+//            tableView.bottom(to: self.view)
+//            tableView.right(to: self.view)
+////            tableView.width(self.view.frame.width)
+//
+            tableView.backgroundView = getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
+//
+            tableViews.append(tableView)
+    }
+    
+    //TODO: initializeScrollView
+    fileprivate func initializeScrollView() {
+        let width = self.view.frame.width * 9
+        scrollView = UIScrollView()
+        scrollView.delegate = self
+        scrollView.contentSize = CGSize(width: width, height: 0)
+        scrollView.alwaysBounceHorizontal = true
+        scrollView.isPagingEnabled = true
+        self.view.addSubview(scrollView)
         
-        tableView.topToBottom(of: self.calendar)
-        tableView.left(to: self.view)
-        tableView.right(to: self.view)
-        tableView.bottom(to: self.view)
-        
-        tableView.backgroundView = getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
+        scrollView.topToBottom(of: calendar)
+        scrollView.left(to: self.view)
+        scrollView.right(to: self.view)
+        scrollView.bottom(to: self.view)
     }
     
     private func initializeNavigationItem() {
@@ -208,19 +238,29 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
 extension CalendarViewController {
     func initializeUI() {
         initializeCalendarView()
+        initializeScrollView()
         initializeTableView()
         initializeUserNotificationCenter()
     }
     
     func updateTableViewData() {
         presenter.setTableViewShift()
-        self.tableView.reloadData()
+        tableViews.forEach { (table) in
+            table.reloadData()
+        }
+//        self.tableView.reloadData()
         self.calendar.reloadData()
         
         if presenter.getTableViewShift().count == 0 {
-            tableView.backgroundView?.isHidden = false
+            tableViews.forEach { (table) in
+                table.backgroundView?.isHidden = false
+            }
+//            tableView.backgroundView?.isHidden = false
         }else {
-            tableView.backgroundView?.isHidden = true
+            tableViews.forEach { (table) in
+                table.backgroundView?.isHidden = false
+            }
+//            tableView.backgroundView?.isHidden = true
         }
     }
     
@@ -388,4 +428,8 @@ extension CalendarViewController {
         
         isReceiveNotificationSetCurrentPage = false
     }
+}
+
+extension CalendarViewController: UIScrollViewDelegate {
+    
 }
