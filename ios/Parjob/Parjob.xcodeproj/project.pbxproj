@@ -16,6 +16,7 @@
 		370A2FFB212DB82600B8082F /* UpdateTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF8212DB82600B8082F /* UpdateTitleViewModel.swift */; };
 		370A2FFC212DB82600B8082F /* UpdateTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF9212DB82600B8082F /* UpdateTitleViewController.swift */; };
 		370C110120FB6CA30048900D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370C110020FB6CA30048900D /* Images.xcassets */; };
+		3711CDB12139CD57000FFC29 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3711CDB02139CD56000FFC29 /* Share.swift */; };
 		3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */; };
 		3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */; };
 		37326C3720DE955D00A60B00 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3620DE955D00A60B00 /* Utility.swift */; };
@@ -118,6 +119,7 @@
 		370A2FF8212DB82600B8082F /* UpdateTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewModel.swift; sourceTree = "<group>"; };
 		370A2FF9212DB82600B8082F /* UpdateTitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewController.swift; sourceTree = "<group>"; };
 		370C110020FB6CA30048900D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3711CDB02139CD56000FFC29 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewPresenter.swift; sourceTree = "<group>"; };
 		3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewModel.swift; sourceTree = "<group>"; };
 		37326C3620DE955D00A60B00 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -581,6 +583,7 @@
 				37326C3820DEC79200A60B00 /* Extensions.swift */,
 				37326C3A20DEC85E00A60B00 /* Enum.swift */,
 				37326C3E20DFD98500A60B00 /* Setting.swift */,
+				3711CDB02139CD56000FFC29 /* Share.swift */,
 				370C110020FB6CA30048900D /* Images.xcassets */,
 			);
 			path = Parjob;
@@ -810,6 +813,7 @@
 				37DE67AB20F589C700DB7EBC /* UnknownViewPresenter.swift in Sources */,
 				37DE67B520F6465000DB7EBC /* AddShiftViewModel.swift in Sources */,
 				378E382B20E9957F003BB689 /* ShiftCategoryViewModel.swift in Sources */,
+				3711CDB12139CD57000FFC29 /* Share.swift in Sources */,
 				37C168AC20EE82C7003A453A /* ShiftViewController.swift in Sources */,
 				378E382E20EA02EC003BB689 /* ShiftCategoryViewEntity.swift in Sources */,
 				37A69B3420E957F2004E8C66 /* WageViewModel.swift in Sources */,

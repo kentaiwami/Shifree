@@ -11,7 +11,7 @@ import PopupDialog
 import NVActivityIndicatorView
 import TinyConstraints
 
-func IsValidateFormValue(form: Form) -> Bool {
+func isValidateFormValue(form: Form) -> Bool {
     var err_count = 0
     for row in form.allRows {
         if !row.isHidden {
@@ -26,7 +26,7 @@ func IsValidateFormValue(form: Form) -> Bool {
     return false
 }
 
-func IsHTTPStatus(statusCode: Int?) -> Bool {
+func isHTTPStatus2XX(statusCode: Int?) -> Bool {
     let code = String(statusCode!)
     var results:[String] = []
     
@@ -37,7 +37,7 @@ func IsHTTPStatus(statusCode: Int?) -> Bool {
     }
 }
 
-func ShowStandardAlert(title: String, msg: String, vc: UIViewController, completion: (() -> Void)?) {
+func showStandardAlert(title: String, msg: String, vc: UIViewController, completion: (() -> Void)?) {
     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
     let popup = PopupDialog(title: title, message: msg) {
         if let tmpCompletion = completion {
@@ -49,20 +49,20 @@ func ShowStandardAlert(title: String, msg: String, vc: UIViewController, complet
     vc.present(popup, animated: true, completion: nil)
 }
 
-func GetFormatterStringFromDate(format: String, date: Date) -> String {
+func getFormatterStringFromDate(format: String, date: Date) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = format
     
     return formatter.string(from: date)
 }
 
-func GetFormatterDateFromString(format: String, dateString: String) -> Date {
+func getFormatterDateFromString(format: String, dateString: String) -> Date {
     let formatter = DateFormatter()
     formatter.dateFormat = format
     return formatter.date(from: dateString)!
 }
 
-func GetTime() -> [String] {
+func get24hourTime() -> [String] {
     var time: [String] = []
     
     for hour in 0...23 {
@@ -73,7 +73,7 @@ func GetTime() -> [String] {
     return time
 }
 
-func GetMatchStrings(targetString: String, pattern: String) -> [String] {
+func getMatchStrings(targetString: String, pattern: String) -> [String] {
     
     var matchStrings:[String] = []
     
@@ -119,7 +119,7 @@ class Indicator {
     }
 }
 
-func GetEmptyView(msg: String) -> UIView {
+func getEmptyView(msg: String) -> UIView {
     let imageView = UIImageView(image: UIImage(named: "empty")?.withRenderingMode(.alwaysTemplate))
     imageView.tintColor = UIColor.lightGray
     let msgLabel = UILabel()
@@ -142,3 +142,17 @@ func GetEmptyView(msg: String) -> UIView {
     return view
 }
 
+func dismissViews(targetViewController: UIViewController, selectedIndex: Int) {
+    let navigationController = targetViewController.navigationController
+    let tabBarController = navigationController?.viewControllers.first as! UITabBarController
+    tabBarController.selectedIndex = selectedIndex
+    
+    // 表示しているモーダルがある場合は、それを閉じてからナビゲーションのトップへ
+    UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: {
+        UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
+    })
+    
+    // モーダルが特にない場合はそのままナビゲーションのトップへ
+    UIApplication.topViewController()?.navigationController?.popToRootViewController(animated: true)
+    UIApplication.shared.keyWindow?.rootViewController = navigationController
+}

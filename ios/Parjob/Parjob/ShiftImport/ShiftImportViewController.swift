@@ -174,10 +174,10 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     }
     
     @objc private func tapImportButton() {
-        if IsValidateFormValue(form: form) {
+        if isValidateFormValue(form: form) {
             presenter.importShift()
         }else {
-            ShowStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self, completion: nil)
+            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self, completion: nil)
         }
     }
     
@@ -216,8 +216,10 @@ extension ShiftImportViewController {
         let button = DefaultButton(title: "OK", dismissOnTap: true) {
             self.navigateCalendar()
         }
-        let popup = PopupDialog(title: "取り込み完了", message: "シフトの取り込みをしました")
-        popup.transitionStyle = .zoomIn
+        let popup = PopupDialog(title: "取り込み完了", message: "シフトの取り込みをしました", transitionStyle: .zoomIn) {
+            self.navigateCalendar()
+        }
+        
         popup.addButtons([button])
         present(popup, animated: true, completion: nil)
     }
@@ -233,9 +235,9 @@ extension ShiftImportViewController {
         let afterButton = DefaultButton(title: "あとで", dismissOnTap: true) {
             self.navigateCalendar()
         }
-        let popup = PopupDialog(title: "取り込み完了", message: "シフトの取り込みは完了しましたが、unknownとしてシフトを仮登録したユーザがいます。\n今すぐに編集しますか？")
-        
-        popup.transitionStyle = .zoomIn
+        let popup = PopupDialog(title: "取り込み完了", message: "シフトの取り込みは完了しましたが、unknownとしてシフトを仮登録したユーザがいます。\n今すぐに編集しますか？", transitionStyle: .zoomIn) {
+            self.navigateCalendar()
+        }
         popup.addButtons([nowEditButton, afterButton])
         present(popup, animated: true, completion: nil)
     }
@@ -251,15 +253,16 @@ extension ShiftImportViewController {
         let afterButton = DefaultButton(title: "あとで", dismissOnTap: true) {
             self.navigateCalendar()
         }
-        let popup = PopupDialog(title: "取り込みエラー", message: "未登録のシフト名が含まれているため、シフトの取り込みに失敗しました。\n今すぐに新しいシフト名を追加しますか？\n(注)ただし、シフトカテゴリの追加が必要な場合は「ユーザ画面」から行ってください。")
+        let popup = PopupDialog(title: "取り込みエラー", message: "未登録のシフト名が含まれているため、シフトの取り込みに失敗しました。\n今すぐに新しいシフト名を追加しますか？\n(注)ただし、シフトカテゴリの追加が必要な場合は「ユーザ画面」から行ってください。", transitionStyle: .zoomIn) {
+            self.navigateCalendar()
+        }
         
-        popup.transitionStyle = .zoomIn
         popup.addButtons([nowEditButton, afterButton])
         present(popup, animated: true, completion: nil)
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 

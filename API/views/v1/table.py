@@ -11,7 +11,7 @@ from datetime import datetime as DT
 from sqlalchemy.sql import exists
 import datetime
 from config import demo_admin_user
-from utility import get_salary
+from utility import get_salary, get_sunday
 
 app = Blueprint('table_bp', __name__)
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -247,8 +247,16 @@ def import_shift():
 
     if len(company_users) != 0:
         tokens = [user.token for user in company_users]
-        alert = '「{}」が「{}」を取り込みました'.format(admin_user.name, shift_table.title)
-        res = client.send(tokens, alert, sound='default', badge=1, category='table')
+        alert = '{}が{}を取り込みました'.format(admin_user.name, shift_table.title)
+        res = client.send(tokens,
+                          alert,
+                          sound='default',
+                          badge=1,
+                          category='usershift',
+                          extra={'sunday': DT.strftime(get_sunday(start_date), '%Y-%m-%d'),
+                                 'updated': DT.strftime(start_date, '%Y-%m-%d')
+                                 }
+                          )
         print('***************Add Comment*****************')
         print(res.errors)
         print(res.token_errors)
@@ -397,6 +405,8 @@ def update_table_title(table_id):
 @app.route('/api/v1/tables/<table_id>', methods=['DELETE'])
 @api_basic_auth.login_required
 def delete(table_id):
+    from app import client
+
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     if user.role.name != 'admin':
@@ -419,6 +429,31 @@ def delete(table_id):
     if user.code != demo_admin_user['code']:
         os.remove(table.origin_path)
         os.remove(table.thumbnail_path)
+
+        company_users = session.query(User) \
+            .filter(User.company_id == user.company_id,
+                    User.token != None,  # is not Noneとかでは正しく比較されない
+                    User.id != user.id,
+                    User.is_shift_import_notification == True
+                    ) \
+            .all()
+
+        if len(company_users) != 0:
+            tokens = [user.token for user in company_users]
+            alert = '{}が{}を削除しました'.format(user.name, table.title)
+            res = client.send(tokens,
+                              alert,
+                              sound='default',
+                              badge=1,
+                              category='usershift',
+                              extra={'sunday': DT.strftime(get_sunday(datetime.datetime.now()), '%Y-%m-%d'),
+                                     'updated': DT.strftime(datetime.datetime.now(), '%Y-%m-%d')
+                                     }
+                              )
+            print('***************Add Comment*****************')
+            print(res.errors)
+            print(res.token_errors)
+            print('***************Add Comment*****************')
 
     session.delete(table)
     session.commit()

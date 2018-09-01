@@ -56,6 +56,10 @@ class CalendarViewPresenter {
         model.getAllUserShift(start: start, end: end)
     }
     
+    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
+        return model.getCurrentAndPageDate()
+    }
+    
     func setTableViewShift() {
         guard let currentDate = view?.currentDate else {return}
         model.setTableViewShift(currentDate: currentDate)

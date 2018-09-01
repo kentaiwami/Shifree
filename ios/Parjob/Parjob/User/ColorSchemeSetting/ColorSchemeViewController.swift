@@ -48,7 +48,7 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UINib(nibName: "ColorCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
-        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
+        tableView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         self.view.addSubview(tableView)
         
         tableView.height(to: self.view)
@@ -86,13 +86,13 @@ extension ColorSchemeViewController {
     }
     
     func successUpdateShiftCategory() {
-        ShowStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 

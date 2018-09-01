@@ -45,7 +45,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
         
         form.append(section)
         
-        tableView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoUser.rawValue)
+        tableView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoUser.rawValue)
         
         if presenter.getUserList().count == 0 {
             tableView.backgroundView?.isHidden = false
@@ -69,6 +69,6 @@ extension UserListViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }

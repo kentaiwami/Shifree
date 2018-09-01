@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import PopupDialog
 
 protocol FileBrowseTopViewInterface: class {
     func initializeUI()
@@ -21,10 +20,13 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     let cellId = "itemCell"
     
+    fileprivate let notificationCenter = NotificationCenter.default
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = FileBrowseTopViewPresenter(view: self)
+        addObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +52,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
-        collectionView.backgroundView = GetEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
+        collectionView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
         self.view.addSubview(collectionView)
         
         if presenter.getTable().count == 0 {
@@ -58,6 +60,12 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         }else {
             collectionView.backgroundView?.isHidden = true
         }
+    }
+    
+    fileprivate func presentDetailView(tableID: Int) {
+        let detailVC = FileBrowseDetailViewController()
+        detailVC.setTableID(id: tableID)
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,7 +82,7 @@ extension FileBrowseTopViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 
@@ -93,9 +101,20 @@ extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailVC = FileBrowseDetailViewController()
-        detailVC.setTableID(id: presenter.getTable()[indexPath.row].id)
-        self.navigationController!.pushViewController(detailVC, animated: true)
+        presentDetailView(tableID: presenter.getTable()[indexPath.row].id)        
+    }
+}
+
+
+extension FileBrowseTopViewController {
+    func addObserver() {
+        notificationCenter.addObserver(self, selector: #selector(updateView(notification:)), name: .comment, object: nil)
     }
     
+    @objc func updateView(notification: Notification) {
+        guard let idDict = notification.object as? [String:Int] else {return}
+        
+        dismissViews(targetViewController: self, selectedIndex: 2)
+        presentDetailView(tableID: idDict["id"]!)
+    }
 }

@@ -73,14 +73,14 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
             
             let startRow = PickerInputRow<String>()
             startRow.title = "開始時間"
-            startRow.options = [""] + GetTime()
+            startRow.options = [""] + get24hourTime()
             startRow.value = ""
             startRow.tag = "start," + String(i)
             startRow.cell.detailTextLabel?.textColor = UIColor.black
             
             let endRow = PickerInputRow<String>()
             endRow.title = "終了時間"
-            endRow.options = [""] + GetTime()
+            endRow.options = [""] + get24hourTime()
             endRow.value = ""
             endRow.tag = "end," + String(i)
             endRow.cell.detailTextLabel?.textColor = UIColor.black
@@ -129,7 +129,7 @@ extension AddShiftViewController {
     }
     
     func showAlert(title: String, msg: String) {
-        ShowStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
 }
 

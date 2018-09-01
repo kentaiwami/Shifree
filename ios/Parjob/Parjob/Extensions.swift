@@ -8,6 +8,11 @@
 
 import UIKit
 
+extension Notification.Name {
+    static let comment = Notification.Name("comment")
+    static let usershift = Notification.Name("usershift")
+}
+
 extension UIColor {
     class func hex ( _ hexStr : String, alpha : CGFloat) -> UIColor {
         var hexString = hexStr as NSString

@@ -80,15 +80,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window!.rootViewController = nav
             self.window?.makeKeyAndVisible()
         }
+        
+        if let userInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] {
+            let userInfoDict = userInfo as! [AnyHashable:Any]
+            
+            if let _ = userInfoDict["id"] as? Int {
+                // rootを変更してオブザーバーを使用して遷移させる
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                let tabBarController = navigationController.viewControllers.first as! UITabBarController
+                tabBarController.selectedIndex = 2
+                self.window!.rootViewController = navigationController
+                self.window?.makeKeyAndVisible()
+            }else if let sunday = userInfoDict["sunday"] as? String {
+                // rootを変更する方法では落ちてしまうので、シングルトンで値を共有して遷移させる
+                MyApplication.shared.sunday = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday)
+                MyApplication.shared.updated = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: userInfoDict["updated"] as! String)
+            }
+        }
 
         return true
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
-    }
+    func applicationWillResignActive(_ application: UIApplication) {}
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-    }
+    func applicationDidEnterBackground(_ application: UIApplication) {}
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         resetNotification()
@@ -154,24 +170,24 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let categoryIdentifier = response.notification.request.content.categoryIdentifier
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let topController = storyboard.instantiateInitialViewController() as! UINavigationController
-        let tabController = topController.viewControllers[0] as! UITabBarController
-        var selectedIndex = 0
+        let notificationCenter = NotificationCenter.default
         
         switch categoryIdentifier {
-        case "comment", "table":
-            selectedIndex = 2
+        case "comment":
+            guard let tableID = response.notification.request.content.userInfo["id"] as? Int else {return}
+            notificationCenter.post(name: .comment, object: ["id": tableID])
         case "usershift":
-            selectedIndex = 0
+            guard let sunday = response.notification.request.content.userInfo["sunday"] as? String else {return}
+            guard let updated = response.notification.request.content.userInfo["updated"] as? String else {return}
+            let object = [
+                "sunday": getFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday),
+                "updated": getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated),
+            ]
+            
+            notificationCenter.post(name: .usershift, object: object)
         default:
-            selectedIndex = 0
+            break
         }
-        
-        tabController.selectedIndex = selectedIndex
-        
-        self.window!.rootViewController = topController
-        self.window?.makeKeyAndVisible()
         
         resetNotification()
         completionHandler()
