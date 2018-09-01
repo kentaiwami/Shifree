@@ -4,6 +4,7 @@ from jsonschema import validate, ValidationError
 from model import User, Comment, ShiftTable
 from database import session
 from basic_auth import api_basic_auth
+from config import demo_company
 
 app = Blueprint('comment_bp', __name__)
 
@@ -50,7 +51,8 @@ def add():
         .filter(User.company_id == user.company_id,
                 User.token != None,
                 User.id != user.id,
-                User.is_comment_notification == True
+                User.is_comment_notification == True,
+                User.company_id != demo_company['id']
                 )\
         .all()
 

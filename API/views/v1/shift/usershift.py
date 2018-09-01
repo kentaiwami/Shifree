@@ -7,6 +7,7 @@ from basic_auth import api_basic_auth
 from itertools import groupby
 from datetime import datetime as DT
 from utility import get_sunday
+from config import demo_admin_user
 
 app = Blueprint('user_shift_bp', __name__)
 
@@ -154,7 +155,7 @@ def update():
             'shift_table_id': user_shift.shift_table_id
         })
 
-        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
+        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id and admin_user.code != demo_admin_user['code']:
             alert = '{}が{}のシフトを{}から{}へ変更しました'.format(admin_user.name, str(user_shift.date), old_shift_name, shift.name)
             alert_tokens.append({'alert': alert, 'token': user.token})
 
@@ -240,7 +241,7 @@ def unknown_update():
 
         session.commit()
 
-        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
+        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id and admin_user.code != demo_admin_user['code']:
             alert = '{}が{}のシフトを{}から{}へ変更しました'.format(admin_user.name, str(user_shift_result.date), old_shift_name, shift.name)
             alert_tokens.append({'alert': alert, 'token': user.token, 'sunday': str(get_sunday(user_shift_result.date)), 'updated': str(user_shift_result.date)})
 
