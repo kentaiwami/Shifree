@@ -14,8 +14,6 @@ import UserNotifications
 
 
 protocol CalendarViewInterface: class {
-    var start: String { get set }
-    var end: String { get set }
     var currentDate: String { get set }
     var targetDate: String { get set }
     
@@ -25,11 +23,11 @@ protocol CalendarViewInterface: class {
 }
 
 class CalendarViewController: UIViewController, CalendarViewInterface {
-    var start: String = ""
-    var end: String = ""
     var currentDate: String = ""
     var targetDate: String = ""
     
+    var start: String = ""
+    var end: String = ""
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
 //    fileprivate var tableView: UITableView!
@@ -183,7 +181,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     fileprivate func getUserShift() {
         setStartEndDate()
-        presenter.getUserShift()
+        presenter.getUserShift(start: start, end: end)
     }
     
     private func setStartEndDate() {
@@ -199,8 +197,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
             endDate = self.calendar.gregorian.date(byAdding: .day, value: 41, to: startDate)!
         }
         
-        start = getFormatterStringFromDate(format: "yyyyMMdd", date: startDate)
-        end = getFormatterStringFromDate(format: "yyyyMMdd", date: endDate)
+        start = getFormatterStringFromDate(format: "yyyy-MM-dd", date: startDate)
+        end = getFormatterStringFromDate(format: "yyyy-MM-dd", date: endDate)
     }
     
     fileprivate func updateCalendarSelectedDate(newSelectDate: Date) {
@@ -231,9 +229,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
 extension CalendarViewController {
     func initializeUI() {
         initializeCalendarView()
-        initializeScrollView()
-        initializeTableView()
-        initializeUserNotificationCenter()
+//        initializeScrollView()
+//        initializeTableView()
+//        initializeUserNotificationCenter()
     }
     
     func updateTableViewData() {

@@ -62,7 +62,7 @@ class API {
                 case .success(let value):
                     let json = JSON(value)
                     print("***** GET Auth API Results *****")
-//                    print(json)
+                    print(json)
                     print("***** GET Auth API Results *****")
                     
                     if isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {

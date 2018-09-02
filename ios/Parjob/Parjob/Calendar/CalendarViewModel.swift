@@ -39,7 +39,11 @@ class CalendarViewModel {
     }
     
     func getAllUserShift(start: String, end: String) {
-        api.getUserShift(start: start, end: end).done { (json) in
+        // CalendarViewControllerはyyyy-MM-ddだが、APIはyyyyMMdd形式しか受け付けないため変換
+        let formattedStart = getFormatterStringFromDate(format: "yyyyMMdd", date: getFormatterDateFromString(format: "yyyy-MM-dd", dateString: start))
+        let formattedEnd = getFormatterStringFromDate(format: "yyyyMMdd", date: getFormatterDateFromString(format: "yyyy-MM-dd", dateString: end))
+        
+        api.getUserShift(start: formattedStart, end: formattedEnd).done { (json) in
             self.oneDayShifts = self.getData(json: json)
             self.delegate?.updateTableViewData()
         }
