@@ -26,8 +26,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     var currentDate: String = ""
     var targetDate: String = ""
     
-    var start: String = ""
-    var end: String = ""
+    var start: Date = Date()
+    var end: Date = Date()
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
 //    fileprivate var tableView: UITableView!
@@ -197,8 +197,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
             endDate = self.calendar.gregorian.date(byAdding: .day, value: 41, to: startDate)!
         }
         
-        start = getFormatterStringFromDate(format: "yyyy-MM-dd", date: startDate)
-        end = getFormatterStringFromDate(format: "yyyy-MM-dd", date: endDate)
+        start = startDate
+        end = endDate
     }
     
     fileprivate func updateCalendarSelectedDate(newSelectDate: Date) {

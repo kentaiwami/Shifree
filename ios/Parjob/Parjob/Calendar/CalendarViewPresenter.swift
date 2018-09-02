@@ -49,7 +49,7 @@ class CalendarViewPresenter {
         model.login()
     }
     
-    func getUserShift(start: String, end: String) {
+    func getUserShift(start: Date, end: Date) {
         model.getAllUserShift(start: start, end: end)
     }
     
