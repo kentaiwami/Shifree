@@ -14,8 +14,8 @@ import UserNotifications
 
 
 protocol CalendarViewInterface: class {
-    var currentDate: String { get set }
-    var targetDate: String { get set }
+    var currentDate: Date { get set }
+    var targetDate: Date { get set }
     
     func initializeUI()
     func showErrorAlert(title: String, msg: String)
@@ -23,8 +23,8 @@ protocol CalendarViewInterface: class {
 }
 
 class CalendarViewController: UIViewController, CalendarViewInterface {
-    var currentDate: String = ""
-    var targetDate: String = ""
+    var currentDate: Date = Date()
+    var targetDate: Date = Date()
     
     var start: Date = Date()
     var end: Date = Date()
@@ -111,7 +111,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         self.calendar.right(to: self.view)
         heightConst = self.calendar.height(self.view.frame.height/2)
         
-        currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentAndPage.currentDate)
+        currentDate = currentAndPage.currentDate
         presenter.setTableViewShift()
     }
     
@@ -203,7 +203,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     fileprivate func updateCalendarSelectedDate(newSelectDate: Date) {
         calendar.select(newSelectDate)
-        self.currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: newSelectDate)
+        self.currentDate = newSelectDate
         presenter.setCurrentPage(currentPage: calendar.currentPage)
     }
     
@@ -271,7 +271,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        targetDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        targetDate = date
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -284,12 +284,12 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         
         setUpTodayColor(didSelectedDate: date)
         
-        currentDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        currentDate = date
         updateTableViewData()
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
-        targetDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        targetDate = date
         
         if presenter.userColorScheme.count == 0 {
             return nil
@@ -299,7 +299,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        targetDate = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        targetDate = date
         return presenter.eventNumber
     }
     
@@ -311,7 +311,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         if !isReceiveNotificationSetCurrentPage {
             getUserShift()
             
-            let currentDate = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: self.currentDate)
+//            let currentDate = currentDate
             var isWeek = true
             if calendar.scope == .month {
                 isWeek = false
@@ -390,7 +390,8 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         let selectedShiftCategoryName = presenter.shiftCategories[indexPath.section]
         let detailVC = CalendarDetailViewController()
-        detailVC.setSelectedData(memo: presenter.getMemo(), title: currentDate + " " + selectedShiftCategoryName, indexPath: indexPath, tableViewShifts: presenter.getTableViewShift(), targetUserShift: presenter.getTargetUserShift())
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
+        detailVC.setSelectedData(memo: presenter.getMemo(), title: currentDateStr + " " + selectedShiftCategoryName, indexPath: indexPath, tableViewShifts: presenter.getTableViewShift(), targetUserShift: presenter.getTargetUserShift())
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
 }

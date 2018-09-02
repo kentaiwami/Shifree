@@ -53,9 +53,10 @@ class CalendarViewModel {
         }
     }
     
-    func getShiftCategories(currentDate: String) -> [String] {
+    func getShiftCategories(currentDate: Date) -> [String] {
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == currentDate
+            $0.date == currentDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -78,9 +79,10 @@ class CalendarViewModel {
         }
     }
     
-    func setTableViewShift(currentDate: String) {
+    func setTableViewShift(currentDate: Date) {
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == currentDate
+            $0.date == currentDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -103,9 +105,10 @@ class CalendarViewModel {
         }
     }
     
-    func getUserColorScheme(date: String) -> String {
+    func getUserColorScheme(date: Date) -> String {
+        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == date
+            $0.date == targetDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -119,9 +122,11 @@ class CalendarViewModel {
         return currentDateOneDayShifts[0].user.color
     }
     
-    func getEventNumber(date: String) -> Int {
+    func getEventNumber(date: Date) -> Int {
+        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == date
+            $0.date == targetDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -134,9 +139,10 @@ class CalendarViewModel {
         return 1
     }
     
-    func getUserSection(date: String) -> Int {
+    func getUserSection(date: Date) -> Int {
+        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == date
+            $0.date == targetDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -157,9 +163,10 @@ class CalendarViewModel {
         return -1
     }
     
-    func getMemo(date: String) -> String {
+    func getMemo(date: Date) -> String {
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == date
+            $0.date == currentDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -169,9 +176,10 @@ class CalendarViewModel {
         return currentDateOneDayShifts[0].memo
     }
     
-    func getTargetUserShift(date: String) -> TargetUserShift {
+    func getTargetUserShift(date: Date) -> TargetUserShift {
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == date
+            $0.date == currentDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
