@@ -19,9 +19,8 @@ class CalendarViewPresenter {
     weak var view: CalendarViewInterface?
     let model: CalendarViewModel
     
-    var shiftCategories:[String] {
-        guard let currentDate = view?.currentDate else {return []}
-        return model.getShiftCategories(currentDate: currentDate)
+    func getShiftCategories(start: Date, tag: Int) -> [String] {
+        return model.getShiftCategories(start: start, tag: tag)
     }
     
     var eventNumber: Int {
@@ -29,14 +28,17 @@ class CalendarViewPresenter {
         return model.getEventNumber(date: targetDate)
     }
     
-    var userColorScheme: String {
-        guard let targetDate = view?.targetDate else {return ""}
-        return model.getUserColorScheme(date: targetDate)
+    func getUserColorSchemeForTable(start: Date, tag: Int) -> String {
+        return model.getUserColorSchemeForTable(start: start, tag: tag)
     }
     
-    var userSection: Int {
-        guard let targetDate = view?.targetDate else {return -1}
-        return model.getUserSection(date: targetDate)
+    func getUserColorSchemeForCalendar() -> String {
+        guard let targetDate = view?.targetDate else {return ""}
+        return model.getUserColorSchemeForCalendar(targetDate: targetDate)
+    }
+    
+    func getUserSection(start: Date, tag: Int) -> Int {
+        return model.getUserSection(start: start, tag: tag)
     }
     
     init(view: CalendarViewInterface) {
@@ -57,9 +59,8 @@ class CalendarViewPresenter {
         return model.getCurrentAndPageDate()
     }
     
-    func setTableViewShift() {
-        guard let currentDate = view?.currentDate else {return}
-        model.setTableViewShift(currentDate: currentDate)
+    func setTableViewShift(start: Date, end: Date) {
+        model.setTableViewShift(start: start, end: end)
     }
     
     func setCurrentPage(currentPage: Date) {
@@ -74,8 +75,8 @@ class CalendarViewPresenter {
     /// TableViewで描画、CalendarDetailViewからのアクセスで使用
     ///
     /// - Returns: TableViewで描画する選択状態にある日のシフト情報
-    func getTableViewShift() -> [TableViewShift] {
-        return model.tableViewShifts
+    func getTableViewShift(tag: Int) -> [TableViewShift] {
+        return model.tableViewShifts[tag]
     }
 }
 

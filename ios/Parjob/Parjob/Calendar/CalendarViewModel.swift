@@ -21,7 +21,7 @@ class CalendarViewModel {
     private let api = API()
     private(set) var oneDayShifts: [OneDayShift] = []
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
-    private(set) var tableViewShifts: [TableViewShift] = []
+    private(set) var tableViewShifts: [[TableViewShift]] = [[]]
     private(set) var currentPage: Date = Date()
     
     func login() {
@@ -53,21 +53,25 @@ class CalendarViewModel {
         }
     }
     
-    func getShiftCategories(currentDate: Date) -> [String] {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
-        let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == currentDateStr
+    func getShiftCategories(start: Date, tag: Int) -> [String] {
+        let count = -1 + tag
+        let calendar = Calendar.current
+        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        let tmpDateOneDayShifts = oneDayShifts.filter {
+            $0.date == tmpDateStr
         }
-        
-        if currentDateOneDayShifts.count == 0 {
+            
+        if tmpDateOneDayShifts.count == 0 {
             return []
         }
-        
+            
         var shiftCategories: [String] = []
         
-        currentDateOneDayShifts[0].shift.forEach { (shiftCategory) in
+        tmpDateOneDayShifts[0].shift.forEach { (shiftCategory) in
             shiftCategories.append(shiftCategory.name)
         }
+            
         return shiftCategories
     }
     
@@ -79,34 +83,67 @@ class CalendarViewModel {
         }
     }
     
-    func setTableViewShift(currentDate: Date) {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
-        let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == currentDateStr
-        }
+    func setTableViewShift(start: Date, end: Date) {
+        var count = -1
+        var tmpDate = start
+        let calendar = Calendar.current
+        let endPlusOneDay = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: end))!
+        tableViewShifts = []
         
-        if currentDateOneDayShifts.count == 0 {
-            self.tableViewShifts = []
-        }else {
-            var tmpTableViewShift: [TableViewShift] = []
+        while !calendar.isDate(endPlusOneDay, inSameDayAs: tmpDate) {
+            tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+            count += 1
             
-            currentDateOneDayShifts[0].shift.forEach { (shiftCategory) in
-                var tmp = TableViewShift()
-                
-                shiftCategory.userShift.forEach({ (userShift) in
-                    tmp.shifts.append(userShift)
-                })
-                
-                tmp.generateJoinedString(tartgetUserShift: getTargetUserShift(date: currentDate), memo: currentDateOneDayShifts[0].memo)
-                tmpTableViewShift.append(tmp)
+            let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+            let tmpDateOneDayShifts = oneDayShifts.filter {
+                $0.date == tmpDateStr
             }
             
-            self.tableViewShifts = tmpTableViewShift
+            if tmpDateOneDayShifts.count == 0 {
+                tableViewShifts.append([])
+            }else {
+                var tmpTableViewShift: [TableViewShift] = []
+                
+                tmpDateOneDayShifts[0].shift.forEach { (shiftCategory) in
+                    var tmp = TableViewShift()
+                    
+                    shiftCategory.userShift.forEach({ (userShift) in
+                        tmp.shifts.append(userShift)
+                    })
+                    
+                    tmp.generateJoinedString(tartgetUserShift: getTargetUserShift(date: tmpDate), memo: tmpDateOneDayShifts[0].memo)
+                    tmpTableViewShift.append(tmp)
+                }
+                
+                tableViewShifts.append(tmpTableViewShift)
+            }
         }
     }
     
-    func getUserColorScheme(date: Date) -> String {
-        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+    func getUserColorSchemeForTable(start: Date, tag: Int) -> String {
+        let count = -1 + tag
+        let calendar = Calendar.current
+        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == tmpDateStr
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return ""
+        }
+        
+        if currentDateOneDayShifts[0].user.color.count == 0 {
+            return ""
+        }
+        
+        return currentDateOneDayShifts[0].user.color
+    }
+    
+    func getUserColorSchemeForCalendar(targetDate: Date) -> String {
+        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: targetDate)
+        
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == targetDateStr
         }
@@ -121,6 +158,7 @@ class CalendarViewModel {
         
         return currentDateOneDayShifts[0].user.color
     }
+
     
     func getEventNumber(date: Date) -> Int {
         let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
@@ -139,10 +177,14 @@ class CalendarViewModel {
         return 1
     }
     
-    func getUserSection(date: Date) -> Int {
-        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+    func getUserSection(start: Date, tag: Int) -> Int {
+        let count = -1 + tag
+        let calendar = Calendar.current
+        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == targetDateStr
+            $0.date == tmpDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
@@ -153,7 +195,7 @@ class CalendarViewModel {
             return -1
         }
         
-        for (i, tableViewShift) in self.tableViewShifts.enumerated() {
+        for (i, tableViewShift) in tableViewShifts[tag].enumerated() {
             for userShift in tableViewShift.shifts {
                 if currentDateOneDayShifts[0].user.id ==  userShift.id {
                     return i
