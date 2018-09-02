@@ -19,6 +19,16 @@ class CalendarViewPresenter {
     weak var view: CalendarViewInterface?
     let model: CalendarViewModel
     
+    init(view: CalendarViewInterface) {
+        self.view = view
+        self.model = CalendarViewModel()
+        model.delegate = self
+    }
+    
+    func login() {
+        model.login()
+    }
+    
     func getShiftCategories(start: Date, tag: Int) -> [String] {
         return model.getShiftCategories(start: start, tag: tag)
     }
@@ -41,16 +51,6 @@ class CalendarViewPresenter {
         return model.getUserSection(start: start, tag: tag)
     }
     
-    init(view: CalendarViewInterface) {
-        self.view = view
-        self.model = CalendarViewModel()
-        model.delegate = self
-    }
-    
-    func login() {
-        model.login()
-    }
-    
     func getUserShift(start: Date, end: Date) {
         model.getAllUserShift(start: start, end: end)
     }
@@ -71,18 +71,6 @@ class CalendarViewPresenter {
         return model.getShouldSelectDate(currentPage: currentPage, selectingDate: selectingDate, isWeek: isWeek)
     }
     
-    
-    /// TableViewで描画、CalendarDetailViewからのアクセスで使用
-    ///
-    /// - Returns: TableViewで描画する選択状態にある日のシフト情報
-    func getTableViewShift(tag: Int) -> [TableViewShift] {
-        return model.tableViewShifts[tag]
-    }
-}
-
-
-// MARK: - CalendarDetailViewからアクセスして、変数を取り出すための関数一覧
-extension CalendarViewPresenter {
     func getMemo() -> String {
         guard let currentDate = view?.currentDate else {return ""}
         return model.getMemo(date: currentDate)
@@ -91,6 +79,10 @@ extension CalendarViewPresenter {
     func getTargetUserShift() -> TargetUserShift {
         guard let currentDate = view?.currentDate else {return TargetUserShift()}
         return model.getTargetUserShift(date: currentDate)
+    }
+    
+    func getTableViewShift(tag: Int) -> [TableViewShift] {
+        return model.tableViewShifts[tag]
     }
 }
 
