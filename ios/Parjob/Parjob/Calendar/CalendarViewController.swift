@@ -118,30 +118,23 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     }
     
     fileprivate func initializeTableView() {
-        let tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.frame = CGRect(x: 0, y: calendar.frame.height, width: self.view.frame.width, height: self.view.frame.height - calendar.frame.height)
-//        tableView.backgroundColor = UIColor.brown
-        scrollView.addSubview(tableView)
-////            if i == 0 {
-////                tableView.left(to: scrollView)
-////            }else {
-////                tableView.leftToRight(of: tableViews.last!)
-////            }
-//            tableView.left(to: self.view)
-//            tableView.topToBottom(of: self.calendar)
-//            tableView.bottom(to: self.view)
-//            tableView.right(to: self.view)
-////            tableView.width(self.view.frame.width)
-//
+        var tableViewX: CGFloat = 0
+        
+        for i in 0...8 {
+            let tableView = UITableView()
+            tableView.delegate = self
+            tableView.dataSource = self
+            tableView.tag = i
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+            tableView.frame = CGRect(x: tableViewX, y: calendar.frame.height, width: self.view.frame.width, height: self.view.frame.height - calendar.frame.height)
+            scrollView.addSubview(tableView)
             tableView.backgroundView = getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
-//
             tableViews.append(tableView)
+            
+            tableViewX = tableView.frame.origin.x + tableView.frame.width
+        }
     }
     
-    //TODO: initializeScrollView
     fileprivate func initializeScrollView() {
         let width = self.view.frame.width * 9
         scrollView = UIScrollView()
