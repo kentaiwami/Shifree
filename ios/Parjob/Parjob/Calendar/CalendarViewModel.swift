@@ -60,6 +60,7 @@ class CalendarViewModel {
     private(set) var currentDate: Date = Date()
     private(set) var start: Date = Date()
     private(set) var end: Date = Date()
+    private(set) var currentScrollPage: Int = 0
     
     func setStartEndDate(start: Date, end: Date) {
         self.start = start
@@ -180,6 +181,23 @@ class CalendarViewModel {
         
         return count
     }
+    
+    func setCurrentScrollPage(page: Int) {
+        currentScrollPage = page
+    }
+    
+    func getNewSelectDateByScroll(newScrollPage: Int) -> Date {
+        let calendar = Calendar.current
+        
+        if newScrollPage < currentScrollPage {
+            return calendar.date(byAdding: .day, value: -1, to: calendar.startOfDay(for: currentDate))!
+        }else if newScrollPage > currentScrollPage {
+            return calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: currentDate))!
+        }else {
+            return currentDate
+        }
+    }
+    
     
     func getShiftCategories(tag: Int) -> [String] {
         let count = -1 + tag

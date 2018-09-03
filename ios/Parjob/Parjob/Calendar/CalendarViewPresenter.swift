@@ -68,6 +68,10 @@ class CalendarViewPresenter {
         model.setCurrentPage(currentPage: currentPage)
     }
     
+    func setCurrentDate(date: Date) {
+        model.setCurrentDate(currentDate: date)
+    }
+    
     func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
         return model.getCurrentAndPageDate()
     }
@@ -96,6 +100,15 @@ class CalendarViewPresenter {
     func getScrollPosition(target: Date) -> Int {
         return model.getScrollPosition(target: target)
     }
+    
+    func setCurrentScrollPage(page: Int) {
+        model.setCurrentScrollPage(page: page)
+    }
+    
+    func getNewSelectDateByScroll(newScrollPage: Int) -> Date {
+        return model.getNewSelectDateByScroll(newScrollPage: newScrollPage)
+    }
+    
     
     /*
      TableView関連

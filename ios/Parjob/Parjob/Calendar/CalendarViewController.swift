@@ -27,13 +27,15 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
 //    var end: Date = Date()
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
-    fileprivate var heightConst: Constraint!
-    fileprivate var todayColor: UIColor!
-    fileprivate let notificationCenter = NotificationCenter.default
     fileprivate var tableViews: [UITableView] = []
     fileprivate var scrollView: UIScrollView!
+    fileprivate let notificationCenter = NotificationCenter.default
+    
+    fileprivate var heightConst: Constraint!
+    fileprivate var todayColor: UIColor!
+    
     fileprivate var tableCount = 9
-    fileprivate var currentScrollPage = 0
+    fileprivate var isScrolling = false
     
     // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用
     fileprivate var isReceiveNotificationSetCurrentPage = false
@@ -102,7 +104,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate func setUpScrollPosition(page: Int) {
         let width = self.view.frame.width * CGFloat(page)
         scrollView.setContentOffset(CGPoint(x: width, y: 0), animated: false)
-        currentScrollPage = page + 1
+        presenter.setCurrentScrollPage(page: page)
     }
     
     override func didReceiveMemoryWarning() {
@@ -313,33 +315,46 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         print("************** boundingRectWillChange **************")
-            heightConst.constant = bounds.height
-            self.view.layoutIfNeeded()
-        //
+        
+        heightConst.constant = bounds.height
+        self.view.layoutIfNeeded()
+        //TODO: ScrollView, TableViewの再描画
+        //TODO: 情報取得、データ再読み込み
+        
         //        getAllUserShift()
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         print("************** didSelect **************")
         
-        //        setUpTodayColor(didSelectedDate: date)
-        //
-        //        currentDate = date
-        //
-        //        let position = presenter.getSelectedPosition(start: start, target: calendar.selectedDate!) + 1
-        //        setUpScrollPosition(page: position)
+        setUpTodayColor(didSelectedDate: date)
+        presenter.setCurrentDate(date: date)
+        setUpScrollPosition(page: presenter.getScrollPosition(target: date))
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("************** calendarCurrentPageDidChange **************")
+        // !isReceiveNotificationSetCurrentPageの時
+        //TODO: 選択状態を更新
+        //TODO: 情報取得、再描画
+        
+        // カレンダースワイプで更新した時（スワイプフラグが立ってない時）
+        //TODO: 日付を操作してから情報取得、再描画
+        
+        // スライプフラグが立っている時
+        //TODO: ページの変化から方向を特定、modelのページ更新
+        //TODO: データ取得
+        //TODO: スクロール位置の特定とスクロール
+        print("+++++++++++++++++++++++++++")
+        print(isScrolling)
+        print("+++++++++++++++++++++++++++")
+        isScrolling = false
+        
         //        /*
         //         表示モードがWeekなら翌・先週を選択状態に
         //         Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
         //         //TODO: スワイプでチェンジした時は日付操作をしない
         //         */
-        //        print("***********************************")
-        //        print("calendarCurrentPageDidChange")
-        //        print("***********************************")
         //
         //
         //
@@ -369,38 +384,32 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
 
 // MARK: - UIScrollViewDelegate
 extension CalendarViewController: UIScrollViewDelegate {
-    func changeSelectedDateByScroll(scrollViewCurrentPage: Int) {
-        //        let calendarCurrent = Calendar.current
-        //
-        //        if scrollViewCurrentPage < currentScrollPage {
-        //            let newSelectDate = calendarCurrent.date(byAdding: .day, value: -1, to: calendarCurrent.startOfDay(for: currentDate))!
-        //            calendar.select(newSelectDate)
-        //            self.currentDate = newSelectDate
-        //            setUpTodayColor(didSelectedDate: newSelectDate)
-        //        }else if scrollViewCurrentPage > currentScrollPage {
-        //            let newSelectDate = calendarCurrent.date(byAdding: .day, value: 1, to: calendarCurrent.startOfDay(for: currentDate))!
-        //            calendar.select(newSelectDate)
-        //            self.currentDate = newSelectDate
-        //            setUpTodayColor(didSelectedDate: newSelectDate)
-        //        }
-        //
-        //        currentScrollPage = scrollView.currentPage
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isScrolling = true
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            print("currentPage:", scrollView.currentPage)
+            isScrolling = false
+            let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
+            
+            calendar.select(newSelectDate)
+            setUpTodayColor(didSelectedDate: newSelectDate)
+            
+            presenter.setCurrentDate(date: newSelectDate)
+            presenter.setCurrentScrollPage(page: scrollView.currentPage)
         }
-        //        if !decelerate {
-        //            changeSelectedDateByScroll(scrollViewCurrentPage: scrollView.currentPage)
-        //            isReceiveNotificationSetCurrentPage = true
-        //        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        print("currentPage:", scrollView.currentPage)
-        //        changeSelectedDateByScroll(scrollViewCurrentPage: scrollView.currentPage)
-        //        isReceiveNotificationSetCurrentPage = true
+        isScrolling = false
+        let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
+        
+        calendar.select(newSelectDate)
+        setUpTodayColor(didSelectedDate: newSelectDate)
+        
+        presenter.setCurrentDate(date: newSelectDate)
+        presenter.setCurrentScrollPage(page: scrollView.currentPage)
     }
 }
 
