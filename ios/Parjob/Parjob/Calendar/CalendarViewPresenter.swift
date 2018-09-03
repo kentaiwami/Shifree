@@ -40,6 +40,10 @@ class CalendarViewPresenter {
         model.setTableViewShift()
     }
     
+    func getTargetUserShift() -> TargetUserShift {
+        return model.getTargetUserShift(date: nil)
+    }
+    
     
     /*
      Start, End関連
@@ -64,6 +68,10 @@ class CalendarViewPresenter {
         model.setCurrentPage(currentPage: currentPage)
     }
     
+    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
+        return model.getCurrentAndPageDate()
+    }
+    
     
     
     /*
@@ -82,47 +90,51 @@ class CalendarViewPresenter {
     }
     
     
-    
-    //---------------------------------------------------
-    
-    func getSelectedPosition(target: Date) -> Int {
-        return model.getSelectedPosition(target: target)
+    /*
+     ScrollView関連
+    */
+    func getScrollPosition(target: Date) -> Int {
+        return model.getScrollPosition(target: target)
     }
     
-    func getShiftCategories(start: Date, tag: Int) -> [String] {
-        return model.getShiftCategories(start: start, tag: tag)
+    /*
+     TableView関連
+    */
+    func getTableViewShift(tag: Int) -> [TableViewShift] {
+        return model.tableViewShifts[tag]
     }
     
-    
-    
-    func getUserColorSchemeForTable(start: Date, tag: Int) -> String {
-        return model.getUserColorSchemeForTable(start: start, tag: tag)
+    func getShiftCategories(tag: Int) -> [String] {
+        return model.getShiftCategories(tag: tag)
     }
     
-    
-    
-    func getUserSection(start: Date, tag: Int) -> Int {
-        return model.getUserSection(start: start, tag: tag)
+    func getUserColorSchemeForTable(tag: Int) -> String {
+        return model.getUserColorSchemeForTable(tag: tag)
     }
     
-    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        return model.getCurrentAndPageDate()
-    }
-    
-    func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
-        return model.getShouldSelectDate(currentPage: currentPage, selectingDate: selectingDate, isWeek: isWeek)
+    func getUserSection(tag: Int) -> Int {
+        return model.getUserSection(tag: tag)
     }
     
     func getMemo() -> String {
         return model.getMemo()
     }
     
-    func getTargetUserShift() -> TargetUserShift {
-        return model.getTargetUserShift(date: nil)
-    }
     
-    func getTableViewShift(tag: Int) -> [TableViewShift] {
-        return model.tableViewShifts[tag]
+    
+    //---------------------------------------------------
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
+        return model.getShouldSelectDate(currentPage: currentPage, selectingDate: selectingDate, isWeek: isWeek)
     }
 }
 

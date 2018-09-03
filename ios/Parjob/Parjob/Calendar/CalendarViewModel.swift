@@ -168,14 +168,20 @@ class CalendarViewModel {
         return calendar.isDate(targetDate, inSameDayAs: Date())
     }
     
+    func getScrollPosition(target: Date) -> Int {
+        var count = 0
+        var tmpDate = start
+        let calendar = Calendar.current
+        
+        while !calendar.isDate(target, inSameDayAs: tmpDate) {
+            tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+            count += 1
+        }
+        
+        return count
+    }
     
-    
-    
-    
-    
-    //-----------------------------------------------------
-    
-    func getShiftCategories(start: Date, tag: Int) -> [String] {
+    func getShiftCategories(tag: Int) -> [String] {
         let count = -1 + tag
         let calendar = Calendar.current
         let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
@@ -183,43 +189,26 @@ class CalendarViewModel {
         let tmpDateOneDayShifts = oneDayShifts.filter {
             $0.date == tmpDateStr
         }
-            
+        
         if tmpDateOneDayShifts.count == 0 {
             return []
         }
-            
+        
         var shiftCategories: [String] = []
         
         tmpDateOneDayShifts[0].shift.forEach { (shiftCategory) in
             shiftCategories.append(shiftCategory.name)
         }
-            
+        
         return shiftCategories
     }
     
-    func getSelectedPosition(target: Date) -> Int {
-        var count = 0
-        var tmpDate = start
-        let calendar = Calendar.current
-                
-        while !calendar.isDate(target, inSameDayAs: tmpDate) {
-            tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-            count += 1
-        }
-        
-        if count != 0 {
-            count -= 1
-        }
-        
-        return count
-    }
-    
-    func getUserColorSchemeForTable(start: Date, tag: Int) -> String {
+    func getUserColorSchemeForTable(tag: Int) -> String {
         let count = -1 + tag
         let calendar = Calendar.current
         let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
         let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
-
+        
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == tmpDateStr
         }
@@ -235,10 +224,7 @@ class CalendarViewModel {
         return currentDateOneDayShifts[0].user.color
     }
     
-    
-
-    
-    func getUserSection(start: Date, tag: Int) -> Int {
+    func getUserSection(tag: Int) -> Int {
         let count = -1 + tag
         let calendar = Calendar.current
         let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
@@ -302,6 +288,12 @@ class CalendarViewModel {
         
         return currentDateOneDayShifts[0].user
     }
+    
+    
+    //-----------------------------------------------------
+    //-----------------------------------------------------
+    //-----------------------------------------------------
+    //-----------------------------------------------------
     
     func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
         var dayValue = 0

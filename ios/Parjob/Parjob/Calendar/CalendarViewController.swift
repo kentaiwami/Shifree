@@ -160,6 +160,25 @@ extension CalendarViewController {
         setStartEndDate()
     }
     
+    fileprivate func initializeScrollView() {
+        let width = self.view.frame.width * CGFloat(tableCount)
+        scrollView = UIScrollView()
+        scrollView.delegate = self
+        scrollView.contentSize = CGSize(width: width, height: 0)
+        scrollView.alwaysBounceHorizontal = true
+        scrollView.isPagingEnabled = true
+        self.view.addSubview(scrollView)
+        
+        scrollView.topToBottom(of: calendar)
+        scrollView.left(to: self.view)
+        scrollView.right(to: self.view)
+        scrollView.bottom(to: self.view)
+        
+        // カレンダーの選択されている日付の位置にスクロール
+        let position = presenter.getScrollPosition(target: calendar.selectedDate!)
+        setUpScrollPosition(page: position)
+    }
+    
     fileprivate func initializeTableView() {
         var tableViewX: CGFloat = 0
         
@@ -176,24 +195,6 @@ extension CalendarViewController {
             
             tableViewX = tableView.frame.origin.x + tableView.frame.width
         }
-    }
-    
-    fileprivate func initializeScrollView() {
-        let width = self.view.frame.width * CGFloat(tableCount)
-        scrollView = UIScrollView()
-        scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: 0)
-        scrollView.alwaysBounceHorizontal = true
-        scrollView.isPagingEnabled = true
-        self.view.addSubview(scrollView)
-        
-        scrollView.topToBottom(of: calendar)
-        scrollView.left(to: self.view)
-        scrollView.right(to: self.view)
-        scrollView.bottom(to: self.view)
-        
-        let position = presenter.getSelectedPosition(target: calendar.selectedDate!) + 1
-        setUpScrollPosition(page: position)
     }
     
     fileprivate func initializeNavigationItem() {
@@ -240,8 +241,8 @@ extension CalendarViewController {
     /// Login後に呼び出されてUIの初期化を実行
     func initializeUI() {
         initializeCalendarView()
-//        initializeScrollView()
-//        initializeTableView()
+        initializeScrollView()
+        initializeTableView()
         initializeUserNotificationCenter()
     }
     
@@ -312,8 +313,8 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         print("************** boundingRectWillChange **************")
-        //        heightConst.constant = bounds.height
-        //        self.view.layoutIfNeeded()
+            heightConst.constant = bounds.height
+            self.view.layoutIfNeeded()
         //
         //        getAllUserShift()
     }
@@ -387,6 +388,9 @@ extension CalendarViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            print("currentPage:", scrollView.currentPage)
+        }
         //        if !decelerate {
         //            changeSelectedDateByScroll(scrollViewCurrentPage: scrollView.currentPage)
         //            isReceiveNotificationSetCurrentPage = true
@@ -394,6 +398,7 @@ extension CalendarViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("currentPage:", scrollView.currentPage)
         //        changeSelectedDateByScroll(scrollViewCurrentPage: scrollView.currentPage)
         //        isReceiveNotificationSetCurrentPage = true
     }
@@ -409,52 +414,56 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        //        cell.textLabel?.text = presenter.getTableViewShift(tag: tableView.tag)[indexPath.section].joined
-        //        cell.textLabel?.numberOfLines = 0
-        //        cell.textLabel?.lineBreakMode = .byWordWrapping
-        //        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = presenter.getTableViewShift(tag: tableView.tag)[indexPath.section].joined
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = .byWordWrapping
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
-        //        return presenter.getShiftCategories(start: start, tag: tableView.tag).count
+        return presenter.getShiftCategories(tag: tableView.tag).count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
-        //        return presenter.getShiftCategories(start: start, tag: tableView.tag)[section]
+        return presenter.getShiftCategories(tag: tableView.tag)[section]
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        //        targetDate = currentDate
-        //        let headerTitle = view as? UITableViewHeaderFooterView
-        //        var bgColor = UIColor.clear
-        //        var txtColor = UIColor.black
-        //        let colorHex = presenter.getUserColorSchemeForTable(start: start, tag: tableView.tag)
-        //
-        //        if colorHex.count != 0 {
-        //            if section == presenter.getUserSection(start: start, tag: tableView.tag) {
-        //                bgColor = UIColor.hex(colorHex, alpha: 0.9)
-        //                txtColor = UIColor.white
-        //            }else {
-        //                bgColor = UIColor.clear
-        //                txtColor = UIColor.black
-        //            }
-        //        }
-        //
-        //        headerTitle?.contentView.backgroundColor = bgColor
-        //        headerTitle?.textLabel?.textColor = txtColor
+        let headerTitle = view as? UITableViewHeaderFooterView
+        var bgColor = UIColor.clear
+        var txtColor = UIColor.black
+        let colorHex = presenter.getUserColorSchemeForTable(tag: tableView.tag)
+        
+        if colorHex.count != 0 {
+            if section == presenter.getUserSection(tag: tableView.tag) {
+                bgColor = UIColor.hex(colorHex, alpha: 0.9)
+                txtColor = UIColor.white
+            }else {
+                bgColor = UIColor.clear
+                txtColor = UIColor.black
+            }
+        }
+        
+        headerTitle?.contentView.backgroundColor = bgColor
+        headerTitle?.textLabel?.textColor = txtColor
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        tableView.deselectRow(at: indexPath, animated: true)
-        //
-        //        let selectedShiftCategoryName = presenter.getShiftCategories(start: start, tag: tableView.tag)[indexPath.section]
-        //        let detailVC = CalendarDetailViewController()
-        //        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
-        //        detailVC.setSelectedData(memo: presenter.getMemo(), title: currentDateStr + " " + selectedShiftCategoryName, indexPath: indexPath, tableViewShifts: presenter.getTableViewShift(tag: tableView.tag), targetUserShift: presenter.getTargetUserShift())
-        //        self.navigationController!.pushViewController(detailVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
+        let detailVC = CalendarDetailViewController()
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
+        detailVC.setSelectedData(
+            memo: presenter.getMemo(),
+            title: currentDateStr + " " + selectedShiftCategoryName,
+            indexPath: indexPath,
+            tableViewShifts: presenter.getTableViewShift(tag: tableView.tag),
+            targetUserShift: presenter.getTargetUserShift()
+        )
+        
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
 }
 
