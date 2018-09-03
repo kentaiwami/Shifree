@@ -17,8 +17,19 @@ protocol CalendarViewModelDelegate: class {
 }
 
 
-// MARK: - OKなやつ
-extension CalendarViewModel {
+class CalendarViewModel {
+    weak var delegate: CalendarViewModelDelegate?
+    fileprivate let api = API()
+    fileprivate(set) var oneDayShifts: [OneDayShift] = []
+    fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
+    fileprivate(set) var tableViewShifts: [[TableViewShift]] = [[]]
+    
+    fileprivate(set) var currentPageDate: Date = Date()
+    fileprivate(set) var currentDate: Date = Date()
+    fileprivate(set) var start: Date = Date()
+    fileprivate(set) var end: Date = Date()
+    fileprivate(set) var currentScrollPage: Int = 0
+    
     func login() {
         api.login().done { (json) in
             let keychain = Keychain()
@@ -33,6 +44,15 @@ extension CalendarViewModel {
         }
     }
     
+    func isSameDate(targetDate1: Date, targetDate2: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(targetDate1, inSameDayAs: targetDate2)
+    }
+}
+
+
+// MARK: - シフト関連
+extension CalendarViewModel {
     func getAllUserShift() {
         let formattedStart = getFormatterStringFromDate(format: "yyyyMMdd", date: start)
         let formattedEnd = getFormatterStringFromDate(format: "yyyyMMdd", date: end)
@@ -46,49 +66,6 @@ extension CalendarViewModel {
                 let title = "Error(" + String(tmp_err.code) + ")"
                 self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
-    }
-}
-
-class CalendarViewModel {
-    weak var delegate: CalendarViewModelDelegate?
-    fileprivate let api = API()
-    fileprivate(set) var oneDayShifts: [OneDayShift] = []
-    private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
-    private(set) var tableViewShifts: [[TableViewShift]] = [[]]
-    
-    private(set) var currentPageDate: Date = Date()
-    private(set) var currentDate: Date = Date()
-    private(set) var start: Date = Date()
-    private(set) var end: Date = Date()
-    private(set) var currentScrollPage: Int = 0
-    
-    func setStartEndDate(start: Date, end: Date) {
-        self.start = start
-        self.end = end
-    }
-    
-    func getStartEndDate() -> (start: Date, end: Date) {
-        return (start, end)
-    }
-    
-    func initCurrentDate() {
-        if let updated = MyApplication.shared.updated {
-            currentDate = updated
-        }else {
-            currentDate = Date()
-        }
-    }
-    
-    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        return (currentPageDate, currentDate)
-    }
-    
-    func setCurrentDate(currentDate: Date) {
-        self.currentDate = currentDate
-    }
-
-    func setCurrentPage(currentPage: Date) {
-        self.currentPageDate = currentPage
     }
     
     func setTableViewShift() {
@@ -128,7 +105,74 @@ class CalendarViewModel {
         }
     }
     
+    func getTargetUserShift(date: Date?) -> TargetUserShift {
+        /*
+         dateがnil：ViewControllerからの呼び出し（currentDateを参照）
+         それ以外  ：model内から日付を指定して呼び出し
+         */
+        var currentDate = Date()
+        if date == nil {
+            currentDate = self.currentDate
+        }else {
+            currentDate = date!
+        }
+        
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == currentDateStr
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return TargetUserShift()
+        }
+        
+        return currentDateOneDayShifts[0].user
+    }
+}
+
+
+
+// MARK: - Start, End関連
+extension CalendarViewModel {
+    func setStartEndDate(start: Date, end: Date) {
+        self.start = start
+        self.end = end
+    }
     
+    func getStartEndDate() -> (start: Date, end: Date) {
+        return (start, end)
+    }
+}
+
+
+
+// MARK: - CurrentDate, CurrentPage関連
+extension CalendarViewModel {
+    func initCurrentDate() {
+        if let updated = MyApplication.shared.updated {
+            currentDate = updated
+        }else {
+            currentDate = Date()
+        }
+    }
+    
+    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
+        return (currentPageDate, currentDate)
+    }
+    
+    func setCurrentDate(currentDate: Date) {
+        self.currentDate = currentDate
+    }
+    
+    func setCurrentPage(currentPage: Date) {
+        self.currentPageDate = currentPage
+    }
+}
+
+
+
+// MARK: - カレンダー関連
+extension CalendarViewModel {
     func getUserColorSchemeForCalendar(targetDate: Date) -> String {
         let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: targetDate)
         
@@ -164,22 +208,62 @@ class CalendarViewModel {
         return 1
     }
     
-    func isTargetDateToday(targetDate: Date) -> Bool {
-        let calendar = Calendar.current
-        return calendar.isDate(targetDate, inSameDayAs: Date())
+    func getShouldSelectDate(currentPageDate: Date, isWeek: Bool) -> Date {
+        var dayValue = 0
+        var monthValue = 0
+        let calendarCurrent = Calendar.current
+        
+        if self.currentPageDate < currentPageDate {
+            dayValue = 7
+            monthValue = 1
+        }else {
+            dayValue = -7
+            monthValue = -1
+        }
+        
+        if isWeek {
+            return calendarCurrent.date(byAdding: .day, value: dayValue, to: currentDate)!
+        }else {
+            // 月を増減させたコンポーネントを作成
+            var components = calendarCurrent.dateComponents([.year, .month, .day], from: currentDate)
+            components.setValue(0, for: Calendar.Component.year)
+            components.setValue(monthValue, for: Calendar.Component.month)
+            components.setValue(0, for: Calendar.Component.day)
+            
+            /*
+             選択している日から1ヶ月だけ増減させた日付を生成。
+             日にちを1日（月初め）に変更。
+             */
+            let newDate = calendarCurrent.date(byAdding: components, to: currentDate)!
+            components = calendarCurrent.dateComponents([.year, .month, .day], from: newDate)
+            components.day = 1
+            components.calendar = calendarCurrent
+            
+            if calendarCurrent.compare(Date(), to: components.date!, toGranularity: .year) == .orderedSame && calendarCurrent.compare(Date(), to: components.date!, toGranularity: .month) == .orderedSame {
+                // スワイプ先が今月
+                return Date()
+            }else {
+                return components.date!
+            }
+        }
     }
-    
+}
+
+
+
+// MARK: - ScrollView関連
+extension CalendarViewModel {
     func getScrollPosition(target: Date) -> Int {
-        var count = 0
+        var position = 1
         var tmpDate = start
         let calendar = Calendar.current
         
         while !calendar.isDate(target, inSameDayAs: tmpDate) {
-            tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-            count += 1
+            tmpDate = calendar.date(byAdding: .day, value: position, to: calendar.startOfDay(for: start))!
+            position += 1
         }
         
-        return count
+        return position
     }
     
     func setCurrentScrollPage(page: Int) {
@@ -197,8 +281,12 @@ class CalendarViewModel {
             return currentDate
         }
     }
-    
-    
+}
+
+
+
+// MARK: - TableView関連
+extension CalendarViewModel {
     func getShiftCategories(tag: Int) -> [String] {
         let count = -1 + tag
         let calendar = Calendar.current
@@ -282,79 +370,10 @@ class CalendarViewModel {
         
         return currentDateOneDayShifts[0].memo
     }
-    
-    func getTargetUserShift(date: Date?) -> TargetUserShift {
-        /*
-         dateがnil：ViewControllerからの呼び出し（currentDateを参照）
-         それ以外  ：model内から日付を指定して呼び出し
-         */
-        var currentDate = Date()
-        if date == nil {
-            currentDate = self.currentDate
-        }else {
-            currentDate = date!
-        }
-        
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
-        let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == currentDateStr
-        }
-        
-        if currentDateOneDayShifts.count == 0 {
-            return TargetUserShift()
-        }
-        
-        return currentDateOneDayShifts[0].user
-    }
-    
-    
-    //-----------------------------------------------------
-    //-----------------------------------------------------
-    //-----------------------------------------------------
-    //-----------------------------------------------------
-    
-    func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
-        var dayValue = 0
-        var monthValue = 0
-        let calendarCurrent = Calendar.current
-        
-        if self.currentPageDate < currentPage {
-            dayValue = 7
-            monthValue = 1
-        }else {
-            dayValue = -7
-            monthValue = -1
-        }
-        
-        if isWeek {
-            return calendarCurrent.date(byAdding: .day, value: dayValue, to: selectingDate)!
-        }else {
-            // 月を増減させたコンポーネントを作成
-            var components = calendarCurrent.dateComponents([.year, .month, .day], from: selectingDate)
-            components.setValue(0, for: Calendar.Component.year)
-            components.setValue(monthValue, for: Calendar.Component.month)
-            components.setValue(0, for: Calendar.Component.day)
-            
-            /*
-             選択している日から1ヶ月だけ増減させた日付を生成。
-             日にちを1日（月初め）に変更。
-             */
-            let newDate = calendarCurrent.date(byAdding: components, to: selectingDate)!
-            components = calendarCurrent.dateComponents([.year, .month, .day], from: newDate)
-            components.day = 1
-            components.calendar = calendarCurrent
-            
-            if calendarCurrent.compare(Date(), to: components.date!, toGranularity: .year) == .orderedSame && calendarCurrent.compare(Date(), to: components.date!, toGranularity: .month) == .orderedSame {
-                // スワイプ先が今月
-                return Date()
-            }else {
-                return components.date!
-            }
-        }
-    }
 }
 
 
+// MARK: - Utility関連（見やすくするため関数化）
 extension CalendarViewModel {
     fileprivate func getData(json: JSON) -> [OneDayShift] {
         var oneDayShift = [OneDayShift]()

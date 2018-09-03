@@ -35,7 +35,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate var todayColor: UIColor!
     
     fileprivate var tableCount = 9
-    fileprivate var isScrolling = false
+    fileprivate var isSwipe = false
     
     // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用
     fileprivate var isReceiveNotificationSetCurrentPage = false
@@ -78,15 +78,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         }
         
         presenter.setStartEndDate(start: startDate, end: endDate)
-    }
-    
-    fileprivate func updateCalendarSelectedDate(newSelectDate: Date) {
-//        calendar.select(newSelectDate)
-//        self.currentDate = newSelectDate
-//        presenter.setCurrentPage(currentPage: calendar.currentPage)
-//
-//        let position = presenter.getSelectedPosition(target: newSelectDate) + 1
-//        setUpScrollPosition(page: position)
     }
     
     fileprivate func setUpTodayColor(didSelectedDate: Date) {
@@ -298,7 +289,7 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
-        if presenter.isTargetDateToday(targetDate: date) {
+        if presenter.isSameDate(targetDate1: date, targetDate2: Date()) {
             return todayColor
         }else {
             return UIColor.hex(Color.main.rawValue, alpha: 1.0)
@@ -334,49 +325,40 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("************** calendarCurrentPageDidChange **************")
-        // !isReceiveNotificationSetCurrentPageの時
-        //TODO: 選択状態を更新
-        //TODO: 情報取得、再描画
         
-        // カレンダースワイプで更新した時（スワイプフラグが立ってない時）
-        //TODO: 日付を操作してから情報取得、再描画
+        if isReceiveNotificationSetCurrentPage {
+        }else {
+            if isSwipe {
+                setStartEndDate()
+                presenter.setCurrentDate(date: calendar.selectedDate!)
+                presenter.setCurrentPage(currentPage: calendar.currentPage)
+                let position = presenter.getScrollPosition(target: calendar.selectedDate!)
+                setUpScrollPosition(page: position)
+                presenter.getAllUserShift()
+            }else {
+                /*
+                 表示モードがWeekなら翌・先週を選択状態に
+                 Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
+                 //TODO: スワイプでチェンジした時は日付操作をしない
+                 */
+                var isWeek = true
+                if calendar.scope == .month {
+                    isWeek = false
+                }
+                let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, isWeek: isWeek)
+                calendar.select(newSelectDate)
+                presenter.setCurrentDate(date: newSelectDate)
+                presenter.setCurrentPage(currentPage: calendar.currentPage)
+                setStartEndDate()
+                let position = presenter.getScrollPosition(target: newSelectDate)
+                setUpScrollPosition(page: position)
+                setUpTodayColor(didSelectedDate: newSelectDate)
+                presenter.getAllUserShift()
+            }
+        }
         
-        // スライプフラグが立っている時
-        //TODO: ページの変化から方向を特定、modelのページ更新
-        //TODO: データ取得
-        //TODO: スクロール位置の特定とスクロール
-        print("+++++++++++++++++++++++++++")
-        print(isScrolling)
-        print("+++++++++++++++++++++++++++")
-        isScrolling = false
-        
-        //        /*
-        //         表示モードがWeekなら翌・先週を選択状態に
-        //         Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
-        //         //TODO: スワイプでチェンジした時は日付操作をしない
-        //         */
-        //
-        //
-        //
-        //        if !isReceiveNotificationSetCurrentPage {
-        //            var isWeek = true
-        //            if calendar.scope == .month {
-        //                isWeek = false
-        //            }
-        //
-        //            // カレンダーの選択状態を更新
-        //            let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, selectingDate: currentDate, isWeek: isWeek)
-        //
-        //            updateCalendarSelectedDate(newSelectDate: newSelectDate)
-        //            setUpTodayColor(didSelectedDate: newSelectDate)
-        //        }
-        //        setStartEndDate()
-        //        print(calendar.selectedDate)
-        //        print(start)
-        //        setUpScrollPosition(page: presenter.getSelectedPosition(start: start, target: calendar.selectedDate!) + 1)
-        //
-        //        isReceiveNotificationSetCurrentPage = false
-        //        getAllUserShift()
+        isSwipe = false
+        isReceiveNotificationSetCurrentPage = false
     }
 }
 
@@ -385,31 +367,21 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
 // MARK: - UIScrollViewDelegate
 extension CalendarViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        isScrolling = true
+        isSwipe = true
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            isScrolling = false
-            let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
-            
-            calendar.select(newSelectDate)
-            setUpTodayColor(didSelectedDate: newSelectDate)
-            
-            presenter.setCurrentDate(date: newSelectDate)
-            presenter.setCurrentScrollPage(page: scrollView.currentPage)
-        }
-    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {}
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        isScrolling = false
         let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
-        
+
         calendar.select(newSelectDate)
         setUpTodayColor(didSelectedDate: newSelectDate)
-        
+
         presenter.setCurrentDate(date: newSelectDate)
         presenter.setCurrentScrollPage(page: scrollView.currentPage)
+        
+        isSwipe = false
     }
 }
 
@@ -495,7 +467,11 @@ extension CalendarViewController {
         guard let dateDict = notification.object as? [String:Date] else {return}
         isReceiveNotificationSetCurrentPage = true
         self.calendar.currentPage = dateDict["sunday"]!
-        updateCalendarSelectedDate(newSelectDate: dateDict["updated"]!)
+        calendar.select(dateDict["updated"]!)
+        presenter.setCurrentDate(date: dateDict["updated"]!)
+        presenter.setCurrentPage(currentPage: calendar.currentPage)
+        setUpScrollPosition(page: presenter.getScrollPosition(target: dateDict["updated"]!))
+        
         setUpTodayColor(didSelectedDate: dateDict["updated"]!)
         getUserShift()
         
