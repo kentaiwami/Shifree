@@ -16,74 +16,81 @@ protocol CalendarViewModelDelegate: class {
     func faildAPI(title: String, msg: String)
 }
 
-class CalendarViewModel {
-    weak var delegate: CalendarViewModelDelegate?
-    private let api = API()
-    private(set) var oneDayShifts: [OneDayShift] = []
-    private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
-    private(set) var tableViewShifts: [[TableViewShift]] = [[]]
-    private(set) var currentPage: Date = Date()
-    
+
+// MARK: - OKなやつ
+extension CalendarViewModel {
     func login() {
         api.login().done { (json) in
             let keychain = Keychain()
             try! keychain.set(json["role"].stringValue, key: "role")
             
             self.delegate?.initializeUI()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
     
-    func getAllUserShift(start: Date, end: Date) {
+    func getAllUserShift() {
         let formattedStart = getFormatterStringFromDate(format: "yyyyMMdd", date: start)
         let formattedEnd = getFormatterStringFromDate(format: "yyyyMMdd", date: end)
         
         api.getUserShift(start: formattedStart, end: formattedEnd).done { (json) in
             self.oneDayShifts = self.getData(json: json)
             self.delegate?.updateTableViewData()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
+}
+
+class CalendarViewModel {
+    weak var delegate: CalendarViewModelDelegate?
+    fileprivate let api = API()
+    fileprivate(set) var oneDayShifts: [OneDayShift] = []
+    private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
+    private(set) var tableViewShifts: [[TableViewShift]] = [[]]
     
-    func getShiftCategories(start: Date, tag: Int) -> [String] {
-        let count = -1 + tag
-        let calendar = Calendar.current
-        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
-        let tmpDateOneDayShifts = oneDayShifts.filter {
-            $0.date == tmpDateStr
+    private(set) var currentPageDate: Date = Date()
+    private(set) var currentDate: Date = Date()
+    private(set) var start: Date = Date()
+    private(set) var end: Date = Date()
+    
+    func setStartEndDate(start: Date, end: Date) {
+        self.start = start
+        self.end = end
+    }
+    
+    func getStartEndDate() -> (start: Date, end: Date) {
+        return (start, end)
+    }
+    
+    func initCurrentDate() {
+        if let updated = MyApplication.shared.updated {
+            currentDate = updated
+        }else {
+            currentDate = Date()
         }
-            
-        if tmpDateOneDayShifts.count == 0 {
-            return []
-        }
-            
-        var shiftCategories: [String] = []
-        
-        tmpDateOneDayShifts[0].shift.forEach { (shiftCategory) in
-            shiftCategories.append(shiftCategory.name)
-        }
-            
-        return shiftCategories
     }
     
     func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        if let sunday = MyApplication.shared.sunday {
-            return (sunday, MyApplication.shared.updated!)
-        }else {
-            return (nil, Date())
-        }
+        return (currentPageDate, currentDate)
     }
     
-    func setTableViewShift(start: Date, end: Date) {
+    func setCurrentDate(currentDate: Date) {
+        self.currentDate = currentDate
+    }
+
+    func setCurrentPage(currentPage: Date) {
+        self.currentPageDate = currentPage
+    }
+    
+    func setTableViewShift() {
         var count = -1
         var tmpDate = start
         let calendar = Calendar.current
@@ -120,6 +127,93 @@ class CalendarViewModel {
         }
     }
     
+    
+    func getUserColorSchemeForCalendar(targetDate: Date) -> String {
+        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: targetDate)
+        
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == targetDateStr
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return ""
+        }
+        
+        if currentDateOneDayShifts[0].user.color.count == 0 {
+            return ""
+        }
+        
+        return currentDateOneDayShifts[0].user.color
+    }
+    
+    func getEventNumber(date: Date) -> Int {
+        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == targetDateStr
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return 0
+        }
+        
+        if currentDateOneDayShifts[0].user.color.count == 0 || currentDateOneDayShifts[0].user.id == 0 || currentDateOneDayShifts[0].user.name.count == 0 {
+            return 0
+        }
+        return 1
+    }
+    
+    func isTargetDateToday(targetDate: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(targetDate, inSameDayAs: Date())
+    }
+    
+    
+    
+    
+    
+    
+    //-----------------------------------------------------
+    
+    func getShiftCategories(start: Date, tag: Int) -> [String] {
+        let count = -1 + tag
+        let calendar = Calendar.current
+        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        let tmpDateOneDayShifts = oneDayShifts.filter {
+            $0.date == tmpDateStr
+        }
+            
+        if tmpDateOneDayShifts.count == 0 {
+            return []
+        }
+            
+        var shiftCategories: [String] = []
+        
+        tmpDateOneDayShifts[0].shift.forEach { (shiftCategory) in
+            shiftCategories.append(shiftCategory.name)
+        }
+            
+        return shiftCategories
+    }
+    
+    func getSelectedPosition(target: Date) -> Int {
+        var count = 0
+        var tmpDate = start
+        let calendar = Calendar.current
+                
+        while !calendar.isDate(target, inSameDayAs: tmpDate) {
+            tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+            count += 1
+        }
+        
+        if count != 0 {
+            count -= 1
+        }
+        
+        return count
+    }
+    
     func getUserColorSchemeForTable(start: Date, tag: Int) -> String {
         let count = -1 + tag
         let calendar = Calendar.current
@@ -141,41 +235,8 @@ class CalendarViewModel {
         return currentDateOneDayShifts[0].user.color
     }
     
-    func getUserColorSchemeForCalendar(targetDate: Date) -> String {
-        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: targetDate)
-        
-        let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == targetDateStr
-        }
-        
-        if currentDateOneDayShifts.count == 0 {
-            return ""
-        }
-        
-        if currentDateOneDayShifts[0].user.color.count == 0 {
-            return ""
-        }
-        
-        return currentDateOneDayShifts[0].user.color
-    }
-
     
-    func getEventNumber(date: Date) -> Int {
-        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
-        
-        let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == targetDateStr
-        }
-        
-        if currentDateOneDayShifts.count == 0 {
-            return 0
-        }
-        
-        if currentDateOneDayShifts[0].user.color.count == 0 || currentDateOneDayShifts[0].user.id == 0 || currentDateOneDayShifts[0].user.name.count == 0 {
-            return 0
-        }
-        return 1
-    }
+
     
     func getUserSection(start: Date, tag: Int) -> Int {
         let count = -1 + tag
@@ -205,8 +266,8 @@ class CalendarViewModel {
         return -1
     }
     
-    func getMemo(date: Date) -> String {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+    func getMemo() -> String {
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDateStr
         }
@@ -218,8 +279,19 @@ class CalendarViewModel {
         return currentDateOneDayShifts[0].memo
     }
     
-    func getTargetUserShift(date: Date) -> TargetUserShift {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+    func getTargetUserShift(date: Date?) -> TargetUserShift {
+        /*
+         dateがnil：ViewControllerからの呼び出し（currentDateを参照）
+         それ以外  ：model内から日付を指定して呼び出し
+         */
+        var currentDate = Date()
+        if date == nil {
+            currentDate = self.currentDate
+        }else {
+            currentDate = date!
+        }
+        
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDateStr
         }
@@ -231,16 +303,12 @@ class CalendarViewModel {
         return currentDateOneDayShifts[0].user
     }
     
-    func setCurrentPage(currentPage: Date) {
-        self.currentPage = currentPage
-    }
-    
     func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
         var dayValue = 0
         var monthValue = 0
         let calendarCurrent = Calendar.current
         
-        if self.currentPage < currentPage {
+        if self.currentPageDate < currentPage {
             dayValue = 7
             monthValue = 1
         }else {
