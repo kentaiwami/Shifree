@@ -20,11 +20,6 @@ protocol CalendarViewInterface: class {
 }
 
 class CalendarViewController: UIViewController, CalendarViewInterface {
-//    var currentDate: Date = Date()
-//    var targetDate: Date = Date()
-    
-//    var start: Date = Date()
-//    var end: Date = Date()
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
     fileprivate var tableViews: [UITableView] = []
@@ -34,11 +29,14 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate var heightConst: Constraint!
     fileprivate var todayColor: UIColor!
     
-    fileprivate var tableCount = 9
-    fileprivate var isSwipe = false
-    
-    // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用
+    // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用。
     fileprivate var isReceiveNotificationSetCurrentPage = false
+    
+    // カレンダーのページが変化した際に、カレンダーをスワイプしたのか、テーブルをスワイプしたのか判定するためにしよう。
+    fileprivate var isSwipe = false
+
+    // 表示するテーブルの個数（1週間の7つと左右の2つで9つ使用。初期化時はWeekで表示しているため。）
+    fileprivate var tableCount = 9
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -332,9 +330,15 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 setStartEndDate()
                 presenter.setCurrentDate(date: calendar.selectedDate!)
                 presenter.setCurrentPage(currentPage: calendar.currentPage)
+                
                 let position = presenter.getScrollPosition(target: calendar.selectedDate!)
                 setUpScrollPosition(page: position)
-                presenter.getAllUserShift()
+                
+                // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.presenter.getAllUserShift()
+                }
+                
             }else {
                 /*
                  表示モードがWeekなら翌・先週を選択状態に
@@ -350,10 +354,15 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 presenter.setCurrentDate(date: newSelectDate)
                 presenter.setCurrentPage(currentPage: calendar.currentPage)
                 setStartEndDate()
+                
                 let position = presenter.getScrollPosition(target: newSelectDate)
                 setUpScrollPosition(page: position)
                 setUpTodayColor(didSelectedDate: newSelectDate)
-                presenter.getAllUserShift()
+                
+                // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.presenter.getAllUserShift()
+                }
             }
         }
         
