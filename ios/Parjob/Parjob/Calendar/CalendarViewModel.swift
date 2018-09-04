@@ -11,18 +11,24 @@ import KeychainAccess
 import SwiftyJSON
 
 protocol CalendarViewModelDelegate: class {
-    func updateTableViewData()
+    func updateView()
     func initializeUI()
     func faildAPI(title: String, msg: String)
 }
 
+
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
-    private let api = API()
-    private(set) var oneDayShifts: [OneDayShift] = []
-    private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
-    private(set) var tableViewShifts: [[TableViewShift]] = [[]]
-    private(set) var currentPage: Date = Date()
+    fileprivate let api = API()
+    fileprivate(set) var oneDayShifts: [OneDayShift] = []
+    fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
+    fileprivate(set) var tableViewShifts: [[TableViewShift]] = [[]]
+    
+    fileprivate(set) var currentPageDate: Date = Date()
+    fileprivate(set) var currentDate: Date = Date()
+    fileprivate(set) var start: Date = Date()
+    fileprivate(set) var end: Date = Date()
+    fileprivate(set) var currentScrollPage: Int = 0
     
     func login() {
         api.login().done { (json) in
@@ -30,60 +36,51 @@ class CalendarViewModel {
             try! keychain.set(json["role"].stringValue, key: "role")
             
             self.delegate?.initializeUI()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
     
-    func getAllUserShift(start: Date, end: Date) {
+    func isSameDate(targetDate1: Date, targetDate2: Date) -> Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(targetDate1, inSameDayAs: targetDate2)
+    }
+    
+    func resetValues() {
+        oneDayShifts = []
+        shiftCategoryColors = []
+        tableViewShifts = [[]]
+        
+        currentPageDate = Date()
+        currentDate = Date()
+        start = Date()
+        end = Date()
+        currentScrollPage = 0
+    }
+}
+
+
+// MARK: - シフト関連
+extension CalendarViewModel {
+    func getAllUserShift() {
         let formattedStart = getFormatterStringFromDate(format: "yyyyMMdd", date: start)
         let formattedEnd = getFormatterStringFromDate(format: "yyyyMMdd", date: end)
         
         api.getUserShift(start: formattedStart, end: formattedEnd).done { (json) in
             self.oneDayShifts = self.getData(json: json)
-            self.delegate?.updateTableViewData()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
-        }
-    }
-    
-    func getShiftCategories(start: Date, tag: Int) -> [String] {
-        let count = -1 + tag
-        let calendar = Calendar.current
-        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
-        let tmpDateOneDayShifts = oneDayShifts.filter {
-            $0.date == tmpDateStr
-        }
-            
-        if tmpDateOneDayShifts.count == 0 {
-            return []
-        }
-            
-        var shiftCategories: [String] = []
-        
-        tmpDateOneDayShifts[0].shift.forEach { (shiftCategory) in
-            shiftCategories.append(shiftCategory.name)
-        }
-            
-        return shiftCategories
-    }
-    
-    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        if let sunday = MyApplication.shared.sunday {
-            return (sunday, MyApplication.shared.updated!)
-        }else {
-            return (nil, Date())
+            self.delegate?.updateView()
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
     }
     
-    func setTableViewShift(start: Date, end: Date) {
+    func setTableViewShift() {
         var count = -1
         var tmpDate = start
         let calendar = Calendar.current
@@ -120,27 +117,74 @@ class CalendarViewModel {
         }
     }
     
-    func getUserColorSchemeForTable(start: Date, tag: Int) -> String {
-        let count = -1 + tag
-        let calendar = Calendar.current
-        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
-
+    func getTargetUserShift(date: Date?) -> TargetUserShift {
+        /*
+         dateがnil：ViewControllerからの呼び出し（currentDateを参照）
+         それ以外  ：model内から日付を指定して呼び出し
+         */
+        var currentDate = Date()
+        if date == nil {
+            currentDate = self.currentDate
+        }else {
+            currentDate = date!
+        }
+        
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == tmpDateStr
+            $0.date == currentDateStr
         }
         
         if currentDateOneDayShifts.count == 0 {
-            return ""
+            return TargetUserShift()
         }
         
-        if currentDateOneDayShifts[0].user.color.count == 0 {
-            return ""
-        }
-        
-        return currentDateOneDayShifts[0].user.color
+        return currentDateOneDayShifts[0].user
+    }
+}
+
+
+
+// MARK: - Start, End関連
+extension CalendarViewModel {
+    func setStartEndDate(start: Date, end: Date) {
+        self.start = start
+        self.end = end
     }
     
+    func getStartEndDate() -> (start: Date, end: Date) {
+        return (start, end)
+    }
+}
+
+
+
+// MARK: - CurrentDate, CurrentPage関連
+extension CalendarViewModel {
+    func initCurrentDate() {
+        if let updated = MyApplication.shared.updated {
+            currentDate = updated
+        }else {
+            currentDate = Date()
+        }
+    }
+    
+    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
+        return (currentPageDate, currentDate)
+    }
+    
+    func setCurrentDate(currentDate: Date) {
+        self.currentDate = currentDate
+    }
+    
+    func setCurrentPage(currentPage: Date) {
+        self.currentPageDate = currentPage
+    }
+}
+
+
+
+// MARK: - カレンダー関連
+extension CalendarViewModel {
     func getUserColorSchemeForCalendar(targetDate: Date) -> String {
         let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: targetDate)
         
@@ -158,7 +202,6 @@ class CalendarViewModel {
         
         return currentDateOneDayShifts[0].user.color
     }
-
     
     func getEventNumber(date: Date) -> Int {
         let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
@@ -177,7 +220,129 @@ class CalendarViewModel {
         return 1
     }
     
-    func getUserSection(start: Date, tag: Int) -> Int {
+    func getShouldSelectDate(currentPageDate: Date, isWeek: Bool) -> Date {
+        var dayValue = 0
+        var monthValue = 0
+        let calendarCurrent = Calendar.current
+        
+        if self.currentPageDate < currentPageDate {
+            dayValue = 7
+            monthValue = 1
+        }else {
+            dayValue = -7
+            monthValue = -1
+        }
+        
+        if isWeek {
+            return calendarCurrent.date(byAdding: .day, value: dayValue, to: currentDate)!
+        }else {
+            // 月を増減させたコンポーネントを作成
+            var components = calendarCurrent.dateComponents([.year, .month, .day], from: currentDate)
+            components.setValue(0, for: Calendar.Component.year)
+            components.setValue(monthValue, for: Calendar.Component.month)
+            components.setValue(0, for: Calendar.Component.day)
+            
+            /*
+             選択している日から1ヶ月だけ増減させた日付を生成。
+             日にちを1日（月初め）に変更。
+             */
+            let newDate = calendarCurrent.date(byAdding: components, to: currentDate)!
+            components = calendarCurrent.dateComponents([.year, .month, .day], from: newDate)
+            components.day = 1
+            components.calendar = calendarCurrent
+            
+            if calendarCurrent.compare(Date(), to: components.date!, toGranularity: .year) == .orderedSame && calendarCurrent.compare(Date(), to: components.date!, toGranularity: .month) == .orderedSame {
+                // スワイプ先が今月
+                return Date()
+            }else {
+                return components.date!
+            }
+        }
+    }
+}
+
+
+
+// MARK: - ScrollView関連
+extension CalendarViewModel {
+    func getScrollPosition(target: Date) -> Int {
+        var position = 1
+        var tmpDate = start
+        let calendar = Calendar.current
+        
+        while !calendar.isDate(target, inSameDayAs: tmpDate) {
+            tmpDate = calendar.date(byAdding: .day, value: position, to: calendar.startOfDay(for: start))!
+            position += 1
+        }
+        
+        return position
+    }
+    
+    func setCurrentScrollPage(page: Int) {
+        currentScrollPage = page
+    }
+    
+    func getNewSelectDateByScroll(newScrollPage: Int) -> Date {
+        let calendar = Calendar.current
+        
+        if newScrollPage < currentScrollPage {
+            return calendar.date(byAdding: .day, value: -1, to: calendar.startOfDay(for: currentDate))!
+        }else if newScrollPage > currentScrollPage {
+            return calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: currentDate))!
+        }else {
+            return currentDate
+        }
+    }
+}
+
+
+
+// MARK: - TableView関連
+extension CalendarViewModel {
+    func getShiftCategories(tag: Int) -> [String] {
+        let count = -1 + tag
+        let calendar = Calendar.current
+        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        let tmpDateOneDayShifts = oneDayShifts.filter {
+            $0.date == tmpDateStr
+        }
+        
+        if tmpDateOneDayShifts.count == 0 {
+            return []
+        }
+        
+        var shiftCategories: [String] = []
+        
+        tmpDateOneDayShifts[0].shift.forEach { (shiftCategory) in
+            shiftCategories.append(shiftCategory.name)
+        }
+        
+        return shiftCategories
+    }
+    
+    func getUserColorSchemeForTable(tag: Int) -> String {
+        let count = -1 + tag
+        let calendar = Calendar.current
+        let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
+        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        
+        let currentDateOneDayShifts = oneDayShifts.filter {
+            $0.date == tmpDateStr
+        }
+        
+        if currentDateOneDayShifts.count == 0 {
+            return ""
+        }
+        
+        if currentDateOneDayShifts[0].user.color.count == 0 {
+            return ""
+        }
+        
+        return currentDateOneDayShifts[0].user.color
+    }
+    
+    func getUserSection(tag: Int) -> Int {
         let count = -1 + tag
         let calendar = Calendar.current
         let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
@@ -205,8 +370,8 @@ class CalendarViewModel {
         return -1
     }
     
-    func getMemo(date: Date) -> String {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+    func getMemo() -> String {
+        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDateStr
         }
@@ -217,66 +382,10 @@ class CalendarViewModel {
         
         return currentDateOneDayShifts[0].memo
     }
-    
-    func getTargetUserShift(date: Date) -> TargetUserShift {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
-        let currentDateOneDayShifts = oneDayShifts.filter {
-            $0.date == currentDateStr
-        }
-        
-        if currentDateOneDayShifts.count == 0 {
-            return TargetUserShift()
-        }
-        
-        return currentDateOneDayShifts[0].user
-    }
-    
-    func setCurrentPage(currentPage: Date) {
-        self.currentPage = currentPage
-    }
-    
-    func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
-        var dayValue = 0
-        var monthValue = 0
-        let calendarCurrent = Calendar.current
-        
-        if self.currentPage < currentPage {
-            dayValue = 7
-            monthValue = 1
-        }else {
-            dayValue = -7
-            monthValue = -1
-        }
-        
-        if isWeek {
-            return calendarCurrent.date(byAdding: .day, value: dayValue, to: selectingDate)!
-        }else {
-            // 月を増減させたコンポーネントを作成
-            var components = calendarCurrent.dateComponents([.year, .month, .day], from: selectingDate)
-            components.setValue(0, for: Calendar.Component.year)
-            components.setValue(monthValue, for: Calendar.Component.month)
-            components.setValue(0, for: Calendar.Component.day)
-            
-            /*
-             選択している日から1ヶ月だけ増減させた日付を生成。
-             日にちを1日（月初め）に変更。
-             */
-            let newDate = calendarCurrent.date(byAdding: components, to: selectingDate)!
-            components = calendarCurrent.dateComponents([.year, .month, .day], from: newDate)
-            components.day = 1
-            components.calendar = calendarCurrent
-            
-            if calendarCurrent.compare(Date(), to: components.date!, toGranularity: .year) == .orderedSame && calendarCurrent.compare(Date(), to: components.date!, toGranularity: .month) == .orderedSame {
-                // スワイプ先が今月
-                return Date()
-            }else {
-                return components.date!
-            }
-        }
-    }
 }
 
 
+// MARK: - Utility関連（見やすくするため関数化）
 extension CalendarViewModel {
     fileprivate func getData(json: JSON) -> [OneDayShift] {
         var oneDayShift = [OneDayShift]()
