@@ -37,6 +37,10 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
 
     // 表示するテーブルの個数（1週間の7つと左右の2つで9つ使用。初期化時はWeekで表示しているため。）
     fileprivate var tableCount = 9
+    fileprivate let weekCount = 9
+    fileprivate let monthCount = 44
+    
+    fileprivate var isFirstTime = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,13 +57,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         
         // 起動時は実行せず、他画面から戻ってきた時に再取得&表示内容の更新
         if calendar != nil {
-            getUserShift()
+            setStartEndDate()
+            presenter.getAllUserShift()
         }
-    }
-    
-    fileprivate func getUserShift() {
-        setStartEndDate()
-        presenter.getAllUserShift()
     }
     
     fileprivate func setStartEndDate() {
@@ -179,7 +179,7 @@ extension CalendarViewController {
             tableView.dataSource = self
             tableView.tag = i
             tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-            tableView.frame = CGRect(x: tableViewX, y: calendar.frame.height, width: self.view.frame.width, height: self.view.frame.height - calendar.frame.height)
+            tableView.frame = CGRect(x: tableViewX, y: scrollView.frame.height, width: self.view.frame.width, height: self.view.frame.height - calendar.frame.height)
             scrollView.addSubview(tableView)
             tableView.backgroundView = getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
             tableViews.append(tableView)
@@ -305,12 +305,35 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         print("************** boundingRectWillChange **************")
         
+        if !isFirstTime {
+            presenter.resetValues()
+            tableViews.forEach { (table) in
+                table.removeFromSuperview()
+            }
+            scrollView.removeFromSuperview()
+            tableViews = []
+            
+            if calendar.scope == .week {
+                tableCount = weekCount
+            }else {
+                tableCount = monthCount
+            }
+            
+            setStartEndDate()
+            presenter.setCurrentDate(date: calendar.selectedDate!)
+            presenter.setCurrentPage(currentPage: calendar.currentPage)
+            
+            initializeScrollView()
+            initializeTableView()
+            
+            presenter.getAllUserShift()            
+        }
+        
         heightConst.constant = bounds.height
         self.view.layoutIfNeeded()
-        //TODO: ScrollView, TableViewの再描画
-        //TODO: 情報取得、データ再読み込み
         
-        //        getAllUserShift()
+        isFirstTime = false
+        
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -482,7 +505,8 @@ extension CalendarViewController {
         setUpScrollPosition(page: presenter.getScrollPosition(target: dateDict["updated"]!))
         
         setUpTodayColor(didSelectedDate: dateDict["updated"]!)
-        getUserShift()
+        setStartEndDate()
+        presenter.getAllUserShift()
         
         dismissViews(targetViewController: self, selectedIndex: 0)
         

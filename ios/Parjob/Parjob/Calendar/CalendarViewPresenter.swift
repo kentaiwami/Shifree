@@ -33,6 +33,10 @@ class CalendarViewPresenter {
     func isSameDate(targetDate1: Date, targetDate2: Date) -> Bool {
         return model.isSameDate(targetDate1: targetDate1, targetDate2: targetDate2)
     }
+    
+    func resetValues() {
+        model.resetValues()
+    }
 }
 
 
@@ -143,7 +147,7 @@ extension CalendarViewPresenter {
 
 // MARK: - CalendarViewModelDelegate（Modelから呼び出し）
 extension CalendarViewPresenter: CalendarViewModelDelegate {
-    func updateTableViewData() {
+    func updateView() {
         view?.updateView()
     }
     

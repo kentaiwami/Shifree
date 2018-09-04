@@ -11,7 +11,7 @@ import KeychainAccess
 import SwiftyJSON
 
 protocol CalendarViewModelDelegate: class {
-    func updateTableViewData()
+    func updateView()
     func initializeUI()
     func faildAPI(title: String, msg: String)
 }
@@ -48,6 +48,18 @@ class CalendarViewModel {
         let calendar = Calendar.current
         return calendar.isDate(targetDate1, inSameDayAs: targetDate2)
     }
+    
+    func resetValues() {
+        oneDayShifts = []
+        shiftCategoryColors = []
+        tableViewShifts = [[]]
+        
+        currentPageDate = Date()
+        currentDate = Date()
+        start = Date()
+        end = Date()
+        currentScrollPage = 0
+    }
 }
 
 
@@ -59,7 +71,7 @@ extension CalendarViewModel {
         
         api.getUserShift(start: formattedStart, end: formattedEnd).done { (json) in
             self.oneDayShifts = self.getData(json: json)
-            self.delegate?.updateTableViewData()
+            self.delegate?.updateView()
             }
             .catch { (err) in
                 let tmp_err = err as NSError
