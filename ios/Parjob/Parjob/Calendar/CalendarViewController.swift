@@ -171,6 +171,8 @@ extension CalendarViewController {
     }
     
     fileprivate func initializeTableView() {
+        view.layoutIfNeeded()
+        
         var tableViewX: CGFloat = 0
         
         for i in 0..<tableCount {
@@ -179,7 +181,7 @@ extension CalendarViewController {
             tableView.dataSource = self
             tableView.tag = i
             tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-            tableView.frame = CGRect(x: tableViewX, y: scrollView.frame.height, width: self.view.frame.width, height: self.view.frame.height - calendar.frame.height)
+            tableView.frame = CGRect(x: tableViewX, y: 0, width: self.view.frame.width, height: scrollView.frame.height)
             scrollView.addSubview(tableView)
             tableView.backgroundView = getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
             tableViews.append(tableView)
@@ -305,6 +307,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         print("************** boundingRectWillChange **************")
         
+        // 変化後のカレンダーの高さで制約を更新
+        heightConst.constant = bounds.height
+        self.view.layoutIfNeeded()
+        
         if !isFirstTime {
             presenter.resetValues()
             tableViews.forEach { (table) in
@@ -329,11 +335,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             presenter.getAllUserShift()            
         }
         
-        heightConst.constant = bounds.height
-        self.view.layoutIfNeeded()
-        
         isFirstTime = false
-        
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
