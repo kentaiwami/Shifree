@@ -399,21 +399,25 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
 // MARK: - UIScrollViewDelegate
 extension CalendarViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        isSwipe = true
+        if scrollView == self.scrollView {
+            isSwipe = true
+        }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {}
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
-
-        calendar.select(newSelectDate)
-        setUpTodayColor(didSelectedDate: newSelectDate)
-
-        presenter.setCurrentDate(date: newSelectDate)
-        presenter.setCurrentScrollPage(page: scrollView.currentPage)
-        
-        isSwipe = false
+        if scrollView == self.scrollView {
+            let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
+            
+            calendar.select(newSelectDate)
+            setUpTodayColor(didSelectedDate: newSelectDate)
+            
+            presenter.setCurrentDate(date: newSelectDate)
+            presenter.setCurrentScrollPage(page: scrollView.currentPage)
+            
+            isSwipe = false
+        }
     }
 }
 
