@@ -19,11 +19,11 @@ ParJob（パルジョブ）
 
 ## デモユーザ
 ```
-role:               admin
-company_code:       3868898
-user_code:          9147688
-username:           aさんM
-password:           1234567
+role:			admin
+企業コード:		3868898
+ユーザコード:		9147688
+ユーザ名:			aさんM
+パスワード:		1234567
 ```
 ###### 変更可能な項目
 - シフトカテゴリ
@@ -33,11 +33,11 @@ password:           1234567
 - カラー
 
 ```
-role:               general
-company_code:       3868898
-user_code:          7749812
-username:           dさん
-password:           1234567
+role:general
+企業コード:		3868898
+ユーザコード:		7749812
+ユーザ名:			dさん
+パスワード:		1234567
 ```
 
 ###### 変更可能な項目
