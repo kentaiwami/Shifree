@@ -368,7 +368,6 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 /*
                  表示モードがWeekなら翌・先週を選択状態に
                  Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
-                 //TODO: スワイプでチェンジした時は日付操作をしない
                  */
                 var isWeek = true
                 if calendar.scope == .month {
