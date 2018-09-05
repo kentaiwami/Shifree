@@ -33,7 +33,7 @@ role:			admin
 - カラー
 
 ```
-role:general
+role:			general
 企業コード:		3868898
 ユーザコード:		7749812
 ユーザ名:			dさん
