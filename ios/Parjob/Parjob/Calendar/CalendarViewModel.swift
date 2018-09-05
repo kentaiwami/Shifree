@@ -265,7 +265,7 @@ extension CalendarViewModel {
 
 // MARK: - ScrollView関連
 extension CalendarViewModel {
-    func getScrollPosition(target: Date) -> Int {
+    func getScrollViewPosition(target: Date) -> Int {
         var position = 1
         var tmpDate = start
         let calendar = Calendar.current
@@ -353,11 +353,11 @@ extension CalendarViewModel {
         }
         
         if currentDateOneDayShifts.count == 0 {
-            return -1
+            return 0
         }
         
         if currentDateOneDayShifts[0].user.id == 0 {
-            return -1
+            return 0
         }
         
         for (i, tableViewShift) in tableViewShifts[tag].enumerated() {
@@ -367,7 +367,7 @@ extension CalendarViewModel {
                 }
             }
         }
-        return -1
+        return 0
     }
     
     func getMemo() -> String {
@@ -381,6 +381,13 @@ extension CalendarViewModel {
         }
         
         return currentDateOneDayShifts[0].memo
+    }
+    
+    func getTableViewScrollPosition(date: Date) -> (scrollPosition: IndexPath, tableViewPosition: Int) {
+        let position = getScrollViewPosition(target: date)
+        let userSection = getUserSection(tag: position)
+        
+        return (IndexPath(row: 0, section: userSection), position)
     }
 }
 

@@ -106,8 +106,8 @@ extension CalendarViewPresenter {
 
 // MARK: - ScrollView関連
 extension CalendarViewPresenter {
-    func getScrollPosition(target: Date) -> Int {
-        return model.getScrollPosition(target: target)
+    func getScrollViewPosition(target: Date) -> Int {
+        return model.getScrollViewPosition(target: target)
     }
     
     func setCurrentScrollPage(page: Int) {
@@ -140,6 +140,10 @@ extension CalendarViewPresenter {
     
     func getMemo() -> String {
         return model.getMemo()
+    }
+    
+    func getTableViewScrollPosition(date: Date) -> (scrollPosition: IndexPath, tableViewPosition: Int) {
+        return model.getTableViewScrollPosition(date: date)
     }
 }
 

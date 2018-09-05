@@ -90,10 +90,18 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         }
     }
     
-    fileprivate func setUpScrollPosition(page: Int) {
+    fileprivate func scrollScrollViewToPage(page: Int) {
         let width = self.view.frame.width * CGFloat(page)
         scrollView.setContentOffset(CGPoint(x: width, y: 0), animated: false)
         presenter.setCurrentScrollPage(page: page)
+    }
+    
+    fileprivate func scrollTableViewToUserSection(date: Date) {
+        let position = presenter.getTableViewScrollPosition(date: date)
+        
+        if tableViews[position.tableViewPosition].numberOfSections > 0 {
+            tableViews[position.tableViewPosition].scrollToRow(at: position.scrollPosition, at: .top, animated: false)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -166,8 +174,8 @@ extension CalendarViewController {
         scrollView.bottom(to: self.view)
         
         // カレンダーの選択されている日付の位置にスクロール
-        let position = presenter.getScrollPosition(target: calendar.selectedDate!)
-        setUpScrollPosition(page: position)
+        let position = presenter.getScrollViewPosition(target: calendar.selectedDate!)
+        scrollScrollViewToPage(page: position)
     }
     
     fileprivate func initializeTableView() {
@@ -343,7 +351,9 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         
         setUpTodayColor(didSelectedDate: date)
         presenter.setCurrentDate(date: date)
-        setUpScrollPosition(page: presenter.getScrollPosition(target: date))
+        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: date))
+        
+        scrollTableViewToUserSection(date: date)
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
@@ -356,8 +366,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 presenter.setCurrentDate(date: calendar.selectedDate!)
                 presenter.setCurrentPage(currentPage: calendar.currentPage)
                 
-                let position = presenter.getScrollPosition(target: calendar.selectedDate!)
-                setUpScrollPosition(page: position)
+                let position = presenter.getScrollViewPosition(target: calendar.selectedDate!)
+                scrollScrollViewToPage(page: position)
                 
                 // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -379,8 +389,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 presenter.setCurrentPage(currentPage: calendar.currentPage)
                 setStartEndDate()
                 
-                let position = presenter.getScrollPosition(target: newSelectDate)
-                setUpScrollPosition(page: position)
+                let position = presenter.getScrollViewPosition(target: newSelectDate)
+                scrollScrollViewToPage(page: position)
                 setUpTodayColor(didSelectedDate: newSelectDate)
                 
                 // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
@@ -417,6 +427,7 @@ extension CalendarViewController: UIScrollViewDelegate {
             presenter.setCurrentDate(date: newSelectDate)
             presenter.setCurrentScrollPage(page: scrollView.currentPage)
             
+            scrollTableViewToUserSection(date: newSelectDate)
             isSwipe = false
         }
     }
@@ -507,7 +518,7 @@ extension CalendarViewController {
         calendar.select(dateDict["updated"]!)
         presenter.setCurrentDate(date: dateDict["updated"]!)
         presenter.setCurrentPage(currentPage: calendar.currentPage)
-        setUpScrollPosition(page: presenter.getScrollPosition(target: dateDict["updated"]!))
+        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: dateDict["updated"]!))
         
         setUpTodayColor(didSelectedDate: dateDict["updated"]!)
         setStartEndDate()
