@@ -19,26 +19,6 @@ class CalendarViewPresenter {
     weak var view: CalendarViewInterface?
     let model: CalendarViewModel
     
-    var shiftCategories:[String] {
-        guard let currentDate = view?.currentDate else {return []}
-        return model.getShiftCategories(currentDate: currentDate)
-    }
-    
-    var eventNumber: Int {
-        guard let targetDate = view?.targetDate else {return 0}
-        return model.getEventNumber(date: targetDate)
-    }
-    
-    var userColorScheme: String {
-        guard let targetDate = view?.targetDate else {return ""}
-        return model.getUserColorScheme(date: targetDate)
-    }
-    
-    var userSection: Int {
-        guard let targetDate = view?.targetDate else {return -1}
-        return model.getUserSection(date: targetDate)
-    }
-    
     init(view: CalendarViewInterface) {
         self.view = view
         self.model = CalendarViewModel()
@@ -49,61 +29,135 @@ class CalendarViewPresenter {
         model.login()
     }
     
-    func getUserShift() {
-        guard let start = view?.start else {return}
-        guard let end = view?.end else {return}
-
-        model.getAllUserShift(start: start, end: end)
+    // ScrollView, Calendarで使用
+    func isSameDate(targetDate1: Date, targetDate2: Date) -> Bool {
+        return model.isSameDate(targetDate1: targetDate1, targetDate2: targetDate2)
     }
     
-    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        return model.getCurrentAndPageDate()
+    func resetValues() {
+        model.resetValues()
+    }
+}
+
+
+// MARK: - シフト関連
+extension CalendarViewPresenter {
+    func getAllUserShift() {
+        model.getAllUserShift()
     }
     
     func setTableViewShift() {
-        guard let currentDate = view?.currentDate else {return}
-        model.setTableViewShift(currentDate: currentDate)
+        model.setTableViewShift()
+    }
+    
+    func getTargetUserShift() -> TargetUserShift {
+        return model.getTargetUserShift(date: nil)
+    }
+}
+
+
+// MARK: - Start, End関連
+extension CalendarViewPresenter {
+    func setStartEndDate(start: Date, end: Date) {
+        model.setStartEndDate(start: start, end: end)
+    }
+    
+    func getStartEndDate() -> (start: Date, end: Date) {
+        return model.getStartEndDate()
+    }
+}
+
+
+// MARK: - CurrentDate, CurrentPage関連
+extension CalendarViewPresenter {
+    func initCurrentDate() {
+        model.initCurrentDate()
     }
     
     func setCurrentPage(currentPage: Date) {
         model.setCurrentPage(currentPage: currentPage)
     }
     
-    func getShouldSelectDate(currentPage: Date, selectingDate: Date, isWeek: Bool) -> Date {
-        return model.getShouldSelectDate(currentPage: currentPage, selectingDate: selectingDate, isWeek: isWeek)
+    func setCurrentDate(date: Date) {
+        model.setCurrentDate(currentDate: date)
     }
     
-    
-    /// TableViewで描画、CalendarDetailViewからのアクセスで使用
-    ///
-    /// - Returns: TableViewで描画する選択状態にある日のシフト情報
-    func getTableViewShift() -> [TableViewShift] {
-        return model.tableViewShifts
+    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
+        return model.getCurrentAndPageDate()
     }
 }
 
 
-// MARK: - CalendarDetailViewからアクセスして、変数を取り出すための関数一覧
+// MARK: - カレンダー関連
 extension CalendarViewPresenter {
-    func getMemo() -> String {
-        guard let currentDate = view?.currentDate else {return ""}
-        return model.getMemo(date: currentDate)
+    func getUserColorSchemeForCalendar(date: Date) -> String {
+        return model.getUserColorSchemeForCalendar(targetDate: date)
     }
     
-    func getTargetUserShift() -> TargetUserShift {
-        guard let currentDate = view?.currentDate else {return TargetUserShift()}
-        return model.getTargetUserShift(date: currentDate)
+    func getEventNumber(date: Date) -> Int {
+        return model.getEventNumber(date: date)
+    }
+    
+    func getShouldSelectDate(currentPage: Date, isWeek: Bool) -> Date {
+        return model.getShouldSelectDate(currentPageDate: currentPage, isWeek: isWeek)
     }
 }
 
 
+// MARK: - ScrollView関連
+extension CalendarViewPresenter {
+    func getScrollViewPosition(target: Date) -> Int {
+        return model.getScrollViewPosition(target: target)
+    }
+    
+    func setCurrentScrollPage(page: Int) {
+        model.setCurrentScrollPage(page: page)
+    }
+    
+    func getNewSelectDateByScroll(newScrollPage: Int) -> Date {
+        return model.getNewSelectDateByScroll(newScrollPage: newScrollPage)
+    }
+}
+
+
+// MARK: - TableView関連
+extension CalendarViewPresenter {
+    func getTableViewShift(tag: Int) -> [TableViewShift] {
+        return model.tableViewShifts[tag]
+    }
+    
+    func getShiftCategories(tag: Int) -> [String] {
+        return model.getShiftCategories(tag: tag)
+    }
+    
+    func getUserColorSchemeForTable(tag: Int) -> String {
+        return model.getUserColorSchemeForTable(tag: tag)
+    }
+    
+    func getUserSection(tag: Int) -> Int {
+        return model.getUserSection(tag: tag)
+    }
+    
+    func getMemo() -> String {
+        return model.getMemo()
+    }
+    
+    func getTableViewScrollPosition(date: Date) -> (scrollPosition: IndexPath, tableViewPosition: Int) {
+        return model.getTableViewScrollPosition(date: date)
+    }
+}
+
+
+
+// MARK: - CalendarViewModelDelegate（Modelから呼び出し）
 extension CalendarViewPresenter: CalendarViewModelDelegate {
-    func updateTableViewData() {
-        view?.updateTableViewData()
+    func updateView() {
+        view?.updateView()
     }
     
     func initializeUI() {
         view?.initializeUI()
+        model.getAllUserShift()
     }
     
     func faildAPI(title: String, msg: String) {
