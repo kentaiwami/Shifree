@@ -40,6 +40,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate let weekCount = 9
     fileprivate let monthCount = 44
     
+    // boundingRectWillChangeは初回起動時に実行させないため
     fileprivate var isFirstTime = true
     
     override func viewDidLoad() {
