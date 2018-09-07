@@ -455,7 +455,13 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return presenter.getShiftCategories(tag: tableView.tag)[section]
+        let shiftCategories = presenter.getShiftCategories(tag: tableView.tag)
+        
+        if shiftCategories.count == 0 {
+            return nil
+        }else {
+            return shiftCategories[section]
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
