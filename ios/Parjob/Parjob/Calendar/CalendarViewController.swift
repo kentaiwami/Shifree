@@ -40,6 +40,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate let weekCount = 9
     fileprivate let monthCount = 44
     
+    // boundingRectWillChangeは初回起動時に実行させないため
     fileprivate var isFirstTime = true
     
     override func viewDidLoad() {
@@ -419,15 +420,24 @@ extension CalendarViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == self.scrollView {
-            let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
+            let newSelectDateByScroll = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
+            let tmpSelectedDateByScrollPage = calendar.gregorian.date(byAdding: .day, value: scrollView.currentPage - 1, to: presenter.getStartEndDate().start)!
+            var newSelectedDate = Date()
             
-            calendar.select(newSelectDate)
-            setUpTodayColor(didSelectedDate: newSelectDate)
+            // スクロール先のページとスクロールによって求めた日付が違った場合、一気にスクロールしたということなので、スクロールしたページ番号から日付を求めて設定する
+            if presenter.isSameDate(targetDate1: newSelectDateByScroll, targetDate2: tmpSelectedDateByScrollPage) {
+                newSelectedDate = newSelectDateByScroll
+            }else {
+                newSelectedDate = tmpSelectedDateByScrollPage
+            }
             
-            presenter.setCurrentDate(date: newSelectDate)
+            calendar.select(newSelectedDate)
+            setUpTodayColor(didSelectedDate: newSelectedDate)
+            
+            presenter.setCurrentDate(date: newSelectedDate)
             presenter.setCurrentScrollPage(page: scrollView.currentPage)
-            
-            scrollTableViewToUserSection(date: newSelectDate)
+
+            scrollTableViewToUserSection(date: newSelectedDate)
             isSwipe = false
         }
     }
@@ -455,7 +465,13 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return presenter.getShiftCategories(tag: tableView.tag)[section]
+        let shiftCategories = presenter.getShiftCategories(tag: tableView.tag)
+        
+        if shiftCategories.count == 0 {
+            return nil
+        }else {
+            return shiftCategories[section]
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
