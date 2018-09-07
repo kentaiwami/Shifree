@@ -420,15 +420,24 @@ extension CalendarViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == self.scrollView {
-            let newSelectDate = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
+            let newSelectDateByScroll = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
+            let tmpSelectedDateByScrollPage = calendar.gregorian.date(byAdding: .day, value: scrollView.currentPage - 1, to: presenter.getStartEndDate().start)!
+            var newSelectedDate = Date()
             
-            calendar.select(newSelectDate)
-            setUpTodayColor(didSelectedDate: newSelectDate)
+            // スクロール先のページとスクロールによって求めた日付が違った場合、一気にスクロールしたということなので、スクロールしたページ番号から日付を求めて設定する
+            if presenter.isSameDate(targetDate1: newSelectDateByScroll, targetDate2: tmpSelectedDateByScrollPage) {
+                newSelectedDate = newSelectDateByScroll
+            }else {
+                newSelectedDate = tmpSelectedDateByScrollPage
+            }
             
-            presenter.setCurrentDate(date: newSelectDate)
+            calendar.select(newSelectedDate)
+            setUpTodayColor(didSelectedDate: newSelectedDate)
+            
+            presenter.setCurrentDate(date: newSelectedDate)
             presenter.setCurrentScrollPage(page: scrollView.currentPage)
-            
-            scrollTableViewToUserSection(date: newSelectDate)
+
+            scrollTableViewToUserSection(date: newSelectedDate)
             isSwipe = false
         }
     }
