@@ -33,15 +33,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     // ライブラリに設定されているデフォルトのカラーを保存
     fileprivate var todayColor: UIColor!
     
-    // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用。
-    fileprivate var isReceiveNotificationSetCurrentPage = false
-    
-    // カレンダーのページが変化した際に、カレンダーをスワイプしたのか、テーブルをスワイプしたのか判定するためにしよう。
-    fileprivate var isSwipe = false
-    
-    // タブバーがタップされた際の画面の型を保存
-    fileprivate var prevViewController:Any.Type = CalendarViewController.self
-        
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
@@ -372,8 +363,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("************** calendarCurrentPageDidChange **************")
         
-        if !isReceiveNotificationSetCurrentPage {
-            if isSwipe {
+        if !presenter.getIsReceiveNotificationSetCurrentPage() {
+            if presenter.getIsSwipe() {
                 setStartEndDate()
                 presenter.setCurrentDate(date: calendar.selectedDate!)
                 presenter.setCurrentPage(currentPage: calendar.currentPage)
@@ -415,8 +406,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             }
         }
         
-        isSwipe = false
-        isReceiveNotificationSetCurrentPage = false
+        presenter.setIsSwipe(value: false)
+        presenter.setIsReceiveNotificationSetCurrentPage(value: false)
         presenter.setIsTapedTabBar(value: false)
     }
 }
@@ -427,7 +418,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
 extension CalendarViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if type(of: scrollView) == UIScrollView.self {
-            isSwipe = true
+            presenter.setIsSwipe(value: true)
         }
     }
     
@@ -451,7 +442,7 @@ extension CalendarViewController: UIScrollViewDelegate {
             presenter.setCurrentScrollPage(page: scrollView.currentPage)
 
             scrollTableViewToUserSection(date: newSelectedDate)
-            isSwipe = false
+            presenter.setIsSwipe(value: false)
         }
     }
 }
@@ -530,7 +521,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - UITabBarControllerDelegate
 extension CalendarViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if type(of: viewController) == CalendarViewController.self && type(of: viewController) == prevViewController {
+        if type(of: viewController) == CalendarViewController.self && type(of: viewController) == presenter.getPrevViewController() {
             let startEnd = presenter.getStartEndDate()
             let setUpCalendarScrollTable = { () -> Void in
                 self.calendar.select(Date())
@@ -558,7 +549,7 @@ extension CalendarViewController: UITabBarControllerDelegate {
             }
         }
         
-        prevViewController = type(of: viewController)
+        presenter.setPrevViewController(value: type(of: viewController))
     }
 }
 
@@ -579,7 +570,7 @@ extension CalendarViewController {
     
     @objc private func updateView(notification: Notification) {
         guard let dateDict = notification.object as? [String:Date] else {return}
-        isReceiveNotificationSetCurrentPage = true
+        presenter.setIsReceiveNotificationSetCurrentPage(value: true)
         self.calendar.currentPage = dateDict["sunday"]!
         calendar.select(dateDict["updated"]!)
         presenter.setCurrentDate(date: dateDict["updated"]!)
@@ -592,6 +583,6 @@ extension CalendarViewController {
         
         dismissViews(targetViewController: self, selectedIndex: 0)
         
-        isReceiveNotificationSetCurrentPage = false
+        presenter.setIsReceiveNotificationSetCurrentPage(value: false)
     }
 }

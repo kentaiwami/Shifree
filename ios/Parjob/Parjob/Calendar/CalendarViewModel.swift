@@ -23,6 +23,7 @@ protocol CalendarViewModelDelegate: class {
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
+    
     fileprivate(set) var oneDayShifts: [OneDayShift] = []
     fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     fileprivate(set) var tableViewShifts: [[TableViewShift]] = [[]]
@@ -36,7 +37,9 @@ class CalendarViewModel {
     fileprivate(set) var tableCount: Int = 9
     fileprivate(set) var isTapedTabBar: Bool = false
     fileprivate(set) var isFirstTime: Bool = true
-    
+    fileprivate(set) var isSwipe: Bool = false
+    fileprivate(set) var isReceiveNotificationSetCurrentPage: Bool = false
+    fileprivate(set) var prevViewController: Any.Type = CalendarViewController.self
     
     func login() {
         api.login().done { (json) in
@@ -229,6 +232,44 @@ extension CalendarViewModel {
     
     func getIsFirstTime() -> Bool {
         return isFirstTime
+    }
+}
+
+
+// MARK: - isSwipe（カレンダーのページが変化した際に、カレンダーをスワイプしたのか、テーブルをスワイプしたのか判定するために使用。）
+extension CalendarViewModel {
+    func setIsSwipe(value: Bool) {
+        isSwipe = value
+    }
+    
+    func getIsSwipe() -> Bool {
+        return isSwipe
+    }
+}
+
+
+
+// MARK: - isReceiveNotificationSetCurrentPage（通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用。）
+extension CalendarViewModel {
+    func setIsReceiveNotificationSetCurrentPage(value: Bool) {
+        isReceiveNotificationSetCurrentPage = value
+    }
+    
+    func getIsReceiveNotificationSetCurrentPage() -> Bool {
+        return isReceiveNotificationSetCurrentPage
+    }
+}
+
+
+
+// MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
+extension CalendarViewModel {
+    func setPrevViewController(value: Any.Type) {
+        prevViewController = value
+    }
+    
+    func getPrevViewController() -> Any.Type {
+        return prevViewController
     }
 }
 

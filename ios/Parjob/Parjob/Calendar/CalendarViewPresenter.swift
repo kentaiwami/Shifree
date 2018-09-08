@@ -128,6 +128,45 @@ extension CalendarViewPresenter {
 
 
 
+// MARK: - isSwipe
+extension CalendarViewPresenter {
+    func setIsSwipe(value: Bool) {
+        model.setIsSwipe(value: value)
+    }
+    
+    func getIsSwipe() -> Bool {
+        return model.getIsSwipe()
+    }
+}
+
+
+
+// MARK: - isReceiveNotificationSetCurrentPage
+extension CalendarViewPresenter {
+    func setIsReceiveNotificationSetCurrentPage(value: Bool) {
+        model.setIsReceiveNotificationSetCurrentPage(value: value)
+    }
+    
+    func getIsReceiveNotificationSetCurrentPage() -> Bool {
+        return model.getIsReceiveNotificationSetCurrentPage()
+    }
+}
+
+
+
+// MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
+extension CalendarViewPresenter {
+    func setPrevViewController(value: Any.Type) {
+        model.setPrevViewController(value: value)
+    }
+    
+    func getPrevViewController() -> Any.Type {
+        return model.getPrevViewController()
+    }
+}
+
+
+
 // MARK: - カレンダー関連
 extension CalendarViewPresenter {
     func getUserColorSchemeForCalendar(date: Date) -> String {
