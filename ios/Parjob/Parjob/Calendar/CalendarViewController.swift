@@ -26,7 +26,10 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate var scrollView: UIScrollView!
     fileprivate let notificationCenter = NotificationCenter.default
     
+    // カレンダーの高さに関する制約を保存
     fileprivate var heightConst: Constraint!
+    
+    // ライブラリに設定されているデフォルトのカラーを保存
     fileprivate var todayColor: UIColor!
     
     // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用。
@@ -34,6 +37,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     // カレンダーのページが変化した際に、カレンダーをスワイプしたのか、テーブルをスワイプしたのか判定するためにしよう。
     fileprivate var isSwipe = false
+    
+    // タブバーがタップされた際の画面の型を保存
+    fileprivate var prevViewController:Any.Type = CalendarViewController.self
 
     // 表示するテーブルの個数（1週間の7つと左右の2つで9つ使用。初期化時はWeekで表示しているため。）
     fileprivate var tableCount = 9
@@ -48,6 +54,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         initializePresenter()
         presenter.login()
         addObservers()
+        
+        self.tabBarController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -422,15 +430,13 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
 // MARK: - UIScrollViewDelegate
 extension CalendarViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if scrollView == self.scrollView {
+        if type(of: scrollView) == UIScrollView.self {
             isSwipe = true
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {}
-    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView == self.scrollView {
+        if type(of: scrollView) == UIScrollView.self {
             let newSelectDateByScroll = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
             let tmpSelectedDateByScrollPage = calendar.gregorian.date(byAdding: .day, value: scrollView.currentPage - 1, to: presenter.getStartEndDate().start)!
             var newSelectedDate = Date()
@@ -520,6 +526,17 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         )
         
         self.navigationController!.pushViewController(detailVC, animated: true)
+    }
+}
+
+
+extension CalendarViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if type(of: viewController) == CalendarViewController.self && type(of: viewController) == prevViewController {
+            print(viewController)
+        }
+        
+        prevViewController = type(of: viewController)
     }
 }
 
