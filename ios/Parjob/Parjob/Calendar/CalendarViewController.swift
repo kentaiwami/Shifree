@@ -265,12 +265,19 @@ extension CalendarViewController {
             }
         }
         
-        // オブザーバー経由でupdateViewが呼び出された際に、ユーザのセクションは変更されているため、テーブル更新後にセクションへの自動スクロールを行う
-        let updated = presenter.getUpdated()
+        /*
+         オブザーバー（アプリ起動状態で通知タップ）またはUserOption（通知からアプリ起動）でupdateViewが呼び出された際に、
+         ユーザのセクションは変更されているため、テーブル更新後にセクションへの自動スクロールを行う
+         */
+        let updatedFromObserver = presenter.getUpdated()
+        let updatedFromUserOption = MyApplication.shared.updated
         
-        if updated != nil {
-            scrollTableViewToUserSection(date: updated!)
+        if updatedFromObserver != nil {
+            scrollTableViewToUserSection(date: updatedFromObserver!)
+        }else if updatedFromUserOption != nil {
+            scrollTableViewToUserSection(date: updatedFromUserOption!)
         }
+        
         presenter.setUpdated(object: nil)
     }
     
