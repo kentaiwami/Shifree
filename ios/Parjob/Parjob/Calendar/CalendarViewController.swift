@@ -19,6 +19,7 @@ protocol CalendarViewInterface: class {
     func updateView()
 }
 
+
 class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
@@ -40,11 +41,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     // タブバーがタップされた際の画面の型を保存
     fileprivate var prevViewController:Any.Type = CalendarViewController.self
-    
-    // 表示するテーブルの個数（1週間の7つと左右の2つで9つ使用。初期化時はWeekで表示しているため。）
-    fileprivate var tableCount = 9
-    fileprivate let weekCount = 9
-    fileprivate let monthCount = 44
     
     // boundingRectWillChangeは初回起動時に実行させないため
     fileprivate var isFirstTime = true
@@ -173,7 +169,7 @@ extension CalendarViewController {
     }
     
     fileprivate func initializeScrollView() {
-        let width = self.view.frame.width * CGFloat(tableCount)
+        let width = self.view.frame.width * CGFloat(presenter.getTableCount())
         scrollView = UIScrollView()
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: 0)
@@ -196,7 +192,7 @@ extension CalendarViewController {
         
         var tableViewX: CGFloat = 0
         
-        for i in 0..<tableCount {
+        for i in 0..<presenter.getTableCount() {
             let tableView = UITableView()
             tableView.delegate = self
             tableView.dataSource = self
@@ -352,9 +348,9 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             tableViews = []
             
             if calendar.scope == .week {
-                tableCount = weekCount
+                presenter.setTableCount(isWeek: true)
             }else {
-                tableCount = monthCount
+                presenter.setTableCount(isWeek: false)
             }
             
             setStartEndDate()

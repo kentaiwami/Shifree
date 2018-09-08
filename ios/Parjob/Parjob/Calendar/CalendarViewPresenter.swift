@@ -88,6 +88,20 @@ extension CalendarViewPresenter {
 }
 
 
+
+// MARK: - TableCount
+extension CalendarViewPresenter {
+    func setTableCount(isWeek: Bool) {
+        model.setTableCount(isWeek: isWeek)
+    }
+    
+    func getTableCount() -> Int {
+        return model.getTableCount()
+    }
+}
+
+
+
 // MARK: - カレンダー関連
 extension CalendarViewPresenter {
     func getUserColorSchemeForCalendar(date: Date) -> String {

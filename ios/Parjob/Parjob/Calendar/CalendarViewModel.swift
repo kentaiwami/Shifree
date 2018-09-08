@@ -17,6 +17,9 @@ protocol CalendarViewModelDelegate: class {
 }
 
 
+
+
+
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
@@ -29,6 +32,8 @@ class CalendarViewModel {
     fileprivate(set) var start: Date = Date()
     fileprivate(set) var end: Date = Date()
     fileprivate(set) var currentScrollPage: Int = 0
+    
+    fileprivate(set) var tableCount: Int = 9
     
     func login() {
         api.login().done { (json) in
@@ -178,6 +183,23 @@ extension CalendarViewModel {
     
     func setCurrentPage(currentPage: Date) {
         self.currentPageDate = currentPage
+    }
+}
+
+
+
+// MARK: - TableCount（表示するテーブルの個数。1週間の7つと左右の2つで9つ使用。）
+extension CalendarViewModel {
+    func setTableCount(isWeek: Bool) {
+        if isWeek {
+            tableCount = 9
+        }else {
+            tableCount = 44
+        }
+    }
+    
+    func getTableCount() -> Int {
+        return tableCount
     }
 }
 
