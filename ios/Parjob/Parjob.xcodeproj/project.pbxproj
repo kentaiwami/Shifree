@@ -15,7 +15,6 @@
 		370A2FFA212DB82600B8082F /* UpdateTitleViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF7212DB82600B8082F /* UpdateTitleViewPresenter.swift */; };
 		370A2FFB212DB82600B8082F /* UpdateTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF8212DB82600B8082F /* UpdateTitleViewModel.swift */; };
 		370A2FFC212DB82600B8082F /* UpdateTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A2FF9212DB82600B8082F /* UpdateTitleViewController.swift */; };
-		370C110120FB6CA30048900D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370C110020FB6CA30048900D /* Images.xcassets */; };
 		3711CDB12139CD57000FFC29 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3711CDB02139CD56000FFC29 /* Share.swift */; };
 		3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */; };
 		3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */; };
@@ -118,7 +117,6 @@
 		370A2FF7212DB82600B8082F /* UpdateTitleViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewPresenter.swift; sourceTree = "<group>"; };
 		370A2FF8212DB82600B8082F /* UpdateTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewModel.swift; sourceTree = "<group>"; };
 		370A2FF9212DB82600B8082F /* UpdateTitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTitleViewController.swift; sourceTree = "<group>"; };
-		370C110020FB6CA30048900D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3711CDB02139CD56000FFC29 /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
 		3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewPresenter.swift; sourceTree = "<group>"; };
 		3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewModel.swift; sourceTree = "<group>"; };
@@ -584,7 +582,6 @@
 				37326C3A20DEC85E00A60B00 /* Enum.swift */,
 				37326C3E20DFD98500A60B00 /* Setting.swift */,
 				3711CDB02139CD56000FFC29 /* Share.swift */,
-				370C110020FB6CA30048900D /* Images.xcassets */,
 			);
 			path = Parjob;
 			sourceTree = "<group>";
@@ -664,7 +661,6 @@
 			files = (
 				37425CB820DE6064005A3C93 /* Main.storyboard in Resources */,
 				37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */,
-				370C110120FB6CA30048900D /* Images.xcassets in Resources */,
 				3700319E20EDDC2800813685 /* ColorCell.xib in Resources */,
 				379032FC20F1A3F200C2534F /* CommentCell.xib in Resources */,
 				37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */,

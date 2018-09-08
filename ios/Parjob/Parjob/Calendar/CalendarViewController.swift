@@ -201,10 +201,21 @@ extension CalendarViewController {
     
     fileprivate func initializeNavigationItem() {
         let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
+        let week = UIBarButtonItem(image: UIImage(named: "week"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let info = UIBarButtonItem(image: UIImage(named: "information"), style: .plain, target: self, action: #selector(TapColorInformationButton))
         
-        self.tabBarController?.navigationItem.setRightBarButton(month, animated: true)
         self.tabBarController?.navigationItem.setLeftBarButton(info, animated: true)
+        
+        // 初回起動時はnilのため、monthを設定。それ以外（画面表示時）はnilではないのでscopeに応じて設定。
+        if self.calendar == nil {
+            self.tabBarController?.navigationItem.setRightBarButton(month, animated: true)
+        }else {
+            if self.calendar.scope == .month {
+                self.tabBarController?.navigationItem.setRightBarButton(week, animated: true)
+            }else {
+                self.tabBarController?.navigationItem.setRightBarButton(month, animated: true)
+            }
+        }
     }
 }
 
