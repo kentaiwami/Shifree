@@ -20,8 +20,6 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     let cellId = "itemCell"
     
-    fileprivate let notificationCenter = NotificationCenter.default
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -108,7 +106,7 @@ extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionVie
 
 extension FileBrowseTopViewController {
     func addObserver() {
-        notificationCenter.addObserver(self, selector: #selector(updateView(notification:)), name: .comment, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateView(notification:)), name: .comment, object: nil)
     }
     
     @objc func updateView(notification: Notification) {

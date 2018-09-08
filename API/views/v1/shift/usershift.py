@@ -154,8 +154,7 @@ def update():
             'shift_table_id': user_shift.shift_table_id
         })
 
-        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id:
-            # admin_user.code != demo_admin_user['code']
+        if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id and admin_user.code != demo_admin_user['code']:
             alert = '{}が{}のシフトを{}から{}へ変更しました'.format(admin_user.name, str(user_shift.date), old_shift_name, shift.name)
             alert_tokens.append({'alert': alert, 'token': user.token})
 

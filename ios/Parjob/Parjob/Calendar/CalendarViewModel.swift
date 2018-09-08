@@ -23,7 +23,6 @@ protocol CalendarViewModelDelegate: class {
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
-    let notificationCenter = NotificationCenter.default
     
     fileprivate(set) var oneDayShifts: [OneDayShift] = []
     fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []

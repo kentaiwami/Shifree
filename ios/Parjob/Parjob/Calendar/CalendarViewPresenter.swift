@@ -237,10 +237,6 @@ extension CalendarViewPresenter {
     func getUpdated() -> Date? {
         return model.updated
     }
-    
-    func getNotificationCenterDefault() -> NotificationCenter {
-        return model.notificationCenter
-    }
 }
 
 

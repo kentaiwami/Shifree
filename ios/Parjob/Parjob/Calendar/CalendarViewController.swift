@@ -572,7 +572,7 @@ extension CalendarViewController: UITabBarControllerDelegate {
 // MARK: - Observer関連
 extension CalendarViewController {
     fileprivate func addObservers() {
-        presenter.getNotificationCenterDefault().addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
         
         let navigationController = self.navigationController
         let tabBarController = navigationController?.viewControllers.first as! UITabBarController
