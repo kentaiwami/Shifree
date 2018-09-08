@@ -569,15 +569,17 @@ extension CalendarViewController {
     }
     
     @objc private func updateView(notification: Notification) {
-        guard let dateDict = notification.object as? [String:Date] else {return}
         presenter.setIsReceiveNotificationSetCurrentPage(value: true)
-        self.calendar.currentPage = dateDict["sunday"]!
-        calendar.select(dateDict["updated"]!)
-        presenter.setCurrentDate(date: dateDict["updated"]!)
-        presenter.setCurrentPage(currentPage: calendar.currentPage)
-        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: dateDict["updated"]!))
         
-        setUpTodayColor(didSelectedDate: dateDict["updated"]!)
+        let date = presenter.getSunDayAndUpdated(object: notification.object)
+        
+        self.calendar.currentPage = date.sunday
+        calendar.select(date.updated)
+        presenter.setCurrentDate(date: date.updated)
+        presenter.setCurrentPage(currentPage: calendar.currentPage)
+        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: date.updated))
+        
+        setUpTodayColor(didSelectedDate: date.updated)
         setStartEndDate()
         presenter.getAllUserShift()
         

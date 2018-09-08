@@ -484,6 +484,16 @@ extension CalendarViewModel {
 }
 
 
+
+// MARK: - Notification関連
+extension CalendarViewModel {
+    func getSunDayAndUpdated(object: Any?) -> (sunday: Date, updated: Date) {
+        guard let dateDict = object as? [String:Date] else {return (Date(), Date())}
+        return (dateDict["sunday"]!, dateDict["updated"]!)
+    }
+}
+
+
 // MARK: - Utility関連（見やすくするため関数化）
 extension CalendarViewModel {
     fileprivate func getData(json: JSON) -> [OneDayShift] {
