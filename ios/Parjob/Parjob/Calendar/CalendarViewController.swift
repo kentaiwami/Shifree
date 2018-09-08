@@ -45,10 +45,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     // boundingRectWillChangeは初回起動時に実行させないため
     fileprivate var isFirstTime = true
     
-    // タブバーをタップしてカレンダー操作をしたかどうか（ページ変更時のメソッドを発火させないため）
-    fileprivate var isTapedTabBar = false
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
@@ -399,7 +395,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                  Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
                  ただし、タブバーをタップして発火した場合は何もしない（ページがさらに変更されて日付操作されてしまうため）
                  */
-                if !isTapedTabBar {
+                if !presenter.getIsTapedTabBar() {
                     var isWeek = true
                     if calendar.scope == .month {
                         isWeek = false
@@ -424,7 +420,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         
         isSwipe = false
         isReceiveNotificationSetCurrentPage = false
-        isTapedTabBar = false
+        presenter.setIsTapedTabBar(value: false)
     }
 }
 
@@ -557,7 +553,7 @@ extension CalendarViewController: UITabBarControllerDelegate {
             if startEnd.start <= Date() && Date() <= startEnd.end {
                 setUpCalendarScrollTable()
             }else {
-                isTapedTabBar = true
+                presenter.setIsTapedTabBar(value: true)
                 setUpCalendarScrollTable()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     self.presenter.getAllUserShift()

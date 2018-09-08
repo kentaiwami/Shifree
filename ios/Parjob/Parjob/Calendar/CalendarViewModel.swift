@@ -34,6 +34,8 @@ class CalendarViewModel {
     fileprivate(set) var currentScrollPage: Int = 0
     
     fileprivate(set) var tableCount: Int = 9
+    fileprivate(set) var isTapedTabBar: Bool = false
+    
     
     func login() {
         api.login().done { (json) in
@@ -200,6 +202,19 @@ extension CalendarViewModel {
     
     func getTableCount() -> Int {
         return tableCount
+    }
+}
+
+
+
+// MARK: - IsTapedTabBar（タブバーをタップしてカレンダー操作をしたかどうか。ページ変更時のメソッドを発火させないため。）
+extension CalendarViewModel {
+    func setIsTapedTabBar(value: Bool) {
+        isTapedTabBar = value
+    }
+    
+    func getIsTapedTabBar() -> Bool {
+        return isTapedTabBar
     }
 }
 

@@ -102,6 +102,19 @@ extension CalendarViewPresenter {
 
 
 
+// MARK: - IsTapedTabBar
+extension CalendarViewPresenter {
+    func setIsTapedTabBar(value: Bool) {
+        model.setIsTapedTabBar(value: value)
+    }
+    
+    func getIsTapedTabBar() -> Bool {
+        return model.getIsTapedTabBar()
+    }
+}
+
+
+
 // MARK: - カレンダー関連
 extension CalendarViewPresenter {
     func getUserColorSchemeForCalendar(date: Date) -> String {
