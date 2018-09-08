@@ -360,7 +360,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             initializeScrollView()
             initializeTableView()
             
-            presenter.getAllUserShift()            
+            presenter.getAllUserShift()
         }
         
         isFirstTime = false
@@ -379,8 +379,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("************** calendarCurrentPageDidChange **************")
         
-        if isReceiveNotificationSetCurrentPage {
-        }else {
+        if !isReceiveNotificationSetCurrentPage {
             if isSwipe {
                 setStartEndDate()
                 presenter.setCurrentDate(date: calendar.selectedDate!)
@@ -533,7 +532,60 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 extension CalendarViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if type(of: viewController) == CalendarViewController.self && type(of: viewController) == prevViewController {
-            print(viewController)
+//            print(calendar.isDate(inRange: Date()))
+            let start = presenter.getStartEndDate().start
+            let end = presenter.getStartEndDate().end
+            
+            if start <= Date() && Date() <= end {
+                // 日付操作
+                calendar.select(Date())
+                presenter.setCurrentDate(date: calendar.selectedDate!)
+                scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: Date()))
+                scrollTableViewToUserSection(date: Date())
+                // スクロール操作
+            }else {
+                
+            }
+//            print(viewController)
+//            HOGE = true
+//
+//            presenter.resetValues()
+//            tableViews.forEach { (table) in
+//                table.removeFromSuperview()
+//            }
+//            scrollView.removeFromSuperview()
+//            tableViews = []
+//
+//            if calendar.scope == .week {
+//                tableCount = weekCount
+//            }else {
+//                tableCount = monthCount
+//            }
+//
+////            isReceiveNotificationSetCurrentPage = true
+//            let now = Date()
+//            let hoge = 10
+//
+//            calendar.select(now)
+//            setStartEndDate()
+//
+//            presenter.setCurrentDate(date: calendar.selectedDate!)
+//            presenter.setCurrentPage(currentPage: calendar.currentPage)
+//
+//
+//
+//            initializeScrollView()
+//            initializeTableView()
+//
+//            print("++++++++++++++++++")
+//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: calendar.selectedDate!))
+//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getStartEndDate().start))
+//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getStartEndDate().end))
+//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate))
+//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentPage!))
+//            print("++++++++++++++++++")
+//
+//            presenter.getAllUserShift()
         }
         
         prevViewController = type(of: viewController)
