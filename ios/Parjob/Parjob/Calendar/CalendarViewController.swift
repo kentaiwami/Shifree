@@ -41,10 +41,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     // タブバーがタップされた際の画面の型を保存
     fileprivate var prevViewController:Any.Type = CalendarViewController.self
-    
-    // boundingRectWillChangeは初回起動時に実行させないため
-//    fileprivate var isFirstTime = true
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
