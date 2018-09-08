@@ -40,7 +40,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     
     // タブバーがタップされた際の画面の型を保存
     fileprivate var prevViewController:Any.Type = CalendarViewController.self
-
+    
     // 表示するテーブルの個数（1週間の7つと左右の2つで9つ使用。初期化時はWeekで表示しているため。）
     fileprivate var tableCount = 9
     fileprivate let weekCount = 9
@@ -49,8 +49,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     // boundingRectWillChangeは初回起動時に実行させないため
     fileprivate var isFirstTime = true
     
-    
-    fileprivate var HOGE = false
+    // タブバーをタップしてカレンダー操作をしたかどうか（ページ変更時のメソッドを発火させないため）
+    fileprivate var isTapedTabBar = false
     
     
     override func viewDidLoad() {
@@ -398,13 +398,12 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 }
                 
             }else {
-                let hoge = 10
-                
                 /*
                  表示モードがWeekなら翌・先週を選択状態に
                  Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
+                 ただし、タブバーをタップして発火した場合は何もしない（ページがさらに変更されて日付操作されてしまうため）
                  */
-                if !HOGE {
+                if !isTapedTabBar {
                     var isWeek = true
                     if calendar.scope == .month {
                         isWeek = false
@@ -429,7 +428,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         
         isSwipe = false
         isReceiveNotificationSetCurrentPage = false
-        HOGE = false
+        isTapedTabBar = false
     }
 }
 
@@ -538,35 +537,32 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
+
+// MARK: - UITabBarControllerDelegate
 extension CalendarViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if type(of: viewController) == CalendarViewController.self && type(of: viewController) == prevViewController {
-            let start = presenter.getStartEndDate().start
-            let end = presenter.getStartEndDate().end
-            let hoge = 10
-            let and = { () -> Void in
-                print("+")
+            let startEnd = presenter.getStartEndDate()
+            let setUpCalendarScrollTable = { () -> Void in
+                self.calendar.select(Date())
+                self.presenter.setCurrentDate(date: self.calendar.selectedDate!)
+                self.presenter.setCurrentPage(currentPage: self.calendar.currentPage)
+                self.setStartEndDate()
+                self.scrollScrollViewToPage(page: self.presenter.getScrollViewPosition(target: Date()))
+                self.scrollTableViewToUserSection(date: Date())
+                self.setUpTodayColor(didSelectedDate: Date())
             }
             
-            and()
+            /*
+            「今日」が範囲内にある場合は単純に日付等の操作のみ
+             範囲外にある場合は、ページ変更のメソッドが発火するため、フラグを立ててから
+            */
             
-
-            if start <= Date() && Date() <= end {
-                calendar.select(Date())
-                presenter.setCurrentDate(date: calendar.selectedDate!)
-                presenter.setCurrentPage(currentPage: calendar.currentPage)
-                scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: Date()))
-                setUpTodayColor(didSelectedDate: Date())
-                scrollTableViewToUserSection(date: Date())
+            if startEnd.start <= Date() && Date() <= startEnd.end {
+                setUpCalendarScrollTable()
             }else {
-                HOGE = true
-                calendar.select(Date())
-                presenter.setCurrentDate(date: Date())
-                presenter.setCurrentPage(currentPage: calendar.currentPage)
-                setStartEndDate()
-                scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: Date()))
-                scrollTableViewToUserSection(date: Date())
-                setUpTodayColor(didSelectedDate: Date())
+                isTapedTabBar = true
+                setUpCalendarScrollTable()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     self.presenter.getAllUserShift()
                 }
