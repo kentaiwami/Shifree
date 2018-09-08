@@ -23,7 +23,7 @@ protocol CalendarViewModelDelegate: class {
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
-    fileprivate let notificationCenter = NotificationCenter.default
+    let notificationCenter = NotificationCenter.default
     
     fileprivate(set) var oneDayShifts: [OneDayShift] = []
     fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
@@ -163,10 +163,6 @@ extension CalendarViewModel {
         self.start = start
         self.end = end
     }
-    
-    func getStartEndDate() -> (start: Date, end: Date) {
-        return (start, end)
-    }
 }
 
 
@@ -179,10 +175,6 @@ extension CalendarViewModel {
         }else {
             currentDate = Date()
         }
-    }
-    
-    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        return (currentPageDate, currentDate)
     }
     
     func setCurrentDate(currentDate: Date) {
@@ -205,10 +197,6 @@ extension CalendarViewModel {
             tableCount = 44
         }
     }
-    
-    func getTableCount() -> Int {
-        return tableCount
-    }
 }
 
 
@@ -217,10 +205,6 @@ extension CalendarViewModel {
 extension CalendarViewModel {
     func setIsTapedTabBar(value: Bool) {
         isTapedTabBar = value
-    }
-    
-    func getIsTapedTabBar() -> Bool {
-        return isTapedTabBar
     }
 }
 
@@ -231,10 +215,6 @@ extension CalendarViewModel {
     func setIsFirstTime(value: Bool) {
         isFirstTime = value
     }
-    
-    func getIsFirstTime() -> Bool {
-        return isFirstTime
-    }
 }
 
 
@@ -242,10 +222,6 @@ extension CalendarViewModel {
 extension CalendarViewModel {
     func setIsSwipe(value: Bool) {
         isSwipe = value
-    }
-    
-    func getIsSwipe() -> Bool {
-        return isSwipe
     }
 }
 
@@ -256,10 +232,6 @@ extension CalendarViewModel {
     func setIsReceiveNotificationSetCurrentPage(value: Bool) {
         isReceiveNotificationSetCurrentPage = value
     }
-    
-    func getIsReceiveNotificationSetCurrentPage() -> Bool {
-        return isReceiveNotificationSetCurrentPage
-    }
 }
 
 
@@ -268,10 +240,6 @@ extension CalendarViewModel {
 extension CalendarViewModel {
     func setPrevViewController(value: Any.Type) {
         prevViewController = value
-    }
-    
-    func getPrevViewController() -> Any.Type {
-        return prevViewController
     }
 }
 
@@ -495,14 +463,6 @@ extension CalendarViewModel {
             return
         }
         updated = dateDict["updated"]!
-    }
-    
-    func getUpdated() -> Date? {
-        return updated
-    }
-    
-    func getNotificationCenterDefault() -> NotificationCenter {
-        return notificationCenter
     }
 }
 

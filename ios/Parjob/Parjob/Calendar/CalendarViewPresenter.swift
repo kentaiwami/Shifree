@@ -63,7 +63,7 @@ extension CalendarViewPresenter {
     }
     
     func getStartEndDate() -> (start: Date, end: Date) {
-        return model.getStartEndDate()
+        return (model.start, model.end)
     }
 }
 
@@ -83,7 +83,7 @@ extension CalendarViewPresenter {
     }
     
     func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        return model.getCurrentAndPageDate()
+        return (model.currentPageDate, model.currentDate)
     }
 }
 
@@ -96,7 +96,7 @@ extension CalendarViewPresenter {
     }
     
     func getTableCount() -> Int {
-        return model.getTableCount()
+        return model.tableCount
     }
 }
 
@@ -109,7 +109,7 @@ extension CalendarViewPresenter {
     }
     
     func getIsTapedTabBar() -> Bool {
-        return model.getIsTapedTabBar()
+        return model.isTapedTabBar
     }
 }
 
@@ -122,7 +122,7 @@ extension CalendarViewPresenter {
     }
     
     func getIsFirstTime() -> Bool {
-        return model.getIsFirstTime()
+        return model.isFirstTime
     }
 }
 
@@ -135,7 +135,7 @@ extension CalendarViewPresenter {
     }
     
     func getIsSwipe() -> Bool {
-        return model.getIsSwipe()
+        return model.isSwipe
     }
 }
 
@@ -148,7 +148,7 @@ extension CalendarViewPresenter {
     }
     
     func getIsReceiveNotificationSetCurrentPage() -> Bool {
-        return model.getIsReceiveNotificationSetCurrentPage()
+        return model.isReceiveNotificationSetCurrentPage
     }
 }
 
@@ -161,7 +161,7 @@ extension CalendarViewPresenter {
     }
     
     func getPrevViewController() -> Any.Type {
-        return model.getPrevViewController()
+        return model.prevViewController
     }
 }
 
@@ -235,11 +235,11 @@ extension CalendarViewPresenter {
     }
     
     func getUpdated() -> Date? {
-        return model.getUpdated()
+        return model.updated
     }
     
     func getNotificationCenterDefault() -> NotificationCenter {
-        return model.getNotificationCenterDefault()
+        return model.notificationCenter
     }
 }
 
