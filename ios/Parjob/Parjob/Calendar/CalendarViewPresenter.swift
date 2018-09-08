@@ -115,6 +115,19 @@ extension CalendarViewPresenter {
 
 
 
+// MARK: - IsFirstTime
+extension CalendarViewPresenter {
+    func setIsFirstTime(value: Bool) {
+        model.setIsFirstTime(value: value)
+    }
+    
+    func getIsFirstTime() -> Bool {
+        return model.getIsFirstTime()
+    }
+}
+
+
+
 // MARK: - カレンダー関連
 extension CalendarViewPresenter {
     func getUserColorSchemeForCalendar(date: Date) -> String {

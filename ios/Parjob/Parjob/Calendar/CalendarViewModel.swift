@@ -35,6 +35,7 @@ class CalendarViewModel {
     
     fileprivate(set) var tableCount: Int = 9
     fileprivate(set) var isTapedTabBar: Bool = false
+    fileprivate(set) var isFirstTime: Bool = true
     
     
     func login() {
@@ -215,6 +216,19 @@ extension CalendarViewModel {
     
     func getIsTapedTabBar() -> Bool {
         return isTapedTabBar
+    }
+}
+
+
+
+// MARK: - IsFirstTime（boundingRectWillChangeは初回起動時に実行させないため。）
+extension CalendarViewModel {
+    func setIsFirstTime(value: Bool) {
+        isFirstTime = value
+    }
+    
+    func getIsFirstTime() -> Bool {
+        return isFirstTime
     }
 }
 

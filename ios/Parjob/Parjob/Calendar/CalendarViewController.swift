@@ -43,7 +43,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate var prevViewController:Any.Type = CalendarViewController.self
     
     // boundingRectWillChangeは初回起動時に実行させないため
-    fileprivate var isFirstTime = true
+//    fileprivate var isFirstTime = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -335,7 +335,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         heightConst.constant = bounds.height
         self.view.layoutIfNeeded()
         
-        if !isFirstTime {
+        if !presenter.getIsFirstTime() {
             presenter.resetValues()
             tableViews.forEach { (table) in
                 table.removeFromSuperview()
@@ -359,7 +359,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             presenter.getAllUserShift()
         }
         
-        isFirstTime = false
+        presenter.setIsFirstTime(value: false)
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
