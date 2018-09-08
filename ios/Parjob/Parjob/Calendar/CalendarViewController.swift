@@ -25,7 +25,6 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate weak var calendar: FSCalendar!
     fileprivate var tableViews: [UITableView] = []
     fileprivate var scrollView: UIScrollView!
-    fileprivate let notificationCenter = NotificationCenter.default
     
     // カレンダーの高さに関する制約を保存
     fileprivate var heightConst: Constraint!
@@ -265,6 +264,14 @@ extension CalendarViewController {
                 table.backgroundView?.isHidden = true
             }
         }
+        
+        // オブザーバー経由でupdateViewが呼び出された際に、ユーザのセクションは変更されているため、テーブル更新後にセクションへの自動スクロールを行う
+        let updated = presenter.getUpdated()
+        
+        if updated != nil {
+            scrollTableViewToUserSection(date: updated!)
+        }
+        presenter.setUpdated(object: nil)
     }
     
     func showErrorAlert(title: String, msg: String) {
@@ -558,7 +565,7 @@ extension CalendarViewController: UITabBarControllerDelegate {
 // MARK: - Observer関連
 extension CalendarViewController {
     fileprivate func addObservers() {
-        notificationCenter.addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
+        presenter.getNotificationCenterDefault().addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
         
         let navigationController = self.navigationController
         let tabBarController = navigationController?.viewControllers.first as! UITabBarController
@@ -569,19 +576,26 @@ extension CalendarViewController {
     }
     
     @objc private func updateView(notification: Notification) {
+        /*
+         getAllUserShift()完了後のテーブル再読み込み時に、ユーザのセクションまでスクロールする必要があるため、日付を格納して通知からタップされた描画処理であることを伝える。
+         */
+        
         presenter.setIsReceiveNotificationSetCurrentPage(value: true)
+        presenter.setUpdated(object: notification.object)
         
-        let date = presenter.getSunDayAndUpdated(object: notification.object)
+        let updated = presenter.getUpdated()
         
-        self.calendar.currentPage = date.sunday
-        calendar.select(date.updated)
-        presenter.setCurrentDate(date: date.updated)
+        calendar.select(updated!)
+        presenter.setCurrentDate(date: updated!)
         presenter.setCurrentPage(currentPage: calendar.currentPage)
-        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: date.updated))
-        
-        setUpTodayColor(didSelectedDate: date.updated)
         setStartEndDate()
-        presenter.getAllUserShift()
+        
+        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: updated!))
+        setUpTodayColor(didSelectedDate: updated!)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.presenter.getAllUserShift()
+        }
         
         dismissViews(targetViewController: self, selectedIndex: 0)
         

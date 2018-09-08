@@ -92,10 +92,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 tabBarController.selectedIndex = 2
                 self.window!.rootViewController = navigationController
                 self.window?.makeKeyAndVisible()
-            }else if let sunday = userInfoDict["sunday"] as? String {
+            }else if let updated = userInfoDict["updated"] as? String {
                 // rootを変更する方法では落ちてしまうので、シングルトンで値を共有して遷移させる
-                MyApplication.shared.sunday = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday)
-                MyApplication.shared.updated = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: userInfoDict["updated"] as! String)
+                MyApplication.shared.updated = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated)
             }
         }
 
@@ -177,10 +176,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             guard let tableID = response.notification.request.content.userInfo["id"] as? Int else {return}
             notificationCenter.post(name: .comment, object: ["id": tableID])
         case "usershift":
-            guard let sunday = response.notification.request.content.userInfo["sunday"] as? String else {return}
             guard let updated = response.notification.request.content.userInfo["updated"] as? String else {return}
             let object = [
-                "sunday": getFormatterDateFromString(format: "yyyy-MM-dd", dateString: sunday),
                 "updated": getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated),
             ]
             

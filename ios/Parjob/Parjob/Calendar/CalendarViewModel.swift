@@ -23,6 +23,7 @@ protocol CalendarViewModelDelegate: class {
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
+    fileprivate let notificationCenter = NotificationCenter.default
     
     fileprivate(set) var oneDayShifts: [OneDayShift] = []
     fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
@@ -32,6 +33,7 @@ class CalendarViewModel {
     fileprivate(set) var currentDate: Date = Date()
     fileprivate(set) var start: Date = Date()
     fileprivate(set) var end: Date = Date()
+    fileprivate(set) var updated: Date? = nil
     fileprivate(set) var currentScrollPage: Int = 0
     
     fileprivate(set) var tableCount: Int = 9
@@ -487,9 +489,20 @@ extension CalendarViewModel {
 
 // MARK: - Notification関連
 extension CalendarViewModel {
-    func getSunDayAndUpdated(object: Any?) -> (sunday: Date, updated: Date) {
-        guard let dateDict = object as? [String:Date] else {return (Date(), Date())}
-        return (dateDict["sunday"]!, dateDict["updated"]!)
+    func setUpdated(object: Any?) {
+        guard let dateDict = object as? [String:Date] else {
+            updated = nil
+            return
+        }
+        updated = dateDict["updated"]!
+    }
+    
+    func getUpdated() -> Date? {
+        return updated
+    }
+    
+    func getNotificationCenterDefault() -> NotificationCenter {
+        return notificationCenter
     }
 }
 

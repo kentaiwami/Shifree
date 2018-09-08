@@ -230,8 +230,16 @@ extension CalendarViewPresenter {
 
 // MARK: - Notification関連
 extension CalendarViewPresenter {
-    func getSunDayAndUpdated(object: Any?) -> (sunday: Date, updated: Date) {
-        return model.getSunDayAndUpdated(object: object)
+    func setUpdated(object: Any?) {
+        return model.setUpdated(object: object)
+    }
+    
+    func getUpdated() -> Date? {
+        return model.getUpdated()
+    }
+    
+    func getNotificationCenterDefault() -> NotificationCenter {
+        return model.getNotificationCenterDefault()
     }
 }
 
