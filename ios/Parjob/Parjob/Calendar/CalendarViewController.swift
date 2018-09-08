@@ -49,6 +49,10 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     // boundingRectWillChangeは初回起動時に実行させないため
     fileprivate var isFirstTime = true
     
+    
+    fileprivate var HOGE = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
@@ -394,33 +398,38 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 }
                 
             }else {
+                let hoge = 10
+                
                 /*
                  表示モードがWeekなら翌・先週を選択状態に
                  Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
                  */
-                var isWeek = true
-                if calendar.scope == .month {
-                    isWeek = false
-                }
-                let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, isWeek: isWeek)
-                calendar.select(newSelectDate)
-                presenter.setCurrentDate(date: newSelectDate)
-                presenter.setCurrentPage(currentPage: calendar.currentPage)
-                setStartEndDate()
-                
-                let position = presenter.getScrollViewPosition(target: newSelectDate)
-                scrollScrollViewToPage(page: position)
-                setUpTodayColor(didSelectedDate: newSelectDate)
-                
-                // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.presenter.getAllUserShift()
+                if !HOGE {
+                    var isWeek = true
+                    if calendar.scope == .month {
+                        isWeek = false
+                    }
+                    let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, isWeek: isWeek)
+                    calendar.select(newSelectDate)
+                    presenter.setCurrentDate(date: newSelectDate)
+                    presenter.setCurrentPage(currentPage: calendar.currentPage)
+                    setStartEndDate()
+                    
+                    let position = presenter.getScrollViewPosition(target: newSelectDate)
+                    scrollScrollViewToPage(page: position)
+                    setUpTodayColor(didSelectedDate: newSelectDate)
+                    
+                    // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        self.presenter.getAllUserShift()
+                    }
                 }
             }
         }
         
         isSwipe = false
         isReceiveNotificationSetCurrentPage = false
+        HOGE = false
     }
 }
 
@@ -532,60 +541,36 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 extension CalendarViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if type(of: viewController) == CalendarViewController.self && type(of: viewController) == prevViewController {
-//            print(calendar.isDate(inRange: Date()))
             let start = presenter.getStartEndDate().start
             let end = presenter.getStartEndDate().end
+            let hoge = 10
+            let and = { () -> Void in
+                print("+")
+            }
             
+            and()
+            
+
             if start <= Date() && Date() <= end {
-                // 日付操作
                 calendar.select(Date())
                 presenter.setCurrentDate(date: calendar.selectedDate!)
+                presenter.setCurrentPage(currentPage: calendar.currentPage)
+                scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: Date()))
+                setUpTodayColor(didSelectedDate: Date())
+                scrollTableViewToUserSection(date: Date())
+            }else {
+                HOGE = true
+                calendar.select(Date())
+                presenter.setCurrentDate(date: Date())
+                presenter.setCurrentPage(currentPage: calendar.currentPage)
+                setStartEndDate()
                 scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: Date()))
                 scrollTableViewToUserSection(date: Date())
-                // スクロール操作
-            }else {
-                
+                setUpTodayColor(didSelectedDate: Date())
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.presenter.getAllUserShift()
+                }
             }
-//            print(viewController)
-//            HOGE = true
-//
-//            presenter.resetValues()
-//            tableViews.forEach { (table) in
-//                table.removeFromSuperview()
-//            }
-//            scrollView.removeFromSuperview()
-//            tableViews = []
-//
-//            if calendar.scope == .week {
-//                tableCount = weekCount
-//            }else {
-//                tableCount = monthCount
-//            }
-//
-////            isReceiveNotificationSetCurrentPage = true
-//            let now = Date()
-//            let hoge = 10
-//
-//            calendar.select(now)
-//            setStartEndDate()
-//
-//            presenter.setCurrentDate(date: calendar.selectedDate!)
-//            presenter.setCurrentPage(currentPage: calendar.currentPage)
-//
-//
-//
-//            initializeScrollView()
-//            initializeTableView()
-//
-//            print("++++++++++++++++++")
-//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: calendar.selectedDate!))
-//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getStartEndDate().start))
-//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getStartEndDate().end))
-//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate))
-//            print(getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentPage!))
-//            print("++++++++++++++++++")
-//
-//            presenter.getAllUserShift()
         }
         
         prevViewController = type(of: viewController)
