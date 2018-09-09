@@ -19,12 +19,20 @@ class FileBrowseTopViewPresenter {
         model.delegate = self
     }
         
-    func setFileTable() {
-        model.setFileTable()
+    func setFileTable(isUpdate: Bool) {
+        model.setFileTable(isUpdate: isUpdate)
     }
     
-    func getTable() -> [FileTable] {
-        return model.fileTableList
+    func getTableCount() -> Int {
+        return model.fileTableList.count
+    }
+    
+    func isBackgroundViewHidden() -> Bool {
+        return model.isBackgroundViewHidden()
+    }
+    
+    func getTable(index: Int) -> FileTable {
+        return model.getTable(index: index)
     }
     
     func getPrevViewController() -> Any.Type {
@@ -39,6 +47,10 @@ class FileBrowseTopViewPresenter {
 extension FileBrowseTopViewPresenter: FileBrowseTopViewModelDelegate {
     func initializeUI() {
         view?.initializeUI()
+    }
+    
+    func updateView() {
+        view?.updateView()
     }
     
     func faildAPI(title: String, msg: String) {

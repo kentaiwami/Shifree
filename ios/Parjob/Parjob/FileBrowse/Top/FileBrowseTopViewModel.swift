@@ -10,6 +10,7 @@ import Foundation
 
 protocol FileBrowseTopViewModelDelegate: class {
     func initializeUI()
+    func updateView()
     func faildAPI(title: String, msg: String)
 }
 
@@ -19,7 +20,7 @@ class FileBrowseTopViewModel {
     private(set) var fileTableList: [FileTable] = []
     fileprivate(set) var prevViewController: Any.Type = FileBrowseTopViewController.self
     
-    func setFileTable() {
+    func setFileTable(isUpdate: Bool) {
         fileTableList = []
         api.getFileTable().done { (json) in
             json["results"].arrayValue.forEach({ (fileTable) in
@@ -28,12 +29,32 @@ class FileBrowseTopViewModel {
                 )
             })
             
-            self.delegate?.initializeUI()
+            if isUpdate {
+                self.delegate?.updateView()
+            }else {
+                self.delegate?.initializeUI()
+            }
         }
         .catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
+    }
+    
+    func getTable(index: Int) -> FileTable {
+        if fileTableList.count == 0 {
+            return FileTable()
+        }else {
+            return fileTableList[index]
+        }
+    }
+    
+    func isBackgroundViewHidden() -> Bool {
+        if fileTableList.count == 0 {
+            return false
+        }else {
+            return true
         }
     }
     
