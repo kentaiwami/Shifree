@@ -6,7 +6,6 @@ from database import session
 from basic_auth import api_basic_auth
 from itertools import groupby
 from datetime import datetime as DT
-from utility import get_sunday
 from config import demo_admin_user
 
 app = Blueprint('user_shift_bp', __name__)
@@ -161,18 +160,13 @@ def update():
 
     session.close()
 
-    # クライアントのカレンダーを再描画するために、シフト変更をした週の日曜日を求める
-    # クライアント側のカレンダーが日曜日が週の開始日のため日曜日
-
-    sunday = get_sunday(user_shift.date)
-
     for alert_token in alert_tokens:
         res = client.send(alert_token['token'],
                           alert_token['alert'],
                           sound='default',
                           badge=1,
                           category='usershift',
-                          extra={'sunday': str(sunday), 'updated': str(user_shift.date)}
+                          extra={'updated': str(user_shift.date)}
                           )
         print('***************Update UserShift*****************')
         print(res.errors)
@@ -243,7 +237,7 @@ def unknown_update():
 
         if user.is_update_shift_notification is True and user.token is not None and user.id != admin_user.id and admin_user.code != demo_admin_user['code']:
             alert = '{}が{}のシフトを{}から{}へ変更しました'.format(admin_user.name, str(user_shift_result.date), old_shift_name, shift.name)
-            alert_tokens.append({'alert': alert, 'token': user.token, 'sunday': str(get_sunday(user_shift_result.date)), 'updated': str(user_shift_result.date)})
+            alert_tokens.append({'alert': alert, 'token': user.token, 'updated': str(user_shift_result.date)})
 
     session.close()
 
@@ -253,7 +247,7 @@ def unknown_update():
                           sound='default',
                           badge=1,
                           category='usershift',
-                          extra={'sunday': alert_token['sunday'], 'updated': alert_token['updated']}
+                          extra={'updated': alert_token['updated']}
                           )
         print('***************Update UserShift*****************')
         print(res.errors)

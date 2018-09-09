@@ -11,7 +11,7 @@ from datetime import datetime as DT
 from sqlalchemy.sql import exists
 import datetime
 from config import demo_admin_user
-from utility import get_salary, get_sunday
+from utility import get_salary
 
 app = Blueprint('table_bp', __name__)
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -253,9 +253,7 @@ def import_shift():
                           sound='default',
                           badge=1,
                           category='usershift',
-                          extra={'sunday': DT.strftime(get_sunday(start_date), '%Y-%m-%d'),
-                                 'updated': DT.strftime(start_date, '%Y-%m-%d')
-                                 }
+                          extra={'updated': DT.strftime(start_date, '%Y-%m-%d')}
                           )
         print('***************Add Comment*****************')
         print(res.errors)
@@ -446,9 +444,7 @@ def delete(table_id):
                               sound='default',
                               badge=1,
                               category='usershift',
-                              extra={'sunday': DT.strftime(get_sunday(datetime.datetime.now()), '%Y-%m-%d'),
-                                     'updated': DT.strftime(datetime.datetime.now(), '%Y-%m-%d')
-                                     }
+                              extra={'updated': DT.strftime(datetime.datetime.now(), '%Y-%m-%d')}
                               )
             print('***************Add Comment*****************')
             print(res.errors)

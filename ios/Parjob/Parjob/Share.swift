@@ -11,6 +11,5 @@ import Foundation
 class MyApplication {
     static let shared = MyApplication()
     private init() {}
-    var sunday: Date?
     var updated: Date?
 }

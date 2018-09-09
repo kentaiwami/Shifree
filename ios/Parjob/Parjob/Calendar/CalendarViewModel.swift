@@ -17,9 +17,13 @@ protocol CalendarViewModelDelegate: class {
 }
 
 
+
+
+
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
+    
     fileprivate(set) var oneDayShifts: [OneDayShift] = []
     fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     fileprivate(set) var tableViewShifts: [[TableViewShift]] = [[]]
@@ -28,7 +32,15 @@ class CalendarViewModel {
     fileprivate(set) var currentDate: Date = Date()
     fileprivate(set) var start: Date = Date()
     fileprivate(set) var end: Date = Date()
+    fileprivate(set) var updated: Date? = nil
     fileprivate(set) var currentScrollPage: Int = 0
+    
+    fileprivate(set) var tableCount: Int = 9
+    fileprivate(set) var isTapedTabBar: Bool = false
+    fileprivate(set) var isFirstTime: Bool = true
+    fileprivate(set) var isSwipe: Bool = false
+    fileprivate(set) var isReceiveNotificationSetCurrentPage: Bool = false
+    fileprivate(set) var prevViewController: Any.Type = CalendarViewController.self
     
     func login() {
         api.login().done { (json) in
@@ -150,10 +162,6 @@ extension CalendarViewModel {
         self.start = start
         self.end = end
     }
-    
-    func getStartEndDate() -> (start: Date, end: Date) {
-        return (start, end)
-    }
 }
 
 
@@ -168,16 +176,69 @@ extension CalendarViewModel {
         }
     }
     
-    func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        return (currentPageDate, currentDate)
-    }
-    
     func setCurrentDate(currentDate: Date) {
         self.currentDate = currentDate
     }
     
     func setCurrentPage(currentPage: Date) {
         self.currentPageDate = currentPage
+    }
+}
+
+
+
+// MARK: - TableCount（表示するテーブルの個数。1週間の7つと左右の2つで9つ使用。）
+extension CalendarViewModel {
+    func setTableCount(isWeek: Bool) {
+        if isWeek {
+            tableCount = 9
+        }else {
+            tableCount = 44
+        }
+    }
+}
+
+
+
+// MARK: - IsTapedTabBar（タブバーをタップしてカレンダー操作をしたかどうか。ページ変更時のメソッドを発火させないため。）
+extension CalendarViewModel {
+    func setIsTapedTabBar(value: Bool) {
+        isTapedTabBar = value
+    }
+}
+
+
+
+// MARK: - IsFirstTime（boundingRectWillChangeは初回起動時に実行させないため。）
+extension CalendarViewModel {
+    func setIsFirstTime(value: Bool) {
+        isFirstTime = value
+    }
+}
+
+
+// MARK: - isSwipe（カレンダーのページが変化した際に、カレンダーをスワイプしたのか、テーブルをスワイプしたのか判定するために使用。）
+extension CalendarViewModel {
+    func setIsSwipe(value: Bool) {
+        isSwipe = value
+    }
+}
+
+
+
+// MARK: - isReceiveNotificationSetCurrentPage（通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用。）
+extension CalendarViewModel {
+    func setIsReceiveNotificationSetCurrentPage(value: Bool) {
+        isReceiveNotificationSetCurrentPage = value
+    }
+}
+
+
+
+// MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
+extension CalendarViewModel {
+    func setPrevViewController(value: Any.Type) {
+        prevViewController = value
     }
 }
 
@@ -388,6 +449,19 @@ extension CalendarViewModel {
         let userSection = getUserSection(tag: position)
         
         return (IndexPath(row: 0, section: userSection), position)
+    }
+}
+
+
+
+// MARK: - Notification関連
+extension CalendarViewModel {
+    func setUpdated(object: Any?) {
+        guard let dateDict = object as? [String:Date] else {
+            updated = nil
+            return
+        }
+        updated = dateDict["updated"]!
     }
 }
 

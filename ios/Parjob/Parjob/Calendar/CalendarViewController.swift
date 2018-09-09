@@ -19,35 +19,26 @@ protocol CalendarViewInterface: class {
     func updateView()
 }
 
+
 class CalendarViewController: UIViewController, CalendarViewInterface {
     fileprivate var presenter: CalendarViewPresenter!
     fileprivate weak var calendar: FSCalendar!
     fileprivate var tableViews: [UITableView] = []
     fileprivate var scrollView: UIScrollView!
-    fileprivate let notificationCenter = NotificationCenter.default
     
+    // カレンダーの高さに関する制約を保存
     fileprivate var heightConst: Constraint!
+    
+    // ライブラリに設定されているデフォルトのカラーを保存
     fileprivate var todayColor: UIColor!
-    
-    // 通知を受信してカレンダーのページを更新した場合とスワイプ操作で更新した場合で、日付操作をスキップするために使用。
-    fileprivate var isReceiveNotificationSetCurrentPage = false
-    
-    // カレンダーのページが変化した際に、カレンダーをスワイプしたのか、テーブルをスワイプしたのか判定するためにしよう。
-    fileprivate var isSwipe = false
-
-    // 表示するテーブルの個数（1週間の7つと左右の2つで9つ使用。初期化時はWeekで表示しているため。）
-    fileprivate var tableCount = 9
-    fileprivate let weekCount = 9
-    fileprivate let monthCount = 44
-    
-    // boundingRectWillChangeは初回起動時に実行させないため
-    fileprivate var isFirstTime = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
         presenter.login()
         addObservers()
+        
+        self.tabBarController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,7 +152,7 @@ extension CalendarViewController {
     }
     
     fileprivate func initializeScrollView() {
-        let width = self.view.frame.width * CGFloat(tableCount)
+        let width = self.view.frame.width * CGFloat(presenter.getTableCount())
         scrollView = UIScrollView()
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: 0)
@@ -184,7 +175,7 @@ extension CalendarViewController {
         
         var tableViewX: CGFloat = 0
         
-        for i in 0..<tableCount {
+        for i in 0..<presenter.getTableCount() {
             let tableView = UITableView()
             tableView.delegate = self
             tableView.dataSource = self
@@ -273,6 +264,21 @@ extension CalendarViewController {
                 table.backgroundView?.isHidden = true
             }
         }
+        
+        /*
+         オブザーバー（アプリ起動状態で通知タップ）またはUserOption（通知からアプリ起動）でupdateViewが呼び出された際に、
+         ユーザのセクションは変更されているため、テーブル更新後にセクションへの自動スクロールを行う
+         */
+        let updatedFromObserver = presenter.getUpdated()
+        let updatedFromUserOption = MyApplication.shared.updated
+        
+        if updatedFromObserver != nil {
+            scrollTableViewToUserSection(date: updatedFromObserver!)
+        }else if updatedFromUserOption != nil {
+            scrollTableViewToUserSection(date: updatedFromUserOption!)
+        }
+        
+        presenter.setUpdated(object: nil)
     }
     
     func showErrorAlert(title: String, msg: String) {
@@ -331,7 +337,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         heightConst.constant = bounds.height
         self.view.layoutIfNeeded()
         
-        if !isFirstTime {
+        if !presenter.getIsFirstTime() {
             presenter.resetValues()
             tableViews.forEach { (table) in
                 table.removeFromSuperview()
@@ -340,9 +346,9 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             tableViews = []
             
             if calendar.scope == .week {
-                tableCount = weekCount
+                presenter.setTableCount(isWeek: true)
             }else {
-                tableCount = monthCount
+                presenter.setTableCount(isWeek: false)
             }
             
             setStartEndDate()
@@ -352,10 +358,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
             initializeScrollView()
             initializeTableView()
             
-            presenter.getAllUserShift()            
+            presenter.getAllUserShift()
         }
         
-        isFirstTime = false
+        presenter.setIsFirstTime(value: false)
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -371,9 +377,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("************** calendarCurrentPageDidChange **************")
         
-        if isReceiveNotificationSetCurrentPage {
-        }else {
-            if isSwipe {
+        if !presenter.getIsReceiveNotificationSetCurrentPage() {
+            if presenter.getIsSwipe() {
                 setStartEndDate()
                 presenter.setCurrentDate(date: calendar.selectedDate!)
                 presenter.setCurrentPage(currentPage: calendar.currentPage)
@@ -390,30 +395,34 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
                 /*
                  表示モードがWeekなら翌・先週を選択状態に
                  Monthなら翌・先月の1日を選択状態に（ただし、今日が含まれる月表示の場合は「今日」）
+                 ただし、タブバーをタップして発火した場合は何もしない（ページがさらに変更されて日付操作されてしまうため）
                  */
-                var isWeek = true
-                if calendar.scope == .month {
-                    isWeek = false
-                }
-                let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, isWeek: isWeek)
-                calendar.select(newSelectDate)
-                presenter.setCurrentDate(date: newSelectDate)
-                presenter.setCurrentPage(currentPage: calendar.currentPage)
-                setStartEndDate()
-                
-                let position = presenter.getScrollViewPosition(target: newSelectDate)
-                scrollScrollViewToPage(page: position)
-                setUpTodayColor(didSelectedDate: newSelectDate)
-                
-                // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.presenter.getAllUserShift()
+                if !presenter.getIsTapedTabBar() {
+                    var isWeek = true
+                    if calendar.scope == .month {
+                        isWeek = false
+                    }
+                    let newSelectDate = presenter.getShouldSelectDate(currentPage: calendar.currentPage, isWeek: isWeek)
+                    calendar.select(newSelectDate)
+                    presenter.setCurrentDate(date: newSelectDate)
+                    presenter.setCurrentPage(currentPage: calendar.currentPage)
+                    setStartEndDate()
+                    
+                    let position = presenter.getScrollViewPosition(target: newSelectDate)
+                    scrollScrollViewToPage(page: position)
+                    setUpTodayColor(didSelectedDate: newSelectDate)
+                    
+                    // アニメーションと処理が被ってカクツクため、アニメーションが終わる頃まで少し遅延させる
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        self.presenter.getAllUserShift()
+                    }
                 }
             }
         }
         
-        isSwipe = false
-        isReceiveNotificationSetCurrentPage = false
+        presenter.setIsSwipe(value: false)
+        presenter.setIsReceiveNotificationSetCurrentPage(value: false)
+        presenter.setIsTapedTabBar(value: false)
     }
 }
 
@@ -422,15 +431,13 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
 // MARK: - UIScrollViewDelegate
 extension CalendarViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if scrollView == self.scrollView {
-            isSwipe = true
+        if type(of: scrollView) == UIScrollView.self {
+            presenter.setIsSwipe(value: true)
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {}
-    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if scrollView == self.scrollView {
+        if type(of: scrollView) == UIScrollView.self {
             let newSelectDateByScroll = presenter.getNewSelectDateByScroll(newScrollPage: scrollView.currentPage)
             let tmpSelectedDateByScrollPage = calendar.gregorian.date(byAdding: .day, value: scrollView.currentPage - 1, to: presenter.getStartEndDate().start)!
             var newSelectedDate = Date()
@@ -449,7 +456,7 @@ extension CalendarViewController: UIScrollViewDelegate {
             presenter.setCurrentScrollPage(page: scrollView.currentPage)
 
             scrollTableViewToUserSection(date: newSelectedDate)
-            isSwipe = false
+            presenter.setIsSwipe(value: false)
         }
     }
 }
@@ -525,10 +532,47 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 
 
 
+// MARK: - UITabBarControllerDelegate
+extension CalendarViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if type(of: viewController) == CalendarViewController.self && type(of: viewController) == presenter.getPrevViewController() {
+            let startEnd = presenter.getStartEndDate()
+            let setUpCalendarScrollTable = { () -> Void in
+                self.calendar.select(Date())
+                self.presenter.setCurrentDate(date: self.calendar.selectedDate!)
+                self.presenter.setCurrentPage(currentPage: self.calendar.currentPage)
+                self.setStartEndDate()
+                self.scrollScrollViewToPage(page: self.presenter.getScrollViewPosition(target: Date()))
+                self.scrollTableViewToUserSection(date: Date())
+                self.setUpTodayColor(didSelectedDate: Date())
+            }
+            
+            /*
+            「今日」が範囲内にある場合は単純に日付等の操作のみ
+             範囲外にある場合は、ページ変更のメソッドが発火するため、フラグを立ててから
+            */
+            
+            if startEnd.start <= Date() && Date() <= startEnd.end {
+                setUpCalendarScrollTable()
+            }else {
+                presenter.setIsTapedTabBar(value: true)
+                setUpCalendarScrollTable()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.presenter.getAllUserShift()
+                }
+            }
+        }
+        
+        presenter.setPrevViewController(value: type(of: viewController))
+    }
+}
+
+
+
 // MARK: - Observer関連
 extension CalendarViewController {
     fileprivate func addObservers() {
-        notificationCenter.addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
         
         let navigationController = self.navigationController
         let tabBarController = navigationController?.viewControllers.first as! UITabBarController
@@ -539,20 +583,29 @@ extension CalendarViewController {
     }
     
     @objc private func updateView(notification: Notification) {
-        guard let dateDict = notification.object as? [String:Date] else {return}
-        isReceiveNotificationSetCurrentPage = true
-        self.calendar.currentPage = dateDict["sunday"]!
-        calendar.select(dateDict["updated"]!)
-        presenter.setCurrentDate(date: dateDict["updated"]!)
-        presenter.setCurrentPage(currentPage: calendar.currentPage)
-        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: dateDict["updated"]!))
+        /*
+         getAllUserShift()完了後のテーブル再読み込み時に、ユーザのセクションまでスクロールする必要があるため、日付を格納して通知からタップされた描画処理であることを伝える。
+         */
         
-        setUpTodayColor(didSelectedDate: dateDict["updated"]!)
+        presenter.setIsReceiveNotificationSetCurrentPage(value: true)
+        presenter.setUpdated(object: notification.object)
+        
+        let updated = presenter.getUpdated()
+        
+        calendar.select(updated!)
+        presenter.setCurrentDate(date: updated!)
+        presenter.setCurrentPage(currentPage: calendar.currentPage)
         setStartEndDate()
-        presenter.getAllUserShift()
+        
+        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: updated!))
+        setUpTodayColor(didSelectedDate: updated!)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.presenter.getAllUserShift()
+        }
         
         dismissViews(targetViewController: self, selectedIndex: 0)
         
-        isReceiveNotificationSetCurrentPage = false
+        presenter.setIsReceiveNotificationSetCurrentPage(value: false)
     }
 }

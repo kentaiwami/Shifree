@@ -63,7 +63,7 @@ extension CalendarViewPresenter {
     }
     
     func getStartEndDate() -> (start: Date, end: Date) {
-        return model.getStartEndDate()
+        return (model.start, model.end)
     }
 }
 
@@ -83,9 +83,88 @@ extension CalendarViewPresenter {
     }
     
     func getCurrentAndPageDate() -> (currentPage: Date?, currentDate: Date) {
-        return model.getCurrentAndPageDate()
+        return (model.currentPageDate, model.currentDate)
     }
 }
+
+
+
+// MARK: - TableCount
+extension CalendarViewPresenter {
+    func setTableCount(isWeek: Bool) {
+        model.setTableCount(isWeek: isWeek)
+    }
+    
+    func getTableCount() -> Int {
+        return model.tableCount
+    }
+}
+
+
+
+// MARK: - IsTapedTabBar
+extension CalendarViewPresenter {
+    func setIsTapedTabBar(value: Bool) {
+        model.setIsTapedTabBar(value: value)
+    }
+    
+    func getIsTapedTabBar() -> Bool {
+        return model.isTapedTabBar
+    }
+}
+
+
+
+// MARK: - IsFirstTime
+extension CalendarViewPresenter {
+    func setIsFirstTime(value: Bool) {
+        model.setIsFirstTime(value: value)
+    }
+    
+    func getIsFirstTime() -> Bool {
+        return model.isFirstTime
+    }
+}
+
+
+
+// MARK: - isSwipe
+extension CalendarViewPresenter {
+    func setIsSwipe(value: Bool) {
+        model.setIsSwipe(value: value)
+    }
+    
+    func getIsSwipe() -> Bool {
+        return model.isSwipe
+    }
+}
+
+
+
+// MARK: - isReceiveNotificationSetCurrentPage
+extension CalendarViewPresenter {
+    func setIsReceiveNotificationSetCurrentPage(value: Bool) {
+        model.setIsReceiveNotificationSetCurrentPage(value: value)
+    }
+    
+    func getIsReceiveNotificationSetCurrentPage() -> Bool {
+        return model.isReceiveNotificationSetCurrentPage
+    }
+}
+
+
+
+// MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
+extension CalendarViewPresenter {
+    func setPrevViewController(value: Any.Type) {
+        model.setPrevViewController(value: value)
+    }
+    
+    func getPrevViewController() -> Any.Type {
+        return model.prevViewController
+    }
+}
+
 
 
 // MARK: - カレンダー関連
@@ -144,6 +223,19 @@ extension CalendarViewPresenter {
     
     func getTableViewScrollPosition(date: Date) -> (scrollPosition: IndexPath, tableViewPosition: Int) {
         return model.getTableViewScrollPosition(date: date)
+    }
+}
+
+
+
+// MARK: - Notification関連
+extension CalendarViewPresenter {
+    func setUpdated(object: Any?) {
+        return model.setUpdated(object: object)
+    }
+    
+    func getUpdated() -> Date? {
+        return model.updated
     }
 }
 
