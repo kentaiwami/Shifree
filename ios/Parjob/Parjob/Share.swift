@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+/// 通知をタップしてアプリを起動した場合に、AppDelegateと他ViewController間で値を共有するのに使用
 class MyApplication {
     static let shared = MyApplication()
     private init() {}
