@@ -272,10 +272,18 @@ extension CalendarViewController {
         let updatedFromObserver = presenter.getUpdated()
         let updatedFromUserOption = MyApplication.shared.updated
         
+        // 起動中に通知タップ
         if updatedFromObserver != nil {
             scrollTableViewToUserSection(date: updatedFromObserver!)
+            
+        // 通知タップでアプリ起動
         }else if updatedFromUserOption != nil {
             scrollTableViewToUserSection(date: updatedFromUserOption!)
+            
+        // 通常の画面更新
+        }else {
+            scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: calendar.selectedDate!))
+            scrollTableViewToUserSection(date: calendar.selectedDate!)
         }
         
         presenter.setUpdated(object: nil)
@@ -369,8 +377,8 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         
         setUpTodayColor(didSelectedDate: date)
         presenter.setCurrentDate(date: date)
-        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: date))
         
+        scrollScrollViewToPage(page: presenter.getScrollViewPosition(target: date))
         scrollTableViewToUserSection(date: date)
     }
     
