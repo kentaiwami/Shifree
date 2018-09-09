@@ -282,12 +282,13 @@ def get_all():
 
     results = []
     for table in tables:
-        results.append({
-            'table_id': table.id,
-            'title': table.title,
-            'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
-        })
+        for _ in range(0, 20):
+            results.append({
+                'table_id': table.id,
+                'title': table.title,
+                'origin': table.origin_path,
+                'thumbnail': table.thumbnail_path
+            })
 
     session.close()
     return jsonify({'results': results}), 200

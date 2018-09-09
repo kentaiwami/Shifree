@@ -26,6 +26,14 @@ class FileBrowseTopViewPresenter {
     func getTable() -> [FileTable] {
         return model.fileTableList
     }
+    
+    func getPrevViewController() -> Any.Type {
+        return model.prevViewController
+    }
+    
+    func setPrevViewController(value: Any.Type) {
+        model.setPrevViewController(value: value)
+    }
 }
 
 extension FileBrowseTopViewPresenter: FileBrowseTopViewModelDelegate {

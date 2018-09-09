@@ -91,4 +91,17 @@ extension UIScrollView {
     var currentPage: Int {
         return Int((self.contentOffset.x + (0.5 * self.bounds.width)) / self.bounds.width)
     }
+    
+    public enum ScrollDirection {
+        case top
+    }
+    
+    public func scroll(to direction: ScrollDirection, animated: Bool) {
+        let offset: CGPoint
+        switch direction {
+        case .top:
+            offset = CGPoint(x: contentOffset.x, y: -adjustedContentInset.top)
+        }
+        setContentOffset(offset, animated: animated)
+    }
 }

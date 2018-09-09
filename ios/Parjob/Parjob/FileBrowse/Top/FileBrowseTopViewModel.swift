@@ -17,6 +17,7 @@ class FileBrowseTopViewModel {
     weak var delegate: FileBrowseTopViewModelDelegate?
     private let api = API()
     private(set) var fileTableList: [FileTable] = []
+    fileprivate(set) var prevViewController: Any.Type = FileBrowseTopViewController.self
     
     func setFileTable() {
         fileTableList = []
@@ -34,5 +35,9 @@ class FileBrowseTopViewModel {
             let title = "Error(" + String(tmp_err.code) + ")"
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
+    }
+    
+    func setPrevViewController(value: Any.Type) {
+        prevViewController = value
     }
 }

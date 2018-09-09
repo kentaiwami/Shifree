@@ -32,6 +32,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         self.tabBarController?.navigationItem.title = "ファイル"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
+        self.tabBarController?.delegate = self
         
         collectionView.removeFromSuperview()
         presenter.setFileTable()
@@ -101,6 +102,17 @@ extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presentDetailView(tableID: presenter.getTable()[indexPath.row].id)        
+    }
+}
+
+
+extension FileBrowseTopViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if type(of: viewController) == FileBrowseTopViewController.self && type(of: viewController) == presenter.getPrevViewController() {
+            collectionView.scroll(to: .top, animated: true)
+        }
+        
+        presenter.setPrevViewController(value: FileBrowseTopViewController.self)
     }
 }
 
