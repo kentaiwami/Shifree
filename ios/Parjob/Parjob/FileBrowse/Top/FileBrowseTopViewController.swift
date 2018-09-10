@@ -10,6 +10,7 @@ import UIKit
 
 protocol FileBrowseTopViewInterface: class {
     func initializeUI()
+    func updateView()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -18,13 +19,16 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     
     fileprivate var presenter: FileBrowseTopViewPresenter!
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
+    var refreshControll = UIRefreshControl()
     let cellId = "itemCell"
+    var isFirstTime: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = FileBrowseTopViewPresenter(view: self)
         addObserver()
+        presenter.setFileTable(isUpdate: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,9 +36,13 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         self.tabBarController?.navigationItem.title = "ファイル"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
+        self.tabBarController?.delegate = self
         
-        collectionView.removeFromSuperview()
-        presenter.setFileTable()
+        if isFirstTime {
+            isFirstTime = false
+        }else {
+            presenter.setFileTable(isUpdate: true)
+        }
     }
     
     fileprivate func initializeCollectionView() {
@@ -52,19 +60,24 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         collectionView.autoresizingMask = UIViewAutoresizing(rawValue: UIViewAutoresizing.RawValue(UInt8(UIViewAutoresizing.flexibleHeight.rawValue) | UInt8(UIViewAutoresizing.flexibleWidth.rawValue)))
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
+        
+        collectionView.refreshControl = refreshControll
+        refreshControll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
+        
         self.view.addSubview(collectionView)
         
-        if presenter.getTable().count == 0 {
-            collectionView.backgroundView?.isHidden = false
-        }else {
-            collectionView.backgroundView?.isHidden = true
-        }
+        collectionView.backgroundView?.isHidden = presenter.isBackgroundViewHidden()
     }
     
     fileprivate func presentDetailView(tableID: Int) {
         let detailVC = FileBrowseDetailViewController()
         detailVC.setTableID(id: tableID)
         self.navigationController!.pushViewController(detailVC, animated: true)
+    }
+    
+    @objc fileprivate func refresh(sender: UIRefreshControl) {
+        refreshControll.beginRefreshing()
+        presenter.setFileTable(isUpdate: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,6 +93,13 @@ extension FileBrowseTopViewController {
         initializeCollectionView()
     }
     
+    func updateView() {
+        collectionView.reloadData()
+        collectionView.backgroundView?.isHidden = presenter.isBackgroundViewHidden()
+        
+        refreshControll.endRefreshing()
+    }
+    
     func showErrorAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
     }
@@ -91,20 +111,37 @@ extension FileBrowseTopViewController {
 extension FileBrowseTopViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FileBrowseCell", for: indexPath) as! FileBrowseCell
-        cell.setAll(title: presenter.getTable()[indexPath.row].title, url: presenter.getTable()[indexPath.row].thumbnail)
+        let fileTable = presenter.getTable(index: indexPath.row)
+        
+        cell.setAll(title: fileTable.title, url: fileTable.thumbnail)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.getTable().count
+        return presenter.getTableCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presentDetailView(tableID: presenter.getTable()[indexPath.row].id)        
+        presentDetailView(tableID: presenter.getTable(index: indexPath.row).id)
     }
 }
 
 
+
+// MARK: - UITabBarControllerDelegate
+extension FileBrowseTopViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if type(of: viewController) == FileBrowseTopViewController.self && type(of: viewController) == presenter.getPrevViewController() {
+            collectionView.scroll(to: .top, animated: true)
+        }
+        
+        presenter.setPrevViewController(value: FileBrowseTopViewController.self)
+    }
+}
+
+
+
+// MARK: - Observer
 extension FileBrowseTopViewController {
     func addObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateView(notification:)), name: .comment, object: nil)

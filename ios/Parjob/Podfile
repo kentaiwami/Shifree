@@ -13,7 +13,7 @@ target 'Parjob' do
   pod 'PromiseKit', '~> 6.0'
   pod 'PopupDialog', '0.5.4'
   pod 'FSCalendar'
-  pod "MKColorPicker"
+  pod 'MKColorPicker'
   pod 'ScrollableGraphView'
   pod 'AlamofireImage', '~> 3.3'
   pod 'NVActivityIndicatorView'
