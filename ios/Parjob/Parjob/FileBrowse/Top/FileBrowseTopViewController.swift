@@ -21,6 +21,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var refreshControll = UIRefreshControl()
     let cellId = "itemCell"
+    var isFirstTime: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,12 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
         self.tabBarController?.delegate = self
+        
+        if isFirstTime {
+            isFirstTime = false
+        }else {
+            presenter.setFileTable(isUpdate: true)
+        }
     }
     
     fileprivate func initializeCollectionView() {
