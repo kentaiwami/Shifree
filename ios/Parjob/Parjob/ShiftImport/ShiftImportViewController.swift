@@ -120,8 +120,8 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.title = "行間の値"
             $0.value = presenter.getThreshold().sameLineTH
             $0.tag = "sameLine"
-            $0.maximumValue = 10.0
-            $0.minimumValue = 0.0
+            $0.cell.slider.maximumValue = 10.0
+            $0.cell.slider.minimumValue = 0.0
         }
         .cellSetup({ (cell, row) in
             cell.detailTextLabel?.textColor = UIColor.black
@@ -132,8 +132,8 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.title = "ユーザ名の距離"
             $0.value = presenter.getThreshold().usernameTH
             $0.tag = "username"
-            $0.maximumValue = 10.0
-            $0.minimumValue = 0.0
+            $0.cell.slider.maximumValue = 10.0
+            $0.cell.slider.minimumValue = 0.0
         }
         .cellSetup({ (cell, row) in
             cell.detailTextLabel?.textColor = UIColor.black
@@ -144,8 +144,8 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.title = "セル結合"
             $0.value = presenter.getThreshold().joinTH
             $0.tag = "join"
-            $0.maximumValue = 10.0
-            $0.minimumValue = 0.0
+            $0.cell.slider.maximumValue = 10.0
+            $0.cell.slider.minimumValue = 0.0
         }
         .cellSetup({ (cell, row) in
             cell.detailTextLabel?.textColor = UIColor.black
@@ -156,8 +156,8 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
             $0.title = "シフト"
             $0.value = presenter.getThreshold().dayShiftTH
             $0.tag = "dayShift"
-            $0.maximumValue = 10.0
-            $0.minimumValue = 0.0
+            $0.cell.slider.maximumValue = 10.0
+            $0.cell.slider.minimumValue = 0.0
         }
         .cellSetup({ (cell, row) in
             cell.detailTextLabel?.textColor = UIColor.black

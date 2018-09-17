@@ -85,7 +85,7 @@ func getMatchStrings(targetString: String, pattern: String) -> [String] {
         let matches = regex.matches(in: targetString, options: [], range: targetStringRange)
         
         for match in matches {            
-            let range = match.rangeAt(0)
+            let range = match.range(at: 0)
             let result = (targetString as NSString).substring(with: range)
             
             matchStrings.append(result)
