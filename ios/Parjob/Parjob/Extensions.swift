@@ -60,7 +60,7 @@ extension String {
         let results = regex.matches(in: self, options: [], range: targetStringRange)
         for i in 0 ..< results.count {
             for j in 0 ..< results[i].numberOfRanges {
-                let range = results[i].rangeAt(j)
+                let range = results[i].range(at: j)
                 matches.append((self as NSString).substring(with: range))
             }
         }
