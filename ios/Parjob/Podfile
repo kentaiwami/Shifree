@@ -7,10 +7,7 @@ target 'Parjob' do
 
   
   
-  pod 'AlamofireImage', '~> 3.3'
-  
-  
-
+pod 'AlamofireImage', '~> 3.3'
 pod 'Alamofire'
 pod 'PromiseKit'
 pod 'KeychainAccess'
