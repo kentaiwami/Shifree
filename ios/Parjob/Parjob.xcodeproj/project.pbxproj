@@ -981,6 +981,7 @@
 				CODE_SIGN_ENTITLEMENTS = Parjob/Parjob.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TLVYAZUQZL;
 				INFOPLIST_FILE = Parjob/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

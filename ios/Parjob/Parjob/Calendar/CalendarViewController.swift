@@ -147,8 +147,9 @@ extension CalendarViewController {
         self.calendar.right(to: self.view)
         heightConst = self.calendar.height(self.view.frame.height/2)
         
-        // view追加後でないとscopeがnilになるためここでセット
+        // view追加後でないとnilになるためここでセット
         setStartEndDate()
+        setUpTodayColor(didSelectedDate: presenter.getCurrentAndPageDate().currentDate)
     }
     
     fileprivate func initializeScrollView() {
@@ -279,6 +280,7 @@ extension CalendarViewController {
         // 通知タップでアプリ起動
         }else if updatedFromUserOption != nil {
             scrollTableViewToUserSection(date: updatedFromUserOption!)
+            MyApplication.shared.updated = nil
             
         // 通常の画面更新
         }else {
