@@ -75,6 +75,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let passwordVC = PasswordViewController()
         let colorSchemeVC = ColorSchemeViewController()
         let salaryVC = SalaryViewController()
+        let previewVC = PreviewSettingViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
@@ -106,11 +107,17 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return colorSchemeVC}, onDismiss: {colorSchemeVC in colorSchemeVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
-        
-        form +++ Section("")
+            
             <<< ButtonRow() {
                 $0.title = "給与"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return salaryVC}, onDismiss: {salaryVC in salaryVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+        form +++ Section("")
+            <<< ButtonRow() {
+                $0.title = "プレビューの設定"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return previewVC}, onDismiss: {previewVC in previewVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
