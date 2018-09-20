@@ -142,11 +142,13 @@ extension UserListSettingViewController {
             return ("", "")
         }
         
-        let username = usernameMatch[0].substring(to: usernameMatch[0].index(before: usernameMatch[0].endIndex))
-        var role = roleMatch[0].substring(to: roleMatch[0].index(before: roleMatch[0].endIndex))
-        role = role.replacingOccurrences(of:"(", with:"")
-        role = role.replacingOccurrences(of:")", with:"")
-        return (username, role)
+        let username = usernameMatch[0][..<usernameMatch[0].index(before: usernameMatch[0].endIndex)]
+        let role = roleMatch[0][..<roleMatch[0].index(before: roleMatch[0].endIndex)]
+        var roleTmp = String(role)
+        
+        roleTmp = roleTmp.replacingOccurrences(of:"(", with:"")
+        roleTmp = roleTmp.replacingOccurrences(of:")", with:"")
+        return (String(username), roleTmp)
     }
 }
 
