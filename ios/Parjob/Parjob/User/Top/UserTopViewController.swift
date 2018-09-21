@@ -29,6 +29,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         self.tabBarController?.navigationItem.title = "ユーザ"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
+        self.tabBarController?.delegate = self
         
         // 各設定画面から戻ってきた際、フォーム値を楽に更新するため再描画
         UIView.setAnimationsEnabled(false)
@@ -172,3 +173,6 @@ extension UserTopViewController {
         self.present(nav, animated: true, completion: nil)
     }
 }
+
+
+extension UserTopViewController: UITabBarControllerDelegate {}
