@@ -23,7 +23,7 @@ def get():
     try:
         start = DT.strptime(start, '%Y%m%d')
         end = DT.strptime(end, '%Y%m%d')
-    except ValidationError:
+    except ValueError:
         session.close()
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': '開始日と終了日の指定方法が間違っています', 'param': None})
