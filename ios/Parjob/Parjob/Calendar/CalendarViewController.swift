@@ -546,7 +546,6 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
 extension CalendarViewController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if type(of: viewController) == CalendarViewController.self && type(of: viewController) == presenter.getPrevViewController() {
-            let startEnd = presenter.getStartEndDate()
             let setUpCalendarScrollTable = { () -> Void in
                 self.calendar.select(Date())
                 self.presenter.setCurrentDate(date: self.calendar.selectedDate!)
@@ -562,7 +561,7 @@ extension CalendarViewController: UITabBarControllerDelegate {
              範囲外にある場合は、ページ変更のメソッドが発火するため、フラグを立ててから
             */
             
-            if startEnd.start <= Date() && Date() <= startEnd.end {
+            if presenter.todayInDateRange() {
                 setUpCalendarScrollTable()
             }else {
                 presenter.setIsTapedTabBar(value: true)

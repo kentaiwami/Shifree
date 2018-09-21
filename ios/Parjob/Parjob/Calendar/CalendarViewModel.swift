@@ -320,6 +320,14 @@ extension CalendarViewModel {
             }
         }
     }
+    
+    func todayInDateRange() -> Bool {
+        let start = getFlatDate(date: self.start)
+        let end = getFlatDate(date: self.end)
+        let now = getFlatDate(date: Date())
+        
+        return start <= now && now <= end
+    }
 }
 
 

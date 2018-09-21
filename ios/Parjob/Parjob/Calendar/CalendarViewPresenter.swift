@@ -237,6 +237,10 @@ extension CalendarViewPresenter {
     func getUpdated() -> Date? {
         return model.updated
     }
+    
+    func todayInDateRange() -> Bool {
+        return model.todayInDateRange()
+    }
 }
 
 

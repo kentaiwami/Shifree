@@ -99,6 +99,18 @@ func getMatchStrings(targetString: String, pattern: String) -> [String] {
     return []
 }
 
+func getFlatDate(date: Date) -> Date {
+    let calendar = Calendar.current
+    var components = calendar.dateComponents([.year, .month, .day], from: date)
+    components.calendar = calendar
+    components.hour = 0
+    components.minute = 0
+    components.second = 0
+    
+    return components.date!
+}
+
+
 
 class Indicator {
     let indicator = NVActivityIndicatorView(frame: CGRect.zero, type: .circleStrokeSpin, color: UIColor.lightGray)
