@@ -70,6 +70,18 @@ class User(db.Model):
         return '{}({})({})'.format(self.name, self.code, company.name)
 
 
+class Follow(db.Model):
+    __tablename__ = 'follow'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True, default=None)
+    follow_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True, default=None)
+    user = db.relationship("User", foreign_keys=[user_id])
+    follow = db.relationship("User", foreign_keys=[follow_id])
+
+    __table_args__ = (db.UniqueConstraint('user_id', 'follow_id', name='_user_follow_uc'),)
+
+
 class Role(db.Model):
     __tablename__ = 'role'
 
