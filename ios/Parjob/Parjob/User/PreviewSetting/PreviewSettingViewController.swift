@@ -38,25 +38,45 @@ class PreviewSettingViewController: FormViewController, PreviewSettingViewInterf
     
     fileprivate func initializeForm() {
         UIView.setAnimationsEnabled(false)
-            form +++ Section()
-                <<< SwitchRow(){
-                    $0.title = "シフトの取り込み&削除"
-                    $0.tag = "isShiftImport"
-                    $0.value = presenter.getNotification().isShiftImport
-                }
         
-                <<< SwitchRow(){
-                    $0.title = "コメント"
-                    $0.tag = "isComment"
-                    $0.value = presenter.getNotification().isComment
-                }
+        form +++ Section()
+            <<< SwitchRow("switchRowTag"){
+                $0.title = "Show message"
+            }
         
-                <<< SwitchRow(){
-                    $0.title = "シフトの更新"
-                    $0.tag = "isUpdateShift"
-                    $0.value = presenter.getNotification().isUpdateShift
+            <<< TextRow(){ row in
+                row.title = "ユーザ名"
+                row.tag = "username"
+                row.value = "presenter.username"
+                row.add(rule: RuleRequired(msg: "必須項目です"))
+                row.validationOptions = .validatesOnChange
+                row.hidden = Condition.function(["switchRowTag"], { form in
+                    return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
+                })
+            }
+            .onRowValidationChanged {cell, row in
+                let rowIndex = row.indexPath!.row
+                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                    row.section?.remove(at: rowIndex + 1)
                 }
-
+                if !row.isValid {
+                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
+                        let labelRow = LabelRow() {
+                            $0.title = err
+                            $0.cell.height = { 30 }
+                            $0.cell.contentView.backgroundColor = .red
+                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+                            $0.hidden = Condition.function(["switchRowTag"], { form in
+                                return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
+                            })
+                        }.cellUpdate({ (cell, row) in
+                            cell.textLabel?.textColor = .white
+                        })
+                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                    }
+                }
+            }
+        
         UIView.setAnimationsEnabled(true)
     }
     
