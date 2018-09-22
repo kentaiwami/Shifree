@@ -16,10 +16,6 @@ protocol CalendarViewModelDelegate: class {
     func faildAPI(title: String, msg: String)
 }
 
-
-
-
-
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
