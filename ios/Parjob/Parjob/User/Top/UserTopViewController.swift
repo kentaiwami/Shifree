@@ -115,7 +115,6 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
-        form +++ Section("")
             <<< ButtonRow() {
                 $0.title = "フォロー"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return followVC}, onDismiss: {followVC in followVC.navigationController?.popViewController(animated: true)})
