@@ -23,6 +23,7 @@ class CalendarViewModel {
     fileprivate(set) var oneDayShifts: [OneDayShift] = []
     fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     fileprivate(set) var tableViewShifts: [[TableViewShift]] = [[]]
+    fileprivate(set) var isFollowing: Bool = false
     
     fileprivate(set) var currentPageDate: Date = Date()
     fileprivate(set) var currentDate: Date = Date()
@@ -474,6 +475,7 @@ extension CalendarViewModel {
 extension CalendarViewModel {
     fileprivate func getData(json: JSON) -> [OneDayShift] {
         var oneDayShift = [OneDayShift]()
+        isFollowing = json["results"]["is_following"].boolValue
         
         // 1日ごとにループ処理
         json["results"]["shift"].arrayValue.forEach { (shift) in

@@ -153,6 +153,14 @@ extension CalendarViewPresenter {
 }
 
 
+// MARK: - isFollowing
+extension CalendarViewPresenter {
+    func getIsFollowing() -> Bool {
+        return model.isFollowing
+    }
+}
+
+
 
 // MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
 extension CalendarViewPresenter {

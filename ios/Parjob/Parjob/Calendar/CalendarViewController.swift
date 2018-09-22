@@ -530,6 +530,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
         detailVC.setSelectedData(
             memo: presenter.getMemo(),
+            isFollowing: presenter.getIsFollowing(),
             title: currentDateStr + " " + selectedShiftCategoryName,
             indexPath: indexPath,
             tableViewShifts: presenter.getTableViewShift(tag: tableView.tag),

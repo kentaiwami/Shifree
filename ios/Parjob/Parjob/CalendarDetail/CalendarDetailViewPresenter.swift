@@ -20,8 +20,8 @@ class CalendarDetailViewPresenter {
         model.delegate = self
     }
     
-    func setSelectedData(tableViewShift: TableViewShift, memo: String, targetUserShift: TargetUserShift) {
-        model.setSelectedData(tableViewShift: tableViewShift, memo: memo, targetUserShift: targetUserShift)
+    func setSelectedData(tableViewShift: TableViewShift, memo: String, isFollowing: Bool, targetUserShift: TargetUserShift) {
+        model.setSelectedData(tableViewShift: tableViewShift, memo: memo, isFollowing: isFollowing, targetUserShift: targetUserShift)
     }
     
     func isAdmin() -> Bool {
@@ -30,6 +30,10 @@ class CalendarDetailViewPresenter {
     
     func isTargetInclude() -> Bool {
         return model.isTargetInclude()
+    }
+    
+    func isFollowing() -> Bool {
+        return model.isFollowing
     }
     
     func getUsersShift() -> [UserShift] {
