@@ -71,7 +71,11 @@ def get():
 
             for shift in shift_category_group:
                 if shift[3].code == current_user.code:
-                    color_scheme = session.query(ColorScheme).filter(ColorScheme.user_id == shift[3].id, ColorScheme.shift_category_id == shift[2].id).one_or_none()
+                    color_scheme = session.query(ColorScheme)\
+                        .filter(ColorScheme.user_id == shift[3].id,
+                                ColorScheme.shift_category_id == shift[2].id
+                                )\
+                        .one_or_none()
                     hex = color_scheme.hex if color_scheme is  not None else None
 
                     # フォロー設定が有効な場合は他の人のメモが表示されるのでNoneを返す
