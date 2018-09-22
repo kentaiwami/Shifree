@@ -252,6 +252,8 @@ extension CalendarViewController {
     }
     
     func updateView() {
+        self.tabBarController?.navigationItem.title = presenter.getTitle()
+        
         presenter.setTableViewShift()
         
         self.calendar.reloadData()

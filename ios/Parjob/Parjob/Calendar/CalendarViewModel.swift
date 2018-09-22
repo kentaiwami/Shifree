@@ -232,6 +232,14 @@ extension CalendarViewModel {
 
 
 
+// MARK: - Tabbarのタイトル
+extension CalendarViewModel {
+    func getTitle() -> String {
+        return isFollowing ? "カレンダー（フォロー中）":"カレンダー"
+    }
+}
+
+
 // MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
 extension CalendarViewModel {
     func setPrevViewController(value: Any.Type) {

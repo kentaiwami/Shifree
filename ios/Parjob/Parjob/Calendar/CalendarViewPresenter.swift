@@ -158,6 +158,10 @@ extension CalendarViewPresenter {
     func getIsFollowing() -> Bool {
         return model.isFollowing
     }
+    
+    func getTitle() -> String {
+        return model.getTitle()
+    }
 }
 
 
