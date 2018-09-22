@@ -28,7 +28,7 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
         super.viewDidLoad()
         
         presenter = FollowSettingViewPresenter(view: self)
-        presenter.setNotification()
+        presenter.setFollowUserAndComapnyUsers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,16 +41,19 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
         
         form +++ Section()
             <<< SwitchRow("switchRowTag"){
-                $0.title = "Show message"
+                $0.title = "フォローを有効化"
+                $0.value = presenter.isFollowing()
             }
-        
-            <<< TextRow(){ row in
-                row.title = "ユーザ名"
-                row.tag = "username"
-                row.value = "presenter.username"
-                row.add(rule: RuleRequired(msg: "必須項目です"))
-                row.validationOptions = .validatesOnChange
-                row.hidden = Condition.function(["switchRowTag"], { form in
+            
+            <<< PickerInputRow<String>(""){
+                $0.title = "ユーザ名"
+                $0.options = presenter.getFollowUserAndComapnyUsers().companyUsers
+                $0.value = presenter.getFollowingUsername()
+                $0.add(rule: RuleRequired(msg: "必須項目です"))
+                $0.validationOptions = .validatesOnChange
+                $0.tag = "username"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
+                $0.hidden = Condition.function(["switchRowTag"], { form in
                     return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
                 })
             }
@@ -86,7 +89,7 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
     }
     
     @objc private func tapEditDoneButton() {
-        presenter.updateNotification()
+        presenter.updateFollow()
     }
     
     override func didReceiveMemoryWarning() {

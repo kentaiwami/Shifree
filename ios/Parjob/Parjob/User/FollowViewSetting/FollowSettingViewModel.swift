@@ -17,16 +17,13 @@ protocol FollowSettingViewModelDelegate: class {
 class FollowSettingViewModel {
     weak var delegate: FollowSettingViewModelDelegate?
     private let api = API()
-    private(set) var isShiftImport = true
-    private(set) var isComment = true
-    private(set) var isUpdateShift = true
+    private(set) var companyUsers: [String] = []
+    private(set) var followUser: String = ""
     
-    func setNotification() {
-        api.getNotification().done { (json) in
-            self.isShiftImport = json["is_shift_import"].boolValue
-            self.isComment = json["is_comment"].boolValue
-            self.isUpdateShift = json["is_update_shift"].boolValue
-            
+    func setFollowUserAndCompanyUsers() {
+        api.getFollowUserAndCompanyUsers().done { (json) in
+            self.companyUsers = json["results"]["users"].arrayValue.map({$0.stringValue})
+            self.followUser = json["results"]["follow"].stringValue
             self.delegate?.initializeUI()
         }
         .catch { (err) in
@@ -36,12 +33,22 @@ class FollowSettingViewModel {
         }
     }
     
-    func updateNotification(formValue: [String:Any?]) {
-        let isShiftImport = formValue["isShiftImport"] as! Bool
-        let isComment = formValue["isComment"] as! Bool
-        let isUpdateShift = formValue["isUpdateShift"] as! Bool
+    func isFollowing() -> Bool {
+        return followUser.count == 0 ? false:true
+    }
+    
+    func getFollowingUsername() -> String? {
+        return followUser.count == 0 ? companyUsers.first:followUser
+    }
+    
+    func updateFollow(formValue: [String:Any?]) {
+        var requestUsername = ""
         
-        api.updateNotification(isShiftImport: isShiftImport, isComment: isComment, isUpdateShift: isUpdateShift).done { (json) in
+        if let tmpUsername = formValue["username"] as? String {
+            requestUsername = tmpUsername
+        }
+        
+        api.updateFollow(username: requestUsername).done { (json) in
             self.delegate?.successUpdate()
         }
         .catch { (err) in

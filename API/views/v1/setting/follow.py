@@ -66,7 +66,7 @@ def create_or_update_or_delete():
 @app.route('/api/v1/setting/follow', methods=['GET'])
 @api_basic_auth.login_required
 def get():
-    results = []
+    users = []
     access_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     company_users = session.query(User).filter(
@@ -75,7 +75,17 @@ def get():
     ).all()
 
     for user in company_users:
-        results.append(user.name)
+        users.append(user.name)
+
+    follow = session.query(Follow, User)\
+        .join(User, Follow.follow_id == User.id)\
+        .filter(Follow.user_id == access_user.id)\
+        .one_or_none()
+
+    if follow:
+        follow_name = follow[1].name
+    else:
+        follow_name = None
 
     session.close()
-    return jsonify({'results': results}), 200
+    return jsonify({'results': {'users': users, 'follow': follow_name}}), 200

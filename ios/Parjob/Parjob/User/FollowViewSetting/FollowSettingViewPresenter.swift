@@ -19,17 +19,25 @@ class FollowSettingViewPresenter {
         model.delegate = self
     }
     
-    func setNotification() {
-        model.setNotification()
+    func setFollowUserAndComapnyUsers() {
+        model.setFollowUserAndCompanyUsers()
     }
     
-    func getNotification() -> (isShiftImport: Bool, isComment: Bool, isUpdateShift: Bool) {
-        return (model.isShiftImport, model.isComment, model.isUpdateShift)
+    func getFollowUserAndComapnyUsers() -> (companyUsers: [String], followUser: String) {
+        return (model.companyUsers, model.followUser)
     }
     
-    func updateNotification() {
+    func isFollowing() -> Bool {
+        return model.isFollowing()
+    }
+    
+    func getFollowingUsername() -> String? {
+        return model.getFollowingUsername()
+    }
+    
+    func updateFollow() {
         guard let formValue = view?.formValue else {return}
-        model.updateNotification(formValue: formValue)
+        model.updateFollow(formValue: formValue)
     }
 }
 
