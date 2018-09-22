@@ -33,7 +33,7 @@ class ColorSchemViewPresenter {
         model.setShiftCategoryColor(color: color, indexPath: indexPath)
     }
     
-    func updateShiftCategory() {
+    func updateShiftCategoryColor() {
         model.updateShiftCategoryColor()
     }
     
