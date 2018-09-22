@@ -1,5 +1,5 @@
 //
-//  PreviewSettingViewController.swift
+//  FollowSettingViewController.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/01.
@@ -9,7 +9,7 @@
 import UIKit
 import Eureka
 
-protocol PreviewSettingViewInterface: class {
+protocol FollowSettingViewInterface: class {
     var formValue: [String:Any?] { get }
     
     func showErrorAlert(title: String, msg: String)
@@ -18,8 +18,8 @@ protocol PreviewSettingViewInterface: class {
 }
 
 
-class PreviewSettingViewController: FormViewController, PreviewSettingViewInterface {
-    fileprivate var presenter: PreviewSettingViewPresenter!
+class FollowSettingViewController: FormViewController, FollowSettingViewInterface {
+    fileprivate var presenter: FollowSettingViewPresenter!
     var formValue: [String : Any?] {
         return form.values()
     }
@@ -27,13 +27,13 @@ class PreviewSettingViewController: FormViewController, PreviewSettingViewInterf
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter = PreviewSettingViewPresenter(view: self)
+        presenter = FollowSettingViewPresenter(view: self)
         presenter.setNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "通知の設定"
+        self.navigationItem.title = "フォローの設定"
     }
     
     fileprivate func initializeForm() {
@@ -96,7 +96,7 @@ class PreviewSettingViewController: FormViewController, PreviewSettingViewInterf
 
 
 // MARK: - Presenterから呼び出される関数
-extension PreviewSettingViewController {
+extension FollowSettingViewController {
     func initializeUI() {
         initializeForm()
         initializeNavigationItem()

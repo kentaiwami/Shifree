@@ -1,5 +1,5 @@
 //
-//  PreviewSettingViewModel.swift
+//  FollowSettingViewModel.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/01.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-protocol PreviewSettingViewModelDelegate: class {
+protocol FollowSettingViewModelDelegate: class {
     func initializeUI()
     func successUpdate()
     func faildAPI(title: String, msg: String)
 }
 
-class PreviewSettingViewModel {
-    weak var delegate: PreviewSettingViewModelDelegate?
+class FollowSettingViewModel {
+    weak var delegate: FollowSettingViewModelDelegate?
     private let api = API()
     private(set) var isShiftImport = true
     private(set) var isComment = true

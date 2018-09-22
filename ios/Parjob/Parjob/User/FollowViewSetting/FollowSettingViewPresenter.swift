@@ -1,5 +1,5 @@
 //
-//  PreviewSettingViewPresenter.swift
+//  FollowSettingViewPresenter.swift
 //  Parjob
 //
 //  Created by 岩見建汰 on 2018/07/01.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-class PreviewSettingViewPresenter {
+class FollowSettingViewPresenter {
     
-    weak var view: PreviewSettingViewInterface?
-    let model: PreviewSettingViewModel
+    weak var view: FollowSettingViewInterface?
+    let model: FollowSettingViewModel
     
-    init(view: PreviewSettingViewInterface) {
+    init(view: FollowSettingViewInterface) {
         self.view = view
-        self.model = PreviewSettingViewModel()
+        self.model = FollowSettingViewModel()
         model.delegate = self
     }
     
@@ -33,7 +33,7 @@ class PreviewSettingViewPresenter {
     }
 }
 
-extension PreviewSettingViewPresenter: PreviewSettingViewModelDelegate {
+extension FollowSettingViewPresenter: FollowSettingViewModelDelegate {
     func successUpdate() {
         view?.successUpdate()
     }

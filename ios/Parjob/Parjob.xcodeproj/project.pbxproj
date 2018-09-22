@@ -77,9 +77,9 @@
 		37A69B3620E97F80004E8C66 /* WageViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3520E97F80004E8C66 /* WageViewEntity.swift */; };
 		37A69B3920E986F6004E8C66 /* PasswordViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3720E986F5004E8C66 /* PasswordViewPresenter.swift */; };
 		37A69B3A20E986F6004E8C66 /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A69B3820E986F6004E8C66 /* PasswordViewModel.swift */; };
-		37C05D332154049E00CFCCEC /* PreviewSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C05D302154049E00CFCCEC /* PreviewSettingViewController.swift */; };
-		37C05D342154049E00CFCCEC /* PreviewSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C05D312154049E00CFCCEC /* PreviewSettingViewModel.swift */; };
-		37C05D352154049E00CFCCEC /* PreviewSettingViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C05D322154049E00CFCCEC /* PreviewSettingViewPresenter.swift */; };
+		37C05D332154049E00CFCCEC /* FollowSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C05D302154049E00CFCCEC /* FollowSettingViewController.swift */; };
+		37C05D342154049E00CFCCEC /* FollowSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C05D312154049E00CFCCEC /* FollowSettingViewModel.swift */; };
+		37C05D352154049E00CFCCEC /* FollowSettingViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C05D322154049E00CFCCEC /* FollowSettingViewPresenter.swift */; };
 		37C0CCDC20F20B54003D650F /* AddCommentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C0CCD920F20B54003D650F /* AddCommentViewPresenter.swift */; };
 		37C0CCDD20F20B54003D650F /* AddCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C0CCDA20F20B54003D650F /* AddCommentViewModel.swift */; };
 		37C0CCDE20F20B54003D650F /* AddCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C0CCDB20F20B54003D650F /* AddCommentViewController.swift */; };
@@ -182,9 +182,9 @@
 		37A69B3520E97F80004E8C66 /* WageViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WageViewEntity.swift; sourceTree = "<group>"; };
 		37A69B3720E986F5004E8C66 /* PasswordViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordViewPresenter.swift; sourceTree = "<group>"; };
 		37A69B3820E986F6004E8C66 /* PasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
-		37C05D302154049E00CFCCEC /* PreviewSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSettingViewController.swift; sourceTree = "<group>"; };
-		37C05D312154049E00CFCCEC /* PreviewSettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSettingViewModel.swift; sourceTree = "<group>"; };
-		37C05D322154049E00CFCCEC /* PreviewSettingViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSettingViewPresenter.swift; sourceTree = "<group>"; };
+		37C05D302154049E00CFCCEC /* FollowSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowSettingViewController.swift; sourceTree = "<group>"; };
+		37C05D312154049E00CFCCEC /* FollowSettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowSettingViewModel.swift; sourceTree = "<group>"; };
+		37C05D322154049E00CFCCEC /* FollowSettingViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowSettingViewPresenter.swift; sourceTree = "<group>"; };
 		37C0CCD920F20B54003D650F /* AddCommentViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewPresenter.swift; sourceTree = "<group>"; };
 		37C0CCDA20F20B54003D650F /* AddCommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewModel.swift; sourceTree = "<group>"; };
 		37C0CCDB20F20B54003D650F /* AddCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentViewController.swift; sourceTree = "<group>"; };
@@ -368,7 +368,7 @@
 				37A69B2120E8A0B5004E8C66 /* PasswordSetting */,
 				37A69B2420E8A0CC004E8C66 /* ColorSchemeSetting */,
 				37A69B2720E8A155004E8C66 /* Salary */,
-				37C05D2F2154041A00CFCCEC /* PreviewSetting */,
+				37C05D2F2154041A00CFCCEC /* FollowViewSetting */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -458,14 +458,14 @@
 			path = Salary;
 			sourceTree = "<group>";
 		};
-		37C05D2F2154041A00CFCCEC /* PreviewSetting */ = {
+		37C05D2F2154041A00CFCCEC /* FollowViewSetting */ = {
 			isa = PBXGroup;
 			children = (
-				37C05D302154049E00CFCCEC /* PreviewSettingViewController.swift */,
-				37C05D322154049E00CFCCEC /* PreviewSettingViewPresenter.swift */,
-				37C05D312154049E00CFCCEC /* PreviewSettingViewModel.swift */,
+				37C05D302154049E00CFCCEC /* FollowSettingViewController.swift */,
+				37C05D322154049E00CFCCEC /* FollowSettingViewPresenter.swift */,
+				37C05D312154049E00CFCCEC /* FollowSettingViewModel.swift */,
 			);
-			path = PreviewSetting;
+			path = FollowViewSetting;
 			sourceTree = "<group>";
 		};
 		37C0CCD820F20B33003D650F /* AddComment */ = {
@@ -764,7 +764,7 @@
 				370A2FFB212DB82600B8082F /* UpdateTitleViewModel.swift in Sources */,
 				3765CD6220F0D9140031D235 /* FileBrowseTopViewPresenter.swift in Sources */,
 				375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */,
-				37C05D352154049E00CFCCEC /* PreviewSettingViewPresenter.swift in Sources */,
+				37C05D352154049E00CFCCEC /* FollowSettingViewPresenter.swift in Sources */,
 				379032F820F13F7E00C2534F /* FileBrowseDetailViewEntity.swift in Sources */,
 				37DE67B420F6465000DB7EBC /* AddShiftViewPresenter.swift in Sources */,
 				3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */,
@@ -814,7 +814,7 @@
 				37A69B1020E8308C004E8C66 /* UserTopViewPresenter.swift in Sources */,
 				37DE67BB20F7A44700DB7EBC /* NotificationViewController.swift in Sources */,
 				37C0CCDE20F20B54003D650F /* AddCommentViewController.swift in Sources */,
-				37C05D332154049E00CFCCEC /* PreviewSettingViewController.swift in Sources */,
+				37C05D332154049E00CFCCEC /* FollowSettingViewController.swift in Sources */,
 				37DE67A520F4797400DB7EBC /* ShiftImportViewModel.swift in Sources */,
 				378E382C20E9957F003BB689 /* ShiftCategoryViewPresenter.swift in Sources */,
 				375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */,
@@ -848,7 +848,7 @@
 				373F36D820E7CCCD0079B28F /* PopUpColorViewController.swift in Sources */,
 				3769F6FB20EC960600BA8920 /* UserListViewModel.swift in Sources */,
 				37A69B1D20E8A09A004E8C66 /* WageViewController.swift in Sources */,
-				37C05D342154049E00CFCCEC /* PreviewSettingViewModel.swift in Sources */,
+				37C05D342154049E00CFCCEC /* FollowSettingViewModel.swift in Sources */,
 				3700319D20EDDC2800813685 /* ColorCell.swift in Sources */,
 				37A69B2020E8A0B0004E8C66 /* UserNameViewController.swift in Sources */,
 				3790330420F1EA9100C2534F /* EditCommentViewModel.swift in Sources */,
