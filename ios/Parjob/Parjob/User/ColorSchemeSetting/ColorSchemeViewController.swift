@@ -123,7 +123,7 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
 
 
 
-// MARK: - PupOverColorPicker関連
+// MARK: - PopOverColorPicker関連
 extension ColorSchemeViewController{
     func showColorPicker(sendor: UIView) {
         let MKColorPicker = ColorPickerViewController()
