@@ -54,6 +54,15 @@ def get():
         .join(User, Company, Shift, ShiftCategory)\
         .filter(UserShift.date.between(start, end), User.company_id == current_user.company_id).all()
 
+
+    # アクセスしたユーザがカラー設定を全て行なっているかを判定
+    is_all_color_setting = False
+    if follow:
+        shift_category_results = session.query(ShiftCategory).join(Company).filter(ShiftCategory.company_id == access_user.company_id).all()
+        access_user_color_results = session.query(ColorScheme).filter(ColorScheme.user_id == access_user.id).all()
+        is_all_color_setting = True if len(shift_category_results) == len(access_user_color_results) else False
+
+
     # 日付でグルーピング
     user_shift.sort(key=lambda tmp_user_shift: tmp_user_shift[0].date)
     for date, date_group in groupby(user_shift, key=lambda tmp_user_shift: tmp_user_shift[0].date):
@@ -76,17 +85,22 @@ def get():
                                 ColorScheme.shift_category_id == shift[2].id
                                 )\
                         .one_or_none()
-                    hex = color_scheme.hex if color_scheme is  not None else None
 
                     # フォロー設定が有効な場合は他の人のメモが表示されるのでNoneを返す
                     memo = None if follow else shift[0].memo
+
+                    # フォロー設定が有効かつアクセスしたユーザのカラー設定が全て行われている場合はアクセスしたユーザのカラーを返す
+                    if follow and is_all_color_setting:
+                        hex = [color for color in access_user_color_results if color.shift_category_id == shift[2].id][0].hex
+                    else:
+                        hex = color_scheme.hex if color_scheme is not None else None
+
 
                     current_user_shift = {
                         'user': shift[3].name,
                         'shift_id': shift[0].id,
                         'shift_name': shift[1].name,
                         'color': hex
-                        # TODO: accessしたユーザが設定している色にする。無ければフォローユーザが設定している色にする。
                     }
 
                 users_shift.append({
