@@ -2,7 +2,7 @@ from flask import Response, redirect
 from flask_admin.contrib import sqla
 from werkzeug.exceptions import HTTPException
 from flask_admin import Admin
-from model import db, User, Company, Role, Salary, Shift, ShiftCategory, ShiftTable, UserShift, Comment, ColorScheme
+from model import db, User, Company, Role, Salary, Shift, ShiftCategory, ShiftTable, UserShift, Comment, ColorScheme, Follow
 
 
 class AuthException(HTTPException):
@@ -67,6 +67,7 @@ def init_admin(app_obj):
     admin.add_view(CompanyView(Company, db.session))
 
     admin.add_view(UserView(User, db.session, category='User'))
+    admin.add_view(ModelView(Follow, db.session, category='User'))
     admin.add_view(RoleView(Role, db.session, category='User'))
     admin.add_view(ModelView(Salary, db.session, category='User'))
 

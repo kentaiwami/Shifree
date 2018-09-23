@@ -153,6 +153,26 @@ extension CalendarViewPresenter {
 }
 
 
+// MARK: - isFollowing
+extension CalendarViewPresenter {
+    func getIsFollowing() -> Bool {
+        return model.isFollowing
+    }
+    
+    func getTitle() -> String {
+        return model.getTitle()
+    }
+    
+    func setPrevFollowing(value: Bool) {
+        model.setPrevFollowing(value: value)
+    }
+    
+    func getPrevFollowing() -> Bool? {
+        return model.prevFollowing
+    }
+}
+
+
 
 // MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
 extension CalendarViewPresenter {
@@ -236,6 +256,10 @@ extension CalendarViewPresenter {
     
     func getUpdated() -> Date? {
         return model.updated
+    }
+    
+    func todayInDateRange() -> Bool {
+        return model.todayInDateRange()
     }
 }
 

@@ -6,7 +6,7 @@ from model import db
 from config import secret_key
 from views.v1 import auth, login, salary, comment, table, company, token
 from views.v1.shift import usershift, memo, shift
-from views.v1.setting import wage, username, password, user, shiftcategory, color, notification
+from views.v1.setting import wage, username, password, user, shiftcategory, color, notification, follow
 from admin import AuthException, init_admin
 from flask_pushjack import FlaskAPNS
 
@@ -26,7 +26,8 @@ def init_app():
 def add_bp(app_obj):
     modules_define = [
         auth.app, login.app, wage.app, username.app, password.app, user.app, shiftcategory.app, notification.app,
-        color.app, salary.app, usershift.app, table.app, comment.app, memo.app, company.app, shift.app, token.app
+        color.app, salary.app, usershift.app, table.app, comment.app, memo.app, company.app, shift.app, token.app,
+        follow.app
     ]
 
     for bp_app in modules_define:

@@ -20,7 +20,7 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
     
     fileprivate var presenter: SalaryViewPresenter!
     var graphView = ScrollableGraphView()
-    var emptyView = getEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
+    var emptyView = getEmptyView(msg: EmptyMessage.becauseNotFoundShiftFIle.rawValue)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,7 +132,7 @@ extension SalaryViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
 

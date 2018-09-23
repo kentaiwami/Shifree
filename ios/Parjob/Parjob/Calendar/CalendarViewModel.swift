@@ -16,10 +16,6 @@ protocol CalendarViewModelDelegate: class {
     func faildAPI(title: String, msg: String)
 }
 
-
-
-
-
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     fileprivate let api = API()
@@ -27,6 +23,7 @@ class CalendarViewModel {
     fileprivate(set) var oneDayShifts: [OneDayShift] = []
     fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     fileprivate(set) var tableViewShifts: [[TableViewShift]] = [[]]
+    fileprivate(set) var isFollowing: Bool = false
     
     fileprivate(set) var currentPageDate: Date = Date()
     fileprivate(set) var currentDate: Date = Date()
@@ -41,6 +38,7 @@ class CalendarViewModel {
     fileprivate(set) var isSwipe: Bool = false
     fileprivate(set) var isReceiveNotificationSetCurrentPage: Bool = false
     fileprivate(set) var prevViewController: Any.Type = CalendarViewController.self
+    fileprivate(set) var prevFollowing: Bool? = nil
     
     func login() {
         api.login().done { (json) in
@@ -235,6 +233,23 @@ extension CalendarViewModel {
 
 
 
+// MARK: - isFollowing
+extension CalendarViewModel {
+    func setPrevFollowing(value: Bool) {
+        prevFollowing = value
+    }
+}
+
+
+
+// MARK: - Tabbarのタイトル
+extension CalendarViewModel {
+    func getTitle() -> String {
+        return isFollowing ? "カレンダー（フォロー中）":"カレンダー"
+    }
+}
+
+
 // MARK: - prevViewController（タブバーがタップされた際の画面の型を保存。）
 extension CalendarViewModel {
     func setPrevViewController(value: Any.Type) {
@@ -319,6 +334,14 @@ extension CalendarViewModel {
                 return components.date!
             }
         }
+    }
+    
+    func todayInDateRange() -> Bool {
+        let start = getFlatDate(date: self.start)
+        let end = getFlatDate(date: self.end)
+        let now = getFlatDate(date: Date())
+        
+        return start <= now && now <= end
     }
 }
 
@@ -470,6 +493,7 @@ extension CalendarViewModel {
 extension CalendarViewModel {
     fileprivate func getData(json: JSON) -> [OneDayShift] {
         var oneDayShift = [OneDayShift]()
+        isFollowing = json["results"]["is_following"].boolValue
         
         // 1日ごとにループ処理
         json["results"]["shift"].arrayValue.forEach { (shift) in

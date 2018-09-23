@@ -11,7 +11,7 @@ app = Blueprint('setting_color_bp', __name__)
 
 @app.route('/api/v1/setting/color', methods=['PUT'])
 @api_basic_auth.login_required
-def create_or_update():
+def create_or_update_or_delete():
     schema = {'type': 'object',
               'properties':
                   {'schemes': {'type': 'array',
@@ -53,10 +53,14 @@ def create_or_update():
         color = session.query(ColorScheme).filter(ColorScheme.user_id == user.id, ColorScheme.shift_category_id == category.id).one_or_none()
 
         if color is None:
-            new_color = ColorScheme(hex=schema['hex'], user_id=user.id, shift_category_id=category.id)
-            session.add(new_color)
+            if schema['hex'] != '#FFFFFF':
+                new_color = ColorScheme(hex=schema['hex'], user_id=user.id, shift_category_id=category.id)
+                session.add(new_color)
         else:
-            color.hex = schema['hex']
+            if schema['hex'] == '#FFFFFF':
+                session.delete(color)
+            else:
+                color.hex = schema['hex']
 
         session.commit()
 

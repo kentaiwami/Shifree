@@ -28,6 +28,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     fileprivate(set) var memo: String = ""
     fileprivate(set) var tableViewShifts: [TableViewShift] = []
     fileprivate(set) var targetUserShift: TargetUserShift!
+    fileprivate(set) var isFollowing: Bool = false
     
     fileprivate var presenter: CalendarDetailViewPresenter!
     
@@ -45,7 +46,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     
     private func initializePresenter() {
         presenter = CalendarDetailViewPresenter(view: self)
-        presenter.setSelectedData(tableViewShift: tableViewShifts[indexPath.section], memo: memo, targetUserShift: targetUserShift)
+        presenter.setSelectedData(tableViewShift: tableViewShifts[indexPath.section], memo: memo, isFollowing: isFollowing, targetUserShift: targetUserShift)
     }
     
     private func setCompanyShiftNames() {
@@ -65,7 +66,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     fileprivate func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
-        if presenter.isTargetInclude() {
+        if presenter.isTargetInclude() && !presenter.isFollowing() {
             form +++ Section("メモ")
                 <<< TextAreaRow(){
                     $0.title = ""
@@ -113,7 +114,7 @@ extension CalendarDetailViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
     
     func popViewController() {
@@ -124,9 +125,10 @@ extension CalendarDetailViewController {
 
 // MARK: - インスタンス化される際に、呼ぶべき関数
 extension CalendarDetailViewController {
-    func setSelectedData(memo: String, title: String, indexPath: IndexPath, tableViewShifts: [TableViewShift], targetUserShift: TargetUserShift) {
+    func setSelectedData(memo: String, isFollowing: Bool, title: String, indexPath: IndexPath, tableViewShifts: [TableViewShift], targetUserShift: TargetUserShift) {
         navigationTitle = title
         self.memo = memo
+        self.isFollowing = isFollowing
         self.indexPath = indexPath
         self.tableViewShifts = tableViewShifts
         self.targetUserShift = targetUserShift

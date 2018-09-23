@@ -398,6 +398,21 @@ extension API {
 }
 
 
+// MARK: - Setting Follow API
+extension API {
+    func getFollowUserAndCompanyUsers() -> Promise<JSON> {
+        let endPoint = "setting/follow"
+        return getAuth(url: base + version + endPoint)
+    }
+    
+    func updateFollow(username: String) -> Promise<JSON> {
+        let endPoint = "setting/follow"
+        let params = ["username": username] as [String:Any]
+        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+    }
+}
+
+
 
 // MARK: - UserShift Memo API
 extension API {

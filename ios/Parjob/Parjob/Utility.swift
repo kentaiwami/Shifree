@@ -37,15 +37,18 @@ func isHTTPStatus2XX(statusCode: Int?) -> Bool {
     }
 }
 
-func showStandardAlert(title: String, msg: String, vc: UIViewController, completion: (() -> Void)?) {
+func showStandardAlert(title: String, msg: String, vc: UIViewController, isLeft: Bool = false, completion: @escaping (() -> Void) = {}) {
     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
     let popup = PopupDialog(title: title, message: msg) {
-        if let tmpCompletion = completion {
-            tmpCompletion()
-        }
+        completion()
     }
     popup.transitionStyle = .zoomIn
     popup.addButtons([button])
+    
+    if isLeft {
+        PopupDialogDefaultView.appearance().messageTextAlignment = .left
+    }
+    
     vc.present(popup, animated: true, completion: nil)
 }
 
@@ -98,6 +101,18 @@ func getMatchStrings(targetString: String, pattern: String) -> [String] {
     }
     return []
 }
+
+func getFlatDate(date: Date) -> Date {
+    let calendar = Calendar.current
+    var components = calendar.dateComponents([.year, .month, .day], from: date)
+    components.calendar = calendar
+    components.hour = 0
+    components.minute = 0
+    components.second = 0
+    
+    return components.date!
+}
+
 
 
 class Indicator {

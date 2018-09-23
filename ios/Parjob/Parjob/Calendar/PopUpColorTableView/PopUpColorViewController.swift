@@ -50,7 +50,7 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
 // MARK: - Presenterから呼び出される関数
 extension PopUpColorViewController {
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
     
     func updateTableData() {

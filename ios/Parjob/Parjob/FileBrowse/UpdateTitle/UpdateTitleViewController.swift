@@ -53,7 +53,7 @@ class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
             self.formValues = self.form.values()
             presenter.tapEditDoneButton()
         }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self, completion: nil)
+            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
         }
     }
     
@@ -108,7 +108,7 @@ class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
 
 extension UpdateTitleViewController {
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
     
     func popupViewController() {

@@ -70,6 +70,18 @@ class User(db.Model):
         return '{}({})({})'.format(self.name, self.code, company.name)
 
 
+class Follow(db.Model):
+    __tablename__ = 'follow'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True, default=None, unique=True)
+    follow_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True, default=None)
+    user = db.relationship("User", foreign_keys=[user_id])
+    follow = db.relationship("User", foreign_keys=[follow_id])
+
+    __table_args__ = (db.UniqueConstraint('user_id', 'follow_id', name='_user_follow_uc'),)
+
+
 class Role(db.Model):
     __tablename__ = 'role'
 
@@ -200,6 +212,8 @@ class ColorScheme(db.Model):
     shift_category_id = db.Column(db.Integer, db.ForeignKey('shiftcategory.id'), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+
+    __table_args__ = (db.UniqueConstraint('user_id', 'shift_category_id', name='_user_color_scheme_uc'),)
 
     def __repr__(self):
         user = session.query(User).filter(User.id == self.user_id).one_or_none()

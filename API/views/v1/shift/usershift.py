@@ -1,7 +1,7 @@
 import inspect
 from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
-from model import User, UserShift, Shift, ShiftCategory, Company, ColorScheme
+from model import User, UserShift, Shift, ShiftCategory, Company, ColorScheme, Follow
 from database import session
 from basic_auth import api_basic_auth
 from itertools import groupby
@@ -14,7 +14,7 @@ app = Blueprint('user_shift_bp', __name__)
 @app.route('/api/v1/usershift', methods=['GET'])
 @api_basic_auth.login_required
 def get():
-    user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+    access_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
 
     shit_results = []
     start = request.args.get('start', default='', type=str)
@@ -23,7 +23,7 @@ def get():
     try:
         start = DT.strptime(start, '%Y%m%d')
         end = DT.strptime(end, '%Y%m%d')
-    except ValidationError:
+    except ValueError:
         session.close()
         frame = inspect.currentframe()
         abort(400, {'code': frame.f_lineno, 'msg': '開始日と終了日の指定方法が間違っています', 'param': None})
@@ -35,10 +35,36 @@ def get():
     start = start.date()
     end = end.date()
 
+    follow = session.query(Follow, User)\
+        .join(User, Follow.follow_id == User.id)\
+        .filter(Follow.user_id == access_user.id)\
+        .one_or_none()
+
+    # フォロー設定が有効だった場合はシフト抽出に使用するユーザをフォローしているユーザにする
+    if follow:
+        current_user = session.query(User).filter(User.id == follow[1].id).one()
+    else:
+        current_user = access_user
+
+
     '''
     指定範囲のシフト情報を抽出
     '''
-    user_shift = session.query(UserShift, Shift, ShiftCategory, User).join(User, Company, Shift, ShiftCategory).filter(UserShift.date.between(start, end), User.company_id == user.company_id).all()
+    user_shift = session.query(UserShift, Shift, ShiftCategory, User)\
+        .join(User, Company, Shift, ShiftCategory)\
+        .filter(UserShift.date.between(start, end), User.company_id == current_user.company_id).all()
+
+
+    # アクセスしたユーザがカラー設定を全て行なっているかを判定
+    is_all_color_setting = False
+    if follow:
+        shift_category_results = session.query(ShiftCategory).join(Company).filter(ShiftCategory.company_id == access_user.company_id).all()
+        access_user_color_results = session.query(ColorScheme).filter(ColorScheme.user_id == access_user.id).all()
+        is_all_color_setting = True if len(shift_category_results) == len(access_user_color_results) else False
+
+
+    if not(follow and is_all_color_setting):
+        access_user_color_results = session.query(ColorScheme).filter(ColorScheme.user_id == current_user.id).all()
 
     # 日付でグルーピング
     user_shift.sort(key=lambda tmp_user_shift: tmp_user_shift[0].date)
@@ -46,7 +72,7 @@ def get():
 
         tmp_shift_group = []
         memo = None
-        access_user_shift = None
+        current_user_shift = None
 
         # シフトカテゴリのidでグルーピング
         date_group = list(date_group)
@@ -56,14 +82,18 @@ def get():
             users_shift = []
 
             for shift in shift_category_group:
-                if shift[3].code == api_basic_auth.username():
-                    color_scheme = session.query(ColorScheme).filter(ColorScheme.user_id == shift[3].id, ColorScheme.shift_category_id == shift[2].id).one_or_none()
-                    hex = None
-                    if color_scheme is not None:
-                        hex = color_scheme.hex
+                if shift[3].code == current_user.code:
+                    # フォロー設定が有効な場合は他の人のメモが表示されるのでNoneを返す
+                    memo = None if follow else shift[0].memo
 
-                    memo = shift[0].memo
-                    access_user_shift = {
+                    # フォロー設定が有効かつアクセスしたユーザのカラー設定が全て行われている場合はアクセスしたユーザのカラーを返す
+                    color_search_result = [color for color in access_user_color_results if color.shift_category_id == shift[2].id]
+                    if len(color_search_result) == 0:
+                        hex = None
+                    else:
+                        hex = color_search_result[0].hex
+
+                    current_user_shift = {
                         'user': shift[3].name,
                         'shift_id': shift[0].id,
                         'shift_name': shift[1].name,
@@ -81,12 +111,15 @@ def get():
         shit_results.append({
             'date': str(date),
             'shift_group': tmp_shift_group,
-            'user_shift': access_user_shift,
+            'user_shift': current_user_shift,
             'memo': memo
         })
 
     session.close()
-    return jsonify({'results': {'shift': shit_results}}), 200
+    return jsonify({'results': {
+        'shift': shit_results,
+        'is_following': True if follow else False
+    }}), 200
 
 
 

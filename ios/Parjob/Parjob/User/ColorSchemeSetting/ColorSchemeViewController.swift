@@ -64,7 +64,7 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
     }
     
     @objc private func tapEditDoneButton() {
-        presenter.updateShiftCategory()
+        presenter.updateShiftCategoryColor()
     }
 
     override func didReceiveMemoryWarning() {
@@ -92,7 +92,7 @@ extension ColorSchemeViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
 
@@ -123,7 +123,7 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
 
 
 
-// MARK: - PupOverColorPicker関連
+// MARK: - PopOverColorPicker関連
 extension ColorSchemeViewController{
     func showColorPicker(sendor: UIView) {
         let MKColorPicker = ColorPickerViewController()
@@ -131,7 +131,8 @@ extension ColorSchemeViewController{
             self.selectedColor = color.toHexString
             self.presenter.setShiftCategoryColor()
         }
-
+        MKColorPicker.allColors.append(UIColor.hex("#FFFFFF", alpha: 1.0))
+        
         if let popoverController = MKColorPicker.popoverPresentationController{
             popoverController.delegate = MKColorPicker
             popoverController.permittedArrowDirections = .any

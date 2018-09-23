@@ -29,6 +29,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         self.tabBarController?.navigationItem.title = "ユーザ"
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
+        self.tabBarController?.delegate = self
         
         // 各設定画面から戻ってきた際、フォーム値を楽に更新するため再描画
         UIView.setAnimationsEnabled(false)
@@ -75,6 +76,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let passwordVC = PasswordViewController()
         let colorSchemeVC = ColorSchemeViewController()
         let salaryVC = SalaryViewController()
+        let followVC = FollowSettingViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
@@ -106,11 +108,16 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return colorSchemeVC}, onDismiss: {colorSchemeVC in colorSchemeVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
-        
-        form +++ Section("")
+            
             <<< ButtonRow() {
                 $0.title = "給与"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return salaryVC}, onDismiss: {salaryVC in salaryVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "フォロー"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return followVC}, onDismiss: {followVC in followVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
@@ -165,3 +172,6 @@ extension UserTopViewController {
         self.present(nav, animated: true, completion: nil)
     }
 }
+
+
+extension UserTopViewController: UITabBarControllerDelegate {}

@@ -25,11 +25,13 @@ class CalendarDetailViewModel {
     private(set) var tableViewShift: TableViewShift!
     private(set) var targetUserShift: TargetUserShift!
     private(set) var memo: String = ""
+    private(set) var isFollowing: Bool = false
     private(set) var companyShiftNames: [String] = []
     
-    func setSelectedData(tableViewShift: TableViewShift, memo: String, targetUserShift: TargetUserShift) {
+    func setSelectedData(tableViewShift: TableViewShift, memo: String, isFollowing: Bool, targetUserShift: TargetUserShift) {
         self.tableViewShift = tableViewShift
         self.memo = memo
+        self.isFollowing = isFollowing
         self.targetUserShift = targetUserShift
     }
     
