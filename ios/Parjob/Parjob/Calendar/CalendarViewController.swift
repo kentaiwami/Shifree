@@ -252,7 +252,23 @@ extension CalendarViewController {
     }
     
     func updateView() {
+        let isFollowing = presenter.getIsFollowing()
+        let prevFollowing = presenter.getPrevFollowing()
+        
         self.tabBarController?.navigationItem.title = presenter.getTitle()
+        
+        // フォロー状態が変化したときだけアラート表示（初回起動時はprevFollowingがnilのため実行されない）
+        if isFollowing != prevFollowing && prevFollowing != nil {
+            var msg = "フォロー設定が無効化されたため、あなたのシフト情報が強調表示されます。"
+            var isLeft = false
+            if isFollowing {
+                msg = "フォロー設定が有効化されたため、設定したユーザのシフト情報が強調表示されます。\n\n【注意事項】\n・フォローしているユーザのメモはプライバシー保護のため表示されません。\n・自身のメモは編集できません。編集する場合は、フォロー設定を無効化する必要があります。\n・強調表示の色は全て設定済みであればその設定に基づいて表示されますが、一部が設定されていない場合はフォローユーザの設定に基づいて表示されます。"
+                isLeft = true
+            }
+            showStandardAlert(title: "フォロー状態が変更されました", msg: msg, vc: self, isLeft: isLeft, completion: nil)
+        }
+        
+        presenter.setPrevFollowing(value: isFollowing)
         
         presenter.setTableViewShift()
         

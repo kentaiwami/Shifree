@@ -38,6 +38,7 @@ class CalendarViewModel {
     fileprivate(set) var isSwipe: Bool = false
     fileprivate(set) var isReceiveNotificationSetCurrentPage: Bool = false
     fileprivate(set) var prevViewController: Any.Type = CalendarViewController.self
+    fileprivate(set) var prevFollowing: Bool? = nil
     
     func login() {
         api.login().done { (json) in
@@ -227,6 +228,15 @@ extension CalendarViewModel {
 extension CalendarViewModel {
     func setIsReceiveNotificationSetCurrentPage(value: Bool) {
         isReceiveNotificationSetCurrentPage = value
+    }
+}
+
+
+
+// MARK: - isFollowing
+extension CalendarViewModel {
+    func setPrevFollowing(value: Bool) {
+        prevFollowing = value
     }
 }
 

@@ -162,6 +162,14 @@ extension CalendarViewPresenter {
     func getTitle() -> String {
         return model.getTitle()
     }
+    
+    func setPrevFollowing(value: Bool) {
+        model.setPrevFollowing(value: value)
+    }
+    
+    func getPrevFollowing() -> Bool? {
+        return model.prevFollowing
+    }
 }
 
 
