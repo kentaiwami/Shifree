@@ -114,7 +114,7 @@ extension CalendarDetailViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
     
     func popViewController() {

@@ -228,7 +228,7 @@ class WageViewController: FormViewController, WageViewInterface {
         if isValidateFormValue(form: self.form) {
             presenter.updateUserWage()
         }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self, completion: nil)
+            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
         }
     }
 
@@ -283,6 +283,6 @@ extension WageViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self, completion: nil)
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

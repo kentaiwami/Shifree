@@ -37,12 +37,10 @@ func isHTTPStatus2XX(statusCode: Int?) -> Bool {
     }
 }
 
-func showStandardAlert(title: String, msg: String, vc: UIViewController, isLeft: Bool = false, completion: (() -> Void)?) {
+func showStandardAlert(title: String, msg: String, vc: UIViewController, isLeft: Bool = false, completion: @escaping (() -> Void) = {}) {
     let button = DefaultButton(title: "OK", dismissOnTap: true) {}
     let popup = PopupDialog(title: title, message: msg) {
-        if let tmpCompletion = completion {
-            tmpCompletion()
-        }
+        completion()
     }
     popup.transitionStyle = .zoomIn
     popup.addButtons([button])
