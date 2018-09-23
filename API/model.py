@@ -213,6 +213,8 @@ class ColorScheme(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
+    __table_args__ = (db.UniqueConstraint('user_id', 'shift_category_id', name='_user_color_scheme_uc'),)
+
     def __repr__(self):
         user = session.query(User).filter(User.id == self.user_id).one_or_none()
         shiftcategory = session.query(ShiftCategory).filter(ShiftCategory.id == self.shift_category_id).one_or_none()
