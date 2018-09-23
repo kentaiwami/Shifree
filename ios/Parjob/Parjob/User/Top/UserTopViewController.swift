@@ -141,13 +141,13 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     }
     
     private func ResetButtonTapped() {
-        let popUp = PopupDialog(title: "再確認", message: "この端末に保存されている情報を削除し、Sign Up状態に戻します。\n既に登録されているシフト情報は削除されません。")
-        let buttonOK = DefaultButton(title: "OK") {
+        let popUp = PopupDialog(title: "再確認", message: "この端末に保存されている情報を削除し、サインアップ状態に戻します。\n既に登録されているシフト情報は削除されません。")
+        let buttonReset = DestructiveButton(title: "リセット") {
             self.presenter.tapResetButton()
         }
         let buttonCancel = CancelButton(title: "Cancel"){}
         
-        popUp.addButton(buttonOK)
+        popUp.addButton(buttonReset)
         popUp.addButton(buttonCancel)
         present(popUp, animated: true, completion: nil)
     }
