@@ -528,7 +528,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         
         if colorHex.count != 0 {
             if section == presenter.getUserSection(tag: tableView.tag) {
-                bgColor = UIColor.hex(colorHex, alpha: 0.9)
+                bgColor = UIColor.hex(colorHex, alpha: 1.0)
                 txtColor = UIColor.white
             }else {
                 bgColor = UIColor.clear
