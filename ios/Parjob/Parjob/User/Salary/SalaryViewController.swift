@@ -20,7 +20,7 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
     
     fileprivate var presenter: SalaryViewPresenter!
     var graphView = ScrollableGraphView()
-    var emptyView = getEmptyView(msg: EmptyMessage.becauseNotFoundShiftFIle.rawValue)
+    var emptyView = getEmptyView(msg: EmptyMessage.becauseNotFoundShiftInfo.rawValue)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +71,7 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         graphView.backgroundFillColor = UIColor.white
         graphView.dataPointSpacing = 80
         graphView.leftmostPointPadding = 100
-        graphView.shouldAnimateOnStartup = false
+        graphView.shouldAnimateOnStartup = true
         graphView.shouldRangeAlwaysStartAtZero = true
         graphView.direction = .rightToLeft
         graphView.rangeMax = presenter.getSalaryMax()

@@ -51,7 +51,7 @@ def update():
     if len(table_usershift_results) == 0:
         session.close()
         frame = inspect.currentframe()
-        abort(404, {'code': frame.f_lineno, 'msg': '取り込んだシフト情報がありません', 'param': None})
+        abort(404, {'code': frame.f_lineno, 'msg': '該当するシフト情報が見つかりませんでした', 'param': None})
 
     current_table_id = table_usershift_results[0][0].id
     tmp_salary = 0
