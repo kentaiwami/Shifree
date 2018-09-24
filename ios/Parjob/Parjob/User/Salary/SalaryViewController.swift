@@ -28,12 +28,15 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         self.view.backgroundColor = UIColor.white
         
         presenter = SalaryViewPresenter(view: self)
-        presenter.setSalary()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "給与"
+        
+        graphView.removeFromSuperview()
+        emptyView.removeFromSuperview()
+        presenter.setSalary()
     }
     
     fileprivate func initializeGraph() {
