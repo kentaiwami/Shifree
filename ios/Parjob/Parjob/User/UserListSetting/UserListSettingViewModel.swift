@@ -21,6 +21,8 @@ class UserListSettingViewModel {
     private(set) var userList: [User] = []
     
     func setUserList() {
+        userList = []
+        
         api.getUserList().done { (json) in
             json["results"]["users"].arrayValue.forEach({ (userJson) in
                 var tmpUser = User()
