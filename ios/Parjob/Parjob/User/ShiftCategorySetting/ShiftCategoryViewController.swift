@@ -26,12 +26,17 @@ class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterfac
         super.viewDidLoad()
         
         presenter = ShiftCategoryViewPresenter(view: self)
-        presenter.setShiftCategory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "シフトカテゴリの設定"
+        
+        UIView.setAnimationsEnabled(false)
+        self.form.removeAll()
+        UIView.setAnimationsEnabled(true)
+        
+        presenter.setShiftCategory()
     }
     
     fileprivate func initializeForm() {

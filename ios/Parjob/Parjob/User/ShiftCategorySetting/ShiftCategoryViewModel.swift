@@ -25,6 +25,8 @@ class ShiftCategoryViewModel {
     }
     
     func setShiftCategory() {
+        shiftCategory = []
+        
         api.getShiftCategory().done { (json) in
             json["results"].arrayValue.forEach({ (shiftCategoryJson) in
                 var tmp = ShiftCategory()
@@ -58,14 +60,18 @@ class ShiftCategoryViewModel {
             }
         }
         
-        api.updateShiftCategory(adds: adds, updates: updates, deletes: deletes).done { (json) in
-            self.delegate?.success()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
-        }
+        print("delete: \(deletes)")
+        print("adds: \(adds)")
+        print("updates: \(updates)")
+        
+//        api.updateShiftCategory(adds: adds, updates: updates, deletes: deletes).done { (json) in
+//            self.delegate?.success()
+//        }
+//        .catch { (err) in
+//            let tmp_err = err as NSError
+//            let title = "Error(" + String(tmp_err.code) + ")"
+//            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+//        }
     }
 }
 
