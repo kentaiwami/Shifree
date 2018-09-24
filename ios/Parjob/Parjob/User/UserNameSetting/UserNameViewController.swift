@@ -24,12 +24,16 @@ class UserNameViewController: FormViewController, UserNameViewInterface {
         super.viewDidLoad()
         
         presenter = UserNameViewPresenter(view: self)
-        initializeUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "ユーザ名の設定"
+        
+        UIView.setAnimationsEnabled(false)
+        self.form.removeAll()
+        initializeUI()
+        UIView.setAnimationsEnabled(true)
     }
     
     var username: String {

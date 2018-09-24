@@ -17,9 +17,9 @@ protocol NotificationViewModelDelegate: class {
 class NotificationViewModel {
     weak var delegate: NotificationViewModelDelegate?
     private let api = API()
-    private(set) var isShiftImport = true
-    private(set) var isComment = true
-    private(set) var isUpdateShift = true
+    private(set) var isShiftImport = false
+    private(set) var isComment = false
+    private(set) var isUpdateShift = false
     
     func setNotification() {
         api.getNotification().done { (json) in

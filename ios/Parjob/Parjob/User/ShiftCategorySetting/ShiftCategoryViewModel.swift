@@ -24,14 +24,15 @@ class ShiftCategoryViewModel {
         initFormValues = values
     }
     
-    func setShiftCategory() {
+    func setShiftCategory() {        
         api.getShiftCategory().done { (json) in
-            json["results"].arrayValue.forEach({ (shiftCategoryJson) in
+            self.shiftCategory = json["results"].arrayValue.map({shiftCategoryJson in
                 var tmp = ShiftCategory()
                 tmp.id = shiftCategoryJson["category_id"].intValue
                 tmp.name = shiftCategoryJson["category_name"].stringValue
-                self.shiftCategory.append(tmp)
+                return tmp
             })
+            
             self.delegate?.initializeUI()
         }
         .catch { (err) in

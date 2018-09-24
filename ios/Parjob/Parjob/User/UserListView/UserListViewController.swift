@@ -22,12 +22,18 @@ class UserListViewController: FormViewController, UserListViewInterface {
         super.viewDidLoad()
         
         presenter = UserListViewPresenter(view: self)
-        presenter.setUserList()
+//        presenter.setUserList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "ユーザリスト"
+        
+        UIView.setAnimationsEnabled(false)
+        self.form.removeAll()
+        UIView.setAnimationsEnabled(true)
+        
+        presenter.setUserList()
     }
     
     fileprivate func initializeForm() {

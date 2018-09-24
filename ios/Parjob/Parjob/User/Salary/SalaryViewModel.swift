@@ -22,8 +22,8 @@ class SalaryViewModel {
     
     func getSalary() {
         api.getSalary().done { (json) in
-            json["results"].arrayValue.forEach({ (salaryJson) in
-                self.salaryList.append(Salary(pay: salaryJson["pay"].intValue, title: salaryJson["title"].stringValue))
+            self.salaryList = json["results"].arrayValue.map({ salaryJson in
+                return Salary(pay: salaryJson["pay"].intValue, title: salaryJson["title"].stringValue)
             })
             
             self.setSalaryMax()

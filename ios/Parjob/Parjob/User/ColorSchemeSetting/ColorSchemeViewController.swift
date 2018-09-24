@@ -30,13 +30,14 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
         super.viewDidLoad()
         
         presenter = ColorSchemViewPresenter(view: self)
-        presenter.setOriginShiftCategoryColor()
-        initializeUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "シフトカラーの設定"
+        
+        presenter.setOriginShiftCategoryColor()
+        initializeUI()
     }
     
     private func initializeUI() {

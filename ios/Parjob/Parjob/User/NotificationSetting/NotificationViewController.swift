@@ -28,12 +28,17 @@ class NotificationViewController: FormViewController, NotificationViewInterface 
         super.viewDidLoad()
         
         presenter = NotificationViewPresenter(view: self)
-        presenter.setNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "通知の設定"
+        
+        UIView.setAnimationsEnabled(false)
+        self.form.removeAll()
+        UIView.setAnimationsEnabled(true)
+        
+        presenter.setNotification()
     }
     
     fileprivate func initializeForm() {

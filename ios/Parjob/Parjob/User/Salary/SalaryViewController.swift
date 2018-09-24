@@ -28,33 +28,28 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         self.view.backgroundColor = UIColor.white
         
         presenter = SalaryViewPresenter(view: self)
-        presenter.setSalary()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "給与"
+        
+        graphView.removeFromSuperview()
+        emptyView.removeFromSuperview()
+        presenter.setSalary()
     }
     
     fileprivate func initializeGraph() {
         let frame = CGRect.zero
         let graphView = ScrollableGraphView(frame: frame, dataSource: self)
         
-        let linePlot = LinePlot(identifier: "darkLine")
-        linePlot.lineWidth = 1
-        linePlot.lineColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-        linePlot.lineStyle = ScrollableGraphViewLineStyle.smooth
-        linePlot.shouldFill = true
-        linePlot.fillType = ScrollableGraphViewFillType.gradient
-        linePlot.fillGradientType = ScrollableGraphViewGradientType.linear
-        linePlot.fillGradientStartColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-        linePlot.fillGradientEndColor = UIColor.hex(Color.main.rawValue, alpha: 0.7)
-        linePlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
-        
-        let dotPlot = DotPlot(identifier: "darkLineDot")
-        dotPlot.dataPointSize = 2
-        dotPlot.dataPointFillColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
-        dotPlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
+        let barPlot = BarPlot(identifier: "bar")
+        barPlot.barWidth = 25
+        barPlot.barLineWidth = 1
+        barPlot.barLineColor = UIColor.hex(Color.main.rawValue, alpha: 0.7)
+        barPlot.barColor = UIColor.hex(Color.main.rawValue, alpha: 0.5)
+        barPlot.adaptAnimationType = ScrollableGraphViewAnimationType.elastic
+        barPlot.animationDuration = 1.5
         
         var relativePositions: [Double] = []
         if presenter.getSalaryMax() != 0.0 {
@@ -63,25 +58,25 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         
         let referenceLines = ReferenceLines()
         referenceLines.referenceLineLabelFont = UIFont.boldSystemFont(ofSize: 13)
-        referenceLines.referenceLineColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        referenceLines.referenceLineColor = UIColor.hex(Color.main.rawValue, alpha: 0.5)
         referenceLines.referenceLineLabelColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        referenceLines.referenceLineNumberStyle = .currency
         referenceLines.shouldShowLabels = true
         referenceLines.positionType = .relative
         referenceLines.relativePositions = relativePositions
         referenceLines.includeMinMax = true
-        referenceLines.dataPointLabelColor = UIColor.white
+        referenceLines.dataPointLabelColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
         referenceLines.dataPointLabelFont = UIFont.boldSystemFont(ofSize: 12)
         
         graphView.backgroundFillColor = UIColor.white
         graphView.dataPointSpacing = 80
-        graphView.shouldAnimateOnStartup = true
-        graphView.shouldAdaptRange = true
+        graphView.leftmostPointPadding = 100
+        graphView.shouldAnimateOnStartup = false
         graphView.shouldRangeAlwaysStartAtZero = true
         graphView.direction = .rightToLeft
         graphView.rangeMax = presenter.getSalaryMax()
+        graphView.addPlot(plot: barPlot)
         graphView.addReferenceLines(referenceLines: referenceLines)
-        graphView.addPlot(plot: linePlot)
-        graphView.addPlot(plot: dotPlot)
 
         self.graphView = graphView
         self.view.addSubview(graphView)
