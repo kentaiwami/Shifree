@@ -28,12 +28,17 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         super.viewDidLoad()
         
         presenter = ShiftViewPresenter(view: self)
-        presenter.setShiftDetail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "シフトの設定"
+        
+        UIView.setAnimationsEnabled(false)
+        self.form.removeAll()
+        UIView.setAnimationsEnabled(true)
+        
+        presenter.setShiftDetail()
     }
     
     fileprivate func initializeForm() {
