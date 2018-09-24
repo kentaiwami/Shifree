@@ -28,12 +28,17 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
         super.viewDidLoad()
         
         presenter = FollowSettingViewPresenter(view: self)
-        presenter.setFollowUserAndComapnyUsers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "フォローの設定"
+        
+        UIView.setAnimationsEnabled(false)
+        self.form.removeAll()
+        UIView.setAnimationsEnabled(true)
+        
+        presenter.setFollowUserAndComapnyUsers()
     }
     
     fileprivate func initializeForm() {
