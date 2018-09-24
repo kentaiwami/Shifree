@@ -20,15 +20,13 @@ class ColorSchemViewModel {
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     
     func setOriginShiftCategoryColor() {
-        shiftCategoryColors = []
-        
         api.getShiftCategoryColor().done { (json) in
-            json["results"].arrayValue.forEach({ (shiftCategoryColor) in
+            self.shiftCategoryColors = json["results"].arrayValue.map({ shiftCategoryColor in
                 var tmp = ShiftCategoryColor()
                 tmp.name = shiftCategoryColor["category_name"].stringValue
                 tmp.color = shiftCategoryColor["hex"].stringValue
                 tmp.categoryId = shiftCategoryColor["category_id"].intValue
-                self.shiftCategoryColors.append(tmp)
+                return tmp
             })
             
             self.delegate?.successGetShiftCategory()

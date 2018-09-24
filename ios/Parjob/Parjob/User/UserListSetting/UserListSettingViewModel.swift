@@ -21,18 +21,15 @@ class UserListSettingViewModel {
     private(set) var userList: [User] = []
     
     func setUserList() {
-        userList = []
-        
         api.getUserList().done { (json) in
-            json["results"]["users"].arrayValue.forEach({ (userJson) in
+            self.userList = json["results"]["users"].arrayValue.map({userJson in
                 var tmpUser = User()
                 tmpUser.name = userJson["name"].stringValue
                 tmpUser.code = userJson["code"].stringValue
                 tmpUser.order = userJson["order"].intValue
                 tmpUser.role = userJson["role"].stringValue
                 tmpUser.password = userJson["password"].stringValue
-                
-                self.userList.append(tmpUser)
+                return tmpUser
             })
             
             self.delegate?.initializeUI()
