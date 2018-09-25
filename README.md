@@ -1,11 +1,11 @@
 <img src="icon.png" align="right" />
 
-ParJob（パルジョブ）
+Shifree（シフリー）
 ====
 
 ## 概要
 シフト表のPDFファイルを取り込んで、月給の計算やシフトを1日単位で簡単に見ることができます。
-このParjobは、以前に作成した[まさもん](https://github.com/kentaiwami/masamon)を一新したものです。
+このShifreeは、以前に作成した[まさもん](https://github.com/kentaiwami/masamon)を一新したものです。
 
 以前に作成した[まさもん](https://github.com/kentaiwami/masamon)と異なる点
 - UIを一新
@@ -55,4 +55,4 @@ ParJob（パルジョブ）
 <img src="activity.png" align="center" />
 
 ## デモ
-![demo](https://github.com/kentaiwami/parjob/blob/master/demo.gif)
+![demo](https://github.com/kentaiwami/Shifree/blob/master/demo.gif)
