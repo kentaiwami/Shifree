@@ -63,7 +63,7 @@ class ShiftTableView(ModelView):
 
 
 def init_admin(app_obj):
-    admin = Admin(app_obj, name='ParJob', template_mode='bootstrap3')
+    admin = Admin(app_obj, name='Shifree', template_mode='bootstrap3')
     admin.add_view(CompanyView(Company, db.session))
 
     admin.add_view(UserView(User, db.session, category='User'))
