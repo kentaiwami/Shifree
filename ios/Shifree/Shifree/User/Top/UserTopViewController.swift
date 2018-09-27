@@ -72,6 +72,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let colorSchemeVC = ColorSchemeViewController()
         let salaryVC = SalaryViewController()
         let followVC = FollowSettingViewController()
+        let privacyPolicyVC = PrivacyPolicyViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
@@ -117,13 +118,20 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         }
         
         form +++ Section("")
+            <<< ButtonRow() {
+                $0.title = "プライバシーポリシー"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return privacyPolicyVC}, onDismiss: {privacyPolicyVC in privacyPolicyVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+        form +++ Section("")
             <<< ButtonRow(){
                 $0.title = "リセット"
                 $0.baseCell.backgroundColor = UIColor.hex(Color.red.rawValue, alpha: 1.0)
                 $0.baseCell.tintColor = UIColor.white
-                }
-                .onCellSelection {  cell, row in
-                    self.ResetButtonTapped()
+            }
+            .onCellSelection {  cell, row in
+                self.ResetButtonTapped()
         }
     }
     
