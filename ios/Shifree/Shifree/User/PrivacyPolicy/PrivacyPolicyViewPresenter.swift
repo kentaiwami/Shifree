@@ -19,39 +19,9 @@ class PrivacyPolicyViewPresenter {
         model.delegate = self
     }
     
-    func setFollowUserAndComapnyUsers() {
-        model.setFollowUserAndCompanyUsers()
-    }
-    
-    func getFollowUserAndComapnyUsers() -> (companyUsers: [String], followUser: String) {
-        return (model.companyUsers, model.followUser)
-    }
-    
-    func isFollowing() -> Bool {
-        return model.isFollowing()
-    }
-    
-    func getFollowingUsername() -> String? {
-        return model.getFollowingUsername()
-    }
-    
-    func updateFollow() {
-        guard let formValue = view?.formValue else {return}
-        model.updateFollow(formValue: formValue)
+    func getURLRequest() -> URLRequest {
+        return model.urlRequest
     }
 }
 
-extension PrivacyPolicyViewPresenter: PrivacyPolicyViewModelDelegate {
-    func successUpdate() {
-        view?.successUpdate()
-    }
-    
-    func initializeUI() {
-        view?.initializeUI()
-    }
-    
-
-    func faildAPI(title: String, msg: String) {
-        view?.showErrorAlert(title: title, msg: msg)
-    }
-}
+extension PrivacyPolicyViewPresenter: PrivacyPolicyViewModelDelegate {}
