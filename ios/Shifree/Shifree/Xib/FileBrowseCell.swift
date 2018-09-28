@@ -32,7 +32,7 @@ class FileBrowseCell: UICollectionViewCell {
     
     func setAll(title: String, url: String) {
         titleLabel.text = title
-        let encURL = URL(string: GetHost()+url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
+        let encURL = URL(string: GetShifreeHost()+url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
         thumbnailImageView.af_setImage(withURL: encURL)
     }
 }

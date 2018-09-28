@@ -149,7 +149,7 @@ class ContactViewController: FormViewController, ContactViewInterface {
 // MARK: - Presenterから呼び出される関数
 extension ContactViewController {
     func success() {
-        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        showStandardAlert(title: "完了", msg: "お問い合わせありがとうございます", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
