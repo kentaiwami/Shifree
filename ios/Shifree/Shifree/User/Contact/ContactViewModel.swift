@@ -18,21 +18,19 @@ class ContactViewModel {
     weak var delegate: ContactViewModelDelegate?
     private let api = API()
     
-    func getUsername() -> String {
-        let keychain = Keychain()
-        return (try! keychain.get("userName"))!
-    }
-    
-    func updateUserName(newUserName: String) {
-        api.updateUserName(newUserName: newUserName).done { (json) in
-            let keychain = Keychain()
-            try! keychain.set(json["name"].stringValue, key: "userName")
-            self.delegate?.success()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
-        }
+    func postContact(formValues: [String:Any?]) {
+        print("++++++++++++++++++++++++++++")
+        print(formValues)
+        print("++++++++++++++++++++++++++++")
+//        api.updateUserName(newUserName: newUserName).done { (json) in
+//            let keychain = Keychain()
+//            try! keychain.set(json["name"].stringValue, key: "userName")
+//            self.delegate?.success()
+//        }
+//        .catch { (err) in
+//            let tmp_err = err as NSError
+//            let title = "Error(" + String(tmp_err.code) + ")"
+//            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+//        }
     }
 }

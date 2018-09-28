@@ -23,13 +23,9 @@ class ContactViewPresenter {
         model.delegate = self
     }
     
-    var username: String {
-        return model.getUsername()
-    }
-    
-    func updateUserName() {
-        guard let username = view?.username else {return }
-        model.updateUserName(newUserName: username)
+    func postContact() {
+        guard let formValues = view?.formValue else {return}
+        model.postContact(formValues: formValues)
     }
     
 }
