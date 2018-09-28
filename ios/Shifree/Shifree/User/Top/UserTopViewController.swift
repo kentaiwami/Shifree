@@ -73,6 +73,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let salaryVC = SalaryViewController()
         let followVC = FollowSettingViewController()
         let privacyPolicyVC = PrivacyPolicyViewController()
+        let contactVC = ContactViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
@@ -121,6 +122,12 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
             <<< ButtonRow() {
                 $0.title = "プライバシーポリシー"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return privacyPolicyVC}, onDismiss: {privacyPolicyVC in privacyPolicyVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "お問い合わせ"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return contactVC}, onDismiss: {contactVC in contactVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         

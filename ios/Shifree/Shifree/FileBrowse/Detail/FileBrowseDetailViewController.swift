@@ -59,7 +59,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         pdfView.height(self.view.frame.height/2)
         
         let url = presenter.getFileTable().origin
-        let encURL = URL(string: GetHost()+url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
+        let encURL = URL(string: GetShifreeHost()+url.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!)!
         let urlRequest = URLRequest(url: encURL)
         pdfView.loadRequest(urlRequest)
     }

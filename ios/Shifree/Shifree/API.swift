@@ -14,8 +14,10 @@ import KeychainAccess
 
 
 class API {
-    let base = GetHost() + "api/"
-    let version = "v1/"
+    let shifreeBase = GetShifreeHost() + "api/"
+    let portfolioBase = GetPortfolioHost() + "api/"
+    let shifreeAPIVersion = "v1/"
+    let portfolioAPIVersion = "v1/"
     let keychain = Keychain()
     let indicator = Indicator()
     
@@ -118,12 +120,12 @@ class API {
 extension API {
     func signUp(params: [String:Any]) -> Promise<JSON> {
         let endPoint = "auth"
-        return postNoAuth(url: base + version + endPoint, params: params)
+        return postNoAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params)
     }
     
     func login() -> Promise<JSON> {
         let endPoint = "login"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
 }
 
@@ -133,7 +135,7 @@ extension API {
 extension API {
     func getThreshold() -> Promise<JSON> {
         let endPoint = "company"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
 }
 
@@ -144,7 +146,7 @@ extension API {
     func updateComment(text: String, id: Int) -> Promise<JSON> {
         let endPoint = "comment/" + String(id)
         let params = ["text": text] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
     
     func addComment(text: String, id: Int) -> Promise<JSON> {
@@ -153,7 +155,7 @@ extension API {
             "text": text,
             "table_id": id
             ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .post)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .post)
     }
 }
 
@@ -164,7 +166,7 @@ extension API {
     func getUserShift(start: String, end: String) -> Promise<JSON> {
         let endPoint = "usershift"
         let getQuery = "?start=" + start + "&end=" + end
-        return getAuth(url: base + version + endPoint + getQuery)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint + getQuery)
     }
     
     func updateUserShift(shifts: [[String:Any]]) -> Promise<JSON> {
@@ -173,7 +175,7 @@ extension API {
             "shifts": shifts
             ] as [String:Any]
         
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
     
     func updateUnknownUserShift(updates: [[String:Any]]) -> Promise<JSON> {
@@ -181,7 +183,7 @@ extension API {
         let params = [
             "updates": updates
         ] as [String: Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -190,27 +192,27 @@ extension API {
 extension API {
     func getFileTable() -> Promise<JSON> {
         let endPoint = "tables"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func getFileTableDetail(id: Int) -> Promise<JSON> {
         let endPoint = "tables/" + String(id)
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func updateTableTitle(id: Int, params: [String:String]) -> Promise<JSON> {
         let endPoint = "tables/" + String(id)
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
     
     func deleteTable(id: Int) -> Promise<JSON> {
         let endPoint = "tables/" + String(id)
-        return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .delete)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: [:], httpMethod: .delete)
     }
     
     func importShift(number:String, start:String, end:String, title:String, sameLine:String, username:String, join:String, dayShift:String, file:URL) -> Promise<JSON> {
         let endPoint = "table"
-        let url = base + version + endPoint
+        let url = shifreeBase + shifreeAPIVersion + endPoint
         let user = try! keychain.get("userCode")
         let password = try! keychain.get("password")
         
@@ -273,12 +275,12 @@ extension API {
 extension API {
     func getSalary() -> Promise<JSON> {
         let endPoint = "salary"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func reCalcSalary() -> Promise<JSON> {
         let endPoint = "salary"
-        return postPutDeleteAuth(url: base + version + endPoint, params: [:], httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: [:], httpMethod: .put)
     }
 }
 
@@ -287,7 +289,7 @@ extension API {
 extension API {
     func getUserCompanyShiftNames() -> Promise<JSON> {
         let endPoint = "shift"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func updateShift(adds:[[String:Any]], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
@@ -297,7 +299,7 @@ extension API {
             "updates": updates,
             "deletes": deletes
             ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -307,12 +309,12 @@ extension API {
     func updateShiftCategoryColor(schemes:[[String:Any]]) -> Promise<JSON> {
         let endPoint = "setting/color"
         let params = ["schemes": schemes] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
     
     func getShiftCategoryColor() -> Promise<JSON>  {
         let endPoint = "setting/color"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
 }
 
@@ -321,7 +323,7 @@ extension API {
 extension API {
     func getUserList() -> Promise<JSON> {
         let endPoint = "setting/users"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func updateUserList(adds:[[String:Any]], updates:[[String:Any]], deletes:[String]) -> Promise<JSON> {
@@ -331,7 +333,7 @@ extension API {
             "updates": updates,
             "deletes": deletes
             ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -341,7 +343,7 @@ extension API {
 extension API {
     func getShiftCategory() -> Promise<JSON> {
         let endPoint = "setting/shiftcategory"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func updateShiftCategory(adds:[String], updates:[[String:Any]], deletes:[Int]) -> Promise<JSON> {
@@ -351,7 +353,7 @@ extension API {
             "updates": updates,
             "deletes": deletes
             ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -361,7 +363,7 @@ extension API {
     func updatePassword(new: String) -> Promise<JSON> {
         let endPoint = "setting/password"
         let params = ["new_password": new] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -370,7 +372,7 @@ extension API {
 extension API {
     func getUserWage() -> Promise<JSON> {
         let endPoint = "setting/wage"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func updateUserWage(daytimeStart: String, daytimeEnd: String, nightStart: String, nightEnd: String, daytimeWage: Int, nightWage: Int) -> Promise<JSON> {
@@ -383,7 +385,7 @@ extension API {
             "daytime_wage": daytimeWage,
             "night_wage": nightWage
             ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -393,7 +395,7 @@ extension API {
     func updateUserName(newUserName: String) -> Promise<JSON> {
         let endPoint = "setting/username"
         let params = ["username": newUserName] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -402,13 +404,13 @@ extension API {
 extension API {
     func getFollowUserAndCompanyUsers() -> Promise<JSON> {
         let endPoint = "setting/follow"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func updateFollow(username: String) -> Promise<JSON> {
         let endPoint = "setting/follow"
         let params = ["username": username] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -422,7 +424,7 @@ extension API {
             "text": text
             ] as [String:Any]
         
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -432,7 +434,7 @@ extension API {
 extension API {
     func getNotification() -> Promise<JSON> {
         let endPoint = "setting/notification"
-        return getAuth(url: base + version + endPoint)
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
     
     func updateNotification(isShiftImport: Bool, isComment: Bool, isUpdateShift: Bool) -> Promise<JSON> {
@@ -442,7 +444,7 @@ extension API {
             "is_comment": isComment,
             "is_update_shift": isUpdateShift
             ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
     }
 }
 
@@ -454,6 +456,16 @@ extension API {
         let params = [
             "token": token
             ] as [String:Any]
-        return postPutDeleteAuth(url: base + version + endPoint, params: params, httpMethod: .put)
+        return postPutDeleteAuth(url: shifreeBase + shifreeAPIVersion + endPoint, params: params, httpMethod: .put)
+    }
+}
+
+
+
+// MARK: - Contact API
+extension API {
+    func postContact(params: [String:String]) -> Promise<JSON> {
+        let endPoint = "contact/"
+        return postNoAuth(url: portfolioBase + portfolioAPIVersion + endPoint, params: params)
     }
 }

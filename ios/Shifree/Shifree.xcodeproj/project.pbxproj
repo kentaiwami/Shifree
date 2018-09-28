@@ -35,6 +35,9 @@
 		37429339215D3DAD0032066D /* PrivacyPolicyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37429336215D3DAD0032066D /* PrivacyPolicyViewModel.swift */; };
 		3742933A215D3DAD0032066D /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37429337215D3DAD0032066D /* PrivacyPolicyViewController.swift */; };
 		3742933B215D3DAD0032066D /* PrivacyPolicyViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37429338215D3DAD0032066D /* PrivacyPolicyViewPresenter.swift */; };
+		374AA6C7215DE99B00E37686 /* ContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374AA6C4215DE99B00E37686 /* ContactViewModel.swift */; };
+		374AA6C8215DE99B00E37686 /* ContactViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374AA6C5215DE99B00E37686 /* ContactViewPresenter.swift */; };
+		374AA6C9215DE99B00E37686 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374AA6C6215DE99B00E37686 /* ContactViewController.swift */; };
 		3755199F20E50F9B00EC930B /* CalendarDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3755199E20E50F9B00EC930B /* CalendarDetailViewController.swift */; };
 		375519A120E50FB700EC930B /* CalendarDetailViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375519A020E50FB700EC930B /* CalendarDetailViewPresenter.swift */; };
 		375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375519A220E50FC700EC930B /* CalendarDetailViewModel.swift */; };
@@ -143,6 +146,9 @@
 		37429336215D3DAD0032066D /* PrivacyPolicyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewModel.swift; sourceTree = "<group>"; };
 		37429337215D3DAD0032066D /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		37429338215D3DAD0032066D /* PrivacyPolicyViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewPresenter.swift; sourceTree = "<group>"; };
+		374AA6C4215DE99B00E37686 /* ContactViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
+		374AA6C5215DE99B00E37686 /* ContactViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewPresenter.swift; sourceTree = "<group>"; };
+		374AA6C6215DE99B00E37686 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		3755199E20E50F9B00EC930B /* CalendarDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewController.swift; sourceTree = "<group>"; };
 		375519A020E50FB700EC930B /* CalendarDetailViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewPresenter.swift; sourceTree = "<group>"; };
 		375519A220E50FC700EC930B /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
@@ -325,6 +331,16 @@
 			path = PrivacyPolicy;
 			sourceTree = "<group>";
 		};
+		374AA6C3215DE94400E37686 /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				374AA6C6215DE99B00E37686 /* ContactViewController.swift */,
+				374AA6C5215DE99B00E37686 /* ContactViewPresenter.swift */,
+				374AA6C4215DE99B00E37686 /* ContactViewModel.swift */,
+			);
+			path = Contact;
+			sourceTree = "<group>";
+		};
 		375519A720E686F700EC930B /* CalendarDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,6 +412,7 @@
 				37A69B2720E8A155004E8C66 /* Salary */,
 				37C05D2F2154041A00CFCCEC /* FollowViewSetting */,
 				37429335215D3D450032066D /* PrivacyPolicy */,
+				374AA6C3215DE94400E37686 /* Contact */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -812,6 +829,7 @@
 				37A69B2B20E8D3D6004E8C66 /* UserNameViewPresenter.swift in Sources */,
 				37425CC320DE893E005A3C93 /* CalendarViewController.swift in Sources */,
 				37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */,
+				374AA6C8215DE99B00E37686 /* ContactViewPresenter.swift in Sources */,
 				3765CD7120F0EDCF0031D235 /* FileBrowseTopViewEntity.swift in Sources */,
 				370031A220EDE2B600813685 /* ColorSchemeViewPresenter.swift in Sources */,
 				3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */,
@@ -822,6 +840,8 @@
 				37A69B2920E8A162004E8C66 /* SalaryViewController.swift in Sources */,
 				375519A620E5BADA00EC930B /* CalendarViewEntity.swift in Sources */,
 				3772662920EA70CE0056D3D0 /* UserListSettingViewPresenter.swift in Sources */,
+				374AA6C9215DE99B00E37686 /* ContactViewController.swift in Sources */,
+				374AA6C7215DE99B00E37686 /* ContactViewModel.swift in Sources */,
 				37326C3920DEC79200A60B00 /* Extensions.swift in Sources */,
 				37DE67AC20F589C700DB7EBC /* UnknownViewModel.swift in Sources */,
 				37A69B0F20E8308C004E8C66 /* UserTopViewController.swift in Sources */,
