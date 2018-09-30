@@ -12,5 +12,5 @@ protocol PrivacyPolicyViewModelDelegate: class {}
 
 class PrivacyPolicyViewModel {
     weak var delegate: PrivacyPolicyViewModelDelegate?
-    let urlRequest = URLRequest(url: URL(string: "https://kentaiwami.jp/portfolio/7/pp")!)
+    let urlRequest = URLRequest(url: URL(string: GetPortfolioHost() + "portfolio/7/pp")!)
 }
