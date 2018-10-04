@@ -59,7 +59,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         let endDate: Date
         
         if self.calendar.scope == .week {
-            startDate = self.calendar.currentPage
+            let indexPath = self.calendar.calculator.indexPath(for: self.calendar.currentPage, scope: .week)
+            startDate = self.calendar.calculator.week(forSection: (indexPath?.section)!)
             endDate = self.calendar.gregorian.date(byAdding: .day, value: 6, to: startDate)!
         }else {
             let indexPath = self.calendar.calculator.indexPath(for: self.calendar.currentPage, scope: .month)
