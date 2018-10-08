@@ -18,6 +18,35 @@ class ExportViewPresenter {
         self.model = ExportViewModel()
         model.delegate = self
     }
+    
+    func setInitData() {
+        model.setInitData()
+    }
+    
+    func getTablesName() -> [String] {
+        return model.getTablesName()
+    }
+    
+    func getUsersName() -> [String] {
+        return model.getUsersName()
+    }
+    
+    func getInitValue() -> String {
+        return model.getInitValue()
+    }
+    
+    func export() {
+        guard let formValue = view?.formValue else {return}
+        model.export(formValue: formValue)
+    }
 }
 
-extension ExportViewPresenter: ExportViewModelDelegate {}
+extension ExportViewPresenter: ExportViewModelDelegate {
+    func initializeUI() {
+        view?.initializeUI()
+    }
+    
+    func faildAPI(title: String, msg: String) {
+        view?.showErrorAlert(title: title, msg: msg)
+    }
+}

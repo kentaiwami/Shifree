@@ -20,6 +20,7 @@
 		3720A2B1216B1987005E1A4E /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720A2AE216B1987005E1A4E /* ExportViewController.swift */; };
 		3720A2B2216B1987005E1A4E /* ExportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720A2AF216B1987005E1A4E /* ExportViewModel.swift */; };
 		3720A2B3216B1987005E1A4E /* ExportViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720A2B0216B1987005E1A4E /* ExportViewPresenter.swift */; };
+		3720A2B5216B5E43005E1A4E /* ExportViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720A2B4216B5E43005E1A4E /* ExportViewEntity.swift */; };
 		3729107420E7EE3D00931BEA /* PopUpColorViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */; };
 		3729107620E7EE4C00931BEA /* PopUpColorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */; };
 		37326C3720DE955D00A60B00 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37326C3620DE955D00A60B00 /* Utility.swift */; };
@@ -134,6 +135,7 @@
 		3720A2AE216B1987005E1A4E /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		3720A2AF216B1987005E1A4E /* ExportViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewModel.swift; sourceTree = "<group>"; };
 		3720A2B0216B1987005E1A4E /* ExportViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewPresenter.swift; sourceTree = "<group>"; };
+		3720A2B4216B5E43005E1A4E /* ExportViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportViewEntity.swift; sourceTree = "<group>"; };
 		3729107320E7EE3D00931BEA /* PopUpColorViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewPresenter.swift; sourceTree = "<group>"; };
 		3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpColorViewModel.swift; sourceTree = "<group>"; };
 		37326C3620DE955D00A60B00 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				3720A2AE216B1987005E1A4E /* ExportViewController.swift */,
 				3720A2B0216B1987005E1A4E /* ExportViewPresenter.swift */,
 				3720A2AF216B1987005E1A4E /* ExportViewModel.swift */,
+				3720A2B4216B5E43005E1A4E /* ExportViewEntity.swift */,
 			);
 			path = Export;
 			sourceTree = "<group>";
@@ -824,6 +827,7 @@
 			files = (
 				37C168B420F0308F003A453A /* SalaryViewModel.swift in Sources */,
 				37326C4820E14B7500A60B00 /* CalendarViewModel.swift in Sources */,
+				3720A2B5216B5E43005E1A4E /* ExportViewEntity.swift in Sources */,
 				370A2FFB212DB82600B8082F /* UpdateTitleViewModel.swift in Sources */,
 				3765CD6220F0D9140031D235 /* FileBrowseTopViewPresenter.swift in Sources */,
 				375519A920E75C7B00EC930B /* CalendarDetailViewEntity.swift in Sources */,

@@ -31,7 +31,7 @@ def get_export_init():
 
     session.close()
     return jsonify({
-        'you': {'id': access_user.id, 'name': access_user.name},
+        'me': {'id': access_user.id, 'name': access_user.name},
         'follow': follow_user,
         'users': [{'name': user.name, 'id': user.id} for user in company_users],
         'tables': [{'id': table.id, 'title': table.title} for table in company_tables]
