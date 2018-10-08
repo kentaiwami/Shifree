@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import PopupDialog
 
 protocol ExportViewInterface: class {
     var formValue: [String:Any?] { get }
@@ -37,8 +38,25 @@ class ExportViewController: FormViewController, ExportViewInterface {
         self.form.removeAll()
         UIView.setAnimationsEnabled(true)
         
-        presenter.setInitData()
         presenter.allowAuthorization()
+        
+        if presenter.isAuthorization() {
+            presenter.setInitData()
+        }else {
+            let popup = PopupDialog(title: "確認", message: "エクスポート機能を利用するには、設定からカレンダーへのアクセスを許可する必要があります。", transitionStyle: .zoomIn) {
+                self.navigationController?.popViewController(animated: true)
+            }
+            let after = DefaultButton(title: "あとで") {
+                self.navigationController?.popViewController(animated: true)
+            }
+            let now = DefaultButton(title: "設定する") {
+                if let url = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            }
+            popup.addButtons([after, now])
+            present(popup, animated: true, completion: nil)
+        }
     }
     
     fileprivate func initializeForm() {
