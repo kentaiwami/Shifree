@@ -72,6 +72,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let colorSchemeVC = ColorSchemeViewController()
         let salaryVC = SalaryViewController()
         let followVC = FollowSettingViewController()
+        let exportVC = ExportViewController()
         let privacyPolicyVC = PrivacyPolicyViewController()
         let contactVC = ContactViewController()
         
@@ -115,6 +116,12 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
             <<< ButtonRow() {
                 $0.title = "フォロー"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return followVC}, onDismiss: {followVC in followVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "エクスポート"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return exportVC}, onDismiss: {exportVC in exportVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         

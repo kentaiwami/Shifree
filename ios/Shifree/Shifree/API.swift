@@ -469,3 +469,16 @@ extension API {
         return postNoAuth(url: portfolioBase + portfolioAPIVersion + endPoint, params: params)
     }
 }
+
+
+extension API {
+    func getExportInitData() -> Promise<JSON> {
+        let endPoint = "setting/export/init"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+    
+    func getExportShiftData(userID: Int, tableID: Int) -> Promise<JSON> {
+        let endPoint = "setting/export/shift?user_id=\(userID)&table_id=\(tableID)"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+}
