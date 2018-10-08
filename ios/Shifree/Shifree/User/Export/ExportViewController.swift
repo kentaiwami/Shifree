@@ -54,7 +54,7 @@ class ExportViewController: FormViewController, ExportViewInterface {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 }
             }
-            popup.addButtons([after, now])
+            popup.addButtons([now, after])
             present(popup, animated: true, completion: nil)
         }
     }
