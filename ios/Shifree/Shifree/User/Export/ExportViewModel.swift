@@ -124,6 +124,7 @@ extension ExportViewModel {
     func addEvent(json: JSON, allDay: Bool, id: String, format: String) {
         let calendar = eventStore.calendar(withIdentifier: id)
         var isError = false
+        var events:[EKEvent] = []
         
         for shift in json.arrayValue {
             let event = EKEvent(eventStore: eventStore)
@@ -166,14 +167,22 @@ extension ExportViewModel {
             
             event.startDate = start
             event.endDate = end
-            
-            print(getFormatterStringFromDate(format: "yyyy-MM-dd HH:mm:ss", date: start), getFormatterStringFromDate(format: "yyyy-MM-dd HH:mm:ss", date: end), event.isAllDay)
+            events.append(event)
             
             do {
                 try eventStore.save(event, span: .thisEvent)
             } catch let error {
                 print(error)
                 isError = true
+                
+                for event in events {
+                    do {
+                        try eventStore.remove(event, span: .thisEvent)
+                    } catch let error {
+                        print(error)
+                    }
+                }
+                
                 break
             }
         }
