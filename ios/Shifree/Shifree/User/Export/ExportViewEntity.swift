@@ -12,3 +12,8 @@ struct ExportUser {
     var name: String = ""
     var id: Int = 0
 }
+
+struct UserCalendar {
+    var id: String = ""
+    var title: String = ""
+}

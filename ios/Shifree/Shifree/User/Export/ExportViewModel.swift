@@ -7,21 +7,29 @@
 //
 
 import Foundation
+import EventKit
+import SwiftyJSON
 
 protocol ExportViewModelDelegate: class {
     func initializeUI()
-    func faildAPI(title: String, msg: String)
+    func showMessage(title: String, msg: String)
 }
 
 class ExportViewModel {
     weak var delegate: ExportViewModelDelegate?
     private let api = API()
+    let eventStore = EKEventStore()
+    
     private(set) var users:[ExportUser] = []
     private(set) var tables:[FileTable] = []
     private(set) var followUser: ExportUser = ExportUser()
     private(set) var me: ExportUser = ExportUser()
+    private(set) var calendar:[UserCalendar] = []
+    let format = ["ユーザ名+シフト名", "シフト名"]
     
     func setInitData() {
+        setCalendars()
+        
         api.getExportInitData().done { (json) in
             let follow = json["follow"].dictionaryValue
             self.followUser = ExportUser()
@@ -56,7 +64,7 @@ class ExportViewModel {
         }.catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            self.delegate?.showMessage(title: title, msg: tmp_err.domain)
         }
     }
     
@@ -79,15 +87,142 @@ class ExportViewModel {
     func export(formValue: [String:Any?]) {
         let tableTitle = formValue["table"] as! String
         let username = formValue["user"] as! String
+        let allDay = formValue["allday"] as! Bool
+        let calendarTitle = formValue["calendar"] as! String
+        let format = formValue["format"] as! String
+        
         let tableID = tables.filter({$0.title == tableTitle}).first!.id
         let userID = users.filter({$0.name == username}).first!.id
+        let calendarID = calendar.filter({$0.title == calendarTitle}).first!.id
         
         api.getExportShiftData(userID: userID, tableID: tableID).done { (json) in
-            print(json)
+            self.addEvent(json: json["results"], allDay: allDay, id: calendarID, format: format)
         }.catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            self.delegate?.showMessage(title: title, msg: tmp_err.domain)
+        }
+    }
+}
+
+
+// MARK: - カレンダー
+extension ExportViewModel {
+    func setCalendars() {
+        calendar = eventStore.calendars(for: .event).map({
+            var tmp = UserCalendar()
+            tmp.id = $0.calendarIdentifier
+            tmp.title = $0.title
+            return tmp
+        })
+    }
+    
+    func getCalendarsTitle() -> [String] {
+        return calendar.map({$0.title})
+    }
+    
+    func addEvent(json: JSON, allDay: Bool, id: String, format: String) {
+        let calendar = eventStore.calendar(withIdentifier: id)
+        var isError = false
+        
+        for shift in json.arrayValue {
+            let event = EKEvent(eventStore: eventStore)
+            
+            switch self.format.firstIndex(of: format)! {
+            case 0:
+                event.title = "\(shift["user"].stringValue) \(shift["shift"].stringValue)"
+            case 1:
+                event.title = "\(shift["shift"].stringValue)"
+            default:
+                event.title = "\(shift["user"].stringValue) \(shift["shift"].stringValue)"
+            }
+            
+            event.calendar = calendar
+            
+            var tmpStart = ""
+            var tmpEnd = ""
+            let tmpDate = shift["date"].stringValue
+            if shift["start"].stringValue.count == 0 || shift["end"].stringValue.count == 0 || allDay {
+                tmpStart = "12:00:00"
+                tmpEnd = "12:00:00"
+                event.isAllDay = true
+            }else {
+                tmpStart = shift["start"].stringValue
+                tmpEnd = shift["end"].stringValue
+                event.isAllDay = false
+            }
+            
+            let start = getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpStart)
+            var end = getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpEnd)
+            
+            if start > end && !event.isAllDay {
+                let calendarCurrent = Calendar.current
+                var components = calendarCurrent.dateComponents([.year, .month, .day], from: end)
+                components.setValue(0, for: Calendar.Component.year)
+                components.setValue(0, for: Calendar.Component.month)
+                components.setValue(1, for: Calendar.Component.day)
+                end = calendarCurrent.date(byAdding: components, to: end)!
+            }
+            
+            event.startDate = start
+            event.endDate = end
+            
+            print(getFormatterStringFromDate(format: "yyyy-MM-dd HH:mm:ss", date: start), getFormatterStringFromDate(format: "yyyy-MM-dd HH:mm:ss", date: end), event.isAllDay)
+            
+            do {
+                try eventStore.save(event, span: .thisEvent)
+            } catch let error {
+                print(error)
+                isError = true
+                break
+            }
+        }
+        
+        if isError {
+            self.delegate?.showMessage(title: "エラー", msg: "カレンダーへ追加中にエラーが発生しました")
+        }else {
+            self.delegate?.showMessage(title: "成功", msg: "エクスポートが完了しました")
+        }
+    }
+    
+    func allowAuthorization() {
+        if getAuthorization_status() {
+            return
+        } else {
+            eventStore.requestAccess(to: .event, completion: {
+                (granted, error) in
+                if granted {
+                    return
+                }
+                else {
+                    print("Not allowed")
+                }
+            })
+        }
+    }
+    
+    func getAuthorization_status() -> Bool {
+        let status = EKEventStore.authorizationStatus(for: .event)
+        
+        switch status {
+        case .notDetermined:
+            print("NotDetermined")
+            return false
+            
+        case .denied:
+            print("Denied")
+            return false
+            
+        case .authorized:
+            print("Authorized")
+            return true
+            
+        case .restricted:
+            print("Restricted")
+            return false
+            
+        default:
+            return false
         }
     }
 }

@@ -13,7 +13,7 @@ protocol ExportViewInterface: class {
     var formValue: [String:Any?] { get }
     
     func initializeUI()
-    func showErrorAlert(title: String, msg: String)
+    func showAlert(title: String, msg: String)
 }
 
 
@@ -38,6 +38,7 @@ class ExportViewController: FormViewController, ExportViewInterface {
         UIView.setAnimationsEnabled(true)
         
         presenter.setInitData()
+        presenter.allowAuthorization()
     }
     
     fileprivate func initializeForm() {
@@ -48,80 +49,55 @@ class ExportViewController: FormViewController, ExportViewInterface {
                 $0.title = "ファイル"
                 $0.options = presenter.getTablesName()
                 $0.value = presenter.getTablesName().first
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
                 $0.tag = "table"
                 $0.cell.detailTextLabel?.textColor = UIColor.black
-            }
-            .onRowValidationChanged { cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                            $0.cell.contentView.backgroundColor = .red
-                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                            }.cellUpdate({ (cell, row) in
-                                cell.textLabel?.textColor = .white
-                            })
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
             }
         
             <<< PickerInputRow<String>(""){
                 $0.title = "ユーザ"
                 $0.options = presenter.getUsersName()
                 $0.value = presenter.getInitValue()
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
                 $0.tag = "user"
                 $0.cell.detailTextLabel?.textColor = UIColor.black
             }
-            .onRowValidationChanged { cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                            $0.cell.contentView.backgroundColor = .red
-                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                            }.cellUpdate({ (cell, row) in
-                                cell.textLabel?.textColor = .white
-                            })
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
+            
+            <<< PickerInputRow<String>(""){
+                $0.title = "カレンダー"
+                $0.options = presenter.getCalendarsTitle()
+                $0.value = presenter.getCalendarsTitle().first
+                $0.tag = "calendar"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
+            }
+            
+            <<< PickerInputRow<String>(""){
+                $0.title = "書式"
+                $0.options = presenter.getFormat()
+                $0.value = presenter.getFormat().first
+                $0.tag = "format"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
             }
         
-            <<< SwitchRow("include") {
-                $0.title = "時間帯も含める"
-                $0.value = false
+            <<< SwitchRow("allday") {
+                $0.title = "終日"
+                $0.value = true
             }
         
         form +++ Section("")
-                
             <<< ButtonRow(){
                 $0.title = "エクスポート"
+                $0.disabled = Condition(booleanLiteral: !presenter.isAuthorization())
                 $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
                 $0.baseCell.tintColor = UIColor.white
             }
             .onCellSelection {  cell, row in
-                if isValidateFormValue(form: self.form) {
-                    self.presenter.export()
-                }else {
-                    showStandardAlert(title: "エラー", msg: "入力項目を再確認してください", vc: self)
+                if self.presenter.isAuthorization() {
+                    if isValidateFormValue(form: self.form) {
+                        self.presenter.export()
+                    }else {
+                        showStandardAlert(title: "エラー", msg: "入力項目を再確認してください", vc: self)
+                    }
                 }
             }
-
         
         UIView.setAnimationsEnabled(true)
     }
@@ -138,7 +114,7 @@ extension ExportViewController {
         initializeForm()
     }
     
-    func showErrorAlert(title: String, msg: String) {
+    func showAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

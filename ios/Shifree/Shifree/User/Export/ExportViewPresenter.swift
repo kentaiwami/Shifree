@@ -39,6 +39,26 @@ class ExportViewPresenter {
         guard let formValue = view?.formValue else {return}
         model.export(formValue: formValue)
     }
+    
+    func getFormat() -> [String] {
+        return model.format
+    }
+}
+
+
+// MARK: - カレンダー
+extension ExportViewPresenter {
+    func allowAuthorization() {
+        model.allowAuthorization()
+    }
+    
+    func getCalendarsTitle() -> [String] {
+        return model.getCalendarsTitle()
+    }
+    
+    func isAuthorization() -> Bool {
+        return model.getAuthorization_status()
+    }
 }
 
 extension ExportViewPresenter: ExportViewModelDelegate {
@@ -46,7 +66,7 @@ extension ExportViewPresenter: ExportViewModelDelegate {
         view?.initializeUI()
     }
     
-    func faildAPI(title: String, msg: String) {
-        view?.showErrorAlert(title: title, msg: msg)
+    func showMessage(title: String, msg: String) {
+        view?.showAlert(title: title, msg: msg)
     }
 }
