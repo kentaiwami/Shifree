@@ -26,6 +26,7 @@ PODS:
   - StatusProvider (1.2.10)
   - SwiftyJSON (4.1.0)
   - TinyConstraints (2.2.0)
+  - YNSearch (2.3.1)
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
@@ -42,6 +43,7 @@ DEPENDENCIES:
   - StatusProvider (~> 1.2.0)
   - SwiftyJSON (~> 4.1)
   - TinyConstraints (from `https://github.com/roberthein/TinyConstraints.git`, branch `release/swift-4`)
+  - YNSearch
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -59,6 +61,7 @@ SPEC REPOS:
     - ScrollableGraphView
     - StatusProvider
     - SwiftyJSON
+    - YNSearch
 
 EXTERNAL SOURCES:
   TinyConstraints:
@@ -86,7 +89,8 @@ SPEC CHECKSUMS:
   StatusProvider: 53f64deb452d619091b1a606a0973a724db17d0d
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   TinyConstraints: 5eaf849b075c9d73c6a55b6ea33039fff03a8c84
+  YNSearch: 3a6e0a69cfd34a7c5a7c77e0873f426de4437824
 
-PODFILE CHECKSUM: 55d2f459bffb186d28d6441126ba76c179f80373
+PODFILE CHECKSUM: dbe2725ab36142537ee937bf080bc926bef31754
 
 COCOAPODS: 1.5.3
