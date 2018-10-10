@@ -22,22 +22,20 @@ class FileBrowseDetailViewModel {
     private(set) var fileTable: FileTable = FileTable()
     private(set) var commentList: [Comment] = []
     
-    func setFileTableDetail(id: Int, isUpdate: Bool) {
-        commentList = []
-        
+    func setFileTableDetail(id: Int, isUpdate: Bool) {        
         api.getFileTableDetail(id: id).done { (json) in
             self.fileTable.id = json["results"]["table_id"].intValue
             self.fileTable.origin = json["results"]["origin"].stringValue
             self.fileTable.title = json["results"]["title"].stringValue
             
-            json["results"]["comment"].arrayValue.forEach({ (comment) in
-                self.commentList.append(Comment(
-                    id: comment["id"].intValue,
-                    text: comment["text"].stringValue,
-                    user: comment["user"].stringValue,
-                    userID: comment["user_id"].intValue,
-                    created: comment["created_at"].stringValue
-                ))
+            self.commentList = json["results"]["comment"].arrayValue.map({ comment in
+                var tmp = Comment()
+                tmp.id = comment["id"].intValue
+                tmp.text = comment["text"].stringValue
+                tmp.user = comment["user"].stringValue
+                tmp.userID = comment["user_id"].intValue
+                tmp.created = comment["created_at"].stringValue
+                return tmp
             })
             
             if isUpdate {
