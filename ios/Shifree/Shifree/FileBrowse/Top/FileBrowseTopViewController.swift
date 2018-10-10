@@ -43,6 +43,8 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         }else {
             presenter.setFileTable(isUpdate: true)
         }
+        
+        collectionView.flashScrollIndicators()
     }
     
     fileprivate func initializeCollectionView() {

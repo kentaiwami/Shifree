@@ -31,6 +31,8 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         self.tabBarController?.navigationItem.setLeftBarButton(nil, animated: true)
         self.tabBarController?.navigationItem.setRightBarButton(nil, animated: true)
         self.tabBarController?.delegate = self
+        
+        tableView.flashScrollIndicators()
     }
     
     private func initializeAdminUserOnlyForm() {
