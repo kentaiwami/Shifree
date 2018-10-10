@@ -19,5 +19,4 @@ pod 'ScrollableGraphView', '~> 4.0'
 pod 'StatusProvider', '~> 1.2.0'
 pod 'SwiftyJSON', '~> 4.1'
 pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'release/swift-4'
-pod 'YNSearch'
 end
