@@ -51,6 +51,14 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         if calendar != nil {
             setStartEndDate()
             presenter.getAllUserShift()
+            
+            scrollView.flashScrollIndicators()
+        }
+        
+        tableViews.forEach { (tableView) in
+            tableView.indexPathsForSelectedRows?.forEach({
+                tableView.deselectRow(at: $0, animated: true)
+            })
         }
     }
     
@@ -190,6 +198,8 @@ extension CalendarViewController {
             
             tableViewX = tableView.frame.origin.x + tableView.frame.width
         }
+        
+        scrollView.flashScrollIndicators()
     }
     
     fileprivate func initializeNavigationItem() {
@@ -541,9 +551,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         headerTitle?.textLabel?.textColor = txtColor
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
         let detailVC = CalendarDetailViewController()
         let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
