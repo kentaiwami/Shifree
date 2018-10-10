@@ -337,12 +337,10 @@
 		37425CC120DE8928005A3C93 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				37C771B1216E78CD00AC7E9D /* Top */,
 				37C771AA216DDAE200AC7E9D /* SearchShift */,
 				373F36D920E7D4400079B28F /* PopUpColorTableView */,
-				37425CC220DE893E005A3C93 /* CalendarViewController.swift */,
-				37326C4520E14B6500A60B00 /* CalendarViewPresenter.swift */,
-				37326C4720E14B7500A60B00 /* CalendarViewModel.swift */,
-				375519A520E5BADA00EC930B /* CalendarViewEntity.swift */,
+				375519A720E686F700EC930B /* CalendarDetail */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -579,6 +577,27 @@
 			path = SearchShift;
 			sourceTree = "<group>";
 		};
+		37C771B1216E78CD00AC7E9D /* Top */ = {
+			isa = PBXGroup;
+			children = (
+				37425CC220DE893E005A3C93 /* CalendarViewController.swift */,
+				37326C4520E14B6500A60B00 /* CalendarViewPresenter.swift */,
+				37326C4720E14B7500A60B00 /* CalendarViewModel.swift */,
+				375519A520E5BADA00EC930B /* CalendarViewEntity.swift */,
+			);
+			path = Top;
+			sourceTree = "<group>";
+		};
+		37C771B2216E792800AC7E9D /* Top */ = {
+			isa = PBXGroup;
+			children = (
+				37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */,
+				37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */,
+				37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */,
+			);
+			path = Top;
+			sourceTree = "<group>";
+		};
 		37CC330020EA871A0059C8D7 /* UserListSettingDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -600,11 +619,9 @@
 		37DE679F20F4794600DB7EBC /* ShiftImport */ = {
 			isa = PBXGroup;
 			children = (
+				37C771B2216E792800AC7E9D /* Top */,
 				37DE67B020F645DC00DB7EBC /* AddShift */,
 				37DE67A720F5897C00DB7EBC /* Unknown */,
-				37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */,
-				37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */,
-				37DE67A220F4797400DB7EBC /* ShiftImportViewModel.swift */,
 			);
 			path = ShiftImport;
 			sourceTree = "<group>";
@@ -668,7 +685,6 @@
 				37A69B0B20E83027004E8C66 /* User */,
 				37326C4020DFE32B00A60B00 /* SignUp */,
 				37425CC120DE8928005A3C93 /* Calendar */,
-				375519A720E686F700EC930B /* CalendarDetail */,
 				37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */,
 				37FF360F20DD4D0200FB2C68 /* Assets.xcassets */,
 				37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */,
