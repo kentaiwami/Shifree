@@ -151,8 +151,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         }
         
         let group2 = FloatingActionGroup(action: cancelAction)
-        FloatingActionSheetController(actionGroup: group1, group2)
-            .present(in: self)
+        FloatingActionSheetController(actionGroup: group1, group2).present(in: self)
     }
 
     

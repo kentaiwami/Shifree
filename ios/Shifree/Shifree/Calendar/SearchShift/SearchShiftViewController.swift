@@ -79,11 +79,12 @@ class SearchShiftViewController: FormViewController, SearchShiftViewInterface {
     }
     
     @objc private func tapEditDoneButton() {
-        if isValidateFormValue(form: self.form) {
-            presenter.postContact()
-        }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
-        }
+        self.dismiss(animated: true, completion: nil)
+//        if isValidateFormValue(form: self.form) {
+//            presenter.postContact()
+//        }else {
+//            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
+//        }
     }
 
     override func didReceiveMemoryWarning() {

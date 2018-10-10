@@ -11,7 +11,7 @@ import FSCalendar
 import TinyConstraints
 import PopupDialog
 import UserNotifications
-
+import FloatingActionSheetController
 
 protocol CalendarViewInterface: class {
     func initializeUI()
@@ -205,9 +205,9 @@ extension CalendarViewController {
     fileprivate func initializeNavigationItem() {
         let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let week = UIBarButtonItem(image: UIImage(named: "week"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
-        let info = UIBarButtonItem(image: UIImage(named: "information"), style: .plain, target: self, action: #selector(TapColorInformationButton))
+        let action = UIBarButtonItem(image: UIImage(named: "action"), style: .plain, target: self, action: #selector(TapActionButton))
         
-        self.tabBarController?.navigationItem.setLeftBarButton(info, animated: true)
+        self.tabBarController?.navigationItem.setLeftBarButton(action, animated: true)
         
         // 初回起動時はnilのため、monthを設定。それ以外（画面表示時）はnilではないのでscopeに応じて設定。
         if self.calendar == nil {
@@ -226,14 +226,39 @@ extension CalendarViewController {
 
 // MARK: - NavigationItemTap
 extension CalendarViewController {
-    @objc fileprivate func TapColorInformationButton(sendor: UIButton) {
-        let vc = PopUpColorViewController()
-        let popUp = PopupDialog(viewController: vc)
-        let buttonOK = DefaultButton(title: "OK"){}
+    @objc private func TapActionButton(sendor: UIButton) {
+        let showColorInformation = FloatingAction(title: "カラー情報") { action in
+            let vc = PopUpColorViewController()
+            let popUp = PopupDialog(viewController: vc)
+            let buttonOK = DefaultButton(title: "OK"){}
+            popUp.addButton(buttonOK)
+            self.present(popUp, animated: true, completion: nil)
+        }
         
-        popUp.addButton(buttonOK)
+        showColorInformation.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        showColorInformation.tintColor = UIColor.white
         
-        present(popUp, animated: true, completion: nil)
+        
+        let showSearchShift = FloatingAction(title: "シフトの検索") { action in
+            let searchShiftVC = SearchShiftViewController()
+            let nav = UINavigationController()
+            nav.viewControllers = [searchShiftVC]
+            nav.modalTransitionStyle = .coverVertical
+            self.present(nav, animated: true, completion: nil)
+        }
+        
+        showSearchShift.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        showSearchShift.tintColor = UIColor.white
+        
+        let cancelAction = FloatingAction(title: "キャンセル") { action in}
+        cancelAction.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        cancelAction.tintColor = UIColor.white
+        
+        let group1 = FloatingActionGroup()
+        group1.add(actions: [showColorInformation, showSearchShift])
+        
+        let group2 = FloatingActionGroup(action: cancelAction)
+        FloatingActionSheetController(actionGroup: group1, group2).present(in: self)
     }
     
     @objc fileprivate func TapChangeCalendarButton(sendor: UIButton) {
