@@ -16,6 +16,7 @@ protocol FileBrowseDetailViewInterface: class {
     
     func popView()
     func initializeUI()
+    func updateUI()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -39,11 +40,15 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.setFileTableDetail()
         
-        if pdfView != nil {
-            pdfView.removeFromSuperview()
-            commentTableView.removeFromSuperview()
+        // 初回表示時とそれ以外で切り分けて、作成済みのViewを削除せずに更新
+        if pdfView == nil {
+            presenter.setFileTableDetail(isUpdate: false)
+        }else {
+            commentTableView.indexPathsForSelectedRows?.forEach({
+                commentTableView.deselectRow(at: $0, animated: true)
+            })
+            presenter.setFileTableDetail(isUpdate: true)
         }
     }
     
@@ -167,6 +172,12 @@ extension FileBrowseDetailViewController {
         commentTableView.reloadData()
     }
     
+    func updateUI() {
+        self.navigationItem.title = presenter.getFileTable().title
+        initializeNavigationItem()
+        commentTableView.reloadData()
+    }
+    
     func showErrorAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
     }
@@ -217,7 +228,7 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+//        tableView.deselectRow(at: indexPath, animated: true)
         
         if presenter.isMyComment(row: indexPath.row) {
             let editCommentVC = EditCommentViewController()

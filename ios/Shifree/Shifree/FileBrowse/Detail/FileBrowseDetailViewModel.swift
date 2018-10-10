@@ -11,6 +11,7 @@ import KeychainAccess
 
 protocol FileBrowseDetailViewModelDelegate: class {
     func initializeUI()
+    func updateUI()
     func successDelete()
     func faildAPI(title: String, msg: String)
 }
@@ -21,7 +22,7 @@ class FileBrowseDetailViewModel {
     private(set) var fileTable: FileTable = FileTable()
     private(set) var commentList: [Comment] = []
     
-    func setFileTableDetail(id: Int) {
+    func setFileTableDetail(id: Int, isUpdate: Bool) {
         commentList = []
         
         api.getFileTableDetail(id: id).done { (json) in
@@ -39,7 +40,11 @@ class FileBrowseDetailViewModel {
                 ))
             })
             
-            self.delegate?.initializeUI()
+            if isUpdate {
+                self.delegate?.updateUI()
+            }else {
+                self.delegate?.initializeUI()
+            }
         }
         .catch { (err) in
             let tmp_err = err as NSError

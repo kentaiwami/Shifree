@@ -19,9 +19,9 @@ class FileBrowseDetailViewPresenter {
         model.delegate = self
     }
     
-    func setFileTableDetail() {
+    func setFileTableDetail(isUpdate: Bool) {
         guard let id = view?.tableID else { return }
-        model.setFileTableDetail(id: id)
+        model.setFileTableDetail(id: id, isUpdate: isUpdate)
     }
     
     func getFileTable() -> FileTable {
@@ -53,6 +53,10 @@ extension FileBrowseDetailViewPresenter: FileBrowseDetailViewModelDelegate {
     
     func initializeUI() {
         view?.initializeUI()
+    }
+    
+    func updateUI() {
+        view?.updateUI()
     }
     
     func faildAPI(title: String, msg: String) {
