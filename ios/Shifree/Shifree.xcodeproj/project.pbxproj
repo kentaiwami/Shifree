@@ -102,6 +102,9 @@
 		37C168B320F0308F003A453A /* SalaryViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168B120F0308D003A453A /* SalaryViewPresenter.swift */; };
 		37C168B420F0308F003A453A /* SalaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168B220F0308E003A453A /* SalaryViewModel.swift */; };
 		37C168B620F031BE003A453A /* SalaryViewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C168B520F031BE003A453A /* SalaryViewEntity.swift */; };
+		37C771AE216DDB2600AC7E9D /* SearchShiftViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C771AB216DDB2500AC7E9D /* SearchShiftViewPresenter.swift */; };
+		37C771AF216DDB2600AC7E9D /* SearchShiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C771AC216DDB2500AC7E9D /* SearchShiftViewController.swift */; };
+		37C771B0216DDB2600AC7E9D /* SearchShiftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C771AD216DDB2500AC7E9D /* SearchShiftViewModel.swift */; };
 		37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */; };
 		37DE67A320F4797400DB7EBC /* ShiftImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */; };
 		37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */; };
@@ -217,6 +220,9 @@
 		37C168B120F0308D003A453A /* SalaryViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalaryViewPresenter.swift; sourceTree = "<group>"; };
 		37C168B220F0308E003A453A /* SalaryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalaryViewModel.swift; sourceTree = "<group>"; };
 		37C168B520F031BE003A453A /* SalaryViewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalaryViewEntity.swift; sourceTree = "<group>"; };
+		37C771AB216DDB2500AC7E9D /* SearchShiftViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftViewPresenter.swift; sourceTree = "<group>"; };
+		37C771AC216DDB2500AC7E9D /* SearchShiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftViewController.swift; sourceTree = "<group>"; };
+		37C771AD216DDB2500AC7E9D /* SearchShiftViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftViewModel.swift; sourceTree = "<group>"; };
 		37CC330120EA87320059C8D7 /* UserListSettingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListSettingDetailViewController.swift; sourceTree = "<group>"; };
 		37DE67A020F4797400DB7EBC /* ShiftImportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewController.swift; sourceTree = "<group>"; };
 		37DE67A120F4797400DB7EBC /* ShiftImportViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftImportViewPresenter.swift; sourceTree = "<group>"; };
@@ -331,6 +337,7 @@
 		37425CC120DE8928005A3C93 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				37C771AA216DDAE200AC7E9D /* SearchShift */,
 				373F36D920E7D4400079B28F /* PopUpColorTableView */,
 				37425CC220DE893E005A3C93 /* CalendarViewController.swift */,
 				37326C4520E14B6500A60B00 /* CalendarViewPresenter.swift */,
@@ -560,6 +567,16 @@
 				37C168AF20EEB2DA003A453A /* ShiftSettingDetailViewController.swift */,
 			);
 			path = ShiftSettingVeiwDetail;
+			sourceTree = "<group>";
+		};
+		37C771AA216DDAE200AC7E9D /* SearchShift */ = {
+			isa = PBXGroup;
+			children = (
+				37C771AC216DDB2500AC7E9D /* SearchShiftViewController.swift */,
+				37C771AB216DDB2500AC7E9D /* SearchShiftViewPresenter.swift */,
+				37C771AD216DDB2500AC7E9D /* SearchShiftViewModel.swift */,
+			);
+			path = SearchShift;
 			sourceTree = "<group>";
 		};
 		37CC330020EA871A0059C8D7 /* UserListSettingDetail */ = {
@@ -850,6 +867,7 @@
 				37A69B2B20E8D3D6004E8C66 /* UserNameViewPresenter.swift in Sources */,
 				37425CC320DE893E005A3C93 /* CalendarViewController.swift in Sources */,
 				37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */,
+				37C771AE216DDB2600AC7E9D /* SearchShiftViewPresenter.swift in Sources */,
 				374AA6C8215DE99B00E37686 /* ContactViewPresenter.swift in Sources */,
 				3765CD7120F0EDCF0031D235 /* FileBrowseTopViewEntity.swift in Sources */,
 				370031A220EDE2B600813685 /* ColorSchemeViewPresenter.swift in Sources */,
@@ -893,6 +911,7 @@
 				37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */,
 				3720A2B3216B1987005E1A4E /* ExportViewPresenter.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpViewModel.swift in Sources */,
+				37C771AF216DDB2600AC7E9D /* SearchShiftViewController.swift in Sources */,
 				3765CD6120F0D9140031D235 /* FileBrowseTopViewModel.swift in Sources */,
 				37DE67B620F6465000DB7EBC /* AddShiftViewController.swift in Sources */,
 				37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */,
@@ -901,6 +920,7 @@
 				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
 				37DE67AD20F589C700DB7EBC /* UnknownViewController.swift in Sources */,
 				37DE67AB20F589C700DB7EBC /* UnknownViewPresenter.swift in Sources */,
+				37C771B0216DDB2600AC7E9D /* SearchShiftViewModel.swift in Sources */,
 				3720A2B1216B1987005E1A4E /* ExportViewController.swift in Sources */,
 				37DE67B520F6465000DB7EBC /* AddShiftViewModel.swift in Sources */,
 				378E382B20E9957F003BB689 /* ShiftCategoryViewModel.swift in Sources */,
