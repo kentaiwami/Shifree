@@ -227,9 +227,7 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         if presenter.isMyComment(row: indexPath.row) {
             let editCommentVC = EditCommentViewController()
             editCommentVC.setSelectedData(indexPath: indexPath, comment: presenter.getComments()[indexPath.row])
