@@ -31,7 +31,7 @@ class SearchShiftViewController: FormViewController, SearchShiftViewInterface {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "お問い合わせ"
+        self.navigationItem.title = "シフト検索"
         
         UIView.setAnimationsEnabled(false)
         self.form.removeAll()
@@ -74,17 +74,12 @@ class SearchShiftViewController: FormViewController, SearchShiftViewInterface {
     }
     
     private func initializeNavigationItem() {
-        let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
-        self.navigationItem.setRightBarButton(check, animated: true)
+        let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
+        self.navigationItem.setLeftBarButton(close, animated: true)
     }
     
-    @objc private func tapEditDoneButton() {
+    @objc private func tapCloseButton() {
         self.dismiss(animated: true, completion: nil)
-//        if isValidateFormValue(form: self.form) {
-//            presenter.postContact()
-//        }else {
-//            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
-//        }
     }
 
     override func didReceiveMemoryWarning() {
