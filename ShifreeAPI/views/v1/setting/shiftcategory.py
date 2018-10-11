@@ -1,7 +1,7 @@
 import inspect
 from flask import Blueprint, request, jsonify, abort
 from jsonschema import validate, ValidationError
-from model import User, ShiftCategory, Company
+from model import User, ShiftCategory
 from database import session
 from basic_auth import api_basic_auth
 
@@ -12,7 +12,7 @@ app = Blueprint('setting_shitcategory_bp', __name__)
 @api_basic_auth.login_required
 def get():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
-    shift_categories = session.query(ShiftCategory).join(Company).filter(ShiftCategory.company_id == user.company_id).all()
+    shift_categories = session.query(ShiftCategory).filter(ShiftCategory.company_id == user.company_id).all()
 
     results = []
 

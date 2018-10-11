@@ -11,7 +11,8 @@ import Eureka
 
 protocol SearchShiftViewInterface: class {
     var formValue: [String:Any?] { get }
-    func success()
+    
+    func initializeUI()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -35,42 +36,57 @@ class SearchShiftViewController: FormViewController, SearchShiftViewInterface {
         
         UIView.setAnimationsEnabled(false)
         self.form.removeAll()
-        initializeUI()
+        presenter.setInitData()
         UIView.setAnimationsEnabled(true)
     }
     
     private func initializeForm() {
+        UIView.setAnimationsEnabled(false)
+        
+        form +++ Section("検索条件")
+            <<< PickerInputRow<String>(""){
+                $0.title = "シフトカテゴリ"
+                $0.options = presenter.getCategories()
+                $0.value = presenter.getCategories().first
+                $0.tag = "category"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
+        }
+        
+            <<< PickerInputRow<String>(""){
+                $0.title = "シフト名"
+                $0.options = presenter.getShifts()
+                $0.value = presenter.getShifts().first
+                $0.tag = "shift"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
+        }
+        
+            <<< PickerInputRow<String>(""){
+                $0.title = "ユーザ名"
+                $0.options = presenter.getUsers()
+                $0.value = presenter.getUsers().first
+                $0.tag = "user"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
+        }
+        
+            <<< PickerInputRow<String>(""){
+                $0.title = "ファイル"
+                $0.options = presenter.getTables()
+                $0.value = presenter.getTables().first
+                $0.tag = "table"
+                $0.cell.detailTextLabel?.textColor = UIColor.black
+        }
+        
         form +++ Section("")
-            <<< NameRow(){ row in
-                row.title = "氏名"
-                row.tag = "name"
-                row.add(rule: RuleRequired(msg: "必須項目です"))
-                row.validationOptions = .validatesOnChange
-        }
-        .onRowValidationChanged {cell, row in
-            let rowIndex = row.indexPath!.row
-            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                row.section?.remove(at: rowIndex + 1)
+            <<< ButtonRow(){
+                $0.title = "検索"
+                $0.baseCell.backgroundColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+                $0.baseCell.tintColor = UIColor.white
             }
-            if !row.isValid {
-                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                    let labelRow = LabelRow() {
-                        $0.title = err
-                        $0.cell.height = { 30 }
-                        $0.cell.contentView.backgroundColor = .red
-                        $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textColor = .white
-                        })
-                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                }
+            .onCellSelection {  cell, row in
+                //TODO call API
             }
-        }
-    }
-    
-    private func initializeUI() {
-        initializeNavigationItem()
-        initializeForm()
+        
+        UIView.setAnimationsEnabled(true)
     }
     
     private func initializeNavigationItem() {
@@ -91,10 +107,9 @@ class SearchShiftViewController: FormViewController, SearchShiftViewInterface {
 
 // MARK: - Presenterから呼び出される関数
 extension SearchShiftViewController {
-    func success() {
-        showStandardAlert(title: "完了", msg: "お問い合わせありがとうございます", vc: self) {
-            self.navigationController?.popViewController(animated: true)
-        }
+    func initializeUI() {
+        initializeNavigationItem()
+        initializeForm()
     }
     
     func showErrorAlert(title: String, msg: String) {

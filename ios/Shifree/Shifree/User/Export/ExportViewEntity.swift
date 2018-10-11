@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ExportUser {
+struct MinimumInfoUser {
     var name: String = ""
     var id: Int = 0
 }

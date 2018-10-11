@@ -23,16 +23,31 @@ class SearchShiftViewPresenter {
         model.delegate = self
     }
     
-    func postContact() {
-        guard let formValues = view?.formValue else {return}
-        model.postContact(formValues: formValues)
+    func setInitData() {
+        model.setInitData()
+    }
+    
+    func getUsers() -> [String] {
+        return model.getUsers()
+    }
+    
+    func getCategories() -> [String] {
+        return model.getCategories()
+    }
+    
+    func getShifts() -> [String] {
+        return model.getShifts()
+    }
+    
+    func getTables() -> [String] {
+        return model.getTables()
     }
     
 }
 
 extension SearchShiftViewPresenter: SearchShiftViewModelDelegate {
-    func success() {
-        view?.success()
+    func initializeUI() {
+        view?.initializeUI()
     }
     
     func faildAPI(title: String, msg: String) {

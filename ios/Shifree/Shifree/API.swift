@@ -471,6 +471,7 @@ extension API {
 }
 
 
+// MARK: - Export API
 extension API {
     func getExportInitData() -> Promise<JSON> {
         let endPoint = "setting/export/init"
@@ -479,6 +480,14 @@ extension API {
     
     func getExportShiftData(userID: Int, tableID: Int) -> Promise<JSON> {
         let endPoint = "setting/export/shift?user_id=\(userID)&table_id=\(tableID)"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+}
+
+
+extension API {
+    func getShiftSearchInitData() -> Promise<JSON> {
+        let endPoint = "usershift/search/init"
         return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
 }
