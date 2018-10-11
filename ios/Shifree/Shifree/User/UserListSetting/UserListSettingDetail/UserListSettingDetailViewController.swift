@@ -61,7 +61,7 @@ class UserListSettingDetailViewController: FormViewController {
             <<< PickerInputRow<String>(""){
                 $0.title = "権限"
                 $0.options = ["admin", "general"]
-                $0.value = role
+                $0.value = role == "" ? "admin":role
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
                 $0.tag = "role"
