@@ -1,6 +1,6 @@
 import inspect
 from flask import Blueprint, request, jsonify, abort
-from model import User, ShiftTable, Shift, ShiftCategory, Company
+from model import User, ShiftTable, Shift, ShiftCategory, Company, UserShift
 from database import session
 from basic_auth import api_basic_auth
 
@@ -24,3 +24,34 @@ def get_search_init():
         'user': [{'id': user.id, 'name': user.name} for user in users],
         'table': [{'id': table.id, 'title': table.title} for table in tables]
     }}), 200
+
+
+@app.route('/api/v1/usershift/search/shift', methods=['GET'])
+@api_basic_auth.login_required
+def search():
+    access_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+
+    user_id = request.args.get('user_id', default=-1, type=int)
+    category_id = request.args.get('category_id', default=-1, type=int)
+    table_id = request.args.get('table_id', default=-1, type=int)
+    shift_id = request.args.get('shift_id', default=-1, type=int)
+
+    user_id_statement = True if user_id == -1 else UserShift.user_id == user_id
+    table_id_statement = True if table_id == -1 else UserShift.shift_table_id == table_id
+    shift_id_statement = True if shift_id == -1 else UserShift.shift_id == shift_id
+    category_id_statement = True if category_id == -1 else ShiftCategory.id == category_id
+
+    results = session.query(UserShift).join(Shift, ShiftCategory, Company).filter(
+        Company.id == access_user.company_id,
+        user_id_statement,
+        table_id_statement,
+        shift_id_statement,
+        category_id_statement
+    ).all()
+
+    print('***********************')
+    print(results)
+    print(len(results))
+    print('***********************')
+    session.close()
+    return jsonify({'results': len(results)}), 200

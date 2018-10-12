@@ -485,9 +485,15 @@ extension API {
 }
 
 
+// MARK: - Search Shift API
 extension API {
     func getShiftSearchInitData() -> Promise<JSON> {
         let endPoint = "usershift/search/init"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+    
+    func getShiftSearchResults(userID: Int, categoryID: Int, tableID: Int, shiftID: Int) -> Promise<JSON> {
+        let endPoint = "usershift/search/shift?user_id=\(userID)&category_id=\(categoryID)&table_id=\(tableID)&shift_id=\(shiftID)"
         return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
 }

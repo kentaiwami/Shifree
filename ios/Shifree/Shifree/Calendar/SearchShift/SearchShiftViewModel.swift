@@ -11,6 +11,7 @@ import KeychainAccess
 
 protocol SearchShiftViewModelDelegate: class {
     func initializeUI()
+    func showReConfirmAlert()
     func faildAPI(title: String, msg: String)
 }
 
@@ -54,6 +55,34 @@ class SearchShiftViewModel {
         }
     }
     
+    func search(formValue: [String:Any?], isForced: Bool) {
+        let userID = users.filter({$0.name == formValue["user"] as! String}).first!.id
+        let tableID = tables.filter({$0.title == formValue["table"] as! String}).first!.id
+        var categoryID = -1
+        var shiftID = -1
+        
+        if let categoryName = formValue["category"] as? String {
+            categoryID = categories.filter({$0.name == categoryName}).first!.id
+        }
+        
+        if let shiftName = formValue["shift"] as? String {
+            shiftID = shifts.filter({$0.name == shiftName}).first!.id
+        }
+        
+        if isForced {
+            callSearchAPI(userID: userID, categoryID: categoryID, tableID: tableID, shiftID: shiftID)
+        }else {
+            if tableID == -1 {
+                self.delegate?.showReConfirmAlert()
+            }else {
+                callSearchAPI(userID: userID, categoryID: categoryID, tableID: tableID, shiftID: shiftID)
+            }
+        }
+        
+        
+
+    }
+    
     func getUsers() -> [String] {
         return users.map({ (user) in
             user.name
@@ -76,5 +105,20 @@ class SearchShiftViewModel {
         return tables.map({ (table) in
             table.title
         })
+    }
+}
+
+
+// MARK: - 検索実行の関数（可読性のためにextension）
+extension SearchShiftViewModel {
+    fileprivate func callSearchAPI(userID: Int, categoryID: Int, tableID: Int, shiftID: Int) {
+        api.getShiftSearchResults(userID: userID, categoryID: categoryID, tableID: tableID, shiftID: shiftID).done { (json) in
+            print(json)
+        }
+        .catch { (err) in
+            let tmp_err = err as NSError
+            let title = "Error(" + String(tmp_err.code) + ")"
+            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+        }
     }
 }

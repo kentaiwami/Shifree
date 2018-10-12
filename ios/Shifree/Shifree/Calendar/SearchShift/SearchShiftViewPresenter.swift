@@ -43,9 +43,17 @@ class SearchShiftViewPresenter {
         return model.getTables()
     }
     
+    func search(isForced: Bool) {
+        guard let formValue = view?.formValue else {return}
+        model.search(formValue: formValue, isForced: isForced)
+    }
 }
 
 extension SearchShiftViewPresenter: SearchShiftViewModelDelegate {
+    func showReConfirmAlert() {
+        view?.showReConfirmAlert()
+    }
+    
     func initializeUI() {
         view?.initializeUI()
     }
