@@ -1,5 +1,4 @@
-import inspect
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify
 from model import User, ShiftTable, Shift, ShiftCategory, Company, UserShift
 from database import session
 from basic_auth import api_basic_auth
