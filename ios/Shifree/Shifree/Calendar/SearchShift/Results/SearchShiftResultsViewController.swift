@@ -82,6 +82,12 @@ extension SearchShiftResultsViewController: UITableViewDelegate, UITableViewData
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = .byWordWrapping
         cell.accessoryType = .disclosureIndicator
+        
+        if presenter.isBeforeToday(index: indexPath.section) {
+            cell.textLabel?.textColor = UIColor.gray
+        }else {
+            cell.textLabel?.textColor = UIColor.black
+        }
         return cell
     }
     
@@ -90,7 +96,7 @@ extension SearchShiftResultsViewController: UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return presenter.getDateString(index: section)
+        return presenter.getHeaderString(index: section)
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

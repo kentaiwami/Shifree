@@ -27,8 +27,8 @@ class SearchShiftResultsViewPresenter {
         return model.searchResults.count
     }
     
-    func getDateString(index: Int) -> String {
-        return model.searchResults[index]["date"] as! String
+    func getHeaderString(index: Int) -> String {
+        return model.getHeaderString(index: index)
     }
     
     func getJoinString(index: Int) -> String {
@@ -41,6 +41,10 @@ class SearchShiftResultsViewPresenter {
     
     func getTitle(index: Int) -> String {
         return model.getTitle(index: index)
+    }
+    
+    func isBeforeToday(index: Int) -> Bool {
+        return model.isBeforeToday(index: index)
     }
     
     func isToday(index: Int) -> Bool {

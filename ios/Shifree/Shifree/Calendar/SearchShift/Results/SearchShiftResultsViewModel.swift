@@ -40,8 +40,30 @@ class SearchShiftResultsViewModel {
         return tmpTableViewShift
     }
     
+    func getHeaderString(index: Int) -> String {
+        let dateStr = searchResults[index]["date"] as! String
+        let date = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: dateStr)
+        let calendar = Calendar.current
+        let component = calendar.component(.weekday, from: date)
+        let weekday = component - 1
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja")
+        
+        return "\(dateStr)(\(formatter.shortWeekdaySymbols[weekday]))"
+    }
+    
     func getTitle(index: Int) -> String {
         return searchResults[index]["date"] as! String
+    }
+    
+    func isBeforeToday(index: Int) -> Bool {
+        let date = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: searchResults[index]["date"] as! String)
+        
+        if isToday(index: index) {
+            return false
+        }
+        
+        return date < Date()
     }
     
     func isToday(index: Int) -> Bool {
