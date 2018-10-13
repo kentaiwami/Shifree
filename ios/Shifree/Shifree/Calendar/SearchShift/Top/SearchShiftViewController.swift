@@ -15,6 +15,7 @@ protocol SearchShiftViewInterface: class {
     
     func initializeUI()
     func showReConfirmAlert()
+    func navigateResultsView()
     func showErrorAlert(title: String, msg: String)
 }
 
@@ -131,6 +132,14 @@ extension SearchShiftViewController {
     
     func showErrorAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
+    }
+    
+    func navigateResultsView() {
+        let searchShiftVC = SearchShiftResultsViewController()
+        let nav = UINavigationController()
+        nav.viewControllers = [searchShiftVC]
+        nav.modalTransitionStyle = .coverVertical
+        self.present(nav, animated: true, completion: nil)
     }
     
     func showReConfirmAlert() {

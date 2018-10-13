@@ -119,6 +119,9 @@
 		37DE67BB20F7A44700DB7EBC /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B820F7A44600DB7EBC /* NotificationViewController.swift */; };
 		37DE67BC20F7A44700DB7EBC /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67B920F7A44600DB7EBC /* NotificationViewModel.swift */; };
 		37DE67BD20F7A44700DB7EBC /* NotificationViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE67BA20F7A44600DB7EBC /* NotificationViewPresenter.swift */; };
+		37DE7DE321721692006F3E68 /* SearchShiftResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE7DE021721692006F3E68 /* SearchShiftResultsViewModel.swift */; };
+		37DE7DE421721692006F3E68 /* SearchShiftResultsViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE7DE121721692006F3E68 /* SearchShiftResultsViewPresenter.swift */; };
+		37DE7DE521721692006F3E68 /* SearchShiftResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE7DE221721692006F3E68 /* SearchShiftResultsViewController.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -239,6 +242,9 @@
 		37DE67B920F7A44600DB7EBC /* NotificationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		37DE67BA20F7A44600DB7EBC /* NotificationViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewPresenter.swift; sourceTree = "<group>"; };
 		37DE67BE20F85D3800DB7EBC /* Shifree.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shifree.entitlements; sourceTree = "<group>"; };
+		37DE7DE021721692006F3E68 /* SearchShiftResultsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftResultsViewModel.swift; sourceTree = "<group>"; };
+		37DE7DE121721692006F3E68 /* SearchShiftResultsViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftResultsViewPresenter.swift; sourceTree = "<group>"; };
+		37DE7DE221721692006F3E68 /* SearchShiftResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftResultsViewController.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Shifree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shifree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -570,9 +576,8 @@
 		37C771AA216DDAE200AC7E9D /* SearchShift */ = {
 			isa = PBXGroup;
 			children = (
-				37C771AC216DDB2500AC7E9D /* SearchShiftViewController.swift */,
-				37C771AB216DDB2500AC7E9D /* SearchShiftViewPresenter.swift */,
-				37C771AD216DDB2500AC7E9D /* SearchShiftViewModel.swift */,
+				37DE7DDF21721652006F3E68 /* Results */,
+				37DE7DDE2172160D006F3E68 /* Top */,
 			);
 			path = SearchShift;
 			sourceTree = "<group>";
@@ -655,6 +660,26 @@
 				37DE67B920F7A44600DB7EBC /* NotificationViewModel.swift */,
 			);
 			path = NotificationSetting;
+			sourceTree = "<group>";
+		};
+		37DE7DDE2172160D006F3E68 /* Top */ = {
+			isa = PBXGroup;
+			children = (
+				37C771AC216DDB2500AC7E9D /* SearchShiftViewController.swift */,
+				37C771AB216DDB2500AC7E9D /* SearchShiftViewPresenter.swift */,
+				37C771AD216DDB2500AC7E9D /* SearchShiftViewModel.swift */,
+			);
+			path = Top;
+			sourceTree = "<group>";
+		};
+		37DE7DDF21721652006F3E68 /* Results */ = {
+			isa = PBXGroup;
+			children = (
+				37DE7DE221721692006F3E68 /* SearchShiftResultsViewController.swift */,
+				37DE7DE121721692006F3E68 /* SearchShiftResultsViewPresenter.swift */,
+				37DE7DE021721692006F3E68 /* SearchShiftResultsViewModel.swift */,
+			);
+			path = Results;
 			sourceTree = "<group>";
 		};
 		37FF35FA20DD4CFE00FB2C68 = {
@@ -909,6 +934,7 @@
 				375519A320E50FC700EC930B /* CalendarDetailViewModel.swift in Sources */,
 				37425CB620DE568C005A3C93 /* SignUpViewController.swift in Sources */,
 				37A69B1420E897AE004E8C66 /* UserTopViewModel.swift in Sources */,
+				37DE7DE421721692006F3E68 /* SearchShiftResultsViewPresenter.swift in Sources */,
 				37A69B3920E986F6004E8C66 /* PasswordViewPresenter.swift in Sources */,
 				3742933A215D3DAD0032066D /* PrivacyPolicyViewController.swift in Sources */,
 				3765CD6920F0D9D10031D235 /* FileBrowseDetailViewPresenter.swift in Sources */,
@@ -927,12 +953,14 @@
 				37C168AB20EE82C7003A453A /* ShiftViewModel.swift in Sources */,
 				3720A2B3216B1987005E1A4E /* ExportViewPresenter.swift in Sources */,
 				37425CBC20DE700A005A3C93 /* SignUpViewModel.swift in Sources */,
+				37DE7DE521721692006F3E68 /* SearchShiftResultsViewController.swift in Sources */,
 				37C771AF216DDB2600AC7E9D /* SearchShiftViewController.swift in Sources */,
 				3765CD6120F0D9140031D235 /* FileBrowseTopViewModel.swift in Sources */,
 				37DE67B620F6465000DB7EBC /* AddShiftViewController.swift in Sources */,
 				37CC330220EA87320059C8D7 /* UserListSettingDetailViewController.swift in Sources */,
 				3765CD6E20F0E7880031D235 /* FileBrowseCell.swift in Sources */,
 				3765CD6B20F0D9D10031D235 /* FileBrowseDetailViewModel.swift in Sources */,
+				37DE7DE321721692006F3E68 /* SearchShiftResultsViewModel.swift in Sources */,
 				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
 				37DE67AD20F589C700DB7EBC /* UnknownViewController.swift in Sources */,
 				37DE67AB20F589C700DB7EBC /* UnknownViewPresenter.swift in Sources */,

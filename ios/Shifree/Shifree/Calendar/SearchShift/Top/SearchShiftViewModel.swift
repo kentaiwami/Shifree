@@ -12,7 +12,8 @@ import KeychainAccess
 protocol SearchShiftViewModelDelegate: class {
     func initializeUI()
     func showReConfirmAlert()
-    func faildAPI(title: String, msg: String)
+    func navigateResultsView()
+    func showErrorAlert(title: String, msg: String)
 }
 
 class SearchShiftViewModel {
@@ -22,6 +23,7 @@ class SearchShiftViewModel {
     private(set) var tables:[FileTable] = []
     private(set) var shifts:[Shift] = []
     private(set) var categories:[ShiftCategory] = []
+    private(set) var searchResults:[[String:UserShift]] = []
     
     func setInitData() {
         api.getShiftSearchInitData().done { (json) in
@@ -51,7 +53,7 @@ class SearchShiftViewModel {
         .catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            self.delegate?.showErrorAlert(title: title, msg: tmp_err.domain)
         }
     }
     
@@ -78,9 +80,6 @@ class SearchShiftViewModel {
                 callSearchAPI(userID: userID, categoryID: categoryID, tableID: tableID, shiftID: shiftID)
             }
         }
-        
-        
-
     }
     
     func getUsers() -> [String] {
@@ -113,12 +112,17 @@ class SearchShiftViewModel {
 extension SearchShiftViewModel {
     fileprivate func callSearchAPI(userID: Int, categoryID: Int, tableID: Int, shiftID: Int) {
         api.getShiftSearchResults(userID: userID, categoryID: categoryID, tableID: tableID, shiftID: shiftID).done { (json) in
-            print(json)
+            if json["results"].arrayValue.count == 0 {
+                self.delegate?.showErrorAlert(title: "エラー", msg: "検索結果が見つかりませんでした")
+            }else {
+                
+                self.delegate?.navigateResultsView()
+            }
         }
         .catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
+            self.delegate?.showErrorAlert(title: title, msg: tmp_err.domain)
         }
     }
 }

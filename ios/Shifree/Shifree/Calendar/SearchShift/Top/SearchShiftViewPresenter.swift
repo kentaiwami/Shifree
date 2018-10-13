@@ -50,6 +50,10 @@ class SearchShiftViewPresenter {
 }
 
 extension SearchShiftViewPresenter: SearchShiftViewModelDelegate {
+    func navigateResultsView() {
+        view?.navigateResultsView()
+    }
+    
     func showReConfirmAlert() {
         view?.showReConfirmAlert()
     }
@@ -58,7 +62,7 @@ extension SearchShiftViewPresenter: SearchShiftViewModelDelegate {
         view?.initializeUI()
     }
     
-    func faildAPI(title: String, msg: String) {
+    func showErrorAlert(title: String, msg: String) {
         view?.showErrorAlert(title: title, msg: msg)
     }
 }
