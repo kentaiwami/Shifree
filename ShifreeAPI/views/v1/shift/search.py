@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify, abort
 from model import User, ShiftTable, Shift, ShiftCategory, Company, UserShift
 from database import session
 from basic_auth import api_basic_auth
+from itertools import groupby
 
 
 app = Blueprint('shift_search_bp', __name__)
@@ -41,7 +42,7 @@ def search():
     shift_id_statement = True if shift_id == -1 else UserShift.shift_id == shift_id
     category_id_statement = True if category_id == -1 else ShiftCategory.id == category_id
 
-    results = session.query(UserShift).join(Shift, ShiftCategory, Company).filter(
+    query_results = session.query(UserShift).join(Shift, ShiftCategory, Company).filter(
         Company.id == access_user.company_id,
         user_id_statement,
         table_id_statement,
@@ -49,9 +50,13 @@ def search():
         category_id_statement
     ).all()
 
-    print('***********************')
-    print(results)
-    print(len(results))
-    print('***********************')
+    query_results.sort(key=lambda user_shift: user_shift.date)
+    results = []
+    for date, date_group in groupby(query_results, key=lambda user_shift: user_shift.date):
+        results.append({
+            'date': str(date),
+            'shift': [{'id': user_shift.id, 'user': user_shift.user.name, 'name': user_shift.shift.name} for user_shift in list(date_group)]
+        })
+
     session.close()
-    return jsonify({'results': len(results)}), 200
+    return jsonify({'results': results}), 200
