@@ -23,7 +23,7 @@ class SearchShiftViewModel {
     private(set) var tables:[FileTable] = []
     private(set) var shifts:[Shift] = []
     private(set) var categories:[ShiftCategory] = []
-    private(set) var searchResults:[[String:UserShift]] = []
+    private(set) var searchResults:[[String:Any]] = []
     
     func setInitData() {
         api.getShiftSearchInitData().done { (json) in
@@ -115,6 +115,14 @@ extension SearchShiftViewModel {
             if json["results"].arrayValue.count == 0 {
                 self.delegate?.showErrorAlert(title: "エラー", msg: "検索結果が見つかりませんでした")
             }else {
+                self.searchResults = json["results"].arrayValue.map({ oneDay in
+                    return [
+                        "date": oneDay["date"].stringValue,
+                        "shift": oneDay["shift"].arrayValue.map({ shift in
+                            return UserShift.init(id: shift["id"].intValue, name: shift["name"].stringValue, user: shift["user"].stringValue)
+                        })
+                    ]
+                })
                 
                 self.delegate?.navigateResultsView()
             }
