@@ -8,9 +8,7 @@
 
 import Foundation
 
-protocol SearchShiftResultsViewPresentable: class {
-    var username: String { get }
-}
+protocol SearchShiftResultsViewPresentable: class {}
 
 class SearchShiftResultsViewPresenter {
     
@@ -23,19 +21,10 @@ class SearchShiftResultsViewPresenter {
         model.delegate = self
     }
     
-    func postContact() {
-        guard let formValues = view?.formValue else {return}
-        model.postContact(formValues: formValues)
+    func setResults(results: [[String:Any]]) {
+        model.setResults(results: results)
     }
     
 }
 
-extension SearchShiftResultsViewPresenter: SearchShiftResultsViewModelDelegate {
-    func success() {
-        view?.success()
-    }
-    
-    func faildAPI(title: String, msg: String) {
-        view?.showErrorAlert(title: title, msg: msg)
-    }
-}
+extension SearchShiftResultsViewPresenter: SearchShiftResultsViewModelDelegate {}

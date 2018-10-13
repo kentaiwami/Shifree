@@ -31,14 +31,10 @@ class SearchShiftViewController: FormViewController, SearchShiftViewInterface {
         super.viewDidLoad()
         
         presenter = SearchShiftViewPresenter(view: self)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        
         self.navigationItem.title = "シフト検索"
         
         UIView.setAnimationsEnabled(false)
-        self.form.removeAll()
         presenter.setInitData()
         UIView.setAnimationsEnabled(true)
     }
@@ -136,6 +132,7 @@ extension SearchShiftViewController {
     
     func navigateResultsView() {
         let searchShiftVC = SearchShiftResultsViewController()
+        searchShiftVC.setData(results: presenter.getSearchResults())
         let nav = UINavigationController()
         nav.viewControllers = [searchShiftVC]
         nav.modalTransitionStyle = .coverVertical

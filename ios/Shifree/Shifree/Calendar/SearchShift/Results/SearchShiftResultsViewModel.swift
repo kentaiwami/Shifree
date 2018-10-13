@@ -7,31 +7,18 @@
 //
 
 import Foundation
-import KeychainAccess
 
-protocol SearchShiftResultsViewModelDelegate: class {
-    func success()
-    func faildAPI(title: String, msg: String)
-}
+protocol SearchShiftResultsViewModelDelegate: class {}
 
 class SearchShiftResultsViewModel {
     weak var delegate: SearchShiftResultsViewModelDelegate?
-    private let api = API()
+    private(set) var searchResults:[[String:Any]] = []
     
-    func postContact(formValues: [String:Any?]) {
-        let params = [
-            "name": formValues["name"] as! String,
-            "email": formValues["email"] as! String,
-            "content": formValues["content"] as! String
-        ]
+    func setResults(results: [[String:Any]]) {
+        searchResults = results
         
-        api.postContact(params: params).done { (json) in
-            self.delegate?.success()
-        }
-        .catch { (err) in
-            let tmp_err = err as NSError
-            let title = "Error(" + String(tmp_err.code) + ")"
-            self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
-        }
+        print("**************************")
+        print(searchResults)
+        print("**************************")
     }
 }

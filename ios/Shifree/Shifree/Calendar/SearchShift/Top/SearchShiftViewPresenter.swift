@@ -47,6 +47,10 @@ class SearchShiftViewPresenter {
         guard let formValue = view?.formValue else {return}
         model.search(formValue: formValue, isForced: isForced)
     }
+    
+    func getSearchResults() -> [[String:Any]] {
+        return model.searchResults
+    }
 }
 
 extension SearchShiftViewPresenter: SearchShiftViewModelDelegate {
