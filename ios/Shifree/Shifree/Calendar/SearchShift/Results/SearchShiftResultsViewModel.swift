@@ -16,9 +16,5 @@ class SearchShiftResultsViewModel {
     
     func setResults(results: [[String:Any]]) {
         searchResults = results
-        
-        print("**************************")
-        print(searchResults)
-        print("**************************")
     }
 }

@@ -22,9 +22,7 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
         presenter = SearchShiftResultsViewPresenter(view: self)
         presenter.setResults(results: tmpSearchResults)
         
-        UIView.setAnimationsEnabled(false)
         initializeForm()
-        UIView.setAnimationsEnabled(true)
         
         self.navigationItem.title = "検索結果"
         initializeNavigationItem()
