@@ -20,10 +20,17 @@ class UpdateTitleViewPresenter {
         model.delegate = self
     }
     
+    func setData(id: Int, title: String) {
+        model.setData(id: id, title: title)
+    }
+    
+    func getTableTitle() -> String {
+        return model.tableTitle
+    }
+    
     func tapEditDoneButton() {
         guard let formValue = view?.formValues else { return }
-        guard let tableID = view?.tableID else { return }
-        model.updateTitle(formValue: formValue, tableID: tableID)
+        model.updateTitle(formValue: formValue)
     }
 }
 

@@ -20,10 +20,13 @@ class AddCommentViewPresenter {
         model.delegate = self
     }
     
+    func setTableID(id: Int) {
+        model.setTableID(id: id)
+    }
+    
     func tapEditDoneButton() {
         guard let formValue = view?.formValues else { return }
-        guard let tableID = view?.tableID else { return }
-        model.addComment(formValue: formValue, tableID: tableID)
+        model.addComment(formValue: formValue)
     }
 }
 

@@ -105,8 +105,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     
     @objc private func TapActionButton(sendor: UIButton) {
         let addCommentAction = FloatingAction(title: "コメントの追加") { action in
-            let addCommentVC = AddCommentViewController()
-            addCommentVC.setTableID(id: self.tableID)
+            let addCommentVC = AddCommentViewController(tableID: self.tableID)
             let nav = UINavigationController()
             nav.viewControllers = [addCommentVC]
             nav.modalTransitionStyle = .coverVertical
@@ -116,8 +115,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         addCommentAction.tintColor = UIColor.white
         
         let updateShiftTitleAction = FloatingAction(title: "タイトルの変更") { action in
-            let updateTitleVC = UpdateTitleViewController()
-            updateTitleVC.setAll(tableTitle: self.presenter.getFileTable().title, tableID: self.tableID)
+            let updateTitleVC = UpdateTitleViewController(tableID: self.tableID, tableTitle: self.presenter.getFileTable().title)
             let nav = UINavigationController()
             nav.viewControllers = [updateTitleVC]
             nav.modalTransitionStyle = .coverVertical

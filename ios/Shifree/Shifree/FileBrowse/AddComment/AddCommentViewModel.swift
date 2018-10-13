@@ -17,8 +17,13 @@ protocol AddCommentViewModelDelegate: class {
 class AddCommentViewModel {
     weak var delegate: AddCommentViewModelDelegate?
     private let api = API()
+    private(set) var tableID = -1
     
-    func addComment(formValue: [String:Any?], tableID: Int) {
+    func setTableID(id: Int) {
+        tableID = id
+    }
+    
+    func addComment(formValue: [String:Any?]) {
         let text = formValue["Comment"] as! String
         
         api.addComment(text: text, id: tableID).done { (json) in
