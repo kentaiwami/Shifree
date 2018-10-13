@@ -14,18 +14,24 @@ protocol SearchShiftResultsViewInterface: class {}
 class SearchShiftResultsViewController: UIViewController, SearchShiftResultsViewInterface {
     
     private var presenter: SearchShiftResultsViewPresenter!
-    private(set) var tmpSearchResults:[[String:Any]] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initializeForm()
+        initializeNavigationItem()
+        self.navigationItem.title = "検索結果"
+    }
+    
+    init(tmpSearchResults: [[String:Any]]) {
+        super.init(nibName: nil, bundle: nil)
+        
         presenter = SearchShiftResultsViewPresenter(view: self)
         presenter.setResults(results: tmpSearchResults)
-        
-        initializeForm()
-        
-        self.navigationItem.title = "検索結果"
-        initializeNavigationItem()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func initializeForm() {
@@ -53,14 +59,7 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
 }
 
 
-// MARK: - 遷移前にデータを格納するための関数
-extension SearchShiftResultsViewController {
-    func setData(results: [[String:Any]]) {
-        tmpSearchResults = results
-    }
-}
-
-
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension SearchShiftResultsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
