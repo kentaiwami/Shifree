@@ -72,8 +72,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     }
     
     fileprivate func presentDetailView(tableID: Int) {
-        let detailVC = FileBrowseDetailViewController()
-        detailVC.setTableID(id: tableID)
+        let detailVC = FileBrowseDetailViewController(tableID: tableID)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
     

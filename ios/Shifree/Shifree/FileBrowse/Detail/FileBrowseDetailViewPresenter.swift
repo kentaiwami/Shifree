@@ -19,9 +19,16 @@ class FileBrowseDetailViewPresenter {
         model.delegate = self
     }
     
+    func setTableID(id: Int) {
+        model.setTableID(id: id)
+    }
+    
+    func getTableID() -> Int {
+        return model.tableID
+    }
+    
     func setFileTableDetail(isUpdate: Bool) {
-        guard let id = view?.tableID else { return }
-        model.setFileTableDetail(id: id, isUpdate: isUpdate)
+        model.setFileTableDetail(isUpdate: isUpdate)
     }
     
     func getFileTable() -> FileTable {
@@ -37,8 +44,7 @@ class FileBrowseDetailViewPresenter {
     }
     
     func deleteFileTable() {
-        guard let tableID = view?.tableID else {return}
-        model.deleteTable(tableID: tableID)
+        model.deleteTable()
     }
     
     func isAdmin() -> Bool {

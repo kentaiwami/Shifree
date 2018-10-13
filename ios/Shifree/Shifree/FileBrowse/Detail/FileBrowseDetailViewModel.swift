@@ -21,9 +21,14 @@ class FileBrowseDetailViewModel {
     private let api = API()
     private(set) var fileTable: FileTable = FileTable()
     private(set) var commentList: [Comment] = []
+    private(set) var tableID = -1
     
-    func setFileTableDetail(id: Int, isUpdate: Bool) {        
-        api.getFileTableDetail(id: id).done { (json) in
+    func setTableID(id: Int) {
+        tableID = id
+    }
+    
+    func setFileTableDetail(isUpdate: Bool) {
+        api.getFileTableDetail(id: tableID).done { (json) in
             self.fileTable.id = json["results"]["table_id"].intValue
             self.fileTable.origin = json["results"]["origin"].stringValue
             self.fileTable.title = json["results"]["title"].stringValue
@@ -62,7 +67,7 @@ class FileBrowseDetailViewModel {
         }
     }
     
-    func deleteTable(tableID: Int) {
+    func deleteTable() {
         api.deleteTable(id: tableID).done { (json) in
             self.delegate?.successDelete()
         }

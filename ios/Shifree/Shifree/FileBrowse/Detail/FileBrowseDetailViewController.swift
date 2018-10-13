@@ -12,8 +12,6 @@ import FloatingActionSheetController
 
 
 protocol FileBrowseDetailViewInterface: class {
-    var tableID: Int { get }
-    
     func popView()
     func initializeUI()
     func updateUI()
@@ -27,15 +25,24 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     private var pdfView: UIWebView!
     fileprivate var commentTableView: UITableView!
     fileprivate var myIndicator = UIActivityIndicatorView()
-
-    fileprivate(set) var tableID: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+    }
+    
+    init(tableID: Int) {
+        super.init(nibName: nil, bundle: nil)
+        
         presenter = FileBrowseDetailViewPresenter(view: self)
+        presenter.setTableID(id: tableID)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,7 +112,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     
     @objc private func TapActionButton(sendor: UIButton) {
         let addCommentAction = FloatingAction(title: "コメントの追加") { action in
-            let addCommentVC = AddCommentViewController(tableID: self.tableID)
+            let addCommentVC = AddCommentViewController(tableID: self.presenter.getTableID())
             let nav = UINavigationController()
             nav.viewControllers = [addCommentVC]
             nav.modalTransitionStyle = .coverVertical
@@ -115,7 +122,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         addCommentAction.tintColor = UIColor.white
         
         let updateShiftTitleAction = FloatingAction(title: "タイトルの変更") { action in
-            let updateTitleVC = UpdateTitleViewController(tableID: self.tableID, tableTitle: self.presenter.getFileTable().title)
+            let updateTitleVC = UpdateTitleViewController(tableID: self.presenter.getTableID(), tableTitle: self.presenter.getFileTable().title)
             let nav = UINavigationController()
             nav.viewControllers = [updateTitleVC]
             nav.modalTransitionStyle = .coverVertical
@@ -191,14 +198,6 @@ extension FileBrowseDetailViewController {
 }
 
 
-// MARK: - インスタンス化される前に呼ばれるべき関数
-extension FileBrowseDetailViewController {
-    func setTableID(id: Int) {
-        self.tableID = id
-    }
-}
-
-
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -234,8 +233,7 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         if presenter.isMyComment(row: indexPath.row) {
-            let editCommentVC = EditCommentViewController()
-            editCommentVC.setSelectedData(indexPath: indexPath, comment: presenter.getComments()[indexPath.row])
+            let editCommentVC = EditCommentViewController(comment: presenter.getComments()[indexPath.row])
             self.navigationController!.pushViewController(editCommentVC, animated: true)
         }
     }
