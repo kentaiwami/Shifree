@@ -23,6 +23,22 @@ class SearchShiftResultsViewPresenter {
         model.setResults(results: results)
     }
     
+    func getResultsCount() -> Int {
+        return model.searchResults.count
+    }
+    
+    func getDateString(index: Int) -> String {
+        return model.searchResults[index]["date"] as! String
+    }
+    
+    func getJoinString(index: Int) -> String {
+        return model.getJoinString(index: index)
+    }
+    
+    func isToday(index: Int) -> Bool {
+        return model.isToday(index: index)
+    }
+    
 }
 
 extension SearchShiftResultsViewPresenter: SearchShiftResultsViewModelDelegate {}
