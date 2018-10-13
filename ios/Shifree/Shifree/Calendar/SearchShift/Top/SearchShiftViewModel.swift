@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import KeychainAccess
 
 protocol SearchShiftViewModelDelegate: class {
     func initializeUI()

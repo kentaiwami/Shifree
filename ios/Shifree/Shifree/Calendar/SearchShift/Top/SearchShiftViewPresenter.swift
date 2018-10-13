@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol SearchShiftViewPresentable: class {
-    var username: String { get }
-}
-
 class SearchShiftViewPresenter {
     
     weak var view: SearchShiftViewInterface?

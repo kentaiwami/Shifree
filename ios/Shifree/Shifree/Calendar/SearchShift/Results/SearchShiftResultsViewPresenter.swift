@@ -8,8 +8,6 @@
 
 import Foundation
 
-protocol SearchShiftResultsViewPresentable: class {}
-
 class SearchShiftResultsViewPresenter {
     
     weak var view: SearchShiftResultsViewInterface?
