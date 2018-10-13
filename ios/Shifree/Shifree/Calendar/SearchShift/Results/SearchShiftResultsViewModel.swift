@@ -29,6 +29,21 @@ class SearchShiftResultsViewModel {
         return joined
     }
     
+    func getTableViewShift(index: Int) -> TableViewShift {
+        var tmpTableViewShift = TableViewShift()
+        let userShifts = searchResults[index]["shift"] as! [UserShift]
+        
+        userShifts.forEach { (userShift) in
+            tmpTableViewShift.shifts.append(UserShift.init(id: userShift.id, name: userShift.name, user: userShift.user))
+        }
+        
+        return tmpTableViewShift
+    }
+    
+    func getTitle(index: Int) -> String {
+        return searchResults[index]["date"] as! String
+    }
+    
     func isToday(index: Int) -> Bool {
         let today = getFormatterStringFromDate(format: "yyyy-MM-dd", date: Date())
         let date = searchResults[index]["date"] as! String

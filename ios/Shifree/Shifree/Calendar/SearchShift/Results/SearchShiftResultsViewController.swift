@@ -14,6 +14,7 @@ protocol SearchShiftResultsViewInterface: class {}
 class SearchShiftResultsViewController: UIViewController, SearchShiftResultsViewInterface {
     
     private var presenter: SearchShiftResultsViewPresenter!
+    private var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,16 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
         initializeForm()
         initializeNavigationItem()
         self.navigationItem.title = "検索結果"
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if tableView != nil {
+            tableView.indexPathsForSelectedRows?.forEach({
+                tableView.deselectRow(at: $0, animated: true)
+            })
+        }
     }
     
     init(tmpSearchResults: [[String:Any]]) {
@@ -35,7 +46,7 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
     }
     
     private func initializeForm() {
-        let tableView = UITableView()
+        tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -94,19 +105,15 @@ extension SearchShiftResultsViewController: UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
-//        let detailVC = CalendarDetailViewController()
-//        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
-//        detailVC.setSelectedData(
-//            memo: presenter.getMemo(),
-//            isFollowing: presenter.getIsFollowing(),
-//            title: currentDateStr + " " + selectedShiftCategoryName,
-//            indexPath: indexPath,
-//            tableViewShifts: presenter.getTableViewShift(tag: tableView.tag),
-//            targetUserShift: presenter.getTargetUserShift()
-//        )
-//
-//        self.navigationController!.pushViewController(detailVC, animated: true)
+        let detailVC = CalendarDetailViewController(
+            title: presenter.getTitle(index: indexPath.section),
+            tableViewShift: presenter.getTableViewShift(index: indexPath.section),
+            memo: "",
+            isFollowing: true,
+            targetUserShift: TargetUserShift()
+        )
+        
+        self.navigationController!.pushViewController(detailVC, animated: true)
     }
     
     
