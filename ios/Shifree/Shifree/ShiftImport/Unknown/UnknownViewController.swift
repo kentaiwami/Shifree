@@ -10,7 +10,6 @@ import UIKit
 import Eureka
 
 protocol UnknownViewInterface: class {
-    var unknown:[Unknown] { get }
     var formValues:[String:Any?] { get }
     
     func initializeUI()
@@ -22,21 +21,24 @@ class UnknownViewController: FormViewController, UnknownViewInterface {
         return self.form.values()
     }
     
-    var unknown:[Unknown] = []
-    
     private var presenter: UnknownViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializePresenter()
-        presenter.setUnknown(unknown: unknown)
         presenter.setUserCompanyShiftNames()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(unknown: [Unknown]) {
+        super.init(nibName: nil, bundle: nil)
+        
+        presenter = UnknownViewPresenter(view: self)
+        presenter.setUnknown(unknown: unknown)
         self.navigationItem.title = "Unknownの編集"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     fileprivate func initializeForm() {
@@ -80,10 +82,6 @@ class UnknownViewController: FormViewController, UnknownViewInterface {
         topVC?.modalTransitionStyle = .crossDissolve
         self.present(topVC!, animated: true, completion: nil)
     }
-    
-    private func initializePresenter() {
-        presenter = UnknownViewPresenter(view: self)
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -101,13 +99,5 @@ extension UnknownViewController {
     
     func showAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
-    }
-}
-
-
-// MARK: - インスタンス化される際に、呼ばれるべき関数
-extension UnknownViewController {
-    func setUnknown(unknown: [Unknown]) {
-        self.unknown = unknown
     }
 }

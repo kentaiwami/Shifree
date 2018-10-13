@@ -10,7 +10,6 @@ import UIKit
 import Eureka
 
 protocol AddShiftViewInterface: class {
-    var unRegisteredShift:[String] { get }
     var formValues:[[String]] { get }
     
     func initializeUI()
@@ -34,21 +33,24 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
         return results
     }
     
-    var unRegisteredShift:[String] = []
-    
     private var presenter: AddShiftViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializePresenter()
         presenter.setShiftCategory()
-        presenter.setUnRegisteredShift(unRegisteredShift: unRegisteredShift)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(unRegisteredShift: [String]) {
+        super.init(nibName: nil, bundle: nil)
+        
+        presenter = AddShiftViewPresenter(view: self)
+        presenter.setUnRegisteredShift(unRegisteredShift: unRegisteredShift)
         self.navigationItem.title = "シフトの追加"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     fileprivate func initializeForm() {
@@ -109,10 +111,6 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
     @objc private func tapCloseButton() {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    private func initializePresenter() {
-        presenter = AddShiftViewPresenter(view: self)
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -132,13 +130,5 @@ extension AddShiftViewController {
         showStandardAlert(title: title, msg: msg, vc: self) {
             self.dismiss(animated: true, completion: nil)
         }
-    }
-}
-
-
-// MARK: - インスタンス化される際に、呼ばれるべき関数
-extension AddShiftViewController {
-    func setUnRegisteredShift(shift: [String]) {
-        self.unRegisteredShift = shift
     }
 }

@@ -226,8 +226,7 @@ extension ShiftImportViewController {
     
     func successImportButExistUnknown(unknown: [Unknown]) {
         let nowEditButton = DefaultButton(title: "編集する", dismissOnTap: true) {
-            let unknownVC = UnknownViewController()
-            unknownVC.setUnknown(unknown: unknown)
+            let unknownVC = UnknownViewController(unknown: unknown)
             let nav = UINavigationController()
             nav.viewControllers = [unknownVC]
             self.present(nav, animated: true, completion: nil)
@@ -244,8 +243,7 @@ extension ShiftImportViewController {
     
     func faildImportBecauseUnRegisteredShift(unRegisteredShift: [String]) {
         let nowEditButton = DefaultButton(title: "追加する", dismissOnTap: true) {
-            let addShiftVC = AddShiftViewController()
-            addShiftVC.setUnRegisteredShift(shift: unRegisteredShift)
+            let addShiftVC = AddShiftViewController(unRegisteredShift: unRegisteredShift)
             let nav = UINavigationController()
             nav.viewControllers = [addShiftVC]
             self.present(nav, animated: true, completion: nil)
