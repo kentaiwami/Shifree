@@ -344,9 +344,9 @@
 			isa = PBXGroup;
 			children = (
 				37C771B1216E78CD00AC7E9D /* Top */,
+				375519A720E686F700EC930B /* CalendarDetail */,
 				37C771AA216DDAE200AC7E9D /* SearchShift */,
 				373F36D920E7D4400079B28F /* PopUpColorTableView */,
-				375519A720E686F700EC930B /* CalendarDetail */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";

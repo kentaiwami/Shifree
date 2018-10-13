@@ -11,7 +11,6 @@ import Eureka
 
 
 protocol CalendarDetailViewInterface: class {
-    var indexPath: IndexPath { get }
     var formValues: [String:Any?] { get }
     
     func initializeUI()
@@ -21,32 +20,22 @@ protocol CalendarDetailViewInterface: class {
 
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
     var formValues: [String : Any?] = [:]
-    
-    // CalendarViewControllerで選択されたデータ
-    fileprivate(set) var indexPath: IndexPath = []
-    fileprivate(set) var navigationTitle: String = ""
-    fileprivate(set) var memo: String = ""
-    fileprivate(set) var tableViewShifts: [TableViewShift] = []
-    fileprivate(set) var targetUserShift: TargetUserShift!
-    fileprivate(set) var isFollowing: Bool = false
-    
-    fileprivate var presenter: CalendarDetailViewPresenter!
+    var presenter: CalendarDetailViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializePresenter()
         setCompanyShiftNames()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationItem.title = navigationTitle
+    init(title: String) {
+        super.init(nibName: nil, bundle: nil)
+        presenter = CalendarDetailViewPresenter(view: self)
+        self.navigationItem.title = title
     }
     
-    private func initializePresenter() {
-        presenter = CalendarDetailViewPresenter(view: self)
-        presenter.setSelectedData(tableViewShift: tableViewShifts[indexPath.section], memo: memo, isFollowing: isFollowing, targetUserShift: targetUserShift)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setCompanyShiftNames() {
@@ -125,12 +114,12 @@ extension CalendarDetailViewController {
 
 // MARK: - インスタンス化される際に、呼ぶべき関数
 extension CalendarDetailViewController {
-    func setSelectedData(memo: String, isFollowing: Bool, title: String, indexPath: IndexPath, tableViewShifts: [TableViewShift], targetUserShift: TargetUserShift) {
-        navigationTitle = title
-        self.memo = memo
-        self.isFollowing = isFollowing
-        self.indexPath = indexPath
-        self.tableViewShifts = tableViewShifts
-        self.targetUserShift = targetUserShift
-    }
+//    func setSelectedData(memo: String, isFollowing: Bool, title: String, indexPath: IndexPath, tableViewShifts: [TableViewShift], targetUserShift: TargetUserShift) {
+//        navigationTitle = title
+//        self.memo = memo
+//        self.isFollowing = isFollowing
+//        self.indexPath = indexPath
+//        self.tableViewShifts = tableViewShifts
+//        self.targetUserShift = targetUserShift
+//    }
 }

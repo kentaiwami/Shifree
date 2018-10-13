@@ -576,19 +576,11 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
         headerTitle?.textLabel?.textColor = txtColor
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
-        let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
-        let detailVC = CalendarDetailViewController()
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
-        detailVC.setSelectedData(
-            memo: presenter.getMemo(),
-            isFollowing: presenter.getIsFollowing(),
-            title: currentDateStr + " " + selectedShiftCategoryName,
-            indexPath: indexPath,
-            tableViewShifts: presenter.getTableViewShift(tag: tableView.tag),
-            targetUserShift: presenter.getTargetUserShift()
-        )
-        
+        let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
+        let detailVC = CalendarDetailViewController(title: "\(currentDateStr) \(selectedShiftCategoryName)")
+        detailVC.presenter.setSelectedData(tableViewShift: presenter.getTableViewShift(tag: tableView.tag)[indexPath.section], memo: presenter.getMemo(), isFollowing: presenter.getIsFollowing(), targetUserShift: presenter.getTargetUserShift())
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
 }
