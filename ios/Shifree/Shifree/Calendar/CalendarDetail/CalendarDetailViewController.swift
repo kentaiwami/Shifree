@@ -20,7 +20,7 @@ protocol CalendarDetailViewInterface: class {
 
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
     var formValues: [String : Any?] = [:]
-    var presenter: CalendarDetailViewPresenter!
+    fileprivate var presenter: CalendarDetailViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +28,12 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         setCompanyShiftNames()
     }
     
-    init(title: String) {
+    init(title: String, tableViewShift: TableViewShift, memo: String, isFollowing: Bool, targetUserShift: TargetUserShift) {
         super.init(nibName: nil, bundle: nil)
+        
         presenter = CalendarDetailViewPresenter(view: self)
+        presenter.setSelectedData(tableViewShift: tableViewShift, memo: memo, isFollowing: isFollowing, targetUserShift: targetUserShift)
+        
         self.navigationItem.title = title
     }
     
