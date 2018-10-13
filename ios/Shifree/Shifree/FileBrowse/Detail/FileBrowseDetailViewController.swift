@@ -173,6 +173,12 @@ extension FileBrowseDetailViewController {
         self.navigationItem.title = presenter.getFileTable().title
         initializeNavigationItem()
         commentTableView.reloadData()
+        
+        if presenter.getComments().count == 0 {
+            commentTableView.backgroundView?.isHidden = false
+        }else {
+            commentTableView.backgroundView?.isHidden = true
+        }
     }
     
     func showErrorAlert(title: String, msg: String) {
@@ -192,6 +198,8 @@ extension FileBrowseDetailViewController {
     }
 }
 
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
