@@ -11,7 +11,6 @@ import Eureka
 import PopupDialog
 
 protocol ShiftImportViewInterface: class {
-    var filePath: URL { get }
     var formValues: [String:Any?] { get }
     
     func successImport()
@@ -22,7 +21,6 @@ protocol ShiftImportViewInterface: class {
 }
 
 class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
-    var filePath: URL = URL(fileURLWithPath: "")
     var formValues: [String : Any?] {
         return self.form.values()
     }
@@ -31,14 +29,19 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializePresenter()
         presenter.setThreshold()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(path: URL) {
+        super.init(nibName: nil, bundle: nil)
+        presenter = ShiftImportViewPresenter(view: self)
+        presenter.setFilePath(path: path)
+        
         self.navigationItem.title = "シフトの取り込み"
-        tableView.reloadData()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     fileprivate func initializeForm() {
@@ -188,10 +191,6 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
         self.present(topViewController!, animated: true, completion: nil)
     }
     
-    private func initializePresenter() {
-        presenter = ShiftImportViewPresenter(view: self)
-    }
-    
     fileprivate func navigateCalendar() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let topVC = storyboard.instantiateInitialViewController()
@@ -261,13 +260,5 @@ extension ShiftImportViewController {
     
     func showErrorAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
-    }
-}
-
-
-// MARK: - インスタンス化される際に呼ぶべき関数
-extension ShiftImportViewController {
-    func setFilePath(path: URL) {
-        self.filePath = path
     }
 }

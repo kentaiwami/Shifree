@@ -23,6 +23,7 @@ class ShiftImportViewModel {
     private(set) var usernameTH:Float = 0.0
     private(set) var joinTH:Float = 0.0
     private(set) var dayShiftTH:Float = 0.0
+    private(set) var filePath:URL = URL(fileURLWithPath: "")
     
     func setThreshold() {
         api.getThreshold().done { (json) in
@@ -40,7 +41,11 @@ class ShiftImportViewModel {
         }
     }
     
-    func importShift(formValues: [String:Any?], filePath: URL) {
+    func setfilePaht(path: URL) {
+        filePath = path
+    }
+    
+    func importShift(formValues: [String:Any?]) {
         let start = getFormatterStringFromDate(format: "yyyy-MM-dd", date: formValues["start"] as! Date)
         let end = getFormatterStringFromDate(format: "yyyy-MM-dd", date: formValues["end"] as! Date)
         let number = formValues["number"] as! String

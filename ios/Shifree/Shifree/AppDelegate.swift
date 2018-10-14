@@ -24,8 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let keychain = Keychain()
         if let tmp = try! keychain.getString("role") {
             if tmp == "admin" {
-                let shiftImportVC = ShiftImportViewController()
-                shiftImportVC.setFilePath(path: url)
+                let shiftImportVC = ShiftImportViewController(path: url)
                 let nav = UINavigationController()
                 nav.viewControllers = [shiftImportVC]
                 self.window!.rootViewController = nav
