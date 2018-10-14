@@ -19,8 +19,8 @@ class SearchShiftResultsViewPresenter {
         model.delegate = self
     }
     
-    func setResults(results: [[String:Any]]) {
-        model.setResults(results: results)
+    func setData(results: [[String:Any]], query: [String:Int]) {
+        model.setData(results: results, query: query)
     }
     
     func getResultsCount() -> Int {

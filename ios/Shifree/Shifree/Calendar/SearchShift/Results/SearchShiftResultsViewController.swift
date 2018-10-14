@@ -32,11 +32,11 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
         })
     }
     
-    init(tmpSearchResults: [[String:Any]]) {
+    init(searchResults: [[String:Any]], query: [String:Int]) {
         super.init(nibName: nil, bundle: nil)
         
         presenter = SearchShiftResultsViewPresenter(view: self)
-        presenter.setResults(results: tmpSearchResults)
+        presenter.setData(results: searchResults, query: query)
     }
     
     required init?(coder aDecoder: NSCoder) {

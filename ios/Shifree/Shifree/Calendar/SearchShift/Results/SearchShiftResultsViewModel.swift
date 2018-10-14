@@ -13,9 +13,11 @@ protocol SearchShiftResultsViewModelDelegate: class {}
 class SearchShiftResultsViewModel {
     weak var delegate: SearchShiftResultsViewModelDelegate?
     private(set) var searchResults:[[String:Any]] = []
+    private(set) var query:[String:Int] = [:]
     
-    func setResults(results: [[String:Any]]) {
+    func setData(results: [[String:Any]], query: [String:Int]) {
         searchResults = results
+        self.query = query
     }
     
     func getJoinString(index: Int) -> String {

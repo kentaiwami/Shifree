@@ -23,6 +23,7 @@ class SearchShiftViewModel {
     private(set) var shifts:[Shift] = []
     private(set) var categories:[ShiftCategory] = []
     private(set) var searchResults:[[String:Any]] = []
+    private(set) var query:[String:Int] = [:]
     
     func setInitData() {
         api.getShiftSearchInitData().done { (json) in
@@ -123,6 +124,7 @@ extension SearchShiftViewModel {
                     ]
                 })
                 
+                self.query = ["userID": userID, "categoryID":categoryID, "tableID":tableID, "shiftID":shiftID]
                 self.delegate?.navigateResultsView()
             }
         }

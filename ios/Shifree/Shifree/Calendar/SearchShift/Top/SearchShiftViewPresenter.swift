@@ -47,6 +47,10 @@ class SearchShiftViewPresenter {
     func getSearchResults() -> [[String:Any]] {
         return model.searchResults
     }
+    
+    func getQuery() -> [String:Int] {
+        return model.query
+    }
 }
 
 extension SearchShiftViewPresenter: SearchShiftViewModelDelegate {

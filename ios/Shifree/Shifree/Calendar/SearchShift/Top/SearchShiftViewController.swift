@@ -131,7 +131,7 @@ extension SearchShiftViewController {
     }
     
     func navigateResultsView() {
-        let searchShiftVC = SearchShiftResultsViewController(tmpSearchResults: presenter.getSearchResults())
+        let searchShiftVC = SearchShiftResultsViewController(searchResults: presenter.getSearchResults(), query: presenter.getQuery())
         let nav = UINavigationController()
         nav.viewControllers = [searchShiftVC]
         nav.modalTransitionStyle = .coverVertical
