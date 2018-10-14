@@ -46,8 +46,10 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
     }
     
     fileprivate func initializeNavigationItem() {
-        let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
-        self.navigationItem.setRightBarButton(check, animated: true)
+        if presenter.isAdmin() || presenter.isTargetInclude() {
+            let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
+            self.navigationItem.setRightBarButton(check, animated: true)
+        }
     }
     
     @objc private func tapEditDoneButton() {
