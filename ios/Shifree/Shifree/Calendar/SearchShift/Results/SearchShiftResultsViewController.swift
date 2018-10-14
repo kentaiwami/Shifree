@@ -27,11 +27,9 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if tableView != nil {
-            tableView.indexPathsForSelectedRows?.forEach({
-                tableView.deselectRow(at: $0, animated: true)
-            })
-        }
+        tableView.indexPathsForSelectedRows?.forEach({
+            tableView.deselectRow(at: $0, animated: true)
+        })
     }
     
     init(tmpSearchResults: [[String:Any]]) {
