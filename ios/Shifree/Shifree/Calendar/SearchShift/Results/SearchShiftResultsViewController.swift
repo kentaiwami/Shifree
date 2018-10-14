@@ -112,7 +112,7 @@ extension SearchShiftResultsViewController: UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = CalendarDetailViewController(
-            title: presenter.getTitle(index: indexPath.section),
+            title: presenter.getHeaderString(index: indexPath.section),
             tableViewShift: presenter.getTableViewShift(index: indexPath.section),
             memo: "",
             isFollowing: true,

@@ -52,10 +52,6 @@ class SearchShiftResultsViewModel {
         return "\(dateStr)(\(formatter.shortWeekdaySymbols[weekday]))"
     }
     
-    func getTitle(index: Int) -> String {
-        return searchResults[index]["date"] as! String
-    }
-    
     func isBeforeToday(index: Int) -> Bool {
         let date = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: searchResults[index]["date"] as! String)
         

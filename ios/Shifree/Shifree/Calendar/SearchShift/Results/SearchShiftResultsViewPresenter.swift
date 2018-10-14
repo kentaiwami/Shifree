@@ -39,10 +39,6 @@ class SearchShiftResultsViewPresenter {
         return model.getTableViewShift(index: index)
     }
     
-    func getTitle(index: Int) -> String {
-        return model.getTitle(index: index)
-    }
-    
     func isBeforeToday(index: Int) -> Bool {
         return model.isBeforeToday(index: index)
     }
