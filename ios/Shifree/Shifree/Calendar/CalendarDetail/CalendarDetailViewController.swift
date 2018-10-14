@@ -113,16 +113,3 @@ extension CalendarDetailViewController {
         self.navigationController?.popViewController(animated: true)
     }
 }
-
-
-// MARK: - インスタンス化される際に、呼ぶべき関数
-extension CalendarDetailViewController {
-//    func setSelectedData(memo: String, isFollowing: Bool, title: String, indexPath: IndexPath, tableViewShifts: [TableViewShift], targetUserShift: TargetUserShift) {
-//        navigationTitle = title
-//        self.memo = memo
-//        self.isFollowing = isFollowing
-//        self.indexPath = indexPath
-//        self.tableViewShifts = tableViewShifts
-//        self.targetUserShift = targetUserShift
-//    }
-}
