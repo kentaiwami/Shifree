@@ -329,7 +329,7 @@
 			path = SignUp;
 			sourceTree = "<group>";
 		};
-		373F36D920E7D4400079B28F /* PopUpColorTableView */ = {
+		373F36D920E7D4400079B28F /* PopUpColor */ = {
 			isa = PBXGroup;
 			children = (
 				373F36D720E7CCCD0079B28F /* PopUpColorViewController.swift */,
@@ -337,7 +337,7 @@
 				3729107520E7EE4C00931BEA /* PopUpColorViewModel.swift */,
 				370031A320EDE31500813685 /* PopUpColorViewEntity.swift */,
 			);
-			path = PopUpColorTableView;
+			path = PopUpColor;
 			sourceTree = "<group>";
 		};
 		37425CC120DE8928005A3C93 /* Calendar */ = {
@@ -346,7 +346,7 @@
 				37C771B1216E78CD00AC7E9D /* Top */,
 				375519A720E686F700EC930B /* CalendarDetail */,
 				37C771AA216DDAE200AC7E9D /* SearchShift */,
-				373F36D920E7D4400079B28F /* PopUpColorTableView */,
+				373F36D920E7D4400079B28F /* PopUpColor */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
