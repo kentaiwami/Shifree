@@ -47,6 +47,25 @@ class SearchShiftResultsViewPresenter {
         return model.isToday(index: index)
     }
     
+    func setPrevControllerisDetailView(value: Bool) {
+        return model.setPrevControllerisDetailView(value: value)
+    }
+    
+    func getPrevControllerisDetailView() -> Bool {
+        return model.prevControllerisDetailView
+    }
+    
+    func updateData() {
+        model.updateData()
+    }
 }
 
-extension SearchShiftResultsViewPresenter: SearchShiftResultsViewModelDelegate {}
+extension SearchShiftResultsViewPresenter: SearchShiftResultsViewModelDelegate {
+    func updateView() {
+        view?.updateView()
+    }
+    
+    func showErrorAlert(title: String, msg: String) {
+        view?.showErrorAlert(title: title, msg: msg)
+    }
+}

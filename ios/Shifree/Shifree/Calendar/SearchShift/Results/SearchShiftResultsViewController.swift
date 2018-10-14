@@ -8,7 +8,10 @@
 
 import UIKit
 
-protocol SearchShiftResultsViewInterface: class {}
+protocol SearchShiftResultsViewInterface: class {
+    func updateView()
+    func showErrorAlert(title: String, msg: String)
+}
 
 
 class SearchShiftResultsViewController: UIViewController, SearchShiftResultsViewInterface {
@@ -30,6 +33,11 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
         tableView.indexPathsForSelectedRows?.forEach({
             tableView.deselectRow(at: $0, animated: true)
         })
+        
+        if presenter.getPrevControllerisDetailView() {
+            presenter.updateData()
+            presenter.setPrevControllerisDetailView(value: false)
+        }
     }
     
     init(searchResults: [[String:Any]], query: [String:Int]) {
@@ -64,6 +72,19 @@ class SearchShiftResultsViewController: UIViewController, SearchShiftResultsView
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+}
+
+
+
+// MARK: - Presenterからの呼び出し
+extension SearchShiftResultsViewController {
+    func updateView() {
+        tableView.reloadData()
+    }
+    
+    func showErrorAlert(title: String, msg: String) {
+        showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
 
@@ -109,6 +130,8 @@ extension SearchShiftResultsViewController: UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.setPrevControllerisDetailView(value: true)
+        
         let detailVC = CalendarDetailViewController(
             title: presenter.getHeaderString(index: indexPath.section),
             tableViewShift: presenter.getTableViewShift(index: indexPath.section),
@@ -119,6 +142,4 @@ extension SearchShiftResultsViewController: UITableViewDelegate, UITableViewData
         
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
-    
-    
 }

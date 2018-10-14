@@ -8,12 +8,18 @@
 
 import Foundation
 
-protocol SearchShiftResultsViewModelDelegate: class {}
+protocol SearchShiftResultsViewModelDelegate: class {
+    func updateView()
+    func showErrorAlert(title: String, msg: String)
+}
 
 class SearchShiftResultsViewModel {
     weak var delegate: SearchShiftResultsViewModelDelegate?
+    private let api = API()
+    
     private(set) var searchResults:[[String:Any]] = []
     private(set) var query:[String:Int] = [:]
+    private(set) var prevControllerisDetailView = false
     
     func setData(results: [[String:Any]], query: [String:Int]) {
         searchResults = results
@@ -69,5 +75,30 @@ class SearchShiftResultsViewModel {
         let date = searchResults[index]["date"] as! String
         
         return today == date
+    }
+    
+    func setPrevControllerisDetailView(value: Bool) {
+        prevControllerisDetailView = value
+    }
+    
+    func updateData() {
+        api.getShiftSearchResults(userID: query["userID"]!, categoryID: query["categoryID"]!, tableID: query["tableID"]!, shiftID: query["shiftID"]!).done { (json) in
+            self.searchResults = json["results"].arrayValue.map({ oneDay in
+                return [
+                    "date": oneDay["date"].stringValue,
+                    "shift": oneDay["shift"].arrayValue.map({ shift in
+                        return UserShift.init(id: shift["id"].intValue, name: shift["name"].stringValue, user: shift["user"].stringValue)
+                    })
+                ]
+            })
+            
+            self.delegate?.updateView()
+            
+            }
+            .catch { (err) in
+                let tmp_err = err as NSError
+                let title = "Error(" + String(tmp_err.code) + ")"
+                self.delegate?.showErrorAlert(title: title, msg: tmp_err.domain)
+        }
     }
 }
