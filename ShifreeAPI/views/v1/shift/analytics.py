@@ -1,6 +1,6 @@
 import inspect
 from flask import Blueprint, request, jsonify, abort
-from model import User, UserShift, Shift, ShiftCategory, ShiftTable
+from model import User, UserShift, Shift, ShiftCategory, ShiftTable, Follow
 from database import session
 from basic_auth import api_basic_auth
 import collections
@@ -14,6 +14,16 @@ app = Blueprint('user_shift_analytics_bp', __name__)
 def get():
     range = request.args.get('range', default='', type=str)
     access_user = session.query(User).filter(User.code == api_basic_auth.username()).one()
+
+    follow = session.query(Follow, User) \
+        .join(User, Follow.follow_id == User.id) \
+        .filter(Follow.user_id == access_user.id) \
+        .one_or_none()
+
+    if follow:
+        current_user = session.query(User).filter(User.id == follow[1].id).one()
+    else:
+        current_user = access_user
 
     if range == 'latest':
         offset = 0
@@ -31,14 +41,14 @@ def get():
 
 
     tables = session.query(ShiftTable).filter(
-        ShiftTable.company_id == access_user.company_id
+        ShiftTable.company_id == current_user.company_id
     ).order_by(ShiftTable.start.desc()).limit(limit).offset(offset).all()
 
     results = []
 
     for table in tables:
         user_shift_category = session.query(UserShift, ShiftCategory).join(ShiftTable, Shift, ShiftCategory).filter(
-            UserShift.user_id == access_user.id,
+            UserShift.user_id == current_user.id,
             ShiftTable.id == table.id
         ).all()
 
@@ -60,4 +70,4 @@ def get():
         })
 
     session.close()
-    return jsonify({'results': results}), 200
+    return jsonify({'results': {'table': results, 'follow': True if follow else False}}), 200
