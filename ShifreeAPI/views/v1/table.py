@@ -278,7 +278,7 @@ def get_all():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     tables = session.query(ShiftTable)\
         .filter(ShiftTable.company_id == user.company_id)\
-        .order_by(ShiftTable.created_at.desc())\
+        .order_by(ShiftTable.start.desc())\
         .limit(10).offset(offset).all()
 
     results = []
