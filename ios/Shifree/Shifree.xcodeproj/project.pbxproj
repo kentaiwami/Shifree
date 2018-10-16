@@ -122,6 +122,9 @@
 		37DE7DE321721692006F3E68 /* SearchShiftResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE7DE021721692006F3E68 /* SearchShiftResultsViewModel.swift */; };
 		37DE7DE421721692006F3E68 /* SearchShiftResultsViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE7DE121721692006F3E68 /* SearchShiftResultsViewPresenter.swift */; };
 		37DE7DE521721692006F3E68 /* SearchShiftResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DE7DE221721692006F3E68 /* SearchShiftResultsViewController.swift */; };
+		37EF71BA2175D0DC00DBEF0F /* AnalyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EF71B72175D0DC00DBEF0F /* AnalyticsViewController.swift */; };
+		37EF71BB2175D0DC00DBEF0F /* AnalyticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EF71B82175D0DC00DBEF0F /* AnalyticsViewModel.swift */; };
+		37EF71BC2175D0DC00DBEF0F /* AnalyticsViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EF71B92175D0DC00DBEF0F /* AnalyticsViewPresenter.swift */; };
 		37FF360720DD4CFE00FB2C68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */; };
 		37FF361020DD4D0200FB2C68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37FF360F20DD4D0200FB2C68 /* Assets.xcassets */; };
 		37FF361320DD4D0200FB2C68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37FF361120DD4D0200FB2C68 /* LaunchScreen.storyboard */; };
@@ -245,6 +248,9 @@
 		37DE7DE021721692006F3E68 /* SearchShiftResultsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftResultsViewModel.swift; sourceTree = "<group>"; };
 		37DE7DE121721692006F3E68 /* SearchShiftResultsViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftResultsViewPresenter.swift; sourceTree = "<group>"; };
 		37DE7DE221721692006F3E68 /* SearchShiftResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShiftResultsViewController.swift; sourceTree = "<group>"; };
+		37EF71B72175D0DC00DBEF0F /* AnalyticsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsViewController.swift; sourceTree = "<group>"; };
+		37EF71B82175D0DC00DBEF0F /* AnalyticsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsViewModel.swift; sourceTree = "<group>"; };
+		37EF71B92175D0DC00DBEF0F /* AnalyticsViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsViewPresenter.swift; sourceTree = "<group>"; };
 		37FF360320DD4CFE00FB2C68 /* Shifree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shifree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37FF360620DD4CFE00FB2C68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37FF360F20DD4D0200FB2C68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -442,6 +448,7 @@
 				37A69B2720E8A155004E8C66 /* Salary */,
 				37C05D2F2154041A00CFCCEC /* FollowViewSetting */,
 				3720A2AD216B1941005E1A4E /* Export */,
+				37EF71B62175D0A400DBEF0F /* Analytics */,
 				37429335215D3D450032066D /* PrivacyPolicy */,
 				374AA6C3215DE94400E37686 /* Contact */,
 			);
@@ -682,6 +689,16 @@
 			path = Results;
 			sourceTree = "<group>";
 		};
+		37EF71B62175D0A400DBEF0F /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				37EF71B72175D0DC00DBEF0F /* AnalyticsViewController.swift */,
+				37EF71B92175D0DC00DBEF0F /* AnalyticsViewPresenter.swift */,
+				37EF71B82175D0DC00DBEF0F /* AnalyticsViewModel.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		37FF35FA20DD4CFE00FB2C68 = {
 			isa = PBXGroup;
 			children = (
@@ -821,6 +838,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Shifree/Pods-Shifree-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
@@ -839,6 +857,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
@@ -895,6 +914,7 @@
 				3772662A20EA70CE0056D3D0 /* UserListViewEntity.swift in Sources */,
 				370A2FFC212DB82600B8082F /* UpdateTitleViewController.swift in Sources */,
 				37DE67A420F4797400DB7EBC /* ShiftImportViewPresenter.swift in Sources */,
+				37EF71BC2175D0DC00DBEF0F /* AnalyticsViewPresenter.swift in Sources */,
 				370031A420EDE31500813685 /* PopUpColorViewEntity.swift in Sources */,
 				37A69B2320E8A0C2004E8C66 /* PasswordViewController.swift in Sources */,
 				3790330620F1EA9100C2534F /* EditCommentViewController.swift in Sources */,
@@ -962,6 +982,8 @@
 				3765CD6B20F0D9D10031D235 /* FileBrowseDetailViewModel.swift in Sources */,
 				37DE7DE321721692006F3E68 /* SearchShiftResultsViewModel.swift in Sources */,
 				37A69B2D20E8D3E1004E8C66 /* UserNameViewModel.swift in Sources */,
+				37EF71BA2175D0DC00DBEF0F /* AnalyticsViewController.swift in Sources */,
+				37EF71BB2175D0DC00DBEF0F /* AnalyticsViewModel.swift in Sources */,
 				37DE67AD20F589C700DB7EBC /* UnknownViewController.swift in Sources */,
 				37DE67AB20F589C700DB7EBC /* UnknownViewPresenter.swift in Sources */,
 				37C771B0216DDB2600AC7E9D /* SearchShiftViewModel.swift in Sources */,

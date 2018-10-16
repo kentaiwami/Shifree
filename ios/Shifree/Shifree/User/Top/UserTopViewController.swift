@@ -75,6 +75,7 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
         let salaryVC = SalaryViewController()
         let followVC = FollowSettingViewController()
         let exportVC = ExportViewController()
+        let analyticsVC = AnalyticsViewController()
         let privacyPolicyVC = PrivacyPolicyViewController()
         let contactVC = ContactViewController()
         
@@ -124,6 +125,12 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
             <<< ButtonRow() {
                 $0.title = "エクスポート"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return exportVC}, onDismiss: {exportVC in exportVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+        }
+        
+            <<< ButtonRow() {
+                $0.title = "シフトの集計結果"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return analyticsVC}, onDismiss: {analyticsVC in analyticsVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
         }
         
