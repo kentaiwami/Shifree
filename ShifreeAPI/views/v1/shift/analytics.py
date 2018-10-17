@@ -58,6 +58,7 @@ def get():
     else:
         current_user_color_results = access_user_color_results
 
+
     results = []
 
     for table in tables:
