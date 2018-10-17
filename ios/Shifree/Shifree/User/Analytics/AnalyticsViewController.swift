@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import Charts
 
 protocol AnalyticsViewInterface: class {
     var formValue: [String:Any?] { get }
@@ -27,103 +28,62 @@ class AnalyticsViewController: FormViewController, AnalyticsViewInterface {
         super.viewDidLoad()
         
         presenter = AnalyticsViewPresenter(view: self)
+        initializeUI()
+        self.navigationItem.title = "シフトの集計結果"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "お問い合わせ"
-        
-        UIView.setAnimationsEnabled(false)
-        self.form.removeAll()
-        initializeUI()
-        UIView.setAnimationsEnabled(true)
     }
     
-    private func initializeForm() {
-        form +++ Section("")
-            <<< NameRow(){ row in
-                row.title = "氏名"
-                row.tag = "name"
-                row.add(rule: RuleRequired(msg: "必須項目です"))
-                row.validationOptions = .validatesOnChange
-        }
-        .onRowValidationChanged {cell, row in
-            let rowIndex = row.indexPath!.row
-            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                row.section?.remove(at: rowIndex + 1)
-            }
-            if !row.isValid {
-                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                    let labelRow = LabelRow() {
-                        $0.title = err
-                        $0.cell.height = { 30 }
-                        $0.cell.contentView.backgroundColor = .red
-                        $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textColor = .white
-                        })
-                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                }
-            }
-        }
-            
-            <<< EmailRow(){ row in
-                row.title = "メールアドレス"
-                row.tag = "email"
-                row.add(rule: RuleRequired(msg: "必須項目です"))
-                row.add(rule: RuleEmail(msg: "メールアドレスの形式が間違っています"))
-                row.validationOptions = .validatesOnChange
-        }
-        .onRowValidationChanged {cell, row in
-            let rowIndex = row.indexPath!.row
-            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                row.section?.remove(at: rowIndex + 1)
-            }
-            if !row.isValid {
-                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                    let labelRow = LabelRow() {
-                        $0.title = err
-                        $0.cell.height = { 30 }
-                        $0.cell.contentView.backgroundColor = .red
-                        $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textColor = .white
-                        })
-                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                }
-            }
-        }
+    private func initializeChartView() {
+        let chart = PieChartView(frame: self.view.frame)
+        chart.chartDescription?.text = ""
+        chart.usePercentValuesEnabled = true
+        chart.highlightPerTapEnabled = true
+        chart.chartDescription?.enabled = true
+        chart.drawEntryLabelsEnabled = true
+        chart.legend.enabled = true
+        chart.rotationEnabled = true
         
-            <<< TextAreaRow(){ row in
-                row.tag = "content"
-                row.placeholder = "お問い合わせ内容を入力"
-                row.add(rule: RuleRequired(msg: "必須項目です"))
-                row.validationOptions = .validatesOnChange
-        }
-        .onRowValidationChanged {cell, row in
-            let rowIndex = row.indexPath!.row
-            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                row.section?.remove(at: rowIndex + 1)
-            }
-            if !row.isValid {
-                for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                    let labelRow = LabelRow() {
-                        $0.title = err
-                        $0.cell.height = { 30 }
-                        $0.cell.contentView.backgroundColor = .red
-                        $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textColor = .white
-                        })
-                    row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                }
-            }
-        }
+        let values = [
+            PieChartDataEntry(value: 300, label: "中番"),
+            PieChartDataEntry(value: 90, label: "遅番"),
+            PieChartDataEntry(value: 0, label: "Un"),
+            PieChartDataEntry(value: 0, label: "ABC")
+        ]
+        let dataSet = PieChartDataSet(values: values, label: "")
+        dataSet.setColors(UIColor.hex("#FF6D00", alpha: 1.0), UIColor.hex("#212121", alpha: 1.0))
+        
+        dataSet.drawValuesEnabled = true
+        
+        chart.legend.horizontalAlignment = .left
+        chart.legend.verticalAlignment = .top
+        chart.legend.orientation = .vertical
+        chart.legend.font = UIFont.systemFont(ofSize: 20)
+        
+        chart.centerText = "10月11日〜"
+        
+        let data = PieChartData(dataSet: dataSet)
+        
+        let pFormatter = NumberFormatter()
+        pFormatter.numberStyle = .percent
+        pFormatter.maximumFractionDigits = 1
+        pFormatter.multiplier = 1
+        pFormatter.percentSymbol = " %"
+        data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
+        
+        chart.data = data
+        
+        self.view.addSubview(chart)
+        
+        chart.center(in: self.view)
+        chart.edges(to: self.view)
     }
     
     private func initializeUI() {
         initializeNavigationItem()
-        initializeForm()
+        initializeChartView()
     }
     
     private func initializeNavigationItem() {
