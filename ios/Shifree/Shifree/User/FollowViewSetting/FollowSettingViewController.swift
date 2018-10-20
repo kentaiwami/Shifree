@@ -19,7 +19,7 @@ protocol FollowSettingViewInterface: class {
 
 
 class FollowSettingViewController: FormViewController, FollowSettingViewInterface {
-    fileprivate var presenter: FollowSettingViewPresenter!
+    private var presenter: FollowSettingViewPresenter!
     var formValue: [String : Any?] {
         return form.values()
     }
@@ -41,7 +41,7 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
         presenter.setFollowUserAndComapnyUsers()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section()
@@ -54,41 +54,17 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
                 $0.title = "ユーザ名"
                 $0.options = presenter.getFollowUserAndComapnyUsers().companyUsers
                 $0.value = presenter.getFollowingUsername()
-                $0.add(rule: RuleRequired(msg: "必須項目です"))
-                $0.validationOptions = .validatesOnChange
                 $0.tag = "username"
                 $0.cell.detailTextLabel?.textColor = UIColor.black
                 $0.hidden = Condition.function(["switchRowTag"], { form in
                     return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
                 })
             }
-            .onRowValidationChanged {cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                            $0.cell.contentView.backgroundColor = .red
-                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                            $0.hidden = Condition.function(["switchRowTag"], { form in
-                                return !((form.rowBy(tag: "switchRowTag") as? SwitchRow)?.value ?? false)
-                            })
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textColor = .white
-                        })
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
-            }
         
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }

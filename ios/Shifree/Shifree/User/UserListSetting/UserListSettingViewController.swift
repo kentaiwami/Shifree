@@ -20,7 +20,7 @@ protocol UserListSettingViewInterface: class {
 
 
 class UserListSettingViewController: FormViewController, UserListSettingViewInterface {
-    fileprivate var presenter: UserListSettingViewPresenter!
+    private var presenter: UserListSettingViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
         presenter.setUserList()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         var count = 0
@@ -121,7 +121,7 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
         present(popUp, animated: true, completion: nil)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
@@ -139,7 +139,7 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
 
 // MARK: - 可読性のために関数化
 extension UserListSettingViewController {
-    fileprivate func getUsernameRoleFromCellTitle(title: String) -> (username: String, role: String) {
+    private func getUsernameRoleFromCellTitle(title: String) -> (username: String, role: String) {
         let usernameMatch = getMatchStrings(targetString: title, pattern: ".* ")
         let roleMatch = getMatchStrings(targetString: title, pattern: "\\(.*\\)")
         

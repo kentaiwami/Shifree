@@ -17,8 +17,15 @@ protocol UpdateTitleViewModelDelegate: class {
 class UpdateTitleViewModel {
     weak var delegate: UpdateTitleViewModelDelegate?
     private let api = API()
+    private(set) var tableID = -1
+    private(set) var tableTitle = ""
     
-    func updateTitle(formValue: [String:Any?], tableID: Int) {
+    func setData(id: Int, title: String) {
+        tableID = id
+        tableTitle = title
+    }
+    
+    func updateTitle(formValue: [String:Any?]) {
         let params = ["title": formValue["Title"] as! String]
         
         api.updateTableTitle(id: tableID, params: params).done { (json) in

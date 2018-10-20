@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol ContactViewPresentable: class {
-    var username: String { get }
-}
-
 class ContactViewPresenter {
     
     weak var view: ContactViewInterface?

@@ -11,7 +11,6 @@ import Eureka
 
 
 protocol EditCommentViewInterface: class {
-    var indexPath: IndexPath { get }
     var formValues: [String:Any?] { get }
     
     func showErrorAlert(title: String, msg: String)
@@ -19,40 +18,43 @@ protocol EditCommentViewInterface: class {
 }
 
 class EditCommentViewController: FormViewController, EditCommentViewInterface {
-    var indexPath: IndexPath = []
-    var formValues: [String : Any?] = [:]
-    fileprivate var presenter: EditCommentViewPresenter!
+    var formValues: [String : Any?] {
+        return self.form.values()
+    }
     
-    fileprivate(set) var comment = Comment()
+    private var presenter: EditCommentViewPresenter!
+    
+    private(set) var comment = Comment()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializePresenter()
         initializeUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(comment: Comment) {
+        super.init(nibName: nil, bundle: nil)
+        
+        presenter = EditCommentViewPresenter(view: self)
+        presenter.setSelectedCommentData(comment: comment)
+        
         self.navigationItem.title = "コメントの編集"
     }
     
-    private func initializePresenter() {
-        presenter = EditCommentViewPresenter(view: self)
-        presenter.setSelectedCommentData(comment: comment)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
     
     @objc private func tapEditDoneButton() {
-        self.formValues = self.form.values()
         presenter.tapEditDoneButton()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section(footer: "何も入力しない状態で保存した場合、コメントは削除されます。")
@@ -73,16 +75,6 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-}
-
-
-
-// MARK: - インスタンス化される前に呼ばれるべき関数
-extension EditCommentViewController {
-    func setSelectedData(indexPath: IndexPath, comment: Comment) {
-        self.indexPath = indexPath
-        self.comment = comment
     }
 }
 

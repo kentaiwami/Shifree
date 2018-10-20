@@ -20,10 +20,10 @@ class ExportViewModel {
     private let api = API()
     let eventStore = EKEventStore()
     
-    private(set) var users:[ExportUser] = []
+    private(set) var users:[MinimumInfoUser] = []
     private(set) var tables:[FileTable] = []
-    private(set) var followUser: ExportUser = ExportUser()
-    private(set) var me: ExportUser = ExportUser()
+    private(set) var followUser: MinimumInfoUser = MinimumInfoUser()
+    private(set) var me: MinimumInfoUser = MinimumInfoUser()
     private(set) var calendar:[UserCalendar] = []
     let format = ["ユーザ名+シフト名", "シフト名"]
     
@@ -32,7 +32,7 @@ class ExportViewModel {
         
         api.getExportInitData().done { (json) in
             let follow = json["follow"].dictionaryValue
-            self.followUser = ExportUser()
+            self.followUser = MinimumInfoUser()
             
             if let id = follow["id"]?.intValue {
                 self.followUser.id = id
@@ -53,7 +53,7 @@ class ExportViewModel {
             })
             
             self.users = json["users"].arrayValue.map({ (user) in
-                var tmp = ExportUser()
+                var tmp = MinimumInfoUser()
                 tmp.id = user["id"].intValue
                 tmp.name = user["name"].stringValue
                 return tmp

@@ -24,7 +24,7 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
     var selectedCellIndexPath = IndexPath()
     
     var tableView = UITableView()
-    fileprivate var presenter: ColorSchemViewPresenter!
+    private var presenter: ColorSchemViewPresenter!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,7 +118,6 @@ extension ColorSchemeViewController: UITableViewDataSource, UITableViewDelegate 
         let selectedCell = tableView.cellForRow(at: indexPath) as! ColorCell
         selectedCellIndexPath = indexPath
         showColorPicker(sendor: selectedCell)
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -140,6 +139,11 @@ extension ColorSchemeViewController{
             popoverController.sourceView = sendor
             popoverController.sourceRect = sendor.bounds
         }
-        self.present(MKColorPicker, animated: true, completion: nil)
+        
+        self.present(MKColorPicker, animated: true) {
+            self.tableView.indexPathsForSelectedRows?.forEach({
+                self.tableView.deselectRow(at: $0, animated: true)
+            })
+        }
     }
 }

@@ -8,12 +8,6 @@
 
 import Foundation
 
-protocol CalendarViewPresentable :class{
-    var shiftCategories: [String] { get }
-    var eventNumber: Int { get }
-    var userColorScheme: String { get }
-}
-
 class CalendarViewPresenter {
     
     weak var view: CalendarViewInterface?

@@ -176,13 +176,14 @@ def import_shift():
         title=secure_title,
         origin_path=origin_file_path,
         thumbnail_path=thumbnail_file_path,
-        company_id=company.id
+        company_id=company.id,
+        start=start_date,
+        end=end_date
     )
 
     session.add(shift_table)
     session.commit()
 
-    start_date = DT.strptime(request.form['start'], '%Y-%m-%d')
     users = session.query(User).filter(User.company_id == company.id).order_by('order').all()
 
     user_shift_objects = []
@@ -277,7 +278,7 @@ def get_all():
     user = session.query(User).filter(User.code == api_basic_auth.username()).one()
     tables = session.query(ShiftTable)\
         .filter(ShiftTable.company_id == user.company_id)\
-        .order_by(ShiftTable.created_at.desc())\
+        .order_by(ShiftTable.start.desc())\
         .limit(10).offset(offset).all()
 
     results = []
@@ -286,7 +287,9 @@ def get_all():
             'table_id': table.id,
             'title': table.title,
             'origin': table.origin_path,
-            'thumbnail': table.thumbnail_path
+            'thumbnail': table.thumbnail_path,
+            'start': str(table.start),
+            'end': str(table.end)
         })
 
     session.close()
@@ -330,6 +333,8 @@ def get_detail(table_id):
         'table_id': table.id,
         'title': table.title,
         'origin': table.origin_path,
+        'start': str(table.start),
+        'end': str(table.end),
         'comment': comment_list
     }
 
@@ -395,6 +400,8 @@ def update_table_title(table_id):
         'table_id': table.id,
         'title': table.title,
         'origin': table.origin_path,
+        'start': str(table.start),
+        'end': str(table.end)
     }
 
     return jsonify({'results': results}), 200

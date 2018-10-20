@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import KeychainAccess
 
 protocol UserListSettingViewModelDelegate: class {
     func initializeUI()

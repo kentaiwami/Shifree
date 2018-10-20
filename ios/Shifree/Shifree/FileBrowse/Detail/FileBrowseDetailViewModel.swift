@@ -11,6 +11,7 @@ import KeychainAccess
 
 protocol FileBrowseDetailViewModelDelegate: class {
     func initializeUI()
+    func updateUI()
     func successDelete()
     func faildAPI(title: String, msg: String)
 }
@@ -20,26 +21,33 @@ class FileBrowseDetailViewModel {
     private let api = API()
     private(set) var fileTable: FileTable = FileTable()
     private(set) var commentList: [Comment] = []
+    private(set) var tableID = -1
     
-    func setFileTableDetail(id: Int) {
-        commentList = []
-        
-        api.getFileTableDetail(id: id).done { (json) in
+    func setTableID(id: Int) {
+        tableID = id
+    }
+    
+    func setFileTableDetail(isUpdate: Bool) {
+        api.getFileTableDetail(id: tableID).done { (json) in
             self.fileTable.id = json["results"]["table_id"].intValue
             self.fileTable.origin = json["results"]["origin"].stringValue
             self.fileTable.title = json["results"]["title"].stringValue
             
-            json["results"]["comment"].arrayValue.forEach({ (comment) in
-                self.commentList.append(Comment(
-                    id: comment["id"].intValue,
-                    text: comment["text"].stringValue,
-                    user: comment["user"].stringValue,
-                    userID: comment["user_id"].intValue,
-                    created: comment["created_at"].stringValue
-                ))
+            self.commentList = json["results"]["comment"].arrayValue.map({ comment in
+                var tmp = Comment()
+                tmp.id = comment["id"].intValue
+                tmp.text = comment["text"].stringValue
+                tmp.user = comment["user"].stringValue
+                tmp.userID = comment["user_id"].intValue
+                tmp.created = comment["created_at"].stringValue
+                return tmp
             })
             
-            self.delegate?.initializeUI()
+            if isUpdate {
+                self.delegate?.updateUI()
+            }else {
+                self.delegate?.initializeUI()
+            }
         }
         .catch { (err) in
             let tmp_err = err as NSError
@@ -59,7 +67,7 @@ class FileBrowseDetailViewModel {
         }
     }
     
-    func deleteTable(tableID: Int) {
+    func deleteTable() {
         api.deleteTable(id: tableID).done { (json) in
             self.delegate?.successDelete()
         }

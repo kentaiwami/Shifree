@@ -19,7 +19,7 @@ protocol NotificationViewInterface: class {
 
 
 class NotificationViewController: FormViewController, NotificationViewInterface {
-    fileprivate var presenter: NotificationViewPresenter!
+    private var presenter: NotificationViewPresenter!
     var formValue: [String : Any?] {
         return form.values()
     }
@@ -41,7 +41,7 @@ class NotificationViewController: FormViewController, NotificationViewInterface 
         presenter.setNotification()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
             form +++ Section()
                 <<< SwitchRow(){
@@ -65,7 +65,7 @@ class NotificationViewController: FormViewController, NotificationViewInterface 
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }

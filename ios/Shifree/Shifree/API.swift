@@ -21,7 +21,7 @@ class API {
     let keychain = Keychain()
     let indicator = Indicator()
     
-    fileprivate func postNoAuth(url: String, params: [String:Any]) -> Promise<JSON> {
+    private func postNoAuth(url: String, params: [String:Any]) -> Promise<JSON> {
         indicator.start()
         
         let promise = Promise<JSON> { seal in
@@ -50,7 +50,7 @@ class API {
         return promise
     }
     
-    fileprivate func getAuth(url: String) -> Promise<JSON> {
+    private func getAuth(url: String) -> Promise<JSON> {
         indicator.start()
         
         let user = try! keychain.get("userCode")
@@ -82,7 +82,7 @@ class API {
         return promise
     }
     
-    fileprivate func postPutDeleteAuth(url: String, params: [String:Any], httpMethod: HTTPMethod) -> Promise<JSON> {
+    private func postPutDeleteAuth(url: String, params: [String:Any], httpMethod: HTTPMethod) -> Promise<JSON> {
         indicator.start()
         
         let user = try! keychain.get("userCode")
@@ -471,6 +471,7 @@ extension API {
 }
 
 
+// MARK: - Export API
 extension API {
     func getExportInitData() -> Promise<JSON> {
         let endPoint = "setting/export/init"
@@ -479,6 +480,30 @@ extension API {
     
     func getExportShiftData(userID: Int, tableID: Int) -> Promise<JSON> {
         let endPoint = "setting/export/shift?user_id=\(userID)&table_id=\(tableID)"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+}
+
+
+// MARK: - Search Shift API
+extension API {
+    func getShiftSearchInitData() -> Promise<JSON> {
+        let endPoint = "usershift/search/init"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+    
+    func getShiftSearchResults(userID: Int, categoryID: Int, tableID: Int, shiftID: Int) -> Promise<JSON> {
+        let endPoint = "usershift/search/shift?user_id=\(userID)&category_id=\(categoryID)&table_id=\(tableID)&shift_id=\(shiftID)"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+}
+
+
+
+// MARK: - Analytics API
+extension API {
+    func getAnalyticsData(range: String) -> Promise<JSON> {
+        let endPoint = "usershift/analytics?range=\(range)"
         return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
 }

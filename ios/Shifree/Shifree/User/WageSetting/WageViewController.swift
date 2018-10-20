@@ -25,7 +25,7 @@ protocol WageViewInterface: class {
 
 class WageViewController: FormViewController, WageViewInterface {
     
-    fileprivate var presenter: WageViewPresenter!
+    private var presenter: WageViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ class WageViewController: FormViewController, WageViewInterface {
         presenter.setUserWage()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         let wageTime = get24hourTime()
@@ -224,7 +224,7 @@ class WageViewController: FormViewController, WageViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }

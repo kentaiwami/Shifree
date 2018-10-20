@@ -14,9 +14,9 @@ protocol PrivacyPolicyViewInterface: class {
 
 
 class PrivacyPolicyViewController: UIViewController, PrivacyPolicyViewInterface {
-    fileprivate var presenter: PrivacyPolicyViewPresenter!
-    fileprivate var webView: UIWebView!
-    fileprivate let indicator = Indicator()
+    private var presenter: PrivacyPolicyViewPresenter!
+    private var webView: UIWebView!
+    private let indicator = Indicator()
     
     override func viewDidLoad() {
         super.viewDidLoad()

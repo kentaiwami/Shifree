@@ -16,7 +16,7 @@ protocol UserListViewInterface: class {
 
 
 class UserListViewController: FormViewController, UserListViewInterface {
-    fileprivate var presenter: UserListViewPresenter!
+    private var presenter: UserListViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
         presenter.setUserList()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         let section = Section()

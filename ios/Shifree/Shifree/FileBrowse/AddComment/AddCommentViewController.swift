@@ -12,35 +12,38 @@ import Eureka
 
 protocol AddCommentViewInterface: class {
     var formValues: [String:Any?] { get }
-    var tableID: Int { get }
     
     func showErrorAlert(title: String, msg: String)
     func popupViewController()
 }
 
 class AddCommentViewController: FormViewController, AddCommentViewInterface {
-    var formValues: [String : Any?] = [:]
-    var tableID: Int = -1
+    var formValues: [String : Any?] {
+        return self.form.values()
+    }
     
-    fileprivate var presenter: AddCommentViewPresenter!
+    private var presenter: AddCommentViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializePresenter()
         initializeUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(tableID: Int) {
+        super.init(nibName: nil, bundle: nil)
+        
+        presenter = AddCommentViewPresenter(view: self)
+        presenter.setTableID(id: tableID)
+        
         self.navigationItem.title = "コメントの追加"
     }
     
-    private func initializePresenter() {
-        presenter = AddCommentViewPresenter(view: self)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
@@ -49,7 +52,6 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
     
     @objc private func tapEditDoneButton() {
         if isValidateFormValue(form: form) {
-            self.formValues = self.form.values()
             presenter.tapEditDoneButton()
         }else {
             showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
@@ -60,7 +62,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
         popupViewController()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section("")
@@ -112,14 +114,5 @@ extension AddCommentViewController {
     
     func popupViewController() {
         self.dismiss(animated: true, completion: nil)
-    }
-}
-
-
-
-// MARK: - インスタンス化される際に呼ばれる必要がある関数
-extension AddCommentViewController {
-    func setTableID(id: Int) {
-        self.tableID = id
     }
 }

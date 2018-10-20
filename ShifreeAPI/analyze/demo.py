@@ -18,16 +18,23 @@ def create_main():
 
     now = DT.now()
     title = '{}月シフト'.format(now.month)
+
+    _, lastday = calendar.monthrange(now.year, now.month)
+    start = DT.strptime('{}-{}-{}'.format(now.year, now.month, 1), '%Y-%m-%d')
+    end = DT.strptime('{}-{}-{}'.format(now.year, now.month, lastday), '%Y-%m-%d')
+
+
     new_table = ShiftTable(
         title=title,
         origin_path=demo_company['origin_path'],
         thumbnail_path=demo_company['thumbnail_path'],
-        company_id=demo_company['id']
+        company_id=demo_company['id'],
+        start=start,
+        end=end
     )
     session.add(new_table)
     session.commit()
 
-    _, lastday = calendar.monthrange(now.year, now.month)
     shifts = session.query(Shift).\
         join(ShiftCategory, Shift.shift_category_id == ShiftCategory.id).\
         filter(ShiftCategory.company_id == demo_company['id']).all()

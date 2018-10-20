@@ -12,9 +12,9 @@ import TinyConstraints
 
 class ShiftSettingDetailViewController: FormViewController {
 
-    fileprivate(set) var name: String = ""
-    fileprivate(set) var start: String = ""
-    fileprivate(set) var end: String = ""
+    private(set) var name: String = ""
+    private(set) var start: String = ""
+    private(set) var end: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

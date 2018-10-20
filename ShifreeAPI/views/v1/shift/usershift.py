@@ -58,7 +58,7 @@ def get():
     # アクセスしたユーザがカラー設定を全て行なっているかを判定
     is_all_color_setting = False
     if follow:
-        shift_category_results = session.query(ShiftCategory).join(Company).filter(ShiftCategory.company_id == access_user.company_id).all()
+        shift_category_results = session.query(ShiftCategory).filter(ShiftCategory.company_id == access_user.company_id).all()
         access_user_color_results = session.query(ColorScheme).filter(ColorScheme.user_id == access_user.id).all()
         is_all_color_setting = True if len(shift_category_results) == len(access_user_color_results) else False
 

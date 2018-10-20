@@ -17,7 +17,7 @@ protocol PopUpColorViewInterface: class {
 
 class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
     
-    fileprivate var presenter: PopUpColorViewPresenter!
+    private var presenter: PopUpColorViewPresenter!
     var tableView = UITableView()
     
     override func viewDidLoad() {

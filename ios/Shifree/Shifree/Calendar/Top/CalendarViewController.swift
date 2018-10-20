@@ -11,7 +11,7 @@ import FSCalendar
 import TinyConstraints
 import PopupDialog
 import UserNotifications
-
+import FloatingActionSheetController
 
 protocol CalendarViewInterface: class {
     func initializeUI()
@@ -21,16 +21,16 @@ protocol CalendarViewInterface: class {
 
 
 class CalendarViewController: UIViewController, CalendarViewInterface {
-    fileprivate var presenter: CalendarViewPresenter!
-    fileprivate weak var calendar: FSCalendar!
-    fileprivate var tableViews: [UITableView] = []
-    fileprivate var scrollView: UIScrollView!
+    private var presenter: CalendarViewPresenter!
+    private weak var calendar: FSCalendar!
+    private var tableViews: [UITableView] = []
+    private var scrollView: UIScrollView!
     
     // カレンダーの高さに関する制約を保存
-    fileprivate var heightConst: Constraint!
+    private var heightConst: Constraint!
     
     // ライブラリに設定されているデフォルトのカラーを保存
-    fileprivate var todayColor: UIColor!
+    private var todayColor: UIColor!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,10 +51,18 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         if calendar != nil {
             setStartEndDate()
             presenter.getAllUserShift()
+            
+            scrollView.flashScrollIndicators()
+        }
+        
+        tableViews.forEach { (tableView) in
+            tableView.indexPathsForSelectedRows?.forEach({
+                tableView.deselectRow(at: $0, animated: true)
+            })
         }
     }
     
-    fileprivate func setStartEndDate() {
+    private func setStartEndDate() {
         let startDate: Date
         let endDate: Date
         
@@ -71,7 +79,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         presenter.setStartEndDate(start: startDate, end: endDate)
     }
     
-    fileprivate func setUpTodayColor(didSelectedDate: Date) {
+    private func setUpTodayColor(didSelectedDate: Date) {
         let calendarCurrent = Calendar.current
         
         if calendarCurrent.isDate(didSelectedDate, inSameDayAs: Date()) {
@@ -83,13 +91,13 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         }
     }
     
-    fileprivate func scrollScrollViewToPage(page: Int) {
+    private func scrollScrollViewToPage(page: Int) {
         let width = self.view.frame.width * CGFloat(page)
         scrollView.setContentOffset(CGPoint(x: width, y: 0), animated: false)
         presenter.setCurrentScrollPage(page: page)
     }
     
-    fileprivate func scrollTableViewToUserSection(date: Date) {
+    private func scrollTableViewToUserSection(date: Date) {
         let position = presenter.getTableViewScrollPosition(date: date)
         
         if tableViews[position.tableViewPosition].numberOfSections > 0 {
@@ -106,11 +114,11 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
 
 // MARK: - Initialize
 extension CalendarViewController {
-    fileprivate func initializePresenter() {
+    private func initializePresenter() {
         presenter = CalendarViewPresenter(view: self)
     }
     
-    fileprivate func initializeUserNotificationCenter() {
+    private func initializeUserNotificationCenter() {
         UNUserNotificationCenter.current().requestAuthorization(
         options: [.badge, .alert, .sound]) {(accepted, error) in
             if accepted {
@@ -125,7 +133,7 @@ extension CalendarViewController {
         }
     }
     
-    fileprivate func initializeCalendarView() {
+    private func initializeCalendarView() {
         let calendar = FSCalendar()
         calendar.dataSource = self
         calendar.delegate = self
@@ -153,7 +161,7 @@ extension CalendarViewController {
         setUpTodayColor(didSelectedDate: presenter.getCurrentAndPageDate().currentDate)
     }
     
-    fileprivate func initializeScrollView() {
+    private func initializeScrollView() {
         let width = self.view.frame.width * CGFloat(presenter.getTableCount())
         scrollView = UIScrollView()
         scrollView.delegate = self
@@ -172,7 +180,7 @@ extension CalendarViewController {
         scrollScrollViewToPage(page: position)
     }
     
-    fileprivate func initializeTableView() {
+    private func initializeTableView() {
         view.layoutIfNeeded()
         
         var tableViewX: CGFloat = 0
@@ -190,14 +198,16 @@ extension CalendarViewController {
             
             tableViewX = tableView.frame.origin.x + tableView.frame.width
         }
+        
+        scrollView.flashScrollIndicators()
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let week = UIBarButtonItem(image: UIImage(named: "week"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
-        let info = UIBarButtonItem(image: UIImage(named: "information"), style: .plain, target: self, action: #selector(TapColorInformationButton))
+        let action = UIBarButtonItem(image: UIImage(named: "action"), style: .plain, target: self, action: #selector(TapActionButton))
         
-        self.tabBarController?.navigationItem.setLeftBarButton(info, animated: true)
+        self.tabBarController?.navigationItem.setLeftBarButton(action, animated: true)
         
         // 初回起動時はnilのため、monthを設定。それ以外（画面表示時）はnilではないのでscopeに応じて設定。
         if self.calendar == nil {
@@ -216,17 +226,42 @@ extension CalendarViewController {
 
 // MARK: - NavigationItemTap
 extension CalendarViewController {
-    @objc fileprivate func TapColorInformationButton(sendor: UIButton) {
-        let vc = PopUpColorViewController()
-        let popUp = PopupDialog(viewController: vc)
-        let buttonOK = DefaultButton(title: "OK"){}
+    @objc private func TapActionButton(sendor: UIButton) {
+        let showColorInformation = FloatingAction(title: "カラー情報") { action in
+            let vc = PopUpColorViewController()
+            let popUp = PopupDialog(viewController: vc)
+            let buttonOK = DefaultButton(title: "OK"){}
+            popUp.addButton(buttonOK)
+            self.present(popUp, animated: true, completion: nil)
+        }
         
-        popUp.addButton(buttonOK)
+        showColorInformation.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        showColorInformation.tintColor = UIColor.white
         
-        present(popUp, animated: true, completion: nil)
+        
+        let showSearchShift = FloatingAction(title: "シフトの検索") { action in
+            let searchShiftVC = SearchShiftViewController()
+            let nav = UINavigationController()
+            nav.viewControllers = [searchShiftVC]
+            nav.modalTransitionStyle = .coverVertical
+            self.present(nav, animated: true, completion: nil)
+        }
+        
+        showSearchShift.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        showSearchShift.tintColor = UIColor.white
+        
+        let cancelAction = FloatingAction(title: "キャンセル") { action in}
+        cancelAction.textColor = UIColor.hex(Color.main.rawValue, alpha: 1.0)
+        cancelAction.tintColor = UIColor.white
+        
+        let group1 = FloatingActionGroup()
+        group1.add(actions: [showColorInformation, showSearchShift])
+        
+        let group2 = FloatingActionGroup(action: cancelAction)
+        FloatingActionSheetController(actionGroup: group1, group2).present(in: self)
     }
     
-    @objc fileprivate func TapChangeCalendarButton(sendor: UIButton) {
+    @objc private func TapChangeCalendarButton(sendor: UIButton) {
         let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let week = UIBarButtonItem(image: UIImage(named: "week"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         
@@ -542,17 +577,13 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
-        let detailVC = CalendarDetailViewController()
         let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
-        detailVC.setSelectedData(
+        let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
+        let detailVC = CalendarDetailViewController(
+            title: "\(currentDateStr) \(selectedShiftCategoryName)",
+            tableViewShift: presenter.getTableViewShift(tag: tableView.tag)[indexPath.section],
             memo: presenter.getMemo(),
             isFollowing: presenter.getIsFollowing(),
-            title: currentDateStr + " " + selectedShiftCategoryName,
-            indexPath: indexPath,
-            tableViewShifts: presenter.getTableViewShift(tag: tableView.tag),
             targetUserShift: presenter.getTargetUserShift()
         )
         
@@ -600,7 +631,7 @@ extension CalendarViewController: UITabBarControllerDelegate {
 
 // MARK: - Observer関連
 extension CalendarViewController {
-    fileprivate func addObservers() {
+    private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
         
         let navigationController = self.navigationController

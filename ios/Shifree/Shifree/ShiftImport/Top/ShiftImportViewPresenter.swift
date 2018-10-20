@@ -22,11 +22,14 @@ class ShiftImportViewPresenter {
     func setThreshold() {
         model.setThreshold()
     }
+    
+    func setFilePath(path: URL) {
+        model.setfilePaht(path: path)
+    }
 
     func importShift() {
         guard let formValues = view?.formValues else  { return }
-        guard let filePath = view?.filePath else  { return }
-        model.importShift(formValues: formValues, filePath: filePath)
+        model.importShift(formValues: formValues)
     }
     
     func getThreshold() -> (sameLineTH: Float, usernameTH: Float, joinTH: Float, dayShiftTH: Float) {

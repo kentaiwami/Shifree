@@ -21,7 +21,7 @@ protocol ShiftViewInterface: class {
 
 class ShiftViewController: FormViewController, ShiftViewInterface {
     
-    fileprivate var presenter: ShiftViewPresenter!
+    private var presenter: ShiftViewPresenter!
     let defaultTitle = "タップしてシフト情報を入力"
     
     override func viewDidLoad() {
@@ -41,7 +41,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         presenter.setShiftDetail()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         var count = 0
@@ -145,7 +145,7 @@ class ShiftViewController: FormViewController, ShiftViewInterface {
         present(popUp, animated: true, completion: nil)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
@@ -201,7 +201,7 @@ extension ShiftViewController {
 
 // MARK: - 可読性のために関数化
 extension ShiftViewController {
-    fileprivate func getShiftnameStartEndFromCellTitle(title: String) -> (name: String, start: String, end: String) {
+    private func getShiftnameStartEndFromCellTitle(title: String) -> (name: String, start: String, end: String) {
         let shiftNameMatch = getMatchStrings(targetString: title, pattern: ".*? ")
         let startMatch = getMatchStrings(targetString: title, pattern: "[0-9]{2}:[0-9]{2} 〜")
         let endMatch = getMatchStrings(targetString: title, pattern: "〜 [0-9]{2}:[0-9]{2}")

@@ -11,7 +11,6 @@ import Eureka
 import PopupDialog
 
 protocol ShiftImportViewInterface: class {
-    var filePath: URL { get }
     var formValues: [String:Any?] { get }
     
     func successImport()
@@ -22,7 +21,6 @@ protocol ShiftImportViewInterface: class {
 }
 
 class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
-    var filePath: URL = URL(fileURLWithPath: "")
     var formValues: [String : Any?] {
         return self.form.values()
     }
@@ -31,17 +29,22 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializePresenter()
         presenter.setThreshold()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(path: URL) {
+        super.init(nibName: nil, bundle: nil)
+        presenter = ShiftImportViewPresenter(view: self)
+        presenter.setFilePath(path: path)
+        
         self.navigationItem.title = "シフトの取り込み"
-        tableView.reloadData()
     }
     
-    fileprivate func initializeForm() {
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section("")
@@ -166,7 +169,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "upload"), style: .plain, target: self, action: #selector(tapImportButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
@@ -188,11 +191,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
         self.present(topViewController!, animated: true, completion: nil)
     }
     
-    private func initializePresenter() {
-        presenter = ShiftImportViewPresenter(view: self)
-    }
-    
-    fileprivate func navigateCalendar() {
+    private func navigateCalendar() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let topVC = storyboard.instantiateInitialViewController()
         topVC?.modalTransitionStyle = .crossDissolve
@@ -226,8 +225,7 @@ extension ShiftImportViewController {
     
     func successImportButExistUnknown(unknown: [Unknown]) {
         let nowEditButton = DefaultButton(title: "編集する", dismissOnTap: true) {
-            let unknownVC = UnknownViewController()
-            unknownVC.setUnknown(unknown: unknown)
+            let unknownVC = UnknownViewController(unknown: unknown)
             let nav = UINavigationController()
             nav.viewControllers = [unknownVC]
             self.present(nav, animated: true, completion: nil)
@@ -244,8 +242,7 @@ extension ShiftImportViewController {
     
     func faildImportBecauseUnRegisteredShift(unRegisteredShift: [String]) {
         let nowEditButton = DefaultButton(title: "追加する", dismissOnTap: true) {
-            let addShiftVC = AddShiftViewController()
-            addShiftVC.setUnRegisteredShift(shift: unRegisteredShift)
+            let addShiftVC = AddShiftViewController(unRegisteredShift: unRegisteredShift)
             let nav = UINavigationController()
             nav.viewControllers = [addShiftVC]
             self.present(nav, animated: true, completion: nil)
@@ -263,13 +260,5 @@ extension ShiftImportViewController {
     
     func showErrorAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
-    }
-}
-
-
-// MARK: - インスタンス化される際に呼ぶべき関数
-extension ShiftImportViewController {
-    func setFilePath(path: URL) {
-        self.filePath = path
     }
 }

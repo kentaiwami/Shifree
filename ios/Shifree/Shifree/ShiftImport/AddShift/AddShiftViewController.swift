@@ -10,7 +10,6 @@ import UIKit
 import Eureka
 
 protocol AddShiftViewInterface: class {
-    var unRegisteredShift:[String] { get }
     var formValues:[[String]] { get }
     
     func initializeUI()
@@ -34,24 +33,27 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
         return results
     }
     
-    var unRegisteredShift:[String] = []
-    
     private var presenter: AddShiftViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializePresenter()
         presenter.setShiftCategory()
-        presenter.setUnRegisteredShift(unRegisteredShift: unRegisteredShift)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(unRegisteredShift: [String]) {
+        super.init(nibName: nil, bundle: nil)
+        
+        presenter = AddShiftViewPresenter(view: self)
+        presenter.setUnRegisteredShift(unRegisteredShift: unRegisteredShift)
         self.navigationItem.title = "シフトの追加"
     }
     
-    fileprivate func initializeForm() {
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form.append(Section(header: "シフトカテゴリを空にしたシフトは登録されません。", footer: ""))
@@ -95,7 +97,7 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
@@ -108,10 +110,6 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
     
     @objc private func tapCloseButton() {
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    private func initializePresenter() {
-        presenter = AddShiftViewPresenter(view: self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -132,13 +130,5 @@ extension AddShiftViewController {
         showStandardAlert(title: title, msg: msg, vc: self) {
             self.dismiss(animated: true, completion: nil)
         }
-    }
-}
-
-
-// MARK: - インスタンス化される際に、呼ばれるべき関数
-extension AddShiftViewController {
-    func setUnRegisteredShift(shift: [String]) {
-        self.unRegisteredShift = shift
     }
 }

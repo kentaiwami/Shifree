@@ -12,42 +12,54 @@ import FloatingActionSheetController
 
 
 protocol FileBrowseDetailViewInterface: class {
-    var tableID: Int { get }
-    
     func popView()
     func initializeUI()
+    func updateUI()
     func showErrorAlert(title: String, msg: String)
 }
 
 
 class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInterface {
     
-    fileprivate var presenter: FileBrowseDetailViewPresenter!
+    private var presenter: FileBrowseDetailViewPresenter!
     private var pdfView: UIWebView!
-    fileprivate var commentTableView: UITableView!
-    fileprivate var myIndicator = UIActivityIndicatorView()
-
-    fileprivate(set) var tableID: Int = 0
+    private var commentTableView: UITableView!
+    private var myIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+    }
+    
+    init(tableID: Int) {
+        super.init(nibName: nil, bundle: nil)
+        
         presenter = FileBrowseDetailViewPresenter(view: self)
+        presenter.setTableID(id: tableID)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter.setFileTableDetail()
         
-        if pdfView != nil {
-            pdfView.removeFromSuperview()
-            commentTableView.removeFromSuperview()
+        // 初回表示時とそれ以外で切り分けて、作成済みのViewを削除せずに更新
+        if pdfView == nil {
+            presenter.setFileTableDetail(isUpdate: false)
+        }else {
+            commentTableView.indexPathsForSelectedRows?.forEach({
+                commentTableView.deselectRow(at: $0, animated: true)
+            })
+            presenter.setFileTableDetail(isUpdate: true)
         }
     }
     
-    fileprivate func initializePDFView() {
+    private func initializePDFView() {
         pdfView = UIWebView()
         pdfView.delegate = self
         pdfView.scalesPageToFit = true
@@ -64,7 +76,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         pdfView.loadRequest(urlRequest)
     }
     
-    fileprivate func initializeIndicator() {
+    private func initializeIndicator() {
         myIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         myIndicator.hidesWhenStopped = true
         myIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -72,7 +84,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         myIndicator.center(in: pdfView)
     }
     
-    fileprivate func initializeCommentTableView() {
+    private func initializeCommentTableView() {
         commentTableView = UITableView()
         commentTableView.delegate = self
         commentTableView.dataSource = self
@@ -93,15 +105,14 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         }
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let add = UIBarButtonItem(image: UIImage(named: "action"), style: .plain, target: self, action: #selector(TapActionButton))
         self.navigationItem.setRightBarButton(add, animated: false)
     }
     
     @objc private func TapActionButton(sendor: UIButton) {
         let addCommentAction = FloatingAction(title: "コメントの追加") { action in
-            let addCommentVC = AddCommentViewController()
-            addCommentVC.setTableID(id: self.tableID)
+            let addCommentVC = AddCommentViewController(tableID: self.presenter.getTableID())
             let nav = UINavigationController()
             nav.viewControllers = [addCommentVC]
             nav.modalTransitionStyle = .coverVertical
@@ -111,8 +122,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         addCommentAction.tintColor = UIColor.white
         
         let updateShiftTitleAction = FloatingAction(title: "タイトルの変更") { action in
-            let updateTitleVC = UpdateTitleViewController()
-            updateTitleVC.setAll(tableTitle: self.presenter.getFileTable().title, tableID: self.tableID)
+            let updateTitleVC = UpdateTitleViewController(tableID: self.presenter.getTableID(), tableTitle: self.presenter.getFileTable().title)
             let nav = UINavigationController()
             nav.viewControllers = [updateTitleVC]
             nav.modalTransitionStyle = .coverVertical
@@ -146,8 +156,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         }
         
         let group2 = FloatingActionGroup(action: cancelAction)
-        FloatingActionSheetController(actionGroup: group1, group2)
-            .present(in: self)
+        FloatingActionSheetController(actionGroup: group1, group2).present(in: self)
     }
 
     
@@ -167,6 +176,18 @@ extension FileBrowseDetailViewController {
         commentTableView.reloadData()
     }
     
+    func updateUI() {
+        self.navigationItem.title = presenter.getFileTable().title
+        initializeNavigationItem()
+        commentTableView.reloadData()
+        
+        if presenter.getComments().count == 0 {
+            commentTableView.backgroundView?.isHidden = false
+        }else {
+            commentTableView.backgroundView?.isHidden = true
+        }
+    }
+    
     func showErrorAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
     }
@@ -177,13 +198,7 @@ extension FileBrowseDetailViewController {
 }
 
 
-// MARK: - インスタンス化される前に呼ばれるべき関数
-extension FileBrowseDetailViewController {
-    func setTableID(id: Int) {
-        self.tableID = id
-    }
-}
-
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -216,12 +231,9 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
         if presenter.isMyComment(row: indexPath.row) {
-            let editCommentVC = EditCommentViewController()
-            editCommentVC.setSelectedData(indexPath: indexPath, comment: presenter.getComments()[indexPath.row])
+            let editCommentVC = EditCommentViewController(comment: presenter.getComments()[indexPath.row])
             self.navigationController!.pushViewController(editCommentVC, animated: true)
         }
     }

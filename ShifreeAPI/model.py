@@ -103,6 +103,8 @@ class ShiftTable(db.Model):
     title = db.Column(db.String(255), nullable=False)
     origin_path = db.Column(db.String(255), nullable=True)
     thumbnail_path = db.Column(db.String(255), nullable=True)
+    start = db.Column(db.Date, nullable=True)
+    end = db.Column(db.Date, nullable=True)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)

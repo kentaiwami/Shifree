@@ -12,36 +12,43 @@ import Eureka
 
 protocol UpdateTitleViewInterface: class {
     var formValues: [String:Any?] { get }
-    var tableID: Int { get }
     
     func showErrorAlert(title: String, msg: String)
     func popupViewController()
 }
 
 class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
-    var formValues: [String : Any?] = [:]
-    var tableID: Int = -1
-    var tableTitle: String = ""
+    var formValues: [String : Any?] {
+        return self.form.values()
+    }
     
-    fileprivate var presenter: UpdateTitleViewPresenter!
+    private var presenter: UpdateTitleViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initializePresenter()
         initializeUI()
+    }
+    
+    init(tableID: Int, tableTitle: String) {
+        super.init(nibName: nil, bundle: nil)
+        
+        presenter = UpdateTitleViewPresenter(view: self)
+        presenter.setData(id: tableID, title: tableTitle)
+        
+        self.navigationItem.title = "タイトルの変更"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "タイトルの変更"
+        
     }
     
-    private func initializePresenter() {
-        presenter = UpdateTitleViewPresenter(view: self)
-    }
-    
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
@@ -50,7 +57,6 @@ class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
     
     @objc private func tapEditDoneButton() {
         if isValidateFormValue(form: form) {
-            self.formValues = self.form.values()
             presenter.tapEditDoneButton()
         }else {
             showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
@@ -61,14 +67,14 @@ class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
         popupViewController()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section("")
             <<< TextRow(){
                 $0.title = "タイトル"
                 $0.tag = "Title"
-                $0.value = tableTitle
+                $0.value = presenter.getTableTitle()
                 $0.placeholder = "タップしてタイトルを入力…"
                 $0.add(rule: RuleRequired(msg: "必須項目です"))
                 $0.validationOptions = .validatesOnChange
@@ -113,15 +119,5 @@ extension UpdateTitleViewController {
     
     func popupViewController() {
         self.dismiss(animated: true, completion: nil)
-    }
-}
-
-
-
-// MARK: - インスタンス化される際に呼ばれる必要がある関数
-extension UpdateTitleViewController {
-    func setAll(tableTitle: String, tableID: Int) {
-        self.tableTitle = tableTitle
-        self.tableID = tableID
     }
 }

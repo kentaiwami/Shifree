@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol UserNameViewPresentable: class {
-    var username: String { get }
-}
-
 class UserNameViewPresenter {
     
     weak var view: UserNameViewInterface?
