@@ -19,16 +19,46 @@ class AnalyticsViewPresenter {
         model.delegate = self
     }
     
-    func postContact() {
-        guard let formValues = view?.formValue else {return}
-        model.postContact(formValues: formValues)
+    func setData() {
+        model.setData()
     }
     
+    func setRange(range: String) {
+        model.setRange(range: range)
+    }
+    
+    func isNodata() -> Bool {
+        return model.isNodata()
+    }
+}
+
+
+// MARK: - PieChart
+extension AnalyticsViewPresenter {
+    func getPieChartCenterTitle() -> String? {
+        return model.getPieChartCenterTitle()
+    }
+    
+    func getPieChartTables() -> [AnalyticsResultCategory]? {
+        return model.getPieChartTableValue()
+    }
+    
+    func getCustomLegend() -> [AnalyticsResultCategory] {
+        return model.getCustomLegend()
+    }
+    
+    func getPieChartColorHex() -> [String] {
+        return model.getPieChartColorHex()
+    }
 }
 
 extension AnalyticsViewPresenter: AnalyticsViewModelDelegate {
-    func success() {
-        view?.success()
+    func drawPieChartView() {
+        view?.drawPieChartView()
+    }
+    
+    func drawBarChartView() {
+        view?.drawBarChartView()
     }
     
     func faildAPI(title: String, msg: String) {

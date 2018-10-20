@@ -497,3 +497,13 @@ extension API {
         return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
     }
 }
+
+
+
+// MARK: - Analytics API
+extension API {
+    func getAnalyticsData(range: String) -> Promise<JSON> {
+        let endPoint = "usershift/analytics?range=\(range)"
+        return getAuth(url: shifreeBase + shifreeAPIVersion + endPoint)
+    }
+}

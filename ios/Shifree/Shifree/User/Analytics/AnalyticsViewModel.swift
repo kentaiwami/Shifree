@@ -9,28 +9,83 @@
 import Foundation
 
 protocol AnalyticsViewModelDelegate: class {
-    func success()
+    func drawPieChartView()
+    func drawBarChartView()
     func faildAPI(title: String, msg: String)
 }
 
 class AnalyticsViewModel {
     weak var delegate: AnalyticsViewModelDelegate?
     private let api = API()
+    private(set) var range = "latest"
+    private(set) var follow = ""
+    private(set) var results:[AnalyticsResultFileTable] = []
     
-    func postContact(formValues: [String:Any?]) {
-        let params = [
-            "name": formValues["name"] as! String,
-            "email": formValues["email"] as! String,
-            "content": formValues["content"] as! String
-        ]
-        
-        api.postContact(params: params).done { (json) in
-            self.delegate?.success()
+    func setData() {
+        api.getAnalyticsData(range: range).done { (json) in
+            self.follow = json["results"]["follow"].stringValue
+            self.results = json["results"]["table"].arrayValue.map({ table in
+                let tmpCategories:[AnalyticsResultCategory] = table["category"].arrayValue.map({ category in
+                    return AnalyticsResultCategory.init(
+                        count: category["count"].intValue,
+                        hex: category["hex"].stringValue,
+                        name: category["name"].stringValue
+                    )
+                })
+                return AnalyticsResultFileTable.init(
+                    start: table["start"].stringValue,
+                    end: table["end"].stringValue,
+                    title: table["title"].stringValue,
+                    categories: tmpCategories
+                )
+            })
+            
+            if self.range == "latest" {
+                self.delegate?.drawPieChartView()
+            }else {
+                self.delegate?.drawBarChartView()
+            }
         }
         .catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
             self.delegate?.faildAPI(title: title, msg: tmp_err.domain)
         }
+    }
+    
+    func setRange(range: String) {
+        self.range = range
+    }
+    
+    func isNodata() -> Bool {
+        return results.count == 0
+    }
+}
+
+
+// MARK: - PieChart
+extension AnalyticsViewModel {
+    func getPieChartCenterTitle() -> String? {
+        return results.first?.title
+    }
+    
+    func getPieChartTableValue() -> [AnalyticsResultCategory]? {
+        return results.first?.categories.filter({$0.count != 0})
+    }
+    
+    func getPieChartColorHex() -> [String] {
+        if let fileTable = results.first {
+            return fileTable.categories.filter({$0.count != 0}).map({$0.hex})
+        }
+        
+        return []
+    }
+    
+    func getCustomLegend() -> [AnalyticsResultCategory] {
+        if let fileTable = results.first {
+            return fileTable.categories
+        }
+        
+        return []
     }
 }
