@@ -18,27 +18,27 @@ protocol CalendarViewModelDelegate: class {
 
 class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
-    fileprivate let api = API()
+    private let api = API()
     
-    fileprivate(set) var oneDayShifts: [OneDayShift] = []
-    fileprivate(set) var shiftCategoryColors: [ShiftCategoryColor] = []
-    fileprivate(set) var tableViewShifts: [[TableViewShift]] = [[]]
-    fileprivate(set) var isFollowing: Bool = false
+    private(set) var oneDayShifts: [OneDayShift] = []
+    private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
+    private(set) var tableViewShifts: [[TableViewShift]] = [[]]
+    private(set) var isFollowing: Bool = false
     
-    fileprivate(set) var currentPageDate: Date = Date()
-    fileprivate(set) var currentDate: Date = Date()
-    fileprivate(set) var start: Date = Date()
-    fileprivate(set) var end: Date = Date()
-    fileprivate(set) var updated: Date? = nil
-    fileprivate(set) var currentScrollPage: Int = 0
+    private(set) var currentPageDate: Date = Date()
+    private(set) var currentDate: Date = Date()
+    private(set) var start: Date = Date()
+    private(set) var end: Date = Date()
+    private(set) var updated: Date? = nil
+    private(set) var currentScrollPage: Int = 0
     
-    fileprivate(set) var tableCount: Int = 9
-    fileprivate(set) var isTapedTabBar: Bool = false
-    fileprivate(set) var isFirstTime: Bool = true
-    fileprivate(set) var isSwipe: Bool = false
-    fileprivate(set) var isReceiveNotificationSetCurrentPage: Bool = false
-    fileprivate(set) var prevViewController: Any.Type = CalendarViewController.self
-    fileprivate(set) var prevFollowing: Bool? = nil
+    private(set) var tableCount: Int = 9
+    private(set) var isTapedTabBar: Bool = false
+    private(set) var isFirstTime: Bool = true
+    private(set) var isSwipe: Bool = false
+    private(set) var isReceiveNotificationSetCurrentPage: Bool = false
+    private(set) var prevViewController: Any.Type = CalendarViewController.self
+    private(set) var prevFollowing: Bool? = nil
     
     func login() {
         api.login().done { (json) in
@@ -491,7 +491,7 @@ extension CalendarViewModel {
 
 // MARK: - Utility関連（見やすくするため関数化）
 extension CalendarViewModel {
-    fileprivate func getData(json: JSON) -> [OneDayShift] {
+    private func getData(json: JSON) -> [OneDayShift] {
         var oneDayShift = [OneDayShift]()
         isFollowing = json["results"]["is_following"].boolValue
         

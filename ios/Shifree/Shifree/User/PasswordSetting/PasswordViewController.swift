@@ -20,7 +20,7 @@ protocol PasswordViewInterface: class {
 
 class PasswordViewController: FormViewController, PasswordViewInterface {
     
-    fileprivate var presenter: PasswordViewPresenter!
+    private var presenter: PasswordViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()

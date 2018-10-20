@@ -19,7 +19,7 @@ protocol FollowSettingViewInterface: class {
 
 
 class FollowSettingViewController: FormViewController, FollowSettingViewInterface {
-    fileprivate var presenter: FollowSettingViewPresenter!
+    private var presenter: FollowSettingViewPresenter!
     var formValue: [String : Any?] {
         return form.values()
     }
@@ -41,7 +41,7 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
         presenter.setFollowUserAndComapnyUsers()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section()
@@ -64,7 +64,7 @@ class FollowSettingViewController: FormViewController, FollowSettingViewInterfac
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }

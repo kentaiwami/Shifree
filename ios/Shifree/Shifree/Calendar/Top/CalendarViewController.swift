@@ -21,16 +21,16 @@ protocol CalendarViewInterface: class {
 
 
 class CalendarViewController: UIViewController, CalendarViewInterface {
-    fileprivate var presenter: CalendarViewPresenter!
-    fileprivate weak var calendar: FSCalendar!
-    fileprivate var tableViews: [UITableView] = []
-    fileprivate var scrollView: UIScrollView!
+    private var presenter: CalendarViewPresenter!
+    private weak var calendar: FSCalendar!
+    private var tableViews: [UITableView] = []
+    private var scrollView: UIScrollView!
     
     // カレンダーの高さに関する制約を保存
-    fileprivate var heightConst: Constraint!
+    private var heightConst: Constraint!
     
     // ライブラリに設定されているデフォルトのカラーを保存
-    fileprivate var todayColor: UIColor!
+    private var todayColor: UIColor!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +62,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         }
     }
     
-    fileprivate func setStartEndDate() {
+    private func setStartEndDate() {
         let startDate: Date
         let endDate: Date
         
@@ -79,7 +79,7 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         presenter.setStartEndDate(start: startDate, end: endDate)
     }
     
-    fileprivate func setUpTodayColor(didSelectedDate: Date) {
+    private func setUpTodayColor(didSelectedDate: Date) {
         let calendarCurrent = Calendar.current
         
         if calendarCurrent.isDate(didSelectedDate, inSameDayAs: Date()) {
@@ -91,13 +91,13 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
         }
     }
     
-    fileprivate func scrollScrollViewToPage(page: Int) {
+    private func scrollScrollViewToPage(page: Int) {
         let width = self.view.frame.width * CGFloat(page)
         scrollView.setContentOffset(CGPoint(x: width, y: 0), animated: false)
         presenter.setCurrentScrollPage(page: page)
     }
     
-    fileprivate func scrollTableViewToUserSection(date: Date) {
+    private func scrollTableViewToUserSection(date: Date) {
         let position = presenter.getTableViewScrollPosition(date: date)
         
         if tableViews[position.tableViewPosition].numberOfSections > 0 {
@@ -114,11 +114,11 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
 
 // MARK: - Initialize
 extension CalendarViewController {
-    fileprivate func initializePresenter() {
+    private func initializePresenter() {
         presenter = CalendarViewPresenter(view: self)
     }
     
-    fileprivate func initializeUserNotificationCenter() {
+    private func initializeUserNotificationCenter() {
         UNUserNotificationCenter.current().requestAuthorization(
         options: [.badge, .alert, .sound]) {(accepted, error) in
             if accepted {
@@ -133,7 +133,7 @@ extension CalendarViewController {
         }
     }
     
-    fileprivate func initializeCalendarView() {
+    private func initializeCalendarView() {
         let calendar = FSCalendar()
         calendar.dataSource = self
         calendar.delegate = self
@@ -161,7 +161,7 @@ extension CalendarViewController {
         setUpTodayColor(didSelectedDate: presenter.getCurrentAndPageDate().currentDate)
     }
     
-    fileprivate func initializeScrollView() {
+    private func initializeScrollView() {
         let width = self.view.frame.width * CGFloat(presenter.getTableCount())
         scrollView = UIScrollView()
         scrollView.delegate = self
@@ -180,7 +180,7 @@ extension CalendarViewController {
         scrollScrollViewToPage(page: position)
     }
     
-    fileprivate func initializeTableView() {
+    private func initializeTableView() {
         view.layoutIfNeeded()
         
         var tableViewX: CGFloat = 0
@@ -202,7 +202,7 @@ extension CalendarViewController {
         scrollView.flashScrollIndicators()
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let week = UIBarButtonItem(image: UIImage(named: "week"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let action = UIBarButtonItem(image: UIImage(named: "action"), style: .plain, target: self, action: #selector(TapActionButton))
@@ -261,7 +261,7 @@ extension CalendarViewController {
         FloatingActionSheetController(actionGroup: group1, group2).present(in: self)
     }
     
-    @objc fileprivate func TapChangeCalendarButton(sendor: UIButton) {
+    @objc private func TapChangeCalendarButton(sendor: UIButton) {
         let month = UIBarButtonItem(image: UIImage(named: "month"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         let week = UIBarButtonItem(image: UIImage(named: "week"), style: .plain, target: self, action: #selector(TapChangeCalendarButton))
         
@@ -631,7 +631,7 @@ extension CalendarViewController: UITabBarControllerDelegate {
 
 // MARK: - Observer関連
 extension CalendarViewController {
-    fileprivate func addObservers() {
+    private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateView(notification:)), name: .usershift, object: nil)
         
         let navigationController = self.navigationController

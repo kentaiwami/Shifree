@@ -20,7 +20,7 @@ protocol CalendarDetailViewInterface: class {
 
 class CalendarDetailViewController: FormViewController, CalendarDetailViewInterface {
     var formValues: [String : Any?] = [:]
-    fileprivate var presenter: CalendarDetailViewPresenter!
+    private var presenter: CalendarDetailViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +45,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         presenter.setCompanyShiftNames()
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         if presenter.isAdmin() || presenter.isTargetInclude() {
             let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
             self.navigationItem.setRightBarButton(check, animated: true)
@@ -57,7 +57,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         presenter.tapEditDoneButton()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         if presenter.isTargetInclude() && !presenter.isFollowing() {

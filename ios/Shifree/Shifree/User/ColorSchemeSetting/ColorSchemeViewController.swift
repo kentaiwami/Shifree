@@ -24,7 +24,7 @@ class ColorSchemeViewController: UIViewController, ColorSchemViewInterface {
     var selectedCellIndexPath = IndexPath()
     
     var tableView = UITableView()
-    fileprivate var presenter: ColorSchemViewPresenter!
+    private var presenter: ColorSchemViewPresenter!
 
     override func viewDidLoad() {
         super.viewDidLoad()

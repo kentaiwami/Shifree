@@ -150,9 +150,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         barChartView.xAxis.labelPosition = .bottom
         barChartView.chartDescription?.text = ""
         
-        
         self.view.addSubview(barChartView)
-        
         barChartView.center(in: self.view)
         barChartView.edges(to: self.view)
         

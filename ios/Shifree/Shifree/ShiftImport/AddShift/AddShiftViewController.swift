@@ -53,7 +53,7 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
         fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form.append(Section(header: "シフトカテゴリを空にしたシフトは登録されません。", footer: ""))
@@ -97,7 +97,7 @@ class AddShiftViewController: FormViewController, AddShiftViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)

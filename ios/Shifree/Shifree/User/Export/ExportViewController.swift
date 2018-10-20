@@ -19,7 +19,7 @@ protocol ExportViewInterface: class {
 
 
 class ExportViewController: FormViewController, ExportViewInterface {
-    fileprivate var presenter: ExportViewPresenter!
+    private var presenter: ExportViewPresenter!
     var formValue: [String : Any?] {
         return form.values()
     }
@@ -59,7 +59,7 @@ class ExportViewController: FormViewController, ExportViewInterface {
         }
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section()

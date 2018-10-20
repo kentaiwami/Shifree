@@ -18,7 +18,7 @@ protocol SalaryViewInterface: class {
 
 class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, SalaryViewInterface {
     
-    fileprivate var presenter: SalaryViewPresenter!
+    private var presenter: SalaryViewPresenter!
     var graphView = ScrollableGraphView()
     var emptyView = getEmptyView(msg: EmptyMessage.becauseNotFoundShiftInfo.rawValue)
     
@@ -39,7 +39,7 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         presenter.setSalary()
     }
     
-    fileprivate func initializeGraph() {
+    private func initializeGraph() {
         let frame = CGRect.zero
         let graphView = ScrollableGraphView(frame: frame, dataSource: self)
         
@@ -98,7 +98,7 @@ class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, Sal
         }
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "reload"), style: .plain, target: self, action: #selector(tapReloadButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }

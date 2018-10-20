@@ -44,7 +44,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
         fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section("")
@@ -169,7 +169,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "upload"), style: .plain, target: self, action: #selector(tapImportButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
@@ -191,7 +191,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
         self.present(topViewController!, animated: true, completion: nil)
     }
     
-    fileprivate func navigateCalendar() {
+    private func navigateCalendar() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let topVC = storyboard.instantiateInitialViewController()
         topVC?.modalTransitionStyle = .crossDissolve

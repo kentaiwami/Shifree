@@ -22,7 +22,7 @@ class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
         return self.form.values()
     }
     
-    fileprivate var presenter: UpdateTitleViewPresenter!
+    private var presenter: UpdateTitleViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +48,7 @@ class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
         
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
@@ -67,7 +67,7 @@ class UpdateTitleViewController: FormViewController, UpdateTitleViewInterface {
         popupViewController()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section("")

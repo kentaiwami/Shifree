@@ -21,10 +21,10 @@ protocol FileBrowseDetailViewInterface: class {
 
 class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInterface {
     
-    fileprivate var presenter: FileBrowseDetailViewPresenter!
+    private var presenter: FileBrowseDetailViewPresenter!
     private var pdfView: UIWebView!
-    fileprivate var commentTableView: UITableView!
-    fileprivate var myIndicator = UIActivityIndicatorView()
+    private var commentTableView: UITableView!
+    private var myIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +59,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         }
     }
     
-    fileprivate func initializePDFView() {
+    private func initializePDFView() {
         pdfView = UIWebView()
         pdfView.delegate = self
         pdfView.scalesPageToFit = true
@@ -76,7 +76,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         pdfView.loadRequest(urlRequest)
     }
     
-    fileprivate func initializeIndicator() {
+    private func initializeIndicator() {
         myIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         myIndicator.hidesWhenStopped = true
         myIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -84,7 +84,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         myIndicator.center(in: pdfView)
     }
     
-    fileprivate func initializeCommentTableView() {
+    private func initializeCommentTableView() {
         commentTableView = UITableView()
         commentTableView.delegate = self
         commentTableView.dataSource = self
@@ -105,7 +105,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         }
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let add = UIBarButtonItem(image: UIImage(named: "action"), style: .plain, target: self, action: #selector(TapActionButton))
         self.navigationItem.setRightBarButton(add, animated: false)
     }

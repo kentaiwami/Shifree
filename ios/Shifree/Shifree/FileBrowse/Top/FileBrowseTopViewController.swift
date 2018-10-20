@@ -17,7 +17,7 @@ protocol FileBrowseTopViewInterface: class {
 
 class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface {
     
-    fileprivate var presenter: FileBrowseTopViewPresenter!
+    private var presenter: FileBrowseTopViewPresenter!
     var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewLayout())
     var refreshControll = UIRefreshControl()
     let cellId = "itemCell"
@@ -47,7 +47,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         collectionView.flashScrollIndicators()
     }
     
-    fileprivate func initializeCollectionView() {
+    private func initializeCollectionView() {
         let wh = self.view.frame.width/2
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: wh, height: wh)
@@ -71,12 +71,12 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         collectionView.backgroundView?.isHidden = presenter.isBackgroundViewHidden()
     }
     
-    fileprivate func presentDetailView(tableID: Int) {
+    private func presentDetailView(tableID: Int) {
         let detailVC = FileBrowseDetailViewController(tableID: tableID)
         self.navigationController!.pushViewController(detailVC, animated: true)
     }
     
-    @objc fileprivate func refresh(sender: UIRefreshControl) {
+    @objc private func refresh(sender: UIRefreshControl) {
         refreshControll.beginRefreshing()
         presenter.setFileTable(isUpdate: true)
     }

@@ -18,7 +18,7 @@ class FileBrowseTopViewModel {
     weak var delegate: FileBrowseTopViewModelDelegate?
     private let api = API()
     private(set) var fileTableList: [FileTable] = []
-    fileprivate(set) var prevViewController: Any.Type = FileBrowseTopViewController.self
+    private(set) var prevViewController: Any.Type = FileBrowseTopViewController.self
     
     func setFileTable(isUpdate: Bool) {
         fileTableList = []

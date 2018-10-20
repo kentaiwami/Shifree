@@ -20,7 +20,7 @@ protocol ShiftCategoryViewInterface: class {
 
 class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterface {
     
-    fileprivate var presenter: ShiftCategoryViewPresenter!
+    private var presenter: ShiftCategoryViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterfac
         presenter.setShiftCategory()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         var count = 0
@@ -78,7 +78,7 @@ class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterfac
         UIView.setAnimationsEnabled(true)
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }

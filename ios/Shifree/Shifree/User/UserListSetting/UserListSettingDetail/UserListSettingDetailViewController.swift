@@ -12,9 +12,9 @@ import TinyConstraints
 
 class UserListSettingDetailViewController: FormViewController {
 
-    fileprivate(set) var username: String = ""
-    fileprivate(set) var role: String = ""
-    fileprivate(set) var isNew: Bool = true
+    private(set) var username: String = ""
+    private(set) var role: String = ""
+    private(set) var isNew: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()

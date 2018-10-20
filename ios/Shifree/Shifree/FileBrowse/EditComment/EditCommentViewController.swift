@@ -22,9 +22,9 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
         return self.form.values()
     }
     
-    fileprivate var presenter: EditCommentViewPresenter!
+    private var presenter: EditCommentViewPresenter!
     
-    fileprivate(set) var comment = Comment()
+    private(set) var comment = Comment()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +45,7 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
         fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         self.navigationItem.setRightBarButton(check, animated: true)
     }
@@ -54,7 +54,7 @@ class EditCommentViewController: FormViewController, EditCommentViewInterface {
         presenter.tapEditDoneButton()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section(footer: "何も入力しない状態で保存した場合、コメントは削除されます。")

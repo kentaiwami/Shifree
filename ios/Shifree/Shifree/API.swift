@@ -21,7 +21,7 @@ class API {
     let keychain = Keychain()
     let indicator = Indicator()
     
-    fileprivate func postNoAuth(url: String, params: [String:Any]) -> Promise<JSON> {
+    private func postNoAuth(url: String, params: [String:Any]) -> Promise<JSON> {
         indicator.start()
         
         let promise = Promise<JSON> { seal in
@@ -50,7 +50,7 @@ class API {
         return promise
     }
     
-    fileprivate func getAuth(url: String) -> Promise<JSON> {
+    private func getAuth(url: String) -> Promise<JSON> {
         indicator.start()
         
         let user = try! keychain.get("userCode")
@@ -82,7 +82,7 @@ class API {
         return promise
     }
     
-    fileprivate func postPutDeleteAuth(url: String, params: [String:Any], httpMethod: HTTPMethod) -> Promise<JSON> {
+    private func postPutDeleteAuth(url: String, params: [String:Any], httpMethod: HTTPMethod) -> Promise<JSON> {
         indicator.start()
         
         let user = try! keychain.get("userCode")

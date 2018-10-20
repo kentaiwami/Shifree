@@ -22,7 +22,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
         return self.form.values()
     }
     
-    fileprivate var presenter: AddCommentViewPresenter!
+    private var presenter: AddCommentViewPresenter!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
         fatalError("init(coder:) has not been implemented")
     }
     
-    fileprivate func initializeNavigationItem() {
+    private func initializeNavigationItem() {
         let check = UIBarButtonItem(image: UIImage(named: "checkmark"), style: .plain, target: self, action: #selector(tapEditDoneButton))
         let close = UIBarButtonItem(image: UIImage(named: "close"), style: .plain, target: self, action: #selector(tapCloseButton))
         self.navigationItem.setRightBarButton(check, animated: true)
@@ -62,7 +62,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
         popupViewController()
     }
     
-    fileprivate func initializeForm() {
+    private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
         form +++ Section("")

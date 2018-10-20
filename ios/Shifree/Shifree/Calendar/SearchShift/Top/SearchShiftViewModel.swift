@@ -110,7 +110,7 @@ class SearchShiftViewModel {
 
 // MARK: - 検索実行の関数（可読性のためにextension）
 extension SearchShiftViewModel {
-    fileprivate func callSearchAPI(userID: Int, categoryID: Int, tableID: Int, shiftID: Int) {
+    private func callSearchAPI(userID: Int, categoryID: Int, tableID: Int, shiftID: Int) {
         api.getShiftSearchResults(userID: userID, categoryID: categoryID, tableID: tableID, shiftID: shiftID).done { (json) in
             if json["results"].arrayValue.count == 0 {
                 self.delegate?.showErrorAlert(title: "エラー", msg: "検索結果が見つかりませんでした")
