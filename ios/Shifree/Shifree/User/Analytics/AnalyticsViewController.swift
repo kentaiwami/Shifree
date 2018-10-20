@@ -30,7 +30,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         presenter = AnalyticsViewPresenter(view: self)
         initializeNavigationItem()
         
-        self.navigationItem.title = "シフトの集計結果"
+        self.navigationItem.title = "集計結果"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +41,8 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
     }
     
     private func initializePieChartView() {
+        self.navigationItem.title = "集計結果" + presenter.getFollowTitle()
+        
         let pieChartView = PieChartView(frame: self.view.frame)
         pieChartView.chartDescription?.text = ""
         pieChartView.chartDescription?.font = UIFont.systemFont(ofSize: 17)
@@ -111,6 +113,8 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
     }
     
     private func initializeBarChartView() {
+        self.navigationItem.title = "集計結果" + presenter.getFollowTitle()
+        
         let barChartView = BarChartView(frame: self.view.frame)
         barChartView.fitBars = true
         barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: presenter.getBarChartTableTitle())

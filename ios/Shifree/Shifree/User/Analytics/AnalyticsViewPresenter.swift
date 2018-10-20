@@ -30,6 +30,10 @@ class AnalyticsViewPresenter {
     func isNodata() -> Bool {
         return model.isNodata()
     }
+    
+    func getFollowTitle() -> String {
+        return model.getFollowTitle()
+    }
 }
 
 

@@ -60,6 +60,10 @@ class AnalyticsViewModel {
     func isNodata() -> Bool {
         return results.count == 0
     }
+    
+    func getFollowTitle() -> String {
+        return follow.count == 0 ? "":"（フォロー中）"
+    }
 }
 
 
