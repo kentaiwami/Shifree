@@ -23,12 +23,6 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
     private var pieChartView: PieChartView!
     private var barChartView: BarChartView!
     
-    let months = ["Jan", "Feb", "Mar",
-                  "Apr", "May", "Jun",
-                  "Jul", "Aug", "Sep",
-                  "Oct", "Nov", "Dec"]
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,27 +36,28 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        presenter.setRange(range: "latest")
         presenter.setData()
     }
     
     private func initializePieChartView() {
-        let chart = PieChartView(frame: self.view.frame)
-        chart.chartDescription?.text = ""
-        chart.chartDescription?.font = UIFont.systemFont(ofSize: 17)
-        chart.chartDescription?.enabled = true
-        chart.usePercentValuesEnabled = false
-        chart.highlightPerTapEnabled = true
-        chart.drawEntryLabelsEnabled = true
-        chart.rotationEnabled = true
-        chart.noDataText = "シフトデータがないため、表示されません。"
+        let pieChartView = PieChartView(frame: self.view.frame)
+        pieChartView.chartDescription?.text = ""
+        pieChartView.chartDescription?.font = UIFont.systemFont(ofSize: 17)
+        pieChartView.chartDescription?.enabled = true
+        pieChartView.usePercentValuesEnabled = false
+        pieChartView.highlightPerTapEnabled = true
+        pieChartView.drawEntryLabelsEnabled = true
+        pieChartView.rotationEnabled = true
+        pieChartView.noDataText = "シフトデータがないため、表示されません。"
         
-        chart.legend.enabled = true
-        chart.legend.horizontalAlignment = .left
-        chart.legend.verticalAlignment = .top
-        chart.legend.orientation = .vertical
-        chart.legend.font = UIFont.systemFont(ofSize: 15)
+        pieChartView.legend.enabled = true
+        pieChartView.legend.horizontalAlignment = .left
+        pieChartView.legend.verticalAlignment = .top
+        pieChartView.legend.orientation = .vertical
+        pieChartView.legend.font = UIFont.systemFont(ofSize: 15)
         
-        let legendEntries:[LegendEntry] = presenter.getCustomLegend().map({ category in
+        let legendEntries:[LegendEntry] = presenter.getPieChartCustomLegend().map({ category in
             let tmp = LegendEntry()
             tmp.label = category.name
             tmp.form = .square
@@ -70,9 +65,9 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
             
             return tmp
         })
-        chart.legend.setCustom(entries: legendEntries)
+        pieChartView.legend.setCustom(entries: legendEntries)
         
-        chart.centerText = presenter.getPieChartCenterTitle()
+        pieChartView.centerText = presenter.getPieChartCenterTitle()
         
         var values:[PieChartDataEntry] = []
         let colors:[UIColor] = presenter.getPieChartColorHex().map({ hex in
@@ -81,7 +76,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         
         if let categories = presenter.getPieChartTables() {
             for category in categories {
-                values.append(PieChartDataEntry(value: Double(category.count), label: category.name))
+                values.append(PieChartDataEntry(value: category.count, label: category.name))
             }
         }
         
@@ -102,59 +97,63 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
         
         if !presenter.isNodata() {
-            chart.data = data
+            pieChartView.data = data
         }
         
-        self.view.addSubview(chart)
+        self.view.addSubview(pieChartView)
         
-        chart.center(in: self.view)
-        chart.edges(to: self.view)
+        pieChartView.center(in: self.view)
+        pieChartView.edges(to: self.view)
         
-        pieChartView = chart
+        self.pieChartView = pieChartView
         
-        chart.animate(xAxisDuration: 1.4, easingOption: .easeOutBack)
+        pieChartView.animate(xAxisDuration: 0.7, easingOption: .easeOutBack)
     }
     
     private func initializeBarChartView() {
         let barChartView = BarChartView(frame: self.view.frame)
+        barChartView.fitBars = true
+        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: presenter.getBarChartTableTitle())
+        barChartView.xAxis.labelCount = presenter.getBarChartCategoryCount().count
+        barChartView.xAxis.labelPosition = .bottom
+        barChartView.chartDescription?.text = ""
+        barChartView.noDataText = "シフトデータがないため、表示されません。"
+        barChartView.drawValueAboveBarEnabled = false
+        barChartView.rightAxis.enabled = false
         
-        let values:[BarChartDataEntry] = [
-            BarChartDataEntry(x: 1, yValues: [10,20,30, 10]),
-            BarChartDataEntry(x: 2, yValues: [30,20,80])
-        ]
+        var values:[BarChartDataEntry] = []
+        
+        for (index, categoryCount) in presenter.getBarChartCategoryCount().enumerated() {
+            values.append(BarChartDataEntry(x: Double(index), yValues: categoryCount))
+        }
+        
         let set = BarChartDataSet(values: values, label: "")
         set.drawIconsEnabled = false
-        set.colors = [
-            ChartColorTemplates.material()[0],
-            ChartColorTemplates.material()[1],
-            ChartColorTemplates.material()[2],
-            ChartColorTemplates.material()[3]
-        ]
-        set.stackLabels = ["Births", "Divorces", "Marriages", "TEST"]
+        set.highlightEnabled = false
+        set.colors = presenter.getBarChartLabelAndColor().color.map({UIColor.hex($0, alpha: 1.0)})
+        set.stackLabels = presenter.getBarChartLabelAndColor().label
         
         let pFormatter = NumberFormatter()
         pFormatter.numberStyle = .percent
         pFormatter.maximumFractionDigits = 1
         pFormatter.multiplier = 1
-        pFormatter.percentSymbol = " %"
+        pFormatter.percentSymbol = " 日"
+        pFormatter.zeroSymbol = ""
         
         let data = BarChartData(dataSet: set)
-        data.setValueFont(.systemFont(ofSize: 7, weight: .light))
+        data.setValueFont(.systemFont(ofSize: 14, weight: .light))
         data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
         data.setValueTextColor(.white)
         
-        barChartView.fitBars = true
         barChartView.data = data
-        barChartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: months)
-        barChartView.xAxis.labelCount = 2
-        barChartView.xAxis.labelPosition = .bottom
-        barChartView.chartDescription?.text = ""
-        
+
         self.view.addSubview(barChartView)
         barChartView.center(in: self.view)
         barChartView.edges(to: self.view)
         
         self.barChartView = barChartView
+        
+        barChartView.animate(yAxisDuration: 0.7)
     }
     
     private func initializeNavigationItem() {

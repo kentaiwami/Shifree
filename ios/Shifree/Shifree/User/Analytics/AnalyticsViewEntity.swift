@@ -16,7 +16,7 @@ struct AnalyticsResultFileTable {
 }
 
 struct AnalyticsResultCategory {
-    var count: Int = 0
+    var count: Double = 0.0
     var hex: String = ""
     var name: String = ""
 }

@@ -43,14 +43,32 @@ extension AnalyticsViewPresenter {
         return model.getPieChartTableValue()
     }
     
-    func getCustomLegend() -> [AnalyticsResultCategory] {
-        return model.getCustomLegend()
+    func getPieChartCustomLegend() -> [AnalyticsResultCategory] {
+        return model.getPieChartCustomLegend()
     }
     
     func getPieChartColorHex() -> [String] {
         return model.getPieChartColorHex()
     }
 }
+
+
+
+// MARK: - BarChart
+extension AnalyticsViewPresenter {
+    func getBarChartCategoryCount() -> [[Double]] {
+        return model.getBarChartCategoryCount()
+    }
+    
+    func getBarChartLabelAndColor() -> (label: [String], color: [String]) {
+        return model.getBarChartLabelAndColor()
+    }
+    
+    func getBarChartTableTitle() -> [String] {
+        return model.getBarChartTableTitle()
+    }
+}
+
 
 extension AnalyticsViewPresenter: AnalyticsViewModelDelegate {
     func drawPieChartView() {
@@ -65,3 +83,4 @@ extension AnalyticsViewPresenter: AnalyticsViewModelDelegate {
         view?.showErrorAlert(title: title, msg: msg)
     }
 }
+

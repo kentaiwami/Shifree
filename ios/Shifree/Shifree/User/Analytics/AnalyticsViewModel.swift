@@ -27,7 +27,7 @@ class AnalyticsViewModel {
             self.results = json["results"]["table"].arrayValue.map({ table in
                 let tmpCategories:[AnalyticsResultCategory] = table["category"].arrayValue.map({ category in
                     return AnalyticsResultCategory.init(
-                        count: category["count"].intValue,
+                        count: category["count"].doubleValue,
                         hex: category["hex"].stringValue,
                         name: category["name"].stringValue
                     )
@@ -81,11 +81,49 @@ extension AnalyticsViewModel {
         return []
     }
     
-    func getCustomLegend() -> [AnalyticsResultCategory] {
+    func getPieChartCustomLegend() -> [AnalyticsResultCategory] {
         if let fileTable = results.first {
             return fileTable.categories
         }
         
         return []
+    }
+}
+
+
+// MARK: - BarChart
+extension AnalyticsViewModel {
+    func getBarChartCategoryCount() -> [[Double]] {
+        var tmp:[[Double]] = []
+        
+        if results.count >= 2 {
+            for fileTable in results.reversed() {
+                tmp.append(fileTable.categories.map({$0.count}))
+            }
+        }
+        
+        return tmp
+    }
+    
+    func getBarChartLabelAndColor() -> (label: [String], color: [String]) {
+        var label:[String] = []
+        var color:[String] = []
+        
+        if results.count >= 2 {
+            label = results.first!.categories.map({$0.name})
+            color = results.first!.categories.map({$0.hex})
+        }
+        
+        return (label, color)
+    }
+    
+    func getBarChartTableTitle() -> [String] {
+        var title:[String] = []
+        
+        if results.count >= 2 {
+            title = results.reversed().map({$0.title})
+        }
+        
+        return title
     }
 }
