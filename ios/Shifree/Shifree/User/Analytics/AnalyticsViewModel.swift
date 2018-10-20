@@ -126,4 +126,8 @@ extension AnalyticsViewModel {
         
         return title
     }
+    
+    func getNodataText() -> String {
+        return range == "prev" ? "シフトデータが1件しかないため、表示できません。":"シフトデータがないため、表示されません。"
+    }
 }

@@ -67,6 +67,10 @@ extension AnalyticsViewPresenter {
     func getBarChartTableTitle() -> [String] {
         return model.getBarChartTableTitle()
     }
+    
+    func getNodataText() -> String {
+        return model.getNodataText()
+    }
 }
 
 

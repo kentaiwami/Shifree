@@ -107,7 +107,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         
         self.pieChartView = pieChartView
         
-        pieChartView.animate(xAxisDuration: 0.7, easingOption: .easeOutBack)
+        pieChartView.animate(xAxisDuration: 0.5, easingOption: .easeOutBack)
     }
     
     private func initializeBarChartView() {
@@ -117,7 +117,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         barChartView.xAxis.labelCount = presenter.getBarChartCategoryCount().count
         barChartView.xAxis.labelPosition = .bottom
         barChartView.chartDescription?.text = ""
-        barChartView.noDataText = "シフトデータがないため、表示されません。"
+        barChartView.noDataText = presenter.getNodataText()
         barChartView.drawValueAboveBarEnabled = false
         barChartView.rightAxis.enabled = false
         
@@ -145,7 +145,9 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         data.setValueFormatter(DefaultValueFormatter(formatter: pFormatter))
         data.setValueTextColor(.white)
         
-        barChartView.data = data
+        if !presenter.isNodata() {
+            barChartView.data = data
+        }
 
         self.view.addSubview(barChartView)
         barChartView.center(in: self.view)
@@ -153,7 +155,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
         
         self.barChartView = barChartView
         
-        barChartView.animate(yAxisDuration: 0.7)
+        barChartView.animate(yAxisDuration: 0.5)
     }
     
     private func initializeNavigationItem() {
