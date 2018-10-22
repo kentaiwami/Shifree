@@ -19,7 +19,7 @@ Mako==1.0.7
 MarkupSafe==1.0
 mccabe==0.6.1
 mojimoji==0.0.8
-mysql-connector-python==8.0.12
+mysql-connector-python==8.0.13
 pdfminer.six==20170720
 protobuf==3.6.1
 pushjack==1.5.0
