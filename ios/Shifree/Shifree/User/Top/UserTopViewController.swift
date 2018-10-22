@@ -67,72 +67,72 @@ class UserTopViewController: FormViewController, UserTopViewInterface {
     }
     
     private func initializeAnotherForm() {
-        let notificationVC = NotificationViewController()
+        let salaryVC = SalaryViewController()
+        let analyticsVC = AnalyticsViewController()
+        let exportVC = ExportViewController()
+        let colorSchemeVC = ColorSchemeViewController()
         let wageVC = WageViewController()
+        let notificationVC = NotificationViewController()
         let userNameVC = UserNameViewController()
         let passwordVC = PasswordViewController()
-        let colorSchemeVC = ColorSchemeViewController()
-        let salaryVC = SalaryViewController()
         let followVC = FollowSettingViewController()
-        let exportVC = ExportViewController()
-        let analyticsVC = AnalyticsViewController()
         let privacyPolicyVC = PrivacyPolicyViewController()
         let contactVC = ContactViewController()
         
         form +++ Section("")
             <<< ButtonRow() {
-                $0.title = "通知"
-                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return notificationVC}, onDismiss: {notificationVC in notificationVC.navigationController?.popViewController(animated: true)})
+                $0.title = "給与"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return salaryVC}, onDismiss: {salaryVC in salaryVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
-        }
+            }
+            
+            <<< ButtonRow() {
+                $0.title = "シフトの集計結果"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return analyticsVC}, onDismiss: {analyticsVC in analyticsVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+            }
+            
+            <<< ButtonRow() {
+                $0.title = "エクスポート"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return exportVC}, onDismiss: {exportVC in exportVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+            }
+            
+            <<< ButtonRow() {
+                $0.title = "カラー"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return colorSchemeVC}, onDismiss: {colorSchemeVC in colorSchemeVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+            }
             
             <<< ButtonRow() {
                 $0.title = "時給"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return wageVC}, onDismiss: {wageVC in wageVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
-        }
-        
+            }
+            
+            <<< ButtonRow() {
+                $0.title = "通知"
+                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return notificationVC}, onDismiss: {notificationVC in notificationVC.navigationController?.popViewController(animated: true)})
+                $0.cell.textLabel?.numberOfLines = 0
+            }
+            
             <<< ButtonRow() {
                 $0.title = "ユーザ名"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return userNameVC}, onDismiss: {userNameVC in userNameVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
-        }
+            }
         
             <<< ButtonRow() {
                 $0.title = "パスワード"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return passwordVC}, onDismiss: {passwordVC in passwordVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
-        }
-        
-            <<< ButtonRow() {
-                $0.title = "カラー"
-                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return colorSchemeVC}, onDismiss: {colorSchemeVC in colorSchemeVC.navigationController?.popViewController(animated: true)})
-                $0.cell.textLabel?.numberOfLines = 0
-        }
+            }
             
-            <<< ButtonRow() {
-                $0.title = "給与"
-                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return salaryVC}, onDismiss: {salaryVC in salaryVC.navigationController?.popViewController(animated: true)})
-                $0.cell.textLabel?.numberOfLines = 0
-        }
-        
             <<< ButtonRow() {
                 $0.title = "フォロー"
                 $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return followVC}, onDismiss: {followVC in followVC.navigationController?.popViewController(animated: true)})
                 $0.cell.textLabel?.numberOfLines = 0
-        }
-        
-            <<< ButtonRow() {
-                $0.title = "エクスポート"
-                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return exportVC}, onDismiss: {exportVC in exportVC.navigationController?.popViewController(animated: true)})
-                $0.cell.textLabel?.numberOfLines = 0
-        }
-        
-            <<< ButtonRow() {
-                $0.title = "シフトの集計結果"
-                $0.presentationMode = .show(controllerProvider: ControllerProvider.callback {return analyticsVC}, onDismiss: {analyticsVC in analyticsVC.navigationController?.popViewController(animated: true)})
-                $0.cell.textLabel?.numberOfLines = 0
-        }
+            }
         
         form +++ Section("")
             <<< ButtonRow() {
