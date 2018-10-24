@@ -2,7 +2,7 @@ alembic==1.0.1
 certifi==2018.10.15
 chardet==3.0.4
 Click==7.0
-flake8==3.5.0
+flake8==3.6.0
 Flask==1.0.2
 Flask-Admin==1.5.2
 Flask-BasicAuth==0.2.0
