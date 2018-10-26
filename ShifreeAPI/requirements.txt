@@ -26,7 +26,7 @@ pushjack==1.5.0
 pycodestyle==2.4.0
 pycryptodome==3.6.6
 pyflakes==2.0.0
-python-dateutil==2.7.3
+python-dateutil==2.7.4
 python-editor==1.0.3
 PyYAML==3.13
 requests==2.20.0
