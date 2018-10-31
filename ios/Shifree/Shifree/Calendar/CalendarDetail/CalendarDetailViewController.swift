@@ -73,7 +73,7 @@ class CalendarDetailViewController: FormViewController, CalendarDetailViewInterf
         for userShift in presenter.getUsersShift() {
             form +++ Section("")
                 <<< LabelRow() {
-                    $0.title = "従業員"
+                    $0.title = "ユーザ"
                     $0.value = userShift.user
                     $0.tag = String(userShift.id) + "_name"
                 }
