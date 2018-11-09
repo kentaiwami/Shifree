@@ -20,7 +20,7 @@ MarkupSafe==1.1.0
 mccabe==0.6.1
 mojimoji==0.0.8
 mysql-connector-python==8.0.13
-pdfminer.six==20170720
+pdfminer.six==20181108
 protobuf==3.6.1
 pushjack==1.5.0
 pycodestyle==2.4.0
@@ -29,8 +29,9 @@ pyflakes==2.0.0
 python-dateutil==2.7.5
 python-editor==1.0.3
 PyYAML==3.13
-requests==2.20.0
+requests==2.20.1
 six==1.11.0
+sortedcontainers==2.0.5
 SQLAlchemy==1.2.13
 sqlalchemy-seed==0.1.2
 urllib3==1.24.1
