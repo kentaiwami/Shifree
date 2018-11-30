@@ -1,5 +1,5 @@
 alembic==1.0.5
-certifi==2018.10.15
+certifi==2018.11.29
 chardet==3.0.4
 Click==7.0
 flake8==3.6.0
