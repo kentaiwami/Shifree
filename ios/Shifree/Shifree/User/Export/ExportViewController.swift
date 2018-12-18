@@ -100,6 +100,11 @@ class ExportViewController: FormViewController, ExportViewInterface {
                 $0.value = true
             }
         
+            <<< SwitchRow("overwrite") {
+                $0.title = "上書き"
+                $0.value = true
+            }
+        
         form +++ Section("")
             <<< ButtonRow(){
                 $0.title = "エクスポート"

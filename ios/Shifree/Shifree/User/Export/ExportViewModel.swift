@@ -88,6 +88,7 @@ class ExportViewModel {
         let tableTitle = formValue["table"] as! String
         let username = formValue["user"] as! String
         let allDay = formValue["allday"] as! Bool
+        let overwrite = formValue["overwrite"] as! Bool
         let calendarTitle = formValue["calendar"] as! String
         let format = formValue["format"] as! String
         
@@ -96,7 +97,7 @@ class ExportViewModel {
         let calendarID = calendar.filter({$0.title == calendarTitle}).first!.id
         
         api.getExportShiftData(userID: userID, tableID: tableID).done { (json) in
-            self.addEvent(json: json["results"], allDay: allDay, id: calendarID, format: format)
+            self.addEvent(json: json["results"], allDay: allDay, overwrite: overwrite, id: calendarID, format: format)
         }.catch { (err) in
             let tmp_err = err as NSError
             let title = "Error(" + String(tmp_err.code) + ")"
@@ -121,14 +122,32 @@ extension ExportViewModel {
         return calendar.map({$0.title})
     }
     
-    func addEvent(json: JSON, allDay: Bool, id: String, format: String) {
+    func removeOldEvent(id: String, newEvent: EKEvent) {
+        let selectedCalendar = eventStore.calendar(withIdentifier: id)!
+        let predicate = eventStore.predicateForEvents(withStart: newEvent.startDate, end: newEvent.endDate, calendars: [selectedCalendar])
+        let events = eventStore.events(matching: predicate)
+
+        for event in events {
+            if let note = event.notes {
+                if note.contains("shifree") {
+                    do {
+                        try eventStore.remove(event, span: .thisEvent)
+                    } catch let error {
+                        print(error)
+                    }
+                }
+            }
+        }
+    }
+    
+    func addEvent(json: JSON, allDay: Bool, overwrite: Bool, id: String, format: String) {
         let calendar = eventStore.calendar(withIdentifier: id)
         var isError = false
         var events:[EKEvent] = []
         
         for shift in json.arrayValue {
             let event = EKEvent(eventStore: eventStore)
-            
+
             switch self.format.firstIndex(of: format)! {
             case 0:
                 event.title = "\(shift["user"].stringValue) \(shift["shift"].stringValue)"
@@ -137,9 +156,9 @@ extension ExportViewModel {
             default:
                 event.title = "\(shift["user"].stringValue) \(shift["shift"].stringValue)"
             }
-            
+
             event.calendar = calendar
-            
+
             var tmpStart = ""
             var tmpEnd = ""
             let tmpDate = shift["date"].stringValue
@@ -152,10 +171,10 @@ extension ExportViewModel {
                 tmpEnd = shift["end"].stringValue
                 event.isAllDay = false
             }
-            
+
             let start = getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpStart)
             var end = getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpEnd)
-            
+
             if start > end && !event.isAllDay {
                 let calendarCurrent = Calendar.current
                 var components = calendarCurrent.dateComponents([.year, .month, .day], from: end)
@@ -164,10 +183,15 @@ extension ExportViewModel {
                 components.setValue(1, for: Calendar.Component.day)
                 end = calendarCurrent.date(byAdding: components, to: end)!
             }
-            
+
             event.startDate = start
             event.endDate = end
+            event.notes = "\(shift["memo"].stringValue)\nshifree（この文字列は削除しないでください）"
             events.append(event)
+            
+            if overwrite {
+                removeOldEvent(id: id, newEvent: event)
+            }
             
             do {
                 try eventStore.save(event, span: .thisEvent)

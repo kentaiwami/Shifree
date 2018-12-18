@@ -61,7 +61,8 @@ def get_user_shift():
             'shift': shift[1].name,
             'date': str(shift[0].date),
             'start': None if shift[1].start is None else str(shift[1].start),
-            'end': None if shift[1].end is None else str(shift[1].end)
+            'end': None if shift[1].end is None else str(shift[1].end),
+            'memo': shift[0].memo if api_basic_auth.username() == shift[0].user.code else None
         })
 
     session.close()
