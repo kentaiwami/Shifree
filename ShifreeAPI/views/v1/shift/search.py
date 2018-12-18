@@ -15,7 +15,7 @@ def get_search_init():
     shift_categories = session.query(ShiftCategory).filter(ShiftCategory.company_id == access_user.company_id).all()
     shifts = session.query(Shift).join(ShiftCategory).filter(ShiftCategory.company_id == access_user.company_id).all()
     users = session.query(User).filter(User.company_id == access_user.company_id).all()
-    tables = session.query(ShiftTable).filter(ShiftTable.company_id == access_user.company_id).all()
+    tables = session.query(ShiftTable).filter(ShiftTable.company_id == access_user.company_id).order_by(ShiftTable.start.desc()).all()
 
     session.close()
     return jsonify({'results': {

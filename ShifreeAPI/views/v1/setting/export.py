@@ -27,7 +27,7 @@ def get_export_init():
     else:
         follow_user = None
 
-    company_tables = session.query(ShiftTable).filter(ShiftTable.company_id == access_user.company_id).all()
+    company_tables = session.query(ShiftTable).filter(ShiftTable.company_id == access_user.company_id).order_by(ShiftTable.start.desc()).all()
 
     session.close()
     return jsonify({
