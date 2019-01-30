@@ -2,7 +2,8 @@ alembic==1.0.7
 certifi==2018.11.29
 chardet==3.0.4
 Click==7.0
-flake8==3.6.0
+entrypoints==0.3
+flake8==3.7.2
 Flask==1.0.2
 Flask-Admin==1.5.3
 Flask-BasicAuth==0.2.0
@@ -23,9 +24,9 @@ mysql-connector-python==8.0.14
 pdfminer.six==20181108
 protobuf==3.6.1
 pushjack==1.5.0
-pycodestyle==2.4.0
+pycodestyle==2.5.0
 pycryptodome==3.7.3
-pyflakes==2.0.0
+pyflakes==2.1.0
 python-dateutil==2.7.5
 python-editor==1.0.3
 PyYAML==3.13
