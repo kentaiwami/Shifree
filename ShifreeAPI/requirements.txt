@@ -24,7 +24,7 @@ mojimoji==0.0.9
 mysql-connector-python==8.0.15
 pdfminer.six==20181108
 protobuf==3.7.0
-pushjack==1.5.0
+pushjack==1.6.0
 pycodestyle==2.5.0
 pycryptodome==3.7.3
 pyflakes==2.1.1
