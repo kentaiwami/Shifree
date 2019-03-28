@@ -23,7 +23,7 @@ mccabe==0.6.1
 mojimoji==0.0.9
 mysql-connector-python==8.0.15
 pdfminer.six==20181108
-protobuf==3.7.0
+protobuf==3.7.1
 pushjack==1.6.0
 pycodestyle==2.5.0
 pycryptodome==3.8.0
