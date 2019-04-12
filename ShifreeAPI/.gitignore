@@ -5,3 +5,4 @@ uploads/
 fixtures/*.yaml
 sample
 *.pem
+.vscode
