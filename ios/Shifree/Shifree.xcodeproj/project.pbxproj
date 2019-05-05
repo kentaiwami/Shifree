@@ -804,6 +804,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = 37FF35FA20DD4CFE00FB2C68;
 			productRefGroup = 37FF360420DD4CFE00FB2C68 /* Products */;
