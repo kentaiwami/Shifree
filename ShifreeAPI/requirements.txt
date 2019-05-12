@@ -17,7 +17,7 @@ idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10.1
 jsonschema==3.0.1
-Mako==1.0.9
+Mako==1.0.10
 MarkupSafe==1.1.1
 mccabe==0.6.1
 mojimoji==0.0.9
@@ -36,7 +36,7 @@ requests==2.21.0
 six==1.12.0
 sortedcontainers==2.1.0
 SQLAlchemy==1.3.3
-sqlalchemy-seed==0.2.0
+sqlalchemy-seed==0.3.0
 urllib3==1.24.1
 Werkzeug==0.15.2
 WTForms==2.2.1
