@@ -1,4 +1,5 @@
-from flask import Response, redirect
+from flask import Response, redirect, request, abort
+from config import ACCEPTED_IP
 from flask_admin.contrib import sqla
 from werkzeug.exceptions import HTTPException
 from flask_admin import Admin
@@ -19,6 +20,9 @@ class ModelView(sqla.ModelView):
 
     def is_accessible(self):
         from app import admin_basic_auth
+
+        if request.remote_addr not in ACCEPTED_IP:
+            return abort(403, {'code': None, 'msg': None, 'param': None})
 
         if not admin_basic_auth.authenticate():
             raise AuthException('Not authenticated. Refresh the page.')
