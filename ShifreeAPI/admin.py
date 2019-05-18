@@ -22,7 +22,7 @@ class ModelView(sqla.ModelView):
         from app import admin_basic_auth
 
         if request.remote_addr not in ACCEPTED_IP:
-            return abort(403, {'code': None, 'msg': None, 'param': None})
+            return abort(404, {'code': None, 'msg': None, 'param': None})
 
         if not admin_basic_auth.authenticate():
             raise AuthException('Not authenticated. Refresh the page.')
