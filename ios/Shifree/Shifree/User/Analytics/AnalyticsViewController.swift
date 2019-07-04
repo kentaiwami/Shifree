@@ -82,7 +82,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
             }
         }
         
-        let dataSet = PieChartDataSet(values: values, label: "")
+        let dataSet = PieChartDataSet(entries: values, label: "")
         dataSet.setColors(colors, alpha: 1.0)
         dataSet.drawValuesEnabled = true
         dataSet.selectionShift = 0
@@ -131,7 +131,7 @@ class AnalyticsViewController: UIViewController, AnalyticsViewInterface {
             values.append(BarChartDataEntry(x: Double(index), yValues: categoryCount))
         }
         
-        let set = BarChartDataSet(values: values, label: "")
+        let set = BarChartDataSet(entries: values, label: "")
         set.drawIconsEnabled = false
         set.highlightEnabled = false
         set.colors = presenter.getBarChartLabelAndColor().color.map({UIColor.hex($0, alpha: 1.0)})

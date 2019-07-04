@@ -79,7 +79,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     private func initializeIndicator() {
         myIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         myIndicator.hidesWhenStopped = true
-        myIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        myIndicator.style = UIActivityIndicatorView.Style.gray
         pdfView.addSubview(myIndicator)
         myIndicator.center(in: pdfView)
     }
@@ -201,7 +201,7 @@ extension FileBrowseDetailViewController {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -243,7 +243,7 @@ extension FileBrowseDetailViewController: UITableViewDelegate, UITableViewDataSo
 
 // MARK: - PDFを表示するためにWebView関連
 extension FileBrowseDetailViewController: UIWebViewDelegate {
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         myIndicator.startAnimating()
         return true
     }
