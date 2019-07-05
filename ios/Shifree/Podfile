@@ -5,19 +5,34 @@ target 'Shifree' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-pod 'Alamofire', '~> 4.7'
-pod 'AlamofireImage', '~> 3.3'
-pod 'Eureka', '4.0.1'
-pod 'FloatingActionSheetController', '~> 2.1'
-pod 'FSCalendar', '~> 2.7'
-pod 'KeychainAccess', '~> 3.1'
-pod 'MKColorPicker', '~> 1.2'
-pod 'NVActivityIndicatorView', '~> 4.3'
-pod 'PopupDialog', '~> 0.8'
-pod 'PromiseKit', '~> 6.4'
-pod 'ScrollableGraphView', '~> 4.0'
-pod 'StatusProvider', '~> 1.2.0'
-pod 'SwiftyJSON', '~> 4.1'
-pod 'TinyConstraints', :git => 'https://github.com/roberthein/TinyConstraints.git', :branch => 'release/swift-4'
-pod 'Charts', '~> 3.1.1'
+pod 'Alamofire'
+pod 'AlamofireImage'
+pod 'Eureka'
+pod 'FloatingActionSheetController'
+pod 'FSCalendar'
+pod 'KeychainAccess'
+pod 'MKColorPicker'
+pod 'NVActivityIndicatorView'
+pod 'PopupDialog'
+pod 'PromiseKit'
+pod 'ScrollableGraphView'
+pod 'StatusProvider'
+pod 'SwiftyJSON'
+pod 'TinyConstraints'
+pod 'Charts'
+
+swift4_names = [
+  'MKColorPicker'
+]
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if swift4_names.include? target.name
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '4.0'
+      end
+    end
+  end
+end
+
 end

@@ -50,8 +50,8 @@ class ExportViewController: FormViewController, ExportViewInterface {
                 self.navigationController?.popViewController(animated: true)
             }
             let now = DefaultButton(title: "設定する") {
-                if let url = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
                 }
             }
             popup.addButtons([now, after])
@@ -140,4 +140,9 @@ extension ExportViewController {
     func showAlert(title: String, msg: String) {
         showStandardAlert(title: title, msg: msg, vc: self)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }
