@@ -102,6 +102,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     private func scrollTableViewToUserSection(date: Date) {
         let position = presenter.getTableViewScrollPosition(date: date)
         
+        print(tableViews.count, position.tableViewPosition)
+        
         if tableViews[position.tableViewPosition].numberOfSections > 0 {
             tableViews[position.tableViewPosition].scrollToRow(at: position.scrollPosition, at: .top, animated: false)
         }
