@@ -57,23 +57,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
                 $0.validationOptions = .validatesOnChange
             }
             .onRowValidationChanged {cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                            $0.cell.contentView.backgroundColor = .red
-                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textColor = .white
-                        })
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
+                self.utility.showRowError(row: row)
             }
             
             <<< DateRow(){
@@ -101,23 +85,7 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
                 row.validationOptions = .validatesOnChange
             }
             .onRowValidationChanged {cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
-                }
-                if !row.isValid {
-                    for (index, err) in row.validationErrors.map({ $0.msg }).enumerated() {
-                        let labelRow = LabelRow() {
-                            $0.title = err
-                            $0.cell.height = { 30 }
-                            $0.cell.contentView.backgroundColor = .red
-                            $0.cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-                        }.cellUpdate({ (cell, row) in
-                            cell.textLabel?.textColor = .white
-                        })
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
-                    }
-                }
+                self.utility.showRowError(row: row)
             }
         
     form +++ Section(footer: "値が大きいほど、元々3行だったものが1行として扱われます。")
