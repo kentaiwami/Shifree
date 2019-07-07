@@ -20,6 +20,8 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
     private var presenter: PopUpColorViewPresenter!
     var tableView = UITableView()
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,7 +32,7 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
         tableView.delegate = self
         tableView.allowsSelection = false
         tableView.register(UINib(nibName: "ColorCell", bundle: nil), forCellReuseIdentifier: "ColorCell")
-        tableView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
+        tableView.backgroundView = utility.getEmptyView(msg: EmptyMessage.becauseNoShiftCategory.rawValue)
         self.view.addSubview(tableView)
         
         tableView.height(self.view.frame.height / 2)
@@ -50,7 +52,7 @@ class PopUpColorViewController: UIViewController, PopUpColorViewInterface {
 // MARK: - Presenterから呼び出される関数
 extension PopUpColorViewController {
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
     
     func updateTableData() {

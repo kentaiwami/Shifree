@@ -22,6 +22,8 @@ class ShiftCategoryViewController: FormViewController, ShiftCategoryViewInterfac
     
     private var presenter: ShiftCategoryViewPresenter!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -108,12 +110,12 @@ extension ShiftCategoryViewController {
     }
     
     func success() {
-        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        utility.showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

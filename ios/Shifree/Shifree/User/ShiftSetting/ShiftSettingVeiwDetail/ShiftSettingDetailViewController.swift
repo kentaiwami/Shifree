@@ -16,6 +16,8 @@ class ShiftSettingDetailViewController: FormViewController {
     private(set) var start: String = ""
     private(set) var end: String = ""
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,7 +56,7 @@ class ShiftSettingDetailViewController: FormViewController {
             
             <<< PickerInputRow<String>(""){
                 $0.title = "開始時間"
-                $0.options = [""] + get24hourTime()
+                $0.options = [""] + utility.get24hourTime()
                 $0.value = start
                 $0.tag = "start"
                 $0.cell.detailTextLabel?.textColor = UIColor.black
@@ -68,7 +70,7 @@ class ShiftSettingDetailViewController: FormViewController {
         
             <<< PickerInputRow<String>(""){
                 $0.title = "終了時間"
-                $0.options = [""] + get24hourTime()
+                $0.options = [""] + utility.get24hourTime()
                 $0.value = end
                 $0.tag = "end"
                 $0.cell.detailTextLabel?.textColor = UIColor.black

@@ -27,6 +27,8 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     
     private var presenter: ShiftImportViewPresenter!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.setThreshold()
@@ -177,10 +179,10 @@ class ShiftImportViewController: FormViewController, ShiftImportViewInterface {
     }
     
     @objc private func tapImportButton() {
-        if isValidateFormValue(form: form) {
+        if utility.isValidateFormValue(form: form) {
             presenter.importShift()
         }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
+            utility.showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
         }
     }
     
@@ -259,6 +261,6 @@ extension ShiftImportViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

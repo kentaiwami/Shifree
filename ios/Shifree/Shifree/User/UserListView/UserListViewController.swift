@@ -18,6 +18,8 @@ protocol UserListViewInterface: class {
 class UserListViewController: FormViewController, UserListViewInterface {
     private var presenter: UserListViewPresenter!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,7 +53,7 @@ class UserListViewController: FormViewController, UserListViewInterface {
         
         form.append(section)
         
-        tableView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoUser.rawValue)
+        tableView.backgroundView = utility.getEmptyView(msg: EmptyMessage.becauseNoUser.rawValue)
         
         if presenter.getUserList().count == 0 {
             tableView.backgroundView?.isHidden = false
@@ -75,6 +77,6 @@ extension UserListViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

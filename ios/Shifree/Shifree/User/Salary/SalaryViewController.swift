@@ -18,9 +18,11 @@ protocol SalaryViewInterface: class {
 
 class SalaryViewController: UIViewController, ScrollableGraphViewDataSource, SalaryViewInterface {
     
+    fileprivate let utility = Utility()
+    
     private var presenter: SalaryViewPresenter!
     var graphView = ScrollableGraphView()
-    var emptyView = getEmptyView(msg: EmptyMessage.becauseNotFoundShiftInfo.rawValue)
+    lazy var emptyView = utility.getEmptyView(msg: EmptyMessage.becauseNotFoundShiftInfo.rawValue)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +129,7 @@ extension SalaryViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
 

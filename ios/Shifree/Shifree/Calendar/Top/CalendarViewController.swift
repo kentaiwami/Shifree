@@ -32,6 +32,8 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     // ライブラリに設定されているデフォルトのカラーを保存
     private var todayColor: UIColor!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializePresenter()
@@ -193,7 +195,7 @@ extension CalendarViewController {
             tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
             tableView.frame = CGRect(x: tableViewX, y: 0, width: self.view.frame.width, height: scrollView.frame.height)
             scrollView.addSubview(tableView)
-            tableView.backgroundView = getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
+            tableView.backgroundView = utility.getEmptyView(msg: EmptyMessage.noShiftInfo.rawValue)
             tableViews.append(tableView)
             
             tableViewX = tableView.frame.origin.x + tableView.frame.width
@@ -301,7 +303,7 @@ extension CalendarViewController {
                 msg = "フォロー設定が有効化されたため、設定したユーザのシフト情報が強調表示されます。\n\n【注意事項】\n・フォローしているユーザのメモはプライバシー保護のため表示されません。\n・自身のメモは編集できません。編集する場合は、フォロー設定を無効化する必要があります。\n・強調表示の色は全て設定済みであればその設定に基づいて表示されますが、一部が設定されていない場合はフォローユーザの設定に基づいて表示されます。"
                 isLeft = true
             }
-            showStandardAlert(title: "フォロー状態が変更されました", msg: msg, vc: self, isLeft: isLeft)
+            utility.showStandardAlert(title: "フォロー状態が変更されました", msg: msg, vc: self, isLeft: isLeft)
         }
         
         presenter.setPrevFollowing(value: isFollowing)
@@ -346,7 +348,7 @@ extension CalendarViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
 
@@ -577,7 +579,7 @@ extension CalendarViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
+        let currentDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: presenter.getCurrentAndPageDate().currentDate)
         let selectedShiftCategoryName = presenter.getShiftCategories(tag: tableView.tag)[indexPath.section]
         let detailVC = CalendarDetailViewController(
             title: "\(currentDateStr) \(selectedShiftCategoryName)",
@@ -664,7 +666,7 @@ extension CalendarViewController {
             self.presenter.getAllUserShift()
         }
         
-        dismissViews(targetViewController: self, selectedIndex: 0)
+        utility.dismissViews(targetViewController: self, selectedIndex: 0)
         
         presenter.setIsReceiveNotificationSetCurrentPage(value: false)
     }

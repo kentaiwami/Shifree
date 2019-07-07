@@ -27,6 +27,8 @@ class WageViewController: FormViewController, WageViewInterface {
     
     private var presenter: WageViewPresenter!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,7 +49,7 @@ class WageViewController: FormViewController, WageViewInterface {
     private func initializeForm() {
         UIView.setAnimationsEnabled(false)
         
-        let wageTime = get24hourTime()
+        let wageTime = utility.get24hourTime()
         
         form +++ Section("日中")
             <<< PickerInputRow<String>(""){
@@ -230,10 +232,10 @@ class WageViewController: FormViewController, WageViewInterface {
     }
     
     @objc private func tapEditDoneButton() {
-        if isValidateFormValue(form: self.form) {
+        if utility.isValidateFormValue(form: self.form) {
             presenter.updateUserWage()
         }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
+            utility.showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
         }
     }
 
@@ -282,12 +284,12 @@ extension WageViewController {
     }
     
     func success() {
-        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        utility.showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

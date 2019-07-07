@@ -21,6 +21,8 @@ class SearchShiftResultsViewModel {
     private(set) var query:[String:Int] = [:]
     private(set) var prevControllerisDetailView = false
     
+    fileprivate let utility = Utility()
+    
     func setData(results: [[String:Any]], query: [String:Int]) {
         searchResults = results
         self.query = query
@@ -50,7 +52,7 @@ class SearchShiftResultsViewModel {
     
     func getHeaderString(index: Int) -> String {
         let dateStr = searchResults[index]["date"] as! String
-        let date = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: dateStr)
+        let date = utility.getFormatterDateFromString(format: "yyyy-MM-dd", dateString: dateStr)
         let calendar = Calendar.current
         let component = calendar.component(.weekday, from: date)
         let weekday = component - 1
@@ -61,7 +63,7 @@ class SearchShiftResultsViewModel {
     }
     
     func isBeforeToday(index: Int) -> Bool {
-        let date = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: searchResults[index]["date"] as! String)
+        let date = utility.getFormatterDateFromString(format: "yyyy-MM-dd", dateString: searchResults[index]["date"] as! String)
         
         if isToday(index: index) {
             return false
@@ -71,7 +73,7 @@ class SearchShiftResultsViewModel {
     }
     
     func isToday(index: Int) -> Bool {
-        let today = getFormatterStringFromDate(format: "yyyy-MM-dd", date: Date())
+        let today = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: Date())
         let date = searchResults[index]["date"] as! String
         
         return today == date

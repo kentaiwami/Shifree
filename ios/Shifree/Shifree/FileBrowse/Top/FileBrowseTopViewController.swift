@@ -23,6 +23,8 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
     let cellId = "itemCell"
     var isFirstTime: Bool = true
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,7 +63,7 @@ class FileBrowseTopViewController: UIViewController, FileBrowseTopViewInterface 
         collectionView.dataSource = self
         collectionView.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.RawValue(UInt8(UIView.AutoresizingMask.flexibleHeight.rawValue) | UInt8(UIView.AutoresizingMask.flexibleWidth.rawValue)))
         collectionView.alwaysBounceVertical = true
-        collectionView.backgroundView = getEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
+        collectionView.backgroundView = utility.getEmptyView(msg: EmptyMessage.becauseNoImportShiftFile.rawValue)
         
         collectionView.refreshControl = refreshControll
         refreshControll.addTarget(self, action: #selector(self.refresh(sender:)), for: .valueChanged)
@@ -102,7 +104,7 @@ extension FileBrowseTopViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
 
@@ -151,7 +153,7 @@ extension FileBrowseTopViewController {
     @objc func updateView(notification: Notification) {
         guard let idDict = notification.object as? [String:Int] else {return}
         
-        dismissViews(targetViewController: self, selectedIndex: 2)
+        utility.dismissViews(targetViewController: self, selectedIndex: 2)
         presentDetailView(tableID: idDict["id"]!)
     }
 }

@@ -24,6 +24,8 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
     
     private var presenter: AddCommentViewPresenter!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,10 +53,10 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
     }
     
     @objc private func tapEditDoneButton() {
-        if isValidateFormValue(form: form) {
+        if utility.isValidateFormValue(form: form) {
             presenter.tapEditDoneButton()
         }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
+            utility.showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
         }
     }
     
@@ -109,7 +111,7 @@ class AddCommentViewController: FormViewController, AddCommentViewInterface {
 
 extension AddCommentViewController {
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
     
     func popupViewController() {

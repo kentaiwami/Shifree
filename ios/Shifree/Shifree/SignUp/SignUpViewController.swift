@@ -39,6 +39,7 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
         return self.form.values()["password"] as! String
     }
     
+    fileprivate let utility = Utility()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,10 +169,10 @@ class SignUpViewController: FormViewController, SignUpViewInterface {
     }
     
     private func signUpButtonTapped() {
-        if isValidateFormValue(form: form) {
+        if utility.isValidateFormValue(form: form) {
             presenter.signUpButtonTapped()
         }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
+            utility.showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
         }
     }
     
@@ -195,6 +196,6 @@ extension SignUpViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

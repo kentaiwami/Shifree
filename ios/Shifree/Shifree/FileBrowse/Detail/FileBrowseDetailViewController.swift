@@ -26,6 +26,8 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
     private var commentTableView: UITableView!
     private var myIndicator = UIActivityIndicatorView()
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -90,7 +92,7 @@ class FileBrowseDetailViewController: UIViewController, FileBrowseDetailViewInte
         commentTableView.dataSource = self
         commentTableView.register(UINib(nibName: "CommentCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
         commentTableView.estimatedRowHeight = 100
-        commentTableView.backgroundView = getEmptyView(msg: EmptyMessage.noComment.rawValue)
+        commentTableView.backgroundView = utility.getEmptyView(msg: EmptyMessage.noComment.rawValue)
         self.view.addSubview(commentTableView)
         
         commentTableView.topToBottom(of: pdfView)
@@ -189,7 +191,7 @@ extension FileBrowseDetailViewController {
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
     
     func popView() {

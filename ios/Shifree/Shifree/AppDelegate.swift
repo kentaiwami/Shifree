@@ -15,6 +15,8 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    fileprivate let utility = Utility()
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         print("+++++++++++++++++++++++++++++++++++")
@@ -92,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.window?.makeKeyAndVisible()
             }else if let updated = userInfoDict["updated"] as? String {
                 // rootを変更する方法では落ちてしまうので、シングルトンで値を共有して遷移させる
-                MyApplication.shared.updated = getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated)
+                MyApplication.shared.updated = utility.getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated)
             }
         }
 
@@ -176,7 +178,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         case "usershift":
             guard let updated = response.notification.request.content.userInfo["updated"] as? String else {return}
             let object = [
-                "updated": getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated),
+                "updated": utility.getFormatterDateFromString(format: "yyyy-MM-dd", dateString: updated),
             ]
             
             notificationCenter.post(name: .usershift, object: object)

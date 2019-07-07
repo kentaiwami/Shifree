@@ -24,6 +24,8 @@ class ExportViewController: FormViewController, ExportViewInterface {
         return form.values()
     }
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,10 +116,10 @@ class ExportViewController: FormViewController, ExportViewInterface {
             }
             .onCellSelection {  cell, row in
                 if self.presenter.isAuthorization() {
-                    if isValidateFormValue(form: self.form) {
+                    if self.utility.isValidateFormValue(form: self.form) {
                         self.presenter.export()
                     }else {
-                        showStandardAlert(title: "エラー", msg: "入力項目を再確認してください", vc: self)
+                        self.utility.showStandardAlert(title: "エラー", msg: "入力項目を再確認してください", vc: self)
                     }
                 }
             }
@@ -138,7 +140,7 @@ extension ExportViewController {
     }
     
     func showAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
 

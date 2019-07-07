@@ -19,7 +19,11 @@ class API {
     let shifreeAPIVersion = "v1/"
     let portfolioAPIVersion = "v1/"
     let keychain = Keychain()
+    
+    let hoge = Utility()
     let indicator = Indicator()
+    
+    fileprivate let utility = Utility()
     
     private func postNoAuth(url: String, params: [String:Any]) -> Promise<JSON> {
         indicator.start()
@@ -35,7 +39,7 @@ class API {
                     print(json)
                     print("***** GET Auth API Results *****")
                     
-                    if isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                    if self.utility.isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
                         seal.fulfill(json)
                     }else {
                         let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
@@ -67,7 +71,7 @@ class API {
 //                    print(json)
                     print("***** GET Auth API Results *****")
                     
-                    if isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                    if self.utility.isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
                         seal.fulfill(json)
                     }else {
                         let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
@@ -99,7 +103,7 @@ class API {
                     print(json)
                     print("***** GET Auth API Results *****")
                     
-                    if isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
+                    if self.utility.isHTTPStatus2XX(statusCode: response.response?.statusCode) && !json["code"].exists() {
                         seal.fulfill(json)
                     }else {
                         let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"
@@ -247,7 +251,7 @@ extension API {
                                 print("***** GET Auth API Results *****")
                                 print(json)
                                 print("***** GET Auth API Results *****")
-                                if isHTTPStatus2XX(statusCode: response.response?.statusCode) {
+                                if self.utility.isHTTPStatus2XX(statusCode: response.response?.statusCode) {
                                     seal.fulfill(json)
                                 }else {
                                     let err_msg = json["msg"].stringValue + "[" + String(json["code"].intValue) + "]"

@@ -20,6 +20,8 @@ class CalendarViewModel {
     weak var delegate: CalendarViewModelDelegate?
     private let api = API()
     
+    fileprivate let utility = Utility()
+    
     private(set) var oneDayShifts: [OneDayShift] = []
     private(set) var shiftCategoryColors: [ShiftCategoryColor] = []
     private(set) var tableViewShifts: [[TableViewShift]] = [[]]
@@ -76,8 +78,8 @@ class CalendarViewModel {
 // MARK: - シフト関連
 extension CalendarViewModel {
     func getAllUserShift() {
-        let formattedStart = getFormatterStringFromDate(format: "yyyyMMdd", date: start)
-        let formattedEnd = getFormatterStringFromDate(format: "yyyyMMdd", date: end)
+        let formattedStart = utility.getFormatterStringFromDate(format: "yyyyMMdd", date: start)
+        let formattedEnd = utility.getFormatterStringFromDate(format: "yyyyMMdd", date: end)
         
         api.getUserShift(start: formattedStart, end: formattedEnd).done { (json) in
             self.oneDayShifts = self.getData(json: json)
@@ -101,7 +103,7 @@ extension CalendarViewModel {
             tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
             count += 1
             
-            let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+            let tmpDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
             let tmpDateOneDayShifts = oneDayShifts.filter {
                 $0.date == tmpDateStr
             }
@@ -139,7 +141,7 @@ extension CalendarViewModel {
             currentDate = date!
         }
         
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
+        let currentDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDateStr
         }
@@ -262,7 +264,7 @@ extension CalendarViewModel {
 // MARK: - カレンダー関連
 extension CalendarViewModel {
     func getUserColorSchemeForCalendar(targetDate: Date) -> String {
-        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: targetDate)
+        let targetDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: targetDate)
         
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == targetDateStr
@@ -280,7 +282,7 @@ extension CalendarViewModel {
     }
     
     func getEventNumber(date: Date) -> Int {
-        let targetDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
+        let targetDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: date)
         
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == targetDateStr
@@ -337,9 +339,9 @@ extension CalendarViewModel {
     }
     
     func todayInDateRange() -> Bool {
-        let start = getFlatDate(date: self.start)
-        let end = getFlatDate(date: self.end)
-        let now = getFlatDate(date: Date())
+        let start = utility.getFlatDate(date: self.start)
+        let end = utility.getFlatDate(date: self.end)
+        let now = utility.getFlatDate(date: Date())
         
         return start <= now && now <= end
     }
@@ -387,7 +389,7 @@ extension CalendarViewModel {
         let count = -1 + tag
         let calendar = Calendar.current
         let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        let tmpDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
         let tmpDateOneDayShifts = oneDayShifts.filter {
             $0.date == tmpDateStr
         }
@@ -409,7 +411,7 @@ extension CalendarViewModel {
         let count = -1 + tag
         let calendar = Calendar.current
         let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        let tmpDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
         
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == tmpDateStr
@@ -430,7 +432,7 @@ extension CalendarViewModel {
         let count = -1 + tag
         let calendar = Calendar.current
         let tmpDate = calendar.date(byAdding: .day, value: count, to: calendar.startOfDay(for: start))!
-        let tmpDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
+        let tmpDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: tmpDate)
         
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == tmpDateStr
@@ -455,7 +457,7 @@ extension CalendarViewModel {
     }
     
     func getMemo() -> String {
-        let currentDateStr = getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
+        let currentDateStr = utility.getFormatterStringFromDate(format: "yyyy-MM-dd", date: currentDate)
         let currentDateOneDayShifts = oneDayShifts.filter {
             $0.date == currentDateStr
         }

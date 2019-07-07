@@ -27,6 +27,8 @@ class ExportViewModel {
     private(set) var calendar:[UserCalendar] = []
     let format = ["ユーザ名+シフト名", "シフト名"]
     
+    fileprivate let utility = Utility()
+    
     func setInitData() {
         setCalendars()
         
@@ -172,8 +174,8 @@ extension ExportViewModel {
                 event.isAllDay = false
             }
 
-            let start = getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpStart)
-            var end = getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpEnd)
+            let start = utility.getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpStart)
+            var end = utility.getFormatterDateFromString(format: "yyyy-MM-dd HH:mm:ss", dateString: tmpDate+" "+tmpEnd)
 
             if start > end && !event.isAllDay {
                 let calendarCurrent = Calendar.current

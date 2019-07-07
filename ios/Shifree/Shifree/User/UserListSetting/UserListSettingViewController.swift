@@ -22,6 +22,8 @@ protocol UserListSettingViewInterface: class {
 class UserListSettingViewController: FormViewController, UserListSettingViewInterface {
     private var presenter: UserListSettingViewPresenter!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -105,13 +107,13 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
         
         let popUp = PopupDialog(viewController: vc)
         let buttonOK = DefaultButton(title: "OK"){
-            if isValidateFormValue(form: vc.form) {
+            if self.utility.isValidateFormValue(form: vc.form) {
                 let detaiVCValues = vc.form.values()
                 row.title = String(format: "%@ (%@)", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String])
                 row.value = String(format: "%@,%@,%@", arguments: [detaiVCValues["username"] as! String, detaiVCValues["role"] as! String, code])
                 row.updateCell()
             }else {
-                showStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self)
+                self.utility.showStandardAlert(title: "エラー", msg: "入力されていない項目があります。\n再度、やり直してください。", vc: self)
             }
         }
         let buttonCancel = CancelButton(title: "キャンセル"){}
@@ -140,8 +142,8 @@ class UserListSettingViewController: FormViewController, UserListSettingViewInte
 // MARK: - 可読性のために関数化
 extension UserListSettingViewController {
     private func getUsernameRoleFromCellTitle(title: String) -> (username: String, role: String) {
-        let usernameMatch = getMatchStrings(targetString: title, pattern: ".* ")
-        let roleMatch = getMatchStrings(targetString: title, pattern: "\\(.*\\)")
+        let usernameMatch = utility.getMatchStrings(targetString: title, pattern: ".* ")
+        let roleMatch = utility.getMatchStrings(targetString: title, pattern: "\\(.*\\)")
         
         if usernameMatch.count == 0 {
             return ("", "")
@@ -180,12 +182,12 @@ extension UserListSettingViewController {
     }
 
     func success() {
-        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        utility.showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
 
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }

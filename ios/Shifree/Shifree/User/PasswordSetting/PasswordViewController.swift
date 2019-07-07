@@ -22,6 +22,8 @@ class PasswordViewController: FormViewController, PasswordViewInterface {
     
     private var presenter: PasswordViewPresenter!
     
+    fileprivate let utility = Utility()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -103,10 +105,10 @@ class PasswordViewController: FormViewController, PasswordViewInterface {
     }
     
     @objc private func tapEditDoneButton() {
-        if isValidateFormValue(form: self.form) {
+        if utility.isValidateFormValue(form: self.form) {
             presenter.updatePassword()
         }else {
-            showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
+            utility.showStandardAlert(title: "エラー", msg: "入力されていない項目があります", vc: self)
         }
     }
     
@@ -135,12 +137,12 @@ extension PasswordViewController {
 // MARK: - Presenterから呼び出される関数
 extension PasswordViewController {
     func success() {
-        showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
+        utility.showStandardAlert(title: "完了", msg: "情報を更新しました", vc: self) {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
     func showErrorAlert(title: String, msg: String) {
-        showStandardAlert(title: title, msg: msg, vc: self)
+        utility.showStandardAlert(title: title, msg: msg, vc: self)
     }
 }
