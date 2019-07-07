@@ -26,6 +26,9 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     private var tableViews: [UITableView] = []
     private var scrollView: UIScrollView!
     
+    // 起動直後（カレンダー操作前）は日付がずれてしまうので、その調整をするフラグ
+    private var isFirstLaunch = true
+    
     // カレンダーの高さに関する制約を保存
     private var heightConst: Constraint!
     
@@ -67,18 +70,28 @@ class CalendarViewController: UIViewController, CalendarViewInterface {
     private func setStartEndDate() {
         let startDate: Date
         let endDate: Date
-        
-        if self.calendar.scope == .week {
-            let indexPath = self.calendar.calculator.indexPath(for: self.calendar.currentPage, scope: .week)
-            startDate = self.calendar.calculator.week(forSection: (indexPath?.section)!)
-            endDate = self.calendar.gregorian.date(byAdding: .day, value: 6, to: startDate)!
+
+        if isFirstLaunch {
+            let currentCalendar = Calendar.current
+            let beforeIndex = currentCalendar.component(.weekday, from: Date()) - 1
+            let afterIndex = 6 - beforeIndex
+            startDate = currentCalendar.date(byAdding: .day, value: -beforeIndex, to: Date())!
+            endDate = currentCalendar.date(byAdding: .day, value: afterIndex, to: Date())!
         }else {
-            let indexPath = self.calendar.calculator.indexPath(for: self.calendar.currentPage, scope: .month)
-            startDate = self.calendar.calculator.monthHead(forSection: (indexPath?.section)!)
-            endDate = self.calendar.gregorian.date(byAdding: .day, value: 41, to: startDate)!
+            if self.calendar.scope == .week {
+                let indexPath = self.calendar.calculator.indexPath(for: self.calendar.currentPage, scope: .week)
+                startDate = self.calendar.calculator.week(forSection: (indexPath?.section)!)
+                endDate = self.calendar.gregorian.date(byAdding: .day, value: 6, to: startDate)!
+            }else {
+                let indexPath = self.calendar.calculator.indexPath(for: self.calendar.currentPage, scope: .month)
+                startDate = self.calendar.calculator.monthHead(forSection: (indexPath?.section)!)
+                endDate = self.calendar.gregorian.date(byAdding: .day, value: 41, to: startDate)!
+            }
         }
         
         presenter.setStartEndDate(start: startDate, end: endDate)
+        
+        isFirstLaunch = false
     }
     
     private func setUpTodayColor(didSelectedDate: Date) {
