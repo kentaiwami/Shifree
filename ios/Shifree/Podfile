@@ -22,17 +22,27 @@ pod 'TinyConstraints'
 pod 'Charts'
 
 swift4_names = [
-  'MKColorPicker'
+	'MKColorPicker'
+]
+
+swift_enforce = [
+	'Eureka'
 ]
 
 post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    if swift4_names.include? target.name
-      target.build_configurations.each do |config|
-        config.build_settings['SWIFT_VERSION'] = '4.0'
-      end
-    end
-  end
+	installer.pods_project.targets.each do |target|
+  		if swift_enforce.include? target.name
+			target.build_configurations.each do |config|
+			config.build_settings['SWIFT_ENFORCE_EXCLUSIVE_ACCESS'] = 'off'
+		end
+	end
+
+		if swift4_names.include? target.name
+			target.build_configurations.each do |config|
+			config.build_settings['SWIFT_VERSION'] = '4.0'
+		end
+	end
+end
 end
 
 end
