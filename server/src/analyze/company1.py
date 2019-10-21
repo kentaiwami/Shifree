@@ -9,7 +9,6 @@ import inspect
 from flask import abort
 from collections import namedtuple
 import shutil
-from config import pdf2txt_command
 
 tmp_file_path = ''
 
@@ -22,7 +21,7 @@ def create_main(company_id, number, start, end, same_line_threshold, username_th
     file.save(tmp_file_path)
 
     try:
-        command = '{} {} -t xml'.format(pdf2txt_command, tmp_file_path)
+        command = 'pdf2txt.py {} -t xml'.format(tmp_file_path)
         results = subprocess.check_output(command, shell=True)
     except subprocess.CalledProcessError as e:
         print("*******************************")
