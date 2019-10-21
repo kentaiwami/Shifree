@@ -1,0 +1,73 @@
+version: '3'
+services:
+  shifree-web:
+      container_name: shifree-web
+      image: nginx:1.13
+      restart: always
+      environment:
+        VIRTUAL_HOST: ${VIRTUAL_HOST}
+        LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+        LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+        SETREALIPFROM: ${SETREALIPFROM}
+      volumes:
+        - ./nginx/conf:/etc/nginx/conf.d
+        - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
+      command: /bin/sh -c "envsubst '$$SETREALIPFROM' < /etc/nginx/conf.d/shifree.conf.template > /etc/nginx/conf.d/shifree.conf && nginx -g 'daemon off;'"
+      depends_on:
+        - shifree-app
+      networks:
+        - proxy_proxy-network
+        - shifree-app-network
+
+  shifree-db:
+      container_name: shifree-db
+      image: mysql:5.7
+      restart: always
+      expose:
+        - "3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        TZ: 'Asia/Tokyo'
+      volumes:
+        - shifree-db:/var/lib/mysql
+        - ./sql:/docker-entrypoint-initdb.d
+        - ./mysql/conf:/etc/mysql/conf.d/
+      networks:
+        - shifree-db-network
+
+  shifree-app:
+      container_name: shifree-app
+      build: ./flask
+      restart: always
+      command: uwsgi --ini /code/uwsgi.ini
+      volumes:
+        - ./src:/code
+        - ./src/static:/static
+      expose:
+        - "8001"
+      environment:
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_HOST: ${MYSQL_HOST}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        DEBUGFLAG: ${DEBUGFLAG}
+        BASICAUTHUSERNAME: ${BASICAUTHUSERNAME}
+        BASICAUTHPASSWORD: ${BASICAUTHPASSWORD}
+      depends_on:
+        - shifree-db
+      networks:
+        - shifree-app-network
+        - shifree-db-network
+networks:
+  shifree-app-network:
+    external: true
+  proxy_proxy-network:
+    external: true
+  shifree-db-network:
+    external: true
+volumes:
+  shifree-db:
+    driver: local
