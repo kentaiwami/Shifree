@@ -1,5 +1,5 @@
 from database import init_db, session
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_basicauth import BasicAuth
 from flask_migrate import Migrate
 from model import db
@@ -49,7 +49,7 @@ def Logout():
 @app.route('/')
 @app.route('/index')
 def index():
-    return 'This is index page' + request.remote_addr
+    return 'This is index page'
 
 
 @app.errorhandler(400)

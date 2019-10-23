@@ -16,7 +16,7 @@ services:
       depends_on:
         - shifree-app
       networks:
-        - proxy_proxy-network
+        - proxy-network
         - shifree-app-network
 
   shifree-db:
@@ -64,7 +64,7 @@ services:
 networks:
   shifree-app-network:
     external: true
-  proxy_proxy-network:
+  proxy-network:
     external: true
   shifree-db-network:
     external: true
