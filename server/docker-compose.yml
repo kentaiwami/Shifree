@@ -47,10 +47,11 @@ services:
       restart: always
       command: >
         bash -c
-        "./wait-for-it.sh shifree-db:3306
+        "./fixtures/init/wait-for-it.sh shifree-db:3306
         && flask db init
         ; flask db migrate
         ; flask db upgrade
+        && python ./fixtures/init/init_data.py
         && uwsgi --ini /code/uwsgi.ini"
       volumes:
         - ./src:/code

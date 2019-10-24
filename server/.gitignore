@@ -9,6 +9,7 @@ nginx/conf/*.conf
 
 src/config.py
 src/fixtures/*.yaml
+src/fixtures/init/*.sql
 src/migrations/
 src/uploads/
 src/sample
