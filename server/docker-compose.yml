@@ -36,7 +36,7 @@ services:
         TZ: 'Asia/Tokyo'
       volumes:
         - shifree-db:/var/lib/mysql
-        - ./sql:/docker-entrypoint-initdb.d
+        - ./mysql/sql:/docker-entrypoint-initdb.d
         - ./mysql/conf:/etc/mysql/conf.d/
       networks:
         - shifree-db-network
@@ -47,7 +47,8 @@ services:
       restart: always
       command: >
         bash -c
-        "flask db init
+        "./wait-for-it.sh shifree-db:3306
+        && flask db init
         ; flask db migrate
         ; flask db upgrade
         && uwsgi --ini /code/uwsgi.ini"
