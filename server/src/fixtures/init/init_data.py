@@ -1,6 +1,7 @@
 import mysql.connector
 import glob
 import os
+import re
 os.chdir("./fixtures/init")
 
 config = {
@@ -18,7 +19,7 @@ def execute_scripts_from_file(filename):
     fd = open(filename, 'r')
     sqlFile = fd.read()
     fd.close()
-    sqlCommands = sqlFile.split(';')
+    sqlCommands = re.split(';\n', sqlFile)
 
     for command in sqlCommands:
         try:
