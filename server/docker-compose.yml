@@ -30,6 +30,9 @@ services:
         MYSQL_DATABASE: ${MYSQL_DATABASE}
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        REPLICATION_USER: ${REPLICATION_USER}
+        REPLICATION_PASSWORD: ${REPLICATION_PASSWORD}
+        REPLICATION_HOST: ${REPLICATION_HOST}
         TZ: 'Asia/Tokyo'
       volumes:
         - shifree-db:/var/lib/mysql
