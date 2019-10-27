@@ -1,0 +1,8 @@
+[mysqld]
+character-set-server=utf8
+replicate-do-db=shifree
+log-bin=/var/log/mysql/bin-log
+server-id=3
+
+[mysql]
+default-character-set=utf8
