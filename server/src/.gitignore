@@ -1,0 +1,11 @@
+__pycache__/
+__init__.py
+*.py[cod]
+config.py
+fixtures/*.yaml
+fixtures/init/*.sql
+migrations/
+uploads/
+sample
+.envrc
+*.pem
