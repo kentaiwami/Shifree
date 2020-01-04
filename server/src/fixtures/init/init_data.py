@@ -2,18 +2,8 @@ import mysql.connector
 import glob
 import os
 import re
+
 os.chdir("./fixtures/init")
-
-config = {
-    'user': os.environ['MYSQL_USER'],
-    'password': os.environ['MYSQL_PASSWORD'],
-    'host': os.environ['MYSQL_HOST'],
-    'database' : os.environ['MYSQL_DATABASE'],
-}
-
-
-cnx = mysql.connector.connect(**config)
-cursor = cnx.cursor()
 
 def execute_scripts_from_file(filename):
     fd = open(filename, 'r')
@@ -33,9 +23,22 @@ def get_sql_files():
     sql_files.sort()
     return sql_files
 
-for sql_file in get_sql_files():
-    execute_scripts_from_file(sql_file)
+def main():
+    for sql_file in get_sql_files():
+        execute_scripts_from_file(sql_file)
+        cnx.commit()
 
-cnx.commit()
-cursor.close()
-cnx.close()
+if __name__ == "__main__":
+    if bool(os.environ['DEBUGFLAG']) == True:
+        config = {
+        'user': os.environ['MYSQL_USER'],
+        'password': os.environ['MYSQL_PASSWORD'],
+        'host': os.environ['MYSQL_HOST'],
+        'database' : os.environ['MYSQL_DATABASE'],
+        }
+        cnx = mysql.connector.connect(**config)
+        cursor = cnx.cursor()
+
+        main()
+        cursor.close()
+        cnx.close()
