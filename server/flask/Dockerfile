@@ -3,7 +3,7 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/
-RUN pip install -U pip
+RUN pip install -U pip --user
 RUN while read line; \
  do \
  pip install $line; \
