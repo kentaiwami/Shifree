@@ -4,7 +4,7 @@ RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -U pip --user
-RUN while read line; \
+RUN while read line || [ -n "${line}" ]; \
  do \
  pip install $line; \
  done < requirements.txt
