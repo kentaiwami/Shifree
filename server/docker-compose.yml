@@ -2,7 +2,7 @@ version: '3'
 services:
   shifree-web:
       container_name: shifree-web
-      image: nginx:1.13
+      image: nginx:1.16.1
       restart: always
       environment:
         VIRTUAL_HOST: ${VIRTUAL_HOST}
