@@ -21,7 +21,7 @@ services:
 
   shifree-db:
       container_name: shifree-db
-      image: mysql:5.7
+      image: mysql:5.7.29
       restart: always
       expose:
         - "3306"
