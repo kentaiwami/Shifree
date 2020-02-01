@@ -4,7 +4,7 @@ from flask_basicauth import BasicAuth
 from flask_migrate import Migrate
 from model import db
 from config import secret_key
-from views.v1 import auth, login, salary, comment, table, company, token
+from views.v1 import auth, login, salary, comment, table, company, token, health_check
 from views.v1.shift import usershift, memo, shift, search, analytics
 from views.v1.setting import wage, username, password, user, shiftcategory, color, notification, follow, export
 from admin import AuthException, init_admin
@@ -27,7 +27,7 @@ def add_bp(app_obj):
     modules_define = [
         auth.app, login.app, wage.app, username.app, password.app, user.app, shiftcategory.app, notification.app,
         color.app, salary.app, usershift.app, table.app, comment.app, memo.app, company.app, shift.app, token.app,
-        follow.app, export.app, search.app, analytics.app
+        follow.app, export.app, search.app, analytics.app, health_check.app
     ]
 
     for bp_app in modules_define:
